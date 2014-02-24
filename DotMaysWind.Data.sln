@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotMaysWind.Data", "DotMaysWind.Data\DotMaysWind.Data.csproj", "{9795845C-7630-4116-97AE-E73A2C61C8BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotMaysWind.Data.UnitTest", "DotMaysWind.Data.UnitTest\DotMaysWind.Data.UnitTest.csproj", "{8526EE5D-8D4E-4D3C-BDD8-7F9C57899BB2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5C1F94FF-FB3D-4487-8DA2-3FD5B45CF339}"
+	ProjectSection(SolutionItems) = preProject
+		DotMaysWind.Data.vsmdi = DotMaysWind.Data.vsmdi
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotMaysWind.Data.Test", "DotMaysWind.Data.Test\DotMaysWind.Data.Test.csproj", "{0D4BB671-7C49-4045-89B4-10A67839CA4C}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = DotMaysWind.Data.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9795845C-7630-4116-97AE-E73A2C61C8BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9795845C-7630-4116-97AE-E73A2C61C8BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9795845C-7630-4116-97AE-E73A2C61C8BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9795845C-7630-4116-97AE-E73A2C61C8BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8526EE5D-8D4E-4D3C-BDD8-7F9C57899BB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8526EE5D-8D4E-4D3C-BDD8-7F9C57899BB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8526EE5D-8D4E-4D3C-BDD8-7F9C57899BB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8526EE5D-8D4E-4D3C-BDD8-7F9C57899BB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D4BB671-7C49-4045-89B4-10A67839CA4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D4BB671-7C49-4045-89B4-10A67839CA4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D4BB671-7C49-4045-89B4-10A67839CA4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D4BB671-7C49-4045-89B4-10A67839CA4C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

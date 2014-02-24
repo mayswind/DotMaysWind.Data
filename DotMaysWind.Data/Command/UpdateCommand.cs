@@ -1,0 +1,250 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+
+using DotMaysWind.Data.Command.Condition;
+using DotMaysWind.Data.Orm;
+
+namespace DotMaysWind.Data.Command
+{
+    /// <summary>
+    /// Sql更新语句类
+    /// </summary>
+    public class UpdateCommand : AbstractSqlCommandWithWhere
+    {
+        #region 属性
+        /// <summary>
+        /// 获取语句类型
+        /// </summary>
+        public override SqlCommandType CommandType
+        {
+            get { return SqlCommandType.Update; }
+        }
+
+        /// <summary>
+        /// 获取或设置要更新的参数组
+        /// </summary>
+        public List<SqlParameter> UpdateParameters
+        {
+            get { return this._parameters; }
+            set { this._parameters = value; }
+        }
+        #endregion
+
+        #region 构造方法
+        /// <summary>
+        /// 初始化Sql更新语句类
+        /// </summary>
+        /// <param name="database">数据库</param>
+        /// <param name="tableName">数据表名称</param>
+        public UpdateCommand(Database database, String tableName)
+            : base(database, tableName) { }
+        #endregion
+
+        #region 方法
+        #region Set
+        /// <summary>
+        /// 更新指定参数组并返回当前语句
+        /// </summary>
+        /// <param name="updateParams">要更新的参数组</param>
+        /// <returns>当前语句</returns>
+        public UpdateCommand Set(params SqlParameter[] updateParams)
+        {
+            if (updateParams != null)
+            {
+                this._parameters.AddRange(updateParams);
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// 更新指定参数并返回当前语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="value">内容</param>
+        /// <returns>当前语句</returns>
+        public UpdateCommand Set(String columnName, Object value)
+        {
+            this._parameters.Add(SqlParameter.Create(columnName, value));
+            return this;
+        }
+
+        /// <summary>
+        /// 更新指定参数并返回当前语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">内容</param>
+        /// <returns>当前语句</returns>
+        public UpdateCommand Set(String columnName, DbType dbType, Object value)
+        {
+            this._parameters.Add(SqlParameter.Create(columnName, dbType, value));
+            return this;
+        }
+
+        /// <summary>
+        /// 更新指定参数并返回当前语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="paramName">参数名称</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">内容</param>
+        /// <returns>当前语句</returns>
+        public UpdateCommand Set(String columnName, String paramName, DbType dbType, Object value)
+        {
+            this._parameters.Add(SqlParameter.Create(columnName, paramName, dbType, value));
+            return this;
+        }
+
+        /// <summary>
+        /// 更新指定参数并返回当前语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="function">函数</param>
+        /// <exception cref="ArgumentNullException">函数不能为空</exception>
+        /// <returns>当前语句</returns>
+        public UpdateCommand Set(String columnName, ISqlFunction function)
+        {
+            if (function == null)
+            {
+                throw new ArgumentNullException("function");
+            }
+
+            this._parameters.Add(SqlParameter.CreateCustomAction(columnName, function.ToString(this.DatabaseType)));
+
+            if (function.HasParameters)
+            {
+                this._parameters.AddRange(function.GetAllParameters());
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// 更新指定参数并返回当前语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="command">选择语句</param>
+        /// <exception cref="ArgumentNullException">选择语句不能为空</exception>
+        /// <returns>当前语句</returns>
+        public UpdateCommand Set(String columnName, SelectCommand command)
+        {
+            if (command == null)
+            {
+                throw new ArgumentNullException("command");
+            }
+
+            this._parameters.Add(SqlParameter.CreateCustomAction(columnName, command.ToString()));
+
+            List<SqlParameter> parameters = command.GetAllParameters();
+
+            if (parameters != null)
+            {
+                this._parameters.AddRange(command.GetAllParameters());
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// 指定字段名自增并返回当前语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <returns>当前语句</returns>
+        public UpdateCommand Increase(String columnName)
+        {
+            this._parameters.Add(SqlParameter.CreateCustomAction(columnName, columnName + "+1"));
+            return this;
+        }
+
+        /// <summary>
+        /// 指定字段名自减并返回当前语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <returns>当前语句</returns>
+        public UpdateCommand Decrease(String columnName)
+        {
+            this._parameters.Add(SqlParameter.CreateCustomAction(columnName, columnName + "-1"));
+            return this;
+        }
+
+        /// <summary>
+        /// 设置指定查询的语句并返回当前语句
+        /// </summary>
+        /// <param name="where">查询语句</param>
+        /// <returns>当前语句</returns>
+        public UpdateCommand Where(ISqlCondition where)
+        {
+            this._where = where;
+
+            return this;
+        }
+        #endregion
+
+        /// <summary>
+        /// 输出SQL语句
+        /// </summary>
+        /// <returns>SQL语句</returns>
+        public override String ToString()
+        {
+            SqlCommandBuilder sb = new SqlCommandBuilder(this.DatabaseType);
+
+            sb.AppendUpdatePrefix().AppendTableName(this._tableName);
+
+            if (this._parameters.Count > 0)
+            {
+                sb.AppendUpdateSet();
+            }
+
+            sb.AppendAllParameterEquations(this._parameters).AppendWhere(this._where);
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// 获取数据行
+        /// </summary>
+        /// <exception cref="NotSupportedException">删除语句不支持获取数据行</exception>
+        /// <returns>数据行</returns>
+        public override DataRow ToDataRow()
+        {
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// 获取数据表格
+        /// </summary>
+        /// <exception cref="NotSupportedException">删除语句不支持获取数据表格</exception>
+        /// <returns>数据表格</returns>
+        public override DataTable ToDataTable()
+        {
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// 获取单个实体
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="table">数据库表格</param>
+        /// <exception cref="NotSupportedException">删除语句不支持获取实体</exception>
+        /// <returns>数据实体</returns>
+        public override T ToEntity<T>(AbstractDatabaseTable<T> table)
+        {
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// 获取实体列表
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="table">数据库表格</param>
+        /// <exception cref="NotSupportedException">删除语句不支持获取实体</exception>
+        /// <returns>数据实体列表</returns>
+        public override List<T> ToEntityList<T>(AbstractDatabaseTable<T> table)
+        {
+            throw new NotSupportedException();
+        }
+        #endregion
+    }
+}
