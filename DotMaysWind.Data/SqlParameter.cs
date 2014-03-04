@@ -31,11 +31,10 @@ namespace DotMaysWind.Data
         public String ParameterName
         {
             get { return this._parameter.ParameterName; }
-            set { this._parameter.ParameterName = value; }
         }
 
         /// <summary>
-        /// 获取或设置数据库类型
+        /// 获取或设置数据类型
         /// </summary>
         public DbType DbType
         {
@@ -44,7 +43,7 @@ namespace DotMaysWind.Data
         }
 
         /// <summary>
-        /// 获取或设置SQLServer数据库类型
+        /// 获取或设置SQLServer数据类型
         /// </summary>
         public SqlDbType SqlDbType
         {
