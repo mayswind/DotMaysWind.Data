@@ -41,13 +41,13 @@ namespace DotMaysWind.Data.Command
         #endregion
 
         #region 方法
-        #region Values
+        #region Add
         /// <summary>
         /// 插入指定参数组并返回当前语句
         /// </summary>
         /// <param name="insertParams">要插入的参数组</param>
         /// <returns>当前语句</returns>
-        public InsertCommand Values(params SqlParameter[] insertParams)
+        public InsertCommand Add(params SqlParameter[] insertParams)
         {
             if (insertParams != null)
             {
@@ -63,7 +63,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="columnName">字段名</param>
         /// <param name="value">内容</param>
         /// <returns>当前语句</returns>
-        public InsertCommand Values(String columnName, Object value)
+        public InsertCommand Add(String columnName, Object value)
         {
             this._parameters.Add(SqlParameter.Create(columnName, value));
             return this;
@@ -76,7 +76,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="dbType">数据类型</param>
         /// <param name="value">内容</param>
         /// <returns>当前语句</returns>
-        public InsertCommand Values(String columnName, DbType dbType, Object value)
+        public InsertCommand Add(String columnName, DbType dbType, Object value)
         {
             this._parameters.Add(SqlParameter.Create(columnName, dbType, value));
             return this;
@@ -89,7 +89,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="function">函数</param>
         /// <exception cref="ArgumentNullException">函数不能为空</exception>
         /// <returns>当前语句</returns>
-        public InsertCommand Values(String columnName, ISqlFunction function)
+        public InsertCommand Add(String columnName, ISqlFunction function)
         {
             if (function == null)
             {
@@ -113,7 +113,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="command">选择语句</param>
         /// <exception cref="ArgumentNullException">选择语句不能为空</exception>
         /// <returns>当前语句</returns>
-        public InsertCommand Values(String columnName, SelectCommand command)
+        public InsertCommand Add(String columnName, SelectCommand command)
         {
             if (command == null)
             {
