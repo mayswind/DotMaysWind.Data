@@ -91,7 +91,7 @@ namespace DotMaysWind.Data
         {
             this._parameter = new BaseSqlParameter();
             this._parameter.SourceColumn = columnName;
-            this._parameter.ParameterName = "@PN_" + parameterName;
+            this._parameter.ParameterName = Constants.GeneralParameterNamePrefix + parameterName;
             this._parameter.Value = (value ?? DBNull.Value);
 
             this._isUseParameter = true;

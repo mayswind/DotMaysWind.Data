@@ -80,7 +80,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>SQL语句</returns>
         public override String ToString()
         {
-            return this._commandString;
+            return this.FollowingProcessSql(this._commandString);
         }
         #endregion
     }

@@ -199,7 +199,7 @@ namespace DotMaysWind.Data.Command
 
             sb.AppendAllParameterEquations(this._parameters).AppendWhere(this._where);
 
-            return sb.ToString();
+            return this.FollowingProcessSql(sb.ToString());
         }
 
         /// <summary>

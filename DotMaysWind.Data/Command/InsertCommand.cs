@@ -147,7 +147,7 @@ namespace DotMaysWind.Data.Command
                 sb.AppendAllColumnNamesWithParentheses(this._parameters).AppendInsertValues().AppendAllParameterNamesWithParentheses(this._parameters);
             }
 
-            return sb.ToString();
+            return this.FollowingProcessSql(sb.ToString());
         }
 
         /// <summary>

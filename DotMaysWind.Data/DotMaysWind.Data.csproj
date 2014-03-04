@@ -103,6 +103,7 @@
     <Compile Include="Command\UpdateCommand.cs" />
     <Compile Include="Configuration\ConfigurationManager.cs" />
     <Compile Include="Configuration\DatabaseSettings.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="DatabaseConnectionWrapper.cs" />
     <Compile Include="DatabaseFactory.cs" />

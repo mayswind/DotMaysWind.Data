@@ -146,6 +146,22 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <returns>SQL语句</returns>
         public abstract override String ToString();
+
+        /// <summary>
+        /// 后处理Sql语句
+        /// </summary>
+        /// <returns>处理后的Sql语句</returns>
+        protected String FollowingProcessSql(String originSql)
+        {
+            String result = originSql;
+
+            if (this._database.DatabaseType == DatabaseType.Oracle)
+            {
+                result = result.Replace(Constants.GeneralParameterNamePrefix, Constants.OracleParameterNamePrefix);
+            }
+
+            return result;
+        }
         #endregion
 
         #region Result
@@ -242,13 +258,13 @@ namespace DotMaysWind.Data.Command
 
             if (this._database.DatabaseType == DatabaseType.Oracle)
             {
-                dbParameter.ParameterName = ":" + param.ParameterName;
+                dbParameter.ParameterName = param.ParameterName.Replace(Constants.GeneralParameterNamePrefix, Constants.OracleParameterNamePrefix);
             }
             else
             {
-                dbParameter.ParameterName = "@" + param.ParameterName;
+                dbParameter.ParameterName = param.ParameterName;
             }
-            
+
             dbParameter.Value = param.Value;
             dbParameter.SourceVersion = DataRowVersion.Default;
 

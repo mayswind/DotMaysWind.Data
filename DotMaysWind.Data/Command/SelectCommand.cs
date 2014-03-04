@@ -775,7 +775,7 @@ namespace DotMaysWind.Data.Command
                 sql = String.Format(format, sql, aliasesName);
             }
 
-            return sql;
+            return this.FollowingProcessSql(sql);
         }
         #endregion
 

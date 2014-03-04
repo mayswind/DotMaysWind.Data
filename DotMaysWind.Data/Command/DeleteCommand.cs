@@ -54,7 +54,7 @@ namespace DotMaysWind.Data.Command
             SqlCommandBuilder sb = new SqlCommandBuilder(this.DatabaseType);
             sb.AppendDeletePrefix().AppendTableName(this._tableName).AppendWhere(this._where);
 
-            return sb.ToString();
+            return this.FollowingProcessSql(sb.ToString());
         }
 
         /// <summary>
