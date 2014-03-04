@@ -39,7 +39,6 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 输出SQL语句
         /// </summary>
-        /// <param name="dbProvider">数据库提供者</param>
-        DbCommand ToDbCommand(DbProviderFactory dbProvider);
+        DbCommand ToDbCommand();
     }
 }

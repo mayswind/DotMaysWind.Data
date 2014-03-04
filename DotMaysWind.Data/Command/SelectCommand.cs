@@ -783,30 +783,29 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 输出SQL语句
         /// </summary>
-        /// <param name="dbProvider">数据库提供者</param>
-        public override DbCommand ToDbCommand(DbProviderFactory dbProvider)
+        public override DbCommand ToDbCommand()
         {
-            DbCommand dbCommand = this.CreateDbCommand(dbProvider);
+            DbCommand dbCommand = this.CreateDbCommand();
 
             for (Int32 i = 0; i < this._joins.Count; i++)
             {
                 SqlParameter[] joinParameters = (this._joins[i] == null ? null : this._joins[i].GetAllParameters());
                 if (joinParameters != null)
                 {
-                    this.AddParameterToDbCommand(dbProvider, dbCommand, joinParameters);
+                    this.AddParameterToDbCommand(dbCommand, joinParameters);
                 }
             }
 
             SqlParameter[] whereParameters = (this._where == null ? null : this._where.GetAllParameters());
             if (whereParameters != null)
             {
-                this.AddParameterToDbCommand(dbProvider, dbCommand, whereParameters);
+                this.AddParameterToDbCommand(dbCommand, whereParameters);
             }
 
             SqlParameter[] havingParameters = (this._having == null ? null : this._having.GetAllParameters());
             if (havingParameters != null)
             {
-                this.AddParameterToDbCommand(dbProvider, dbCommand, havingParameters);
+                this.AddParameterToDbCommand(dbCommand, havingParameters);
             }
 
             return dbCommand;

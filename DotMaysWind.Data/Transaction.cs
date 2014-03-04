@@ -14,7 +14,6 @@ namespace DotMaysWind.Data
     {
         #region 字段
         private Database _database = null;
-        private DbProviderFactory _dbProvider = null;
         private DbConnection _connection = null;
         private DbTransaction _transcation = null;
         #endregion
@@ -27,14 +26,6 @@ namespace DotMaysWind.Data
         {
             get { return this._database; }
         }
-
-        /// <summary>
-        /// 获取当前数据库数据库提供者
-        /// </summary>
-        public DbProviderFactory DatabaseProvider
-        {
-            get { return this._dbProvider; }
-        }
         #endregion
 
         #region 构造方法
@@ -43,10 +34,15 @@ namespace DotMaysWind.Data
         /// </summary>
         /// <param name="database">数据库类</param>
         /// <param name="autoOpen">是否自动打开连接</param>
+        /// <exception cref="ArgumentNullException">数据库不能为空</exception>
         internal Transaction(Database database, Boolean autoOpen)
         {
+            if (database == null)
+            {
+                throw new ArgumentNullException("database");
+            }
+
             this._database = database;
-            this._dbProvider = database.DatabaseProvider;
 
             if (autoOpen)
             {
@@ -150,7 +146,7 @@ namespace DotMaysWind.Data
                 throw new ArgumentNullException("command");
             }
 
-            return this.ExecuteScalar<T>(command.ToDbCommand(this._dbProvider));
+            return this.ExecuteScalar<T>(command.ToDbCommand());
         }
 
         /// <summary>
@@ -166,7 +162,7 @@ namespace DotMaysWind.Data
                 throw new ArgumentNullException("command");
             }
 
-            return this.ExecuteScalar(command.ToDbCommand(this._dbProvider));
+            return this.ExecuteScalar(command.ToDbCommand());
         }
 
         /// <summary>
@@ -224,7 +220,7 @@ namespace DotMaysWind.Data
                 throw new ArgumentNullException("command");
             }
 
-            return this.ExecuteNonQuery(command.ToDbCommand(this._dbProvider));
+            return this.ExecuteNonQuery(command.ToDbCommand());
         }
 
         /// <summary>
@@ -265,7 +261,7 @@ namespace DotMaysWind.Data
                 throw new ArgumentNullException("command");
             }
 
-            return this.ExecuteReader(command.ToDbCommand(this._dbProvider));
+            return this.ExecuteReader(command.ToDbCommand());
         }
 
         /// <summary>
@@ -306,7 +302,7 @@ namespace DotMaysWind.Data
                 throw new ArgumentNullException("command");
             }
 
-            return this.ExecuteDataSet(command.ToDbCommand(this._dbProvider));
+            return this.ExecuteDataSet(command.ToDbCommand());
         }
 
         /// <summary>
@@ -331,7 +327,7 @@ namespace DotMaysWind.Data
             dbCommand.Connection = this._connection;
             dbCommand.Transaction = this._transcation;
 
-            DataSet dataSet = DataSetHelper.InternalCreateDataSet(this._dbProvider, dbCommand);
+            DataSet dataSet = DataSetHelper.InternalCreateDataSet(this._database.DatabaseProvider, dbCommand);
 
             return dataSet;
         }

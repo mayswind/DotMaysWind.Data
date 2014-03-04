@@ -43,15 +43,14 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 输出SQL语句
         /// </summary>
-        /// <param name="dbProvider">数据库提供者</param>
-        public override DbCommand ToDbCommand(DbProviderFactory dbProvider)
+        public override DbCommand ToDbCommand()
         {
-            DbCommand dbCommand = this.CreateDbCommand(dbProvider);
+            DbCommand dbCommand = this.CreateDbCommand();
             SqlParameter[] extraParameters = (this._where == null ? null : this._where.GetAllParameters());
 
             if (extraParameters != null)
             {
-                this.AddParameterToDbCommand(dbProvider, dbCommand, extraParameters);
+                this.AddParameterToDbCommand(dbCommand, extraParameters);
             }
 
             return dbCommand;

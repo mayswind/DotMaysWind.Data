@@ -223,7 +223,7 @@ namespace DotMaysWind.Data
                 throw new ArgumentNullException("command");
             }
 
-            return command.ToDbCommand(this._dbProvider);
+            return command.ToDbCommand();
         }
 
         /// <summary>
@@ -270,7 +270,7 @@ namespace DotMaysWind.Data
                 throw new ArgumentNullException("command");
             }
 
-            return this.ExecuteScalar<T>(command.ToDbCommand(this._dbProvider));
+            return this.ExecuteScalar<T>(command.ToDbCommand());
         }
 
         /// <summary>
@@ -286,7 +286,7 @@ namespace DotMaysWind.Data
                 throw new ArgumentNullException("command");
             }
 
-            return this.ExecuteScalar(command.ToDbCommand(this._dbProvider));
+            return this.ExecuteScalar(command.ToDbCommand());
         }
 
         /// <summary>
@@ -344,7 +344,7 @@ namespace DotMaysWind.Data
                 throw new ArgumentNullException("command");
             }
 
-            return this.ExecuteNonQuery(command.ToDbCommand(this._dbProvider));
+            return this.ExecuteNonQuery(command.ToDbCommand());
         }
 
         /// <summary>
@@ -439,7 +439,7 @@ namespace DotMaysWind.Data
                 throw new ArgumentNullException("command");
             }
 
-            return this.ExecuteReader(command.ToDbCommand(this._dbProvider));
+            return this.ExecuteReader(command.ToDbCommand());
         }
 
         /// <summary>
@@ -480,7 +480,7 @@ namespace DotMaysWind.Data
                 throw new ArgumentNullException("command");
             }
 
-            return this.ExecuteDataSet(command.ToDbCommand(this._dbProvider));
+            return this.ExecuteDataSet(command.ToDbCommand());
         }
 
         /// <summary>

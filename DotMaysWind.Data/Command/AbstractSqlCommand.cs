@@ -84,21 +84,19 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 输出SQL语句
         /// </summary>
-        /// <param name="dbProvider">数据库提供者</param>
         /// <returns>数据库命令</returns>
-        public virtual DbCommand ToDbCommand(DbProviderFactory dbProvider)
+        public virtual DbCommand ToDbCommand()
         {
-            return this.CreateDbCommand(dbProvider);
+            return this.CreateDbCommand();
         }
 
         /// <summary>
         /// 创建数据库命令
         /// </summary>
-        /// <param name="dbProvider">数据库提供者</param>
         /// <returns>数据库命令</returns>
-        protected DbCommand CreateDbCommand(DbProviderFactory dbProvider)
+        protected DbCommand CreateDbCommand()
         {
-            DbCommand dbCommand = dbProvider.CreateCommand();
+            DbCommand dbCommand = this._database.DatabaseProvider.CreateCommand();
             dbCommand.CommandType = System.Data.CommandType.Text;
             dbCommand.CommandText = this.ToString();
 
@@ -106,7 +104,7 @@ namespace DotMaysWind.Data.Command
             {
                 if (this._parameters[i].IsUseParameter)
                 {
-                    dbCommand.Parameters.Add(this.CreateDbParameter(dbProvider, this._parameters[i]));
+                    dbCommand.Parameters.Add(this.CreateDbParameter(this._parameters[i]));
                 }
             }
 
@@ -116,10 +114,9 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 添加参数到数据库命令中
         /// </summary>
-        /// <param name="dbProvider">数据库提供者</param>
         /// <param name="dbCommand">数据库命令</param>
         /// <param name="extraParameters">额外参数组</param>
-        protected void AddParameterToDbCommand(DbProviderFactory dbProvider, DbCommand dbCommand, params SqlParameter[] extraParameters)
+        protected void AddParameterToDbCommand(DbCommand dbCommand, params SqlParameter[] extraParameters)
         {
             if (extraParameters == null)
             {
@@ -130,7 +127,7 @@ namespace DotMaysWind.Data.Command
             {
                 if (extraParameters[i].IsUseParameter)
                 {
-                    dbCommand.Parameters.Add(this.CreateDbParameter(dbProvider, extraParameters[i]));
+                    dbCommand.Parameters.Add(this.CreateDbParameter(extraParameters[i]));
                 }
             }
         }
@@ -238,11 +235,20 @@ namespace DotMaysWind.Data.Command
         #endregion
 
         #region 私有方法
-        private DbParameter CreateDbParameter(DbProviderFactory dbProvider, SqlParameter param)
+        private DbParameter CreateDbParameter(SqlParameter param)
         {
-            DbParameter dbParameter = dbProvider.CreateParameter();
+            DbParameter dbParameter = this._database.DatabaseProvider.CreateParameter();
             dbParameter.DbType = param.DbType;
-            dbParameter.ParameterName = param.ParameterName;
+
+            if (this._database.DatabaseType == DatabaseType.Oracle)
+            {
+                dbParameter.ParameterName = ":" + param.ParameterName;
+            }
+            else
+            {
+                dbParameter.ParameterName = "@" + param.ParameterName;
+            }
+            
             dbParameter.Value = param.Value;
             dbParameter.SourceVersion = DataRowVersion.Default;
 
