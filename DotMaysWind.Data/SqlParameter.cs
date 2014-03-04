@@ -91,7 +91,7 @@ namespace DotMaysWind.Data
         {
             this._parameter = new BaseSqlParameter();
             this._parameter.SourceColumn = columnName;
-            this._parameter.ParameterName = parameterName;
+            this._parameter.ParameterName = "@PN_" + parameterName;
             this._parameter.Value = (value ?? DBNull.Value);
 
             this._isUseParameter = true;
@@ -182,7 +182,7 @@ namespace DotMaysWind.Data
         /// <returns>Sql语句参数类</returns>
         public static SqlParameter Create(String columnName, String parameterName, DbType dbType, Object value)
         {
-            SqlParameter param = new SqlParameter(columnName, "@PN_" + parameterName, value);
+            SqlParameter param = new SqlParameter(columnName, parameterName, value);
             param.DbType = dbType;
 
             return param;
@@ -198,7 +198,7 @@ namespace DotMaysWind.Data
         /// <returns>Sql语句参数类</returns>
         public static SqlParameter Create(String columnName, String parameterName, SqlDbType dbType, Object value)
         {
-            SqlParameter param = new SqlParameter(columnName, "@PN_" + parameterName, value);
+            SqlParameter param = new SqlParameter(columnName, parameterName, value);
             param.SqlDbType = dbType;
 
             return param;
