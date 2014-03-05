@@ -63,7 +63,16 @@ namespace DotMaysWind.Data.Orm
                 if (this._columns.TryGetValue(prop.Name, out attr) && attr != null)
                 {
                     DbType dbType = (attr.DbType.HasValue ? attr.DbType.Value : DbTypeHelper.InternalGetDbType(prop.PropertyType));
-                    Object value = this.LoadValue(row, columns, attr.ColumnName, dbType);
+                    Object value;
+
+                    if (this.IsNullableType(prop.PropertyType))
+                    {
+                        value = this.LoadNullableValue(row, columns, attr.ColumnName, dbType);
+                    }
+                    else
+                    {
+                        value = this.LoadValue(row, columns, attr.ColumnName, dbType);
+                    }
 
                     prop.SetValue(entity, value, null);
                 }
@@ -113,6 +122,16 @@ namespace DotMaysWind.Data.Orm
             }
 
             return dict;
+        }
+
+        private Boolean IsNullableType(Type type)
+        {
+            if (!type.IsGenericType)
+            {
+                return false;
+            }
+
+            return (type.GetGenericTypeDefinition() == typeof(Nullable<>));
         }
         #endregion
     }
