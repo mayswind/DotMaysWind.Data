@@ -153,21 +153,21 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 获取数据行
         /// </summary>
-        /// <exception cref="NotSupportedException">删除语句不支持获取数据行</exception>
+        /// <exception cref="CommandNotSupportException">删除语句不支持获取数据行</exception>
         /// <returns>数据行</returns>
         public override DataRow ToDataRow()
         {
-            throw new NotSupportedException();
+            throw new CommandNotSupportException();
         }
 
         /// <summary>
         /// 获取数据表格
         /// </summary>
-        /// <exception cref="NotSupportedException">删除语句不支持获取数据表格</exception>
+        /// <exception cref="CommandNotSupportException">删除语句不支持获取数据表格</exception>
         /// <returns>数据表格</returns>
         public override DataTable ToDataTable()
         {
-            throw new NotSupportedException();
+            throw new CommandNotSupportException();
         }
 
         /// <summary>
@@ -175,11 +175,11 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <typeparam name="T">实体类型</typeparam>
         /// <param name="table">数据库表格</param>
-        /// <exception cref="NotSupportedException">删除语句不支持获取实体</exception>
+        /// <exception cref="CommandNotSupportException">删除语句不支持获取实体</exception>
         /// <returns>数据实体</returns>
         public override T ToEntity<T>(AbstractDatabaseTable<T> table)
         {
-            throw new NotSupportedException();
+            throw new CommandNotSupportException();
         }
 
         /// <summary>
@@ -187,11 +187,11 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <typeparam name="T">实体类型</typeparam>
         /// <param name="table">数据库表格</param>
-        /// <exception cref="NotSupportedException">删除语句不支持获取实体</exception>
+        /// <exception cref="CommandNotSupportException">删除语句不支持获取实体</exception>
         /// <returns>数据实体列表</returns>
         public override List<T> ToEntityList<T>(AbstractDatabaseTable<T> table)
         {
-            throw new NotSupportedException();
+            throw new CommandNotSupportException();
         }
         #endregion
     }

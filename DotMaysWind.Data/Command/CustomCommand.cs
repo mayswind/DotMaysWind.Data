@@ -24,11 +24,11 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 不支持获取或设置数据表名
         /// </summary>
-        /// <exception cref="NotSupportedException">不支持获取或设置数据表名</exception>
+        /// <exception cref="CommandNotSupportException">不支持获取或设置数据表名</exception>
         public new String TableName
         {
-            get { throw new NotSupportedException(); }
-            set { throw new NotSupportedException(); }
+            get { throw new CommandNotSupportException(); }
+            set { throw new CommandNotSupportException(); }
         }
         #endregion
 

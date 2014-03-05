@@ -68,7 +68,7 @@ namespace DotMaysWind.Data
 
             if (this._dbtype == DatabaseType.Unknown)
             {
-                throw new NotSupportedException("This database is not supported!");
+                throw new DatabaseNotSupportException("This database is not supported!");
             }
         }
         #endregion

@@ -186,7 +186,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <typeparam name="T">返回结果的类型</typeparam>
         /// <returns>操作的结果（Select）</returns>
-        /// <exception cref="NotSupportedException">Insert、Update或Delete不支持本方法</exception>
+        /// <exception cref="CommandNotSupportException">Insert、Update或Delete不支持本方法</exception>
         public virtual T Result<T>()
         {
             if (this.CommandType == SqlCommandType.Select)
@@ -195,7 +195,7 @@ namespace DotMaysWind.Data.Command
             }
             else
             {
-                throw new NotSupportedException();
+                throw new CommandNotSupportException();
             }
         }
 

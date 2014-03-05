@@ -419,7 +419,7 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 查询插入最后一条记录的ID并返回当前语句
         /// </summary>
-        /// <exception cref="NotSupportedException">Oracle数据库不支持获取最后一条记录的ID</exception>
+        /// <exception cref="DatabaseNotSupportException">Oracle数据库不支持获取最后一条记录的ID</exception>
         /// <returns>当前语句</returns>
         public SelectCommand QueryIdentity()
         {
@@ -429,7 +429,7 @@ namespace DotMaysWind.Data.Command
             }
             else if (this.DatabaseType == DatabaseType.Oracle)
             {
-                throw new NotSupportedException("Oracle database does not support identity.");
+                throw new DatabaseNotSupportException("Oracle database does not support identity.");
             }
             else
             {
