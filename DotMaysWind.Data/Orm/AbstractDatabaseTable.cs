@@ -460,6 +460,47 @@ namespace DotMaysWind.Data.Orm
                 return String.Empty;
             }
         }
+
+        /// <summary>
+        /// 读取指定类型数据
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="columns">列集合</param>
+        /// <param name="columnName">列名称</param>
+        /// <param name="dbType">数据类型</param>
+        /// <returns>指定类型数据</returns>
+        protected Object LoadValue(DataRow row, DataColumnCollection columns, String columnName, DbType dbType)
+        {
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
+            {
+                return DbConvert.ToValue(row[columnName], dbType);
+            }
+            else
+            {
+                return DbConvert.GetDefaultValue(dbType);
+            }
+        }
+
+        /// <summary>
+        /// 读取指定类型数据
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="columns">列集合</param>
+        /// <param name="columnName">列名称</param>
+        /// <param name="dbType">数据类型</param>
+        /// <typeparam name="TValue">指定类型</typeparam>
+        /// <returns>指定类型数据</returns>
+        protected TValue LoadValue<TValue>(DataRow row, DataColumnCollection columns, String columnName, DbType dbType)
+        {
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
+            {
+                return (TValue)DbConvert.ToValue(row[columnName], dbType);
+            }
+            else
+            {
+                return default(TValue);
+            }
+        }
         #endregion
 
         #region 可空
@@ -779,6 +820,47 @@ namespace DotMaysWind.Data.Orm
             if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
             {
                 return row[columnName] as Byte[];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 读取指定类型数据
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="columns">列集合</param>
+        /// <param name="columnName">列名称</param>
+        /// <param name="dbType">数据类型</param>
+        /// <returns>指定类型数据</returns>
+        protected Object LoadNullableValue(DataRow row, DataColumnCollection columns, String columnName, DbType dbType)
+        {
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
+            {
+                return DbConvert.ToValue(row[columnName], dbType);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 读取指定类型数据
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="columns">列集合</param>
+        /// <param name="columnName">列名称</param>
+        /// <param name="dbType">数据类型</param>
+        /// <typeparam name="TValue">指定类型</typeparam>
+        /// <returns>指定类型数据</returns>
+        protected Nullable<TValue> LoadNullableValue<TValue>(DataRow row, DataColumnCollection columns, String columnName, DbType dbType) where TValue: struct
+        {
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
+            {
+                return (TValue)DbConvert.ToValue(row[columnName], dbType);
             }
             else
             {

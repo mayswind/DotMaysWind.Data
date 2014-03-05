@@ -370,5 +370,64 @@ namespace DotMaysWind.Data
                     return obj;
             }
         }
+
+        /// <summary>
+        /// 获取指定数据类型的默认值
+        /// </summary>
+        /// <param name="dbType">数据类型</param>
+        /// <returns>指定数据类型的默认值</returns>
+        public static Object GetDefaultValue(DbType dbType)
+        {
+            switch (dbType)
+            {
+                case DbType.Binary:
+                    return default(Byte[]);
+                case DbType.Boolean:
+                    return default(Boolean);
+                case DbType.Byte:
+                    return default(Byte);
+                case DbType.SByte:
+                    return default(SByte);
+                case DbType.Int16:
+                    return default(Int16);
+                case DbType.Int32:
+                    return default(Int32);
+                case DbType.Int64:
+                    return default(Int64);
+                case DbType.UInt16:
+                    return default(UInt16);
+                case DbType.UInt32:
+                    return default(UInt32);
+                case DbType.UInt64:
+                    return default(UInt64);
+                case DbType.Single:
+                    return default(Single);
+                case DbType.Double:
+                    return default(Double);
+                case DbType.Currency:
+                case DbType.Decimal:
+                case DbType.VarNumeric:
+                    return default(Decimal);
+                case DbType.Object:
+                    return default(Object);
+                case DbType.Date:
+                case DbType.DateTime:
+                case DbType.DateTime2:
+                case DbType.Time:
+                    return default(DateTime);
+                case DbType.DateTimeOffset:
+                    return default(DateTimeOffset);
+                case DbType.Guid:
+                    return default(Guid);
+                case DbType.AnsiString:
+                case DbType.AnsiStringFixedLength:
+                case DbType.String:
+                case DbType.StringFixedLength:
+                case DbType.Xml:
+                    return default(String);
+                default:
+                    return default(Object);
+            }
+        }
     }
 }

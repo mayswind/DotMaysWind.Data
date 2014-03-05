@@ -44,6 +44,23 @@ namespace DotMaysWind.Data.Helper
 
         #region 方法
         /// <summary>
+        /// 根据参数类型获取数据类型
+        /// </summary>
+        /// <param name="type">参数类型</param>
+        /// <returns>数据类型</returns>
+        internal static DbType InternalGetDbType(Type type)
+        {
+            DbType dbType = DbType.String;
+
+            if (!TypeDict.TryGetValue(type, out dbType))
+            {
+                dbType = DbType.String;
+            }
+
+            return dbType;
+        }
+
+        /// <summary>
         /// 根据参数值获取数据类型
         /// </summary>
         /// <param name="value">参数值</param>

@@ -113,6 +113,9 @@
     <Compile Include="Helper\DataSetHelper.cs" />
     <Compile Include="Helper\DbTypeHelper.cs" />
     <Compile Include="Orm\AbstractDatabaseTable.cs" />
+    <Compile Include="Orm\DatabaseColumnAtrribute.cs" />
+    <Compile Include="Orm\DatabaseTable.cs" />
+    <Compile Include="Orm\DatabaseTableAtrribute.cs" />
     <Compile Include="SqlParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Command\SqlCommandBuilder.cs" />
