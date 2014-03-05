@@ -258,6 +258,24 @@ namespace DotMaysWind.Data
         }
 
         /// <summary>
+        /// 将数据库字段转换为日期
+        /// </summary>
+        /// <param name="obj">数据库字段</param>
+        /// <returns>日期</returns>
+        public static DateTimeOffset ToDateTimeOffset(Object obj)
+        {
+            if (obj is DateTimeOffset)
+            {
+                return (DateTimeOffset)obj;
+            }
+            else
+            {
+                DateTimeOffset dt = DateTimeOffset.Parse(obj.ToString());
+                return dt;
+            }
+        }
+
+        /// <summary>
         /// 将数据库字段转换为Guid
         /// </summary>
         /// <param name="obj">数据库字段</param>
@@ -290,6 +308,66 @@ namespace DotMaysWind.Data
             else
             {
                 return obj.ToString();
+            }
+        }
+
+        /// <summary>
+        /// 将数据库字段按数据类型转换
+        /// </summary>
+        /// <param name="obj">原始数据库字段</param>
+        /// <param name="dbType">数据类型</param>
+        /// <returns>转换后的内容</returns>
+        public static Object ToValue(Object obj, DbType dbType)
+        {
+            switch (dbType)
+            {
+                case DbType.Binary:
+                    return (Byte[])obj;
+                case DbType.Boolean:
+                    return DbConvert.ToBoolean(obj);
+                case DbType.Byte:
+                    return DbConvert.ToByte(obj);
+                case DbType.SByte:
+                    return DbConvert.ToSByte(obj);
+                case DbType.Int16:
+                    return DbConvert.ToInt16(obj);
+                case DbType.Int32:
+                    return DbConvert.ToInt32(obj);
+                case DbType.Int64:
+                    return DbConvert.ToInt64(obj);
+                case DbType.UInt16:
+                    return DbConvert.ToUInt16(obj);
+                case DbType.UInt32:
+                    return DbConvert.ToUInt32(obj);
+                case DbType.UInt64:
+                    return DbConvert.ToUInt64(obj);
+                case DbType.Single:
+                    return DbConvert.ToSingle(obj);
+                case DbType.Double:
+                    return DbConvert.ToDouble(obj);
+                case DbType.Currency:
+                case DbType.Decimal:
+                case DbType.VarNumeric:
+                    return DbConvert.ToDecimal(obj);
+                case DbType.Object:
+                    return obj;
+                case DbType.Date:
+                case DbType.DateTime:
+                case DbType.DateTime2:
+                case DbType.Time:
+                    return DbConvert.ToDateTime(obj);
+                case DbType.DateTimeOffset:
+                    return DbConvert.ToDateTimeOffset(obj);
+                case DbType.Guid:
+                    return DbConvert.ToGuid(obj);
+                case DbType.AnsiString:
+                case DbType.AnsiStringFixedLength:
+                case DbType.String:
+                case DbType.StringFixedLength:
+                case DbType.Xml:
+                    return DbConvert.ToString(obj);
+                default:
+                    return obj;
             }
         }
     }

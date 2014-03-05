@@ -405,6 +405,25 @@ namespace DotMaysWind.Data.Orm
         }
 
         /// <summary>
+        /// 读取日期型值
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="columns">列集合</param>
+        /// <param name="columnName">列名称</param>
+        /// <returns>日期型结果</returns>
+        protected DateTimeOffset LoadDateTimeOffset(DataRow row, DataColumnCollection columns, String columnName)
+        {
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
+            {
+                return DbConvert.ToDateTimeOffset(row[columnName]);
+            }
+            else
+            {
+                return default(DateTimeOffset);
+            }
+        }
+
+        /// <summary>
         /// 读取Guid值
         /// </summary>
         /// <param name="row">数据行</param>
@@ -703,6 +722,25 @@ namespace DotMaysWind.Data.Orm
             if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
             {
                 return DbConvert.ToDateTime(row[columnName]);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 读取可空日期型值
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="columns">列集合</param>
+        /// <param name="columnName">列名称</param>
+        /// <returns>日期型结果</returns>
+        protected DateTimeOffset? LoadNullableDateTimeOffset(DataRow row, DataColumnCollection columns, String columnName)
+        {
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
+            {
+                return DbConvert.ToDateTimeOffset(row[columnName]);
             }
             else
             {

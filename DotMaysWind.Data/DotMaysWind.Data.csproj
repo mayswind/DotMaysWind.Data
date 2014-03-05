@@ -111,6 +111,7 @@
     <Compile Include="DbConvert.cs" />
     <Compile Include="Helper\DatabaseTypeHelper.cs" />
     <Compile Include="Helper\DataSetHelper.cs" />
+    <Compile Include="Helper\DbTypeHelper.cs" />
     <Compile Include="Orm\AbstractDatabaseTable.cs" />
     <Compile Include="SqlParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

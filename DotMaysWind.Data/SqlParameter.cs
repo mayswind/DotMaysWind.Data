@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
 using BaseSqlParameter = System.Data.SqlClient.SqlParameter;
+
+using DotMaysWind.Data.Helper;
 
 namespace DotMaysWind.Data
 {
@@ -133,7 +136,7 @@ namespace DotMaysWind.Data
         /// <returns>Sql语句参数类</returns>
         public static SqlParameter Create(String columnName, Object value)
         {
-            return SqlParameter.Create(columnName, columnName.Replace("(", "_").Replace(")", ""), SqlParameter.GetDbType(value), value);
+            return SqlParameter.Create(columnName, columnName.Replace("(", "_").Replace(")", ""), DbTypeHelper.InternalGetDbType(value), value);
         }
 
         /// <summary>
@@ -169,7 +172,7 @@ namespace DotMaysWind.Data
         /// <returns>Sql语句参数类</returns>
         public static SqlParameter Create(String columnName, String parameterName, Object value)
         {
-            return SqlParameter.Create(columnName, parameterName, SqlParameter.GetDbType(value), value);
+            return SqlParameter.Create(columnName, parameterName, DbTypeHelper.InternalGetDbType(value), value);
         }
 
         /// <summary>
@@ -217,22 +220,6 @@ namespace DotMaysWind.Data
             return new SqlParameter(columnName, action);
         }
         #endregion
-        #endregion
-
-        #region 私有静态方法
-        private static DbType GetDbType(Object value)
-        {
-            if (value is String) return DbType.String;
-            if (value is Int32) return DbType.Int32;
-            if (value is DateTime) return DbType.String;
-            if (value is Boolean) return DbType.Boolean;
-            if (value is Byte) return DbType.Byte;
-
-            if (value is Double) return DbType.Double;
-            if (value is Byte[]) return DbType.Binary;
-
-            return DbType.String;
-        }
         #endregion
     }
 }
