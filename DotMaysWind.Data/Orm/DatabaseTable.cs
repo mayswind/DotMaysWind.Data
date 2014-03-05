@@ -58,11 +58,15 @@ namespace DotMaysWind.Data.Orm
 
             foreach (PropertyInfo prop in props)
             {
-                DatabaseColumnAtrribute attr = this._columns[prop.Name];
-                DbType dbType = (attr.DbType.HasValue ? attr.DbType.Value : DbTypeHelper.InternalGetDbType(prop.PropertyType));
-                Object value = this.LoadValue(row, columns, attr.ColumnName, dbType);
-                
-                prop.SetValue(entity, value, null);
+                DatabaseColumnAtrribute attr = null;
+
+                if (this._columns.TryGetValue(prop.Name, out attr) && attr != null)
+                {
+                    DbType dbType = (attr.DbType.HasValue ? attr.DbType.Value : DbTypeHelper.InternalGetDbType(prop.PropertyType));
+                    Object value = this.LoadValue(row, columns, attr.ColumnName, dbType);
+
+                    prop.SetValue(entity, value, null);
+                }
             }
 
             return entity;
