@@ -196,6 +196,25 @@ namespace DotMaysWind.Data.Orm
         }
 
         /// <summary>
+        /// 读取有符号字节型值
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="columns">列集合</param>
+        /// <param name="columnName">列名称</param>
+        /// <returns>有符号字节型结果</returns>
+        protected SByte LoadSByte(DataRow row, DataColumnCollection columns, String columnName)
+        {
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
+            {
+                return DbConvert.ToSByte(row[columnName]);
+            }
+            else
+            {
+                return default(SByte);
+            }
+        }
+
+        /// <summary>
         /// 读取2字节整型值
         /// </summary>
         /// <param name="row">数据行</param>
@@ -211,6 +230,25 @@ namespace DotMaysWind.Data.Orm
             else
             {
                 return default(Int16);
+            }
+        }
+
+        /// <summary>
+        /// 读取2字节无符号整型值
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="columns">列集合</param>
+        /// <param name="columnName">列名称</param>
+        /// <returns>2字节无符号整型结果</returns>
+        protected UInt16 LoadUInt16(DataRow row, DataColumnCollection columns, String columnName)
+        {
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
+            {
+                return DbConvert.ToUInt16(row[columnName]);
+            }
+            else
+            {
+                return default(UInt16);
             }
         }
 
@@ -234,6 +272,25 @@ namespace DotMaysWind.Data.Orm
         }
 
         /// <summary>
+        /// 读取4字节无符号整型值
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="columns">列集合</param>
+        /// <param name="columnName">列名称</param>
+        /// <returns>4字节无符号整型结果</returns>
+        protected UInt32 LoadUInt32(DataRow row, DataColumnCollection columns, String columnName)
+        {
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
+            {
+                return DbConvert.ToUInt32(row[columnName]);
+            }
+            else
+            {
+                return default(UInt32);
+            }
+        }
+
+        /// <summary>
         /// 读取8字节整型值
         /// </summary>
         /// <param name="row">数据行</param>
@@ -249,6 +306,25 @@ namespace DotMaysWind.Data.Orm
             else
             {
                 return default(Int64);
+            }
+        }
+
+        /// <summary>
+        /// 读取8字节无符号整型值
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="columns">列集合</param>
+        /// <param name="columnName">列名称</param>
+        /// <returns>8字节无符号整型结果</returns>
+        protected UInt64 LoadUInt64(DataRow row, DataColumnCollection columns, String columnName)
+        {
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
+            {
+                return DbConvert.ToUInt64(row[columnName]);
+            }
+            else
+            {
+                return default(UInt64);
             }
         }
 
@@ -329,6 +405,25 @@ namespace DotMaysWind.Data.Orm
         }
 
         /// <summary>
+        /// 读取Guid值
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="columns">列集合</param>
+        /// <param name="columnName">列名称</param>
+        /// <returns>Guid结果</returns>
+        protected Guid LoadGuid(DataRow row, DataColumnCollection columns, String columnName)
+        {
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
+            {
+                return DbConvert.ToGuid(row[columnName]);
+            }
+            else
+            {
+                return default(Guid);
+            }
+        }
+
+        /// <summary>
         /// 读取字符串
         /// </summary>
         /// <param name="row">数据行</param>
@@ -383,7 +478,7 @@ namespace DotMaysWind.Data.Orm
             }
             else
             {
-                return default(Char);
+                return null;
             }
         }
 
@@ -402,7 +497,26 @@ namespace DotMaysWind.Data.Orm
             }
             else
             {
-                return default(Byte);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 读取可空有符号字节型值
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="columns">列集合</param>
+        /// <param name="columnName">列名称</param>
+        /// <returns>有符号字节型结果</returns>
+        protected SByte? LoadNullableSByte(DataRow row, DataColumnCollection columns, String columnName)
+        {
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
+            {
+                return DbConvert.ToSByte(row[columnName]);
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -421,7 +535,26 @@ namespace DotMaysWind.Data.Orm
             }
             else
             {
-                return default(Int16);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 读取可空2字节无符号整型值
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="columns">列集合</param>
+        /// <param name="columnName">列名称</param>
+        /// <returns>2字节无符号整型结果</returns>
+        protected UInt16? LoadNullableUInt16(DataRow row, DataColumnCollection columns, String columnName)
+        {
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
+            {
+                return DbConvert.ToUInt16(row[columnName]);
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -440,7 +573,26 @@ namespace DotMaysWind.Data.Orm
             }
             else
             {
-                return default(Int32);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 读取可空4字节无符号整型值
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="columns">列集合</param>
+        /// <param name="columnName">列名称</param>
+        /// <returns>4字节无符号整型结果</returns>
+        protected UInt32? LoadNullableUInt32(DataRow row, DataColumnCollection columns, String columnName)
+        {
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
+            {
+                return DbConvert.ToUInt32(row[columnName]);
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -459,7 +611,26 @@ namespace DotMaysWind.Data.Orm
             }
             else
             {
-                return default(Int64);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 读取可空8字节无符号整型值
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="columns">列集合</param>
+        /// <param name="columnName">列名称</param>
+        /// <returns>8字节无符号整型结果</returns>
+        protected UInt64? LoadNullableUInt64(DataRow row, DataColumnCollection columns, String columnName)
+        {
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
+            {
+                return DbConvert.ToUInt64(row[columnName]);
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -478,7 +649,7 @@ namespace DotMaysWind.Data.Orm
             }
             else
             {
-                return default(Single);
+                return null;
             }
         }
 
@@ -497,7 +668,7 @@ namespace DotMaysWind.Data.Orm
             }
             else
             {
-                return default(Double);
+                return null;
             }
         }
 
@@ -516,7 +687,7 @@ namespace DotMaysWind.Data.Orm
             }
             else
             {
-                return default(Decimal);
+                return null;
             }
         }
 
@@ -529,9 +700,28 @@ namespace DotMaysWind.Data.Orm
         /// <returns>日期型结果</returns>
         protected DateTime? LoadNullableDateTime(DataRow row, DataColumnCollection columns, String columnName)
         {
-            if (columns.Contains(columnName))
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
             {
-                return DbConvert.ToNullableDateTime(row[columnName]);
+                return DbConvert.ToDateTime(row[columnName]);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 读取可空Guid值
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="columns">列集合</param>
+        /// <param name="columnName">列名称</param>
+        /// <returns>Guid结果</returns>
+        protected Guid? LoadNullableGuid(DataRow row, DataColumnCollection columns, String columnName)
+        {
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
+            {
+                return DbConvert.ToGuid(row[columnName]);
             }
             else
             {

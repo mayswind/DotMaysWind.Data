@@ -70,6 +70,23 @@ namespace DotMaysWind.Data
         }
 
         /// <summary>
+        /// 将数据库字段转换为有符号字节型
+        /// </summary>
+        /// <param name="obj">数据库字段</param>
+        /// <returns>有符号字节型</returns>
+        public static SByte ToSByte(Object obj)
+        {
+            if (obj is SByte)
+            {
+                return (SByte)obj;
+            }
+            else
+            {
+                return Convert.ToSByte(obj);
+            }
+        }
+
+        /// <summary>
         /// 将数据库字段转换为整型
         /// </summary>
         /// <param name="obj">数据库字段</param>
@@ -83,6 +100,23 @@ namespace DotMaysWind.Data
             else
             {
                 return Convert.ToInt16(obj);
+            }
+        }
+
+        /// <summary>
+        /// 将数据库字段转换为无符号整型
+        /// </summary>
+        /// <param name="obj">数据库字段</param>
+        /// <returns>无符号整型</returns>
+        public static UInt16 ToUInt16(Object obj)
+        {
+            if (obj is UInt16)
+            {
+                return (UInt16)obj;
+            }
+            else
+            {
+                return Convert.ToUInt16(obj);
             }
         }
 
@@ -104,6 +138,23 @@ namespace DotMaysWind.Data
         }
 
         /// <summary>
+        /// 将数据库字段转换为无符号整型
+        /// </summary>
+        /// <param name="obj">数据库字段</param>
+        /// <returns>无符号整型</returns>
+        public static UInt32 ToUInt32(Object obj)
+        {
+            if (obj is UInt32)
+            {
+                return (UInt32)obj;
+            }
+            else
+            {
+                return Convert.ToUInt32(obj);
+            }
+        }
+
+        /// <summary>
         /// 将数据库字段转换为整型
         /// </summary>
         /// <param name="obj">数据库字段</param>
@@ -117,6 +168,23 @@ namespace DotMaysWind.Data
             else
             {
                 return Convert.ToInt64(obj);
+            }
+        }
+
+        /// <summary>
+        /// 将数据库字段转换为无符号整型
+        /// </summary>
+        /// <param name="obj">数据库字段</param>
+        /// <returns>无符号整型</returns>
+        public static UInt64 ToUInt64(Object obj)
+        {
+            if (obj is UInt64)
+            {
+                return (UInt64)obj;
+            }
+            else
+            {
+                return Convert.ToUInt64(obj);
             }
         }
 
@@ -190,24 +258,19 @@ namespace DotMaysWind.Data
         }
 
         /// <summary>
-        /// 将数据库字段转换为日期
+        /// 将数据库字段转换为Guid
         /// </summary>
         /// <param name="obj">数据库字段</param>
-        /// <returns>日期</returns>
-        public static DateTime? ToNullableDateTime(Object obj)
+        /// <returns>Guid</returns>
+        public static Guid ToGuid(Object obj)
         {
-            if (obj == null || Convert.IsDBNull(obj))
+            if (obj is Guid)
             {
-                return null;
-            }
-            else if (obj is DateTime)
-            {
-                return (DateTime)obj;
+                return (Guid)obj;
             }
             else
             {
-                DateTime dt = DateTime.Parse(obj.ToString());
-                return dt;
+                return new Guid(obj.ToString());
             }
         }
 
@@ -218,13 +281,15 @@ namespace DotMaysWind.Data
         /// <returns>字符串</returns>
         public static String ToString(Object obj)
         {
-            if (obj != null && obj != DBNull.Value)
+            String result = obj as String;
+
+            if (!String.IsNullOrEmpty(result))
             {
-                return obj.ToString();
+                return result;
             }
             else
             {
-                return null;
+                return obj.ToString();
             }
         }
     }
