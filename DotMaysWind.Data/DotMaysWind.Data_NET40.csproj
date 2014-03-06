@@ -109,9 +109,12 @@
     <Compile Include="Helper\DatabaseTypeHelper.cs" />
     <Compile Include="Helper\DataSetHelper.cs" />
     <Compile Include="Helper\DbTypeHelper.cs" />
+    <Compile Include="Linq\DeleteCommandExtension.cs" />
     <Compile Include="Linq\EntityPropertyExtension.cs" />
     <Compile Include="Linq\LinqNotSupportedException.cs" />
+    <Compile Include="Linq\SelectCommandExtension.cs" />
     <Compile Include="Linq\SqlLinqCondition.cs" />
+    <Compile Include="Linq\UpdateCommandExtension.cs" />
     <Compile Include="Orm\AbstractDatabaseTable.cs" />
     <Compile Include="Orm\DatabaseColumnAtrribute.cs" />
     <Compile Include="Orm\DatabaseTable.cs" />
