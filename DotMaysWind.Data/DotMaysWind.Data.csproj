@@ -47,11 +47,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.Transactions" />
-    <Reference Include="System.XML" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandNotSupportException.cs" />
@@ -118,7 +121,6 @@
     <Compile Include="Orm\DatabaseColumnAtrribute.cs" />
     <Compile Include="Orm\DatabaseTable.cs" />
     <Compile Include="Orm\DatabaseTableAtrribute.cs" />
-    <Compile Include="Orm\ExtensionAttribute.cs" />
     <Compile Include="Orm\Helper\EntityHelper.cs" />
     <Compile Include="Orm\InsertCommandExtension.cs" />
     <Compile Include="Orm\UpdateCommandExtension.cs" />
@@ -130,9 +132,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DotMaysWind.Data.pfx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Linq\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -40,7 +40,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.Transactions" />
@@ -112,7 +113,6 @@
     <Compile Include="Orm\DatabaseColumnAtrribute.cs" />
     <Compile Include="Orm\DatabaseTable.cs" />
     <Compile Include="Orm\DatabaseTableAtrribute.cs" />
-    <Compile Include="Orm\ExtensionAttribute.cs" />
     <Compile Include="Orm\Helper\EntityHelper.cs" />
     <Compile Include="Orm\InsertCommandExtension.cs" />
     <Compile Include="Orm\UpdateCommandExtension.cs" />
