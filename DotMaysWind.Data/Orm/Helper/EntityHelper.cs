@@ -15,6 +15,8 @@ namespace DotMaysWind.Data.Orm.Helper
         /// <summary>
         /// 获取实体类映射表格名称
         /// </summary>
+        /// 
+        /// <param name="entityType">实体类型</param>
         /// <returns>表格名称</returns>
         internal static String InternalGetTableName(Type entityType)
         {
@@ -27,6 +29,38 @@ namespace DotMaysWind.Data.Orm.Helper
                 if (attr != null)
                 {
                     return attr.TableName;
+                }
+            }
+
+            return String.Empty;
+        }
+
+        /// <summary>
+        /// 获取实体类映射字段名称
+        /// </summary>
+        /// <param name="entityType">实体类型</param>
+        /// <param name="propertyName">实体属性名称</param>
+        /// <returns>字段名称</returns>
+        internal static String InternalGetColumnName(Type entityType, String propertyName)
+        {
+            PropertyInfo[] props = entityType.GetProperties();
+
+            foreach (PropertyInfo prop in props)
+            {
+                if (!String.Equals(prop.Name, propertyName))
+                {
+                    continue;
+                }
+
+                DatabaseColumnAtrribute attr = null;
+                Object[] objs = prop.GetCustomAttributes(typeof(DatabaseColumnAtrribute), true);
+
+                foreach (Object obj in objs)
+                {
+                    if ((attr = obj as DatabaseColumnAtrribute) != null)
+                    {
+                        return attr.ColumnName;
+                    }
                 }
             }
 
