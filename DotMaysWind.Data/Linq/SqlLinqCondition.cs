@@ -11,6 +11,7 @@ namespace DotMaysWind.Data.Linq
     /// </summary>
     public static class SqlLinqCondition
     {
+        #region 方法
         /// <summary>
         /// 创建新的Sql条件语句
         /// </summary>
@@ -22,6 +23,7 @@ namespace DotMaysWind.Data.Linq
         {
             return SqlLinqCondition.ParseCondition(expr.Body);
         }
+        #endregion
 
         #region 私有方法
         /// <summary>
