@@ -703,7 +703,7 @@ namespace DotMaysWind.Data.Command
         }
         #endregion
 
-        #region ToString
+        #region GetSqlCommand
         /// <summary>
         /// 输出SQL语句
         /// </summary>
