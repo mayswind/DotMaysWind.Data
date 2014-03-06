@@ -124,12 +124,12 @@ namespace DotMaysWind.Data.Command
                 return false;
             }
 
-            if (this.OrderType != order.OrderType)
+            if (this._orderType != order._orderType)
             {
                 return false;
             }
 
-            if (!String.Equals(this.FieldName, order.FieldName))
+            if (!String.Equals(this._fieldName, order._fieldName))
             {
                 return false;
             }

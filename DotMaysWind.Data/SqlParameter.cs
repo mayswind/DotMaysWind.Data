@@ -240,7 +240,7 @@ namespace DotMaysWind.Data
                 return false;
             }
 
-            if (this.IsUseParameter != param.IsUseParameter)
+            if (this._isUseParameter != param._isUseParameter)
             {
                 return false;
             }
