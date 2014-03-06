@@ -23,7 +23,7 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
-        /// 创建新的Sql条件语句
+        /// 创建双参数新的Sql条件语句
         /// </summary>
         /// <param name="parameterOne">参数一</param>
         /// <param name="parameterTwo">参数二</param>
@@ -35,7 +35,7 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
-        /// 创建新的Sql条件语句
+        /// 创建单参数新的Sql条件语句
         /// </summary>
         /// <param name="columnName">字段名</param>
         /// <param name="op">条件运算符</param>
@@ -47,7 +47,7 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
-        /// 创建新的Sql条件语句
+        /// 创建单参数新的Sql条件语句
         /// </summary>
         /// <param name="columnName">字段名</param>
         /// <param name="op">条件运算符</param>
@@ -60,7 +60,7 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
-        /// 创建新的Sql条件语句
+        /// 创建单参数新的Sql条件语句
         /// </summary>
         /// <param name="columnName">字段名</param>
         /// <param name="paramName">参数名</param>
@@ -73,7 +73,7 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
-        /// 创建新的Sql条件语句
+        /// 创建单参数新的Sql条件语句
         /// </summary>
         /// <param name="columnName">字段名</param>
         /// <param name="paramName">参数名</param>
@@ -87,7 +87,7 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
-        /// 创建新的Sql条件语句
+        /// 创建单参数新的Sql条件语句
         /// </summary>
         /// <param name="function">合计函数类型</param>
         /// <param name="fieldName">要查询的字段名</param>
@@ -100,7 +100,7 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
-        /// 创建新的Sql条件语句
+        /// 创建单参数新的Sql条件语句
         /// </summary>
         /// <param name="function">合计函数类型</param>
         /// <param name="op">条件运算符</param>
