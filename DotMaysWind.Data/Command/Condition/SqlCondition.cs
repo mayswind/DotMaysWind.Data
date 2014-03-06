@@ -201,6 +201,17 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
+        /// 创建判断是否相等的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition EqualColumn(String columnName, String columnNameTwo)
+        {
+            return SqlCondition.Equal(SqlParameter.CreateCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)));
+        }
+
+        /// <summary>
         /// 创建判断是否不等的Sql条件语句
         /// </summary>
         /// <param name="parameter">参数</param>
@@ -243,6 +254,17 @@ namespace DotMaysWind.Data.Command.Condition
         public static SqlBasicParameterCondition NotEqualColumn(String columnName, String tableNameTwo, String columnNameTwo)
         {
             return SqlCondition.NotEqual(SqlParameter.CreateCustomAction(columnName, GetFieldName(tableNameTwo, columnNameTwo)));
+        }
+
+        /// <summary>
+        /// 创建判断是否不等的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition NotEqualColumn(String columnName, String columnNameTwo)
+        {
+            return SqlCondition.NotEqual(SqlParameter.CreateCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)));
         }
         #endregion
 
@@ -293,6 +315,17 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
+        /// 创建判断是否大于的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition GreaterThanColumn(String columnName, String columnNameTwo)
+        {
+            return SqlCondition.GreaterThan(SqlParameter.CreateCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)));
+        }
+
+        /// <summary>
         /// 创建判断是否小于的Sql条件语句
         /// </summary>
         /// <param name="parameter">参数</param>
@@ -335,6 +368,17 @@ namespace DotMaysWind.Data.Command.Condition
         public static SqlBasicParameterCondition LessThanColumn(String columnName, String tableNameTwo, String columnNameTwo)
         {
             return SqlCondition.LessThan(SqlParameter.CreateCustomAction(columnName, GetFieldName(tableNameTwo, columnNameTwo)));
+        }
+
+        /// <summary>
+        /// 创建判断是否小于的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition LessThanColumn(String columnName, String columnNameTwo)
+        {
+            return SqlCondition.LessThan(SqlParameter.CreateCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)));
         }
         #endregion
 
@@ -385,6 +429,17 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
+        /// 创建判断是否大于等于的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition GreaterThanOrEqualColumn(String columnName, String columnNameTwo)
+        {
+            return SqlCondition.GreaterThanOrEqual(SqlParameter.CreateCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)));
+        }
+
+        /// <summary>
         /// 创建判断是否小于等于的Sql条件语句
         /// </summary>
         /// <param name="parameter">参数</param>
@@ -427,6 +482,17 @@ namespace DotMaysWind.Data.Command.Condition
         public static SqlBasicParameterCondition LessThanOrEqualColumn(String columnName, String tableNameTwo, String columnNameTwo)
         {
             return SqlCondition.LessThanOrEqual(SqlParameter.CreateCustomAction(columnName, GetFieldName(tableNameTwo, columnNameTwo)));
+        }
+
+        /// <summary>
+        /// 创建判断是否小于等于的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition LessThanOrEqualColumn(String columnName, String columnNameTwo)
+        {
+            return SqlCondition.LessThanOrEqual(SqlParameter.CreateCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)));
         }
         #endregion
 
@@ -478,6 +544,17 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
+        /// 创建判断是否相似的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition LikeColumn(String columnName, String columnNameTwo)
+        {
+            return SqlCondition.Like(SqlParameter.CreateCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)));
+        }
+
+        /// <summary>
         /// 创建判断是否不相似的Sql条件语句
         /// </summary>
         /// <param name="parameter">参数</param>
@@ -520,6 +597,17 @@ namespace DotMaysWind.Data.Command.Condition
         public static SqlBasicParameterCondition NotLikeColumn(String columnName, String tableNameTwo, String columnNameTwo)
         {
             return SqlCondition.NotLike(SqlParameter.CreateCustomAction(columnName, GetFieldName(tableNameTwo, columnNameTwo)));
+        }
+
+        /// <summary>
+        /// 创建判断是否结尾不包含的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition NotLikeColumn(String columnName, String columnNameTwo)
+        {
+            return SqlCondition.NotLike(SqlParameter.CreateCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)));
         }
         #endregion
 
