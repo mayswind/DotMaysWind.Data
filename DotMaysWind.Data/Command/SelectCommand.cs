@@ -470,6 +470,18 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
+        /// 按指定列排序并返回当前语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="isAscending">是否升序</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand OrderBy(String columnName, Boolean isAscending)
+        {
+            this._orders.Add(SqlOrder.Create(columnName, isAscending));
+            return this;
+        }
+
+        /// <summary>
         /// 按指定列升序并返回当前语句
         /// </summary>
         /// <param name="columnName">字段名</param>

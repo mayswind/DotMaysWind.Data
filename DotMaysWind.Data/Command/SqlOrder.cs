@@ -83,6 +83,16 @@ namespace DotMaysWind.Data.Command
         {
             return new SqlOrder(fieldName, orderType);
         }
+
+        /// <summary>
+        /// 初始化新的Sql语句排序类
+        /// </summary>
+        /// <param name="fieldName">字段名</param>
+        /// <param name="isAscending">是否升序</param>
+        public static SqlOrder Create(String fieldName, Boolean isAscending)
+        {
+            return new SqlOrder(fieldName, (isAscending ? SqlOrderType.Asc : SqlOrderType.Desc));
+        }
         #endregion
     }
 }
