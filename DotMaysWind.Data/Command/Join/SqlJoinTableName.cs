@@ -43,7 +43,7 @@ namespace DotMaysWind.Data.Command.Join
         /// 输出连接语句
         /// </summary>
         /// <returns>连接语句</returns>
-        public override String ToString()
+        public override String GetSqlClause()
         {
             StringBuilder sb = new StringBuilder();
 

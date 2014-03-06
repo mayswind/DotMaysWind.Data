@@ -22,6 +22,6 @@ namespace DotMaysWind.Data.Command.Condition
         /// 输出条件语句内容
         /// </summary>
         /// <returns>条件语句内容</returns>
-        String ToString();
+        String GetSqlClause();
     }
 }

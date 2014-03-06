@@ -92,7 +92,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// 输出条件语句
         /// </summary>
         /// <returns>条件语句</returns>
-        public override String ToString()
+        public override String GetSqlClause()
         {
             String format = String.Format("({0})", SqlOperators.InternalGetOperatorFormat(this._operator));
             Int32 paramCount = ((Byte)this._operator) / 100;

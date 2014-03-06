@@ -22,7 +22,7 @@ namespace DotMaysWind.Data.Command.Function
         /// </summary>
         /// <param name="dbType">数据库类型</param>
         /// <returns>函数拼接后字符串</returns>
-        public override String ToString(DatabaseType dbType)
+        public override String GetSqlFunction(DatabaseType dbType)
         {
             if (dbType == DatabaseType.Access || dbType == DatabaseType.SqlServer || dbType == DatabaseType.SqlServerCe)
             {

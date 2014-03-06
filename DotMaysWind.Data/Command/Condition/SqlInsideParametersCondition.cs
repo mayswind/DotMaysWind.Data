@@ -60,7 +60,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// 输出条件语句
         /// </summary>
         /// <returns>条件语句</returns>
-        public override String ToString()
+        public override String GetSqlClause()
         {
             if (this._parameters == null || this._parameters.Count <= 0)
             {

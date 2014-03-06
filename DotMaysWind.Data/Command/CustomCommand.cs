@@ -78,7 +78,7 @@ namespace DotMaysWind.Data.Command
         /// 输出SQL语句
         /// </summary>
         /// <returns>SQL语句</returns>
-        public override String ToString()
+        public override String GetSqlCommand()
         {
             return this.FollowingProcessSql(this._commandString);
         }

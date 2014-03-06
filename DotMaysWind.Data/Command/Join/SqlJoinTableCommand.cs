@@ -61,7 +61,7 @@ namespace DotMaysWind.Data.Command.Join
         /// 输出连接语句
         /// </summary>
         /// <returns>连接语句</returns>
-        public override String ToString()
+        public override String GetSqlClause()
         {
             if (this._anotherTableCommand == null)
             {
@@ -71,9 +71,9 @@ namespace DotMaysWind.Data.Command.Join
             StringBuilder sb = new StringBuilder();
 
             String anotherTableName = String.Format("TBL_{0}", this._anotherTableIndentity);
-            String anotherTableContent = this._anotherTableCommand.ToString(anotherTableName);
+            String anotherTableContent = this._anotherTableCommand.GetSqlCommand(anotherTableName);
 
-            sb.Append(SqlJoinTypes.InternalGetTypeName(this._joinType)).Append(' ').Append(this._anotherTableCommand.ToString(anotherTableName)).Append(" ON ");
+            sb.Append(SqlJoinTypes.InternalGetTypeName(this._joinType)).Append(' ').Append(this._anotherTableCommand.GetSqlCommand(anotherTableName)).Append(" ON ");
             sb.Append(this._currentTableName).Append('.').Append(this._currentTableKeyField).Append(" = ");
             sb.Append(anotherTableName).Append('.').Append(this._anotherTableKeyField);
 

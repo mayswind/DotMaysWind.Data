@@ -42,6 +42,6 @@ namespace DotMaysWind.Data.Command.Join
         /// 输出连接语句内容
         /// </summary>
         /// <returns>连接语句内容</returns>
-        String ToString();
+        String GetSqlClause();
     }
 }

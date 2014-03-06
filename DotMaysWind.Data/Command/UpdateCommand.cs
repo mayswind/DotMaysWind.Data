@@ -111,7 +111,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("function");
             }
 
-            this._parameters.Add(SqlParameter.CreateCustomAction(columnName, function.ToString(this.DatabaseType)));
+            this._parameters.Add(SqlParameter.CreateCustomAction(columnName, function.GetSqlFunction(this.DatabaseType)));
 
             if (function.HasParameters)
             {
@@ -135,7 +135,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("command");
             }
 
-            this._parameters.Add(SqlParameter.CreateCustomAction(columnName, command.ToString()));
+            this._parameters.Add(SqlParameter.CreateCustomAction(columnName, command.GetSqlCommand()));
 
             List<SqlParameter> parameters = command.GetAllParameters();
 
@@ -186,7 +186,7 @@ namespace DotMaysWind.Data.Command
         /// 输出SQL语句
         /// </summary>
         /// <returns>SQL语句</returns>
-        public override String ToString()
+        public override String GetSqlCommand()
         {
             SqlCommandBuilder sb = new SqlCommandBuilder(this.DatabaseType);
 

@@ -144,7 +144,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="from">选择的从Sql语句</param>
         /// <param name="fromAliasesName">从Sql语句的别名</param>
         public SelectCommand(Database database, SelectCommand from, String fromAliasesName)
-            : this(database, true, from.ToString(fromAliasesName), 0, 0, 0) { }
+            : this(database, true, from.GetSqlCommand(fromAliasesName), 0, 0, 0) { }
 
         /// <summary>
         /// 初始化Sql选择语句类
@@ -163,7 +163,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="fromAliasesName">从Sql语句的别名</param>
         /// <param name="pageSize">页面大小</param>
         public SelectCommand(Database database, SelectCommand from, String fromAliasesName, Int32 pageSize)
-            : this(database, true, from.ToString(fromAliasesName), pageSize, 0, 0) { }
+            : this(database, true, from.GetSqlCommand(fromAliasesName), pageSize, 0, 0) { }
 
         /// <summary>
         /// 初始化Sql选择语句类
@@ -377,7 +377,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("function");
             }
 
-            this._queryFields.Add(SqlQueryField.InternalCreateFromFunction(function.ToString(this.DatabaseType), aliasesName));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromFunction(function.GetSqlFunction(this.DatabaseType), aliasesName));
 
             if (function.HasParameters)
             {
@@ -403,7 +403,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("function");
             }
 
-            this._queryFields.Add(SqlQueryField.InternalCreateFromFunction(command.ToString(true), aliasesName));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromFunction(command.GetSqlCommand(true), aliasesName));
 
             List<SqlParameter> parameters = command.GetAllParameters();
             if (parameters != null)
@@ -708,9 +708,9 @@ namespace DotMaysWind.Data.Command
         /// 输出SQL语句
         /// </summary>
         /// <returns>SQL语句</returns>
-        public override String ToString()
+        public override String GetSqlCommand()
         {
-            return this.ToString(false, String.Empty, false);
+            return this.GetSqlCommand(false, String.Empty, false);
         }
 
         /// <summary>
@@ -718,9 +718,9 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="containParentheses">是否包含括号</param>
         /// <returns>SQL语句</returns>
-        public String ToString(Boolean containParentheses)
+        public String GetSqlCommand(Boolean containParentheses)
         {
-            return this.ToString(containParentheses, String.Empty, false);
+            return this.GetSqlCommand(containParentheses, String.Empty, false);
         }
 
         /// <summary>
@@ -728,9 +728,9 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="aliasesName">别名</param>
         /// <returns>SQL语句</returns>
-        public String ToString(String aliasesName)
+        public String GetSqlCommand(String aliasesName)
         {
-            return this.ToString(true, aliasesName, false);
+            return this.GetSqlCommand(true, aliasesName, false);
         }
 
         /// <summary>
@@ -739,9 +739,9 @@ namespace DotMaysWind.Data.Command
         /// <param name="aliasesName">别名</param>
         /// <param name="orderReverse">是否反转排序</param>
         /// <returns>SQL语句</returns>
-        public String ToString(String aliasesName, Boolean orderReverse)
+        public String GetSqlCommand(String aliasesName, Boolean orderReverse)
         {
-            return this.ToString(true, aliasesName, orderReverse);
+            return this.GetSqlCommand(true, aliasesName, orderReverse);
         }
 
         /// <summary>
@@ -751,7 +751,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="aliasesName">别名</param>
         /// <param name="orderReverse">是否反转排序</param>
         /// <returns>SQL语句</returns>
-        private String ToString(Boolean containParentheses, String aliasesName, Boolean orderReverse)
+        private String GetSqlCommand(Boolean containParentheses, String aliasesName, Boolean orderReverse)
         {
             Int32 pageCount = (this._pageSize == 0 ? 1 : (this._recordCount + this._pageSize - 1) / this._pageSize);
             Int32 pageIndex = (this._pageIndex <= 1 ? 1 : (this._pageIndex > pageCount ? pageCount : this._pageIndex));

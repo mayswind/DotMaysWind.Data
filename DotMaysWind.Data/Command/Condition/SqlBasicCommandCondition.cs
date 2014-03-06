@@ -75,7 +75,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// 输出条件语句
         /// </summary>
         /// <returns>条件语句</returns>
-        public override String ToString()
+        public override String GetSqlClause()
         {
             if (this._command == null)
             {
@@ -84,7 +84,7 @@ namespace DotMaysWind.Data.Command.Condition
 
             String format = String.Format("({0})", SqlOperators.InternalGetOperatorFormat(this._operator));
 
-            return String.Format(format, this._columnName, '(' + this._command.ToString() + ')');
+            return String.Format(format, this._columnName, '(' + this._command.GetSqlCommand() + ')');
         }
         #endregion
     }

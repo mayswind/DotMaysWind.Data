@@ -55,8 +55,8 @@ namespace DotMaysWind.Data.Command.Helper
                 innerCommand.SqlWhere = SqlCondition.LessThanOrEqual("ROWNUM", realPageIndex * cmd.PageSize);
                 innerCommand.InternalQuerys(cmd.QueryFields.ToArray());
                 innerCommand.InternalQuerys(SqlQueryField.InternalCreateFromFunction("ROWNUM", "RN"));
-                
-                sb.AppendSelectFrom(innerCommand.ToString("T"), true);
+
+                sb.AppendSelectFrom(innerCommand.GetSqlCommand("T"), true);
                 sb.AppendWhere(SqlCondition.GreaterThanOrEqual("RN", (realPageIndex - 1) * cmd.PageSize + 1));
             }
 

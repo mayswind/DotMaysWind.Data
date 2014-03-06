@@ -23,6 +23,6 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="dbType">数据库类型</param>
         /// <returns>函数拼接后字符串</returns>
-        String ToString(DatabaseType dbType);
+        String GetSqlFunction(DatabaseType dbType);
     }
 }

@@ -51,7 +51,7 @@ namespace DotMaysWind.Data.UnitTest
             {
                 InsertCommand cmd = this.Insert().Add(entity);
 
-                sql = cmd.ToString().Trim();
+                sql = cmd.GetSqlCommand().Trim();
                 parameters = cmd.GetAllParameters().ToArray();
 
                 
@@ -61,7 +61,7 @@ namespace DotMaysWind.Data.UnitTest
             {
                 UpdateCommand cmd = this.Update().Set(entity);
 
-                sql = cmd.ToString().Trim();
+                sql = cmd.GetSqlCommand().Trim();
                 parameters = cmd.GetAllParameters().ToArray();
             }
         }

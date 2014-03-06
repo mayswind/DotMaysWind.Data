@@ -931,5 +931,16 @@ namespace DotMaysWind.Data.Orm
             return list;
         }
         #endregion
+
+        #region 重载方法
+        /// <summary>
+        /// 返回当前对象的信息
+        /// </summary>
+        /// <returns>当前对象的信息</returns>
+        public override String ToString()
+        {
+            return String.Format("{0}, {1}", base.ToString(), this.TableName);
+        }
+        #endregion
     }
 }

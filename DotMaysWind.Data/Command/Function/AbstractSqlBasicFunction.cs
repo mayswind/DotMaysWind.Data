@@ -82,7 +82,7 @@ namespace DotMaysWind.Data.Command.Function
         /// </summary>
         /// <param name="dbType">数据库类型</param>
         /// <returns>函数拼接后字符串</returns>
-        public abstract String ToString(DatabaseType dbType);
+        public abstract String GetSqlFunction(DatabaseType dbType);
         #endregion
     }
 }

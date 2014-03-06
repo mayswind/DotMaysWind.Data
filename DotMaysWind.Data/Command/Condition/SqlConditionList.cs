@@ -89,7 +89,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// 输出条件语句
         /// </summary>
         /// <returns>条件语句</returns>
-        public override String ToString()
+        public override String GetSqlClause()
         {
             if (this._list.Count <= 0)
             {
@@ -102,7 +102,7 @@ namespace DotMaysWind.Data.Command.Condition
             for (Int32 i = 0; i < this._list.Count; i++)
             {
                 if (i > 0) sb.Append(' ').Append(this._concatType.ToString().ToUpperInvariant()).Append(' ');
-                sb.Append(this._list[i].ToString());
+                sb.Append(this._list[i].GetSqlClause());
             }
 
             sb.Append(")");

@@ -64,14 +64,14 @@ namespace DotMaysWind.Data.Command.Condition
         /// 输出条件语句
         /// </summary>
         /// <returns>条件语句</returns>
-        public override String ToString()
+        public override String GetSqlClause()
         {
             if (this._command == null)
             {
                 return String.Empty;
             }
 
-            return String.Format("({0} IN ({1}))", this._columnName, this._command.ToString());
+            return String.Format("({0} IN ({1}))", this._columnName, this._command.GetSqlCommand());
         }
         #endregion
     }

@@ -25,16 +25,16 @@ namespace DotMaysWind.Data.Command
         String TableName { get; }
 
         /// <summary>
-        /// 输出SQL语句
-        /// </summary>
-        /// <returns>SQL语句</returns>
-        String ToString();
-
-        /// <summary>
         /// 输出条件语句内容
         /// </summary>
         /// <returns>条件语句内容</returns>
         List<SqlParameter> GetAllParameters();
+
+        /// <summary>
+        /// 输出SQL语句
+        /// </summary>
+        /// <returns>SQL语句</returns>
+        String GetSqlCommand();
 
         /// <summary>
         /// 输出SQL语句

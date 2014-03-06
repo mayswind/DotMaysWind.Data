@@ -98,7 +98,7 @@ namespace DotMaysWind.Data.Command
         {
             DbCommand dbCommand = this._database.DatabaseProvider.CreateCommand();
             dbCommand.CommandType = System.Data.CommandType.Text;
-            dbCommand.CommandText = this.ToString();
+            dbCommand.CommandText = this.GetSqlCommand();
 
             for (Int32 i = 0; i < this._parameters.Count; i++)
             {
@@ -145,7 +145,7 @@ namespace DotMaysWind.Data.Command
         /// 输出SQL语句
         /// </summary>
         /// <returns>SQL语句</returns>
-        public abstract override String ToString();
+        public abstract String GetSqlCommand();
 
         /// <summary>
         /// 后处理Sql语句
@@ -269,6 +269,17 @@ namespace DotMaysWind.Data.Command
             dbParameter.SourceVersion = DataRowVersion.Default;
 
             return dbParameter;
+        }
+        #endregion
+
+        #region 重载方法
+        /// <summary>
+        /// 返回当前对象的信息
+        /// </summary>
+        /// <returns>当前对象的信息</returns>
+        public override String ToString()
+        {
+            return String.Format("{0}, {1}", base.ToString(), this.GetSqlCommand());
         }
         #endregion
     }

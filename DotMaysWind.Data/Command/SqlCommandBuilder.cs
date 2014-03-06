@@ -318,7 +318,7 @@ namespace DotMaysWind.Data.Command
             {
                 StringBuilder sb = new StringBuilder();
 
-                sb.Append(from).Append(' ').Append(joins[0].ToString());
+                sb.Append(from).Append(' ').Append(joins[0].GetSqlClause());
 
                 if (joins.Count > 1)
                 {
@@ -327,7 +327,7 @@ namespace DotMaysWind.Data.Command
                     for (Int32 i = 1; i < joins.Count; i++)
                     {
                         sb.Append(' ');
-                        sb.Append(joins[i].ToString());
+                        sb.Append(joins[i].GetSqlClause());
                         sb.Insert(0, '(').Append(')');
                     }
                 }
@@ -360,7 +360,7 @@ namespace DotMaysWind.Data.Command
         {
             if (condition != null)
             {
-                this._stringBuilder.Append("WHERE ").Append(condition.ToString()).Append(' ');
+                this._stringBuilder.Append("WHERE ").Append(condition.GetSqlClause()).Append(' ');
             }
 
             return this;
@@ -375,7 +375,7 @@ namespace DotMaysWind.Data.Command
         {
             if (condition != null)
             {
-                this._stringBuilder.Append("HAVING ").Append(condition.ToString()).Append(' ');
+                this._stringBuilder.Append("HAVING ").Append(condition.GetSqlClause()).Append(' ');
             }
 
             return this;

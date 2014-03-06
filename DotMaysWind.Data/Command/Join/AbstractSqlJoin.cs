@@ -101,7 +101,18 @@ namespace DotMaysWind.Data.Command.Join
         /// 输出连接语句
         /// </summary>
         /// <returns>连接语句</returns>
-        public abstract override String ToString();
+        public abstract String GetSqlClause();
+        #endregion
+
+        #region 重载方法
+        /// <summary>
+        /// 返回当前对象的信息
+        /// </summary>
+        /// <returns>当前对象的信息</returns>
+        public override String ToString()
+        {
+            return String.Format("{0}, {1}", base.ToString(), this.GetSqlClause());
+        }
         #endregion
     }
 }
