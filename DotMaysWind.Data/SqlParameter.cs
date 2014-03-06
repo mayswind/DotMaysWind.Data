@@ -115,17 +115,6 @@ namespace DotMaysWind.Data
         }
         #endregion
 
-        #region 方法
-        /// <summary>
-        /// 返回当前对象的信息
-        /// </summary>
-        /// <returns>当前对象的信息</returns>
-        public override String ToString()
-        {
-            return String.Format("{0}, {1}", base.ToString(), this._parameter.ParameterName);
-        }
-        #endregion
-
         #region 静态方法
         #region 创建参数型Sql语句参数类
         /// <summary>
@@ -220,6 +209,95 @@ namespace DotMaysWind.Data
             return new SqlParameter(columnName, action);
         }
         #endregion
+        #endregion
+
+        #region 重载方法和运算符
+        /// <summary>
+        /// 获取当前参数的哈希值
+        /// </summary>
+        /// <returns>当前参数的哈希值</returns>
+        public override Int32 GetHashCode()
+        {
+            return this._parameter.GetHashCode();
+        }
+
+        /// <summary>
+        /// 判断两个Sql语句参数是否相同
+        /// </summary>
+        /// <param name="obj">待比较的Sql语句参数</param>
+        /// <returns>两个Sql语句参数是否相同</returns>
+        public override Boolean Equals(Object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            SqlParameter param = obj as SqlParameter;
+
+            if (param == null)
+            {
+                return false;
+            }
+
+            if (this.IsUseParameter != param.IsUseParameter)
+            {
+                return false;
+            }
+
+            if (this.DbType != param.DbType)
+            {
+                return false;
+            }
+
+            if (!String.Equals(this.ColumnName, param.ColumnName))
+            {
+                return false;
+            }
+
+            if (!String.Equals(this.ParameterName, param.ParameterName))
+            {
+                return false;
+            }
+
+            if (!Object.Equals(this.Value, param.Value))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 判断两个Sql语句参数是否相同
+        /// </summary>
+        /// <param name="obj">待比较的Sql语句参数</param>
+        /// <param name="obj2">待比较的第二个Sql语句参数</param>
+        /// <returns>两个Sql语句参数是否相同</returns>
+        public static Boolean operator ==(SqlParameter obj, SqlParameter obj2)
+        {
+            return Object.Equals(obj, obj2);
+        }
+
+        /// <summary>
+        /// 判断两个Sql语句参数是否不同
+        /// </summary>
+        /// <param name="obj">待比较的Sql语句参数</param>
+        /// <param name="obj2">待比较的第二个Sql语句参数</param>
+        /// <returns>两个Sql语句参数是否不同</returns>
+        public static Boolean operator !=(SqlParameter obj, SqlParameter obj2)
+        {
+            return !Object.Equals(obj, obj2);
+        }
+
+        /// <summary>
+        /// 返回当前对象的信息
+        /// </summary>
+        /// <returns>当前对象的信息</returns>
+        public override String ToString()
+        {
+            return String.Format("{0}, {1}, {2}", base.ToString(), this._parameter.ParameterName, this._parameter.DbType.ToString());
+        }
         #endregion
     }
 }

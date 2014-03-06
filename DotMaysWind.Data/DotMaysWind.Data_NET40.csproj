@@ -112,6 +112,10 @@
     <Compile Include="Orm\DatabaseColumnAtrribute.cs" />
     <Compile Include="Orm\DatabaseTable.cs" />
     <Compile Include="Orm\DatabaseTableAtrribute.cs" />
+    <Compile Include="Orm\ExtensionAttribute.cs" />
+    <Compile Include="Orm\Helper\EntityHelper.cs" />
+    <Compile Include="Orm\InsertCommandExtension.cs" />
+    <Compile Include="Orm\UpdateCommandExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlParameter.cs" />
     <Compile Include="Transaction.cs" />

@@ -4,6 +4,7 @@ using System.Data;
 using System.Reflection;
 
 using DotMaysWind.Data.Helper;
+using DotMaysWind.Data.Orm.Helper;
 
 namespace DotMaysWind.Data.Orm
 {
@@ -39,8 +40,8 @@ namespace DotMaysWind.Data.Orm
             : base(baseDatabase)
         {
             this._entityType = typeof(T);
-            this._tableName = this.GetTableName();
-            this._columns = this.GetTableColumns();
+            this._tableName = EntityHelper.InternalGetTableName(this._entityType);
+            this._columns = EntityHelper.InternalGetTableColumns(this._entityType);
         }
         #endregion
 
@@ -65,7 +66,7 @@ namespace DotMaysWind.Data.Orm
                     DbType dbType = (attr.DbType.HasValue ? attr.DbType.Value : DbTypeHelper.InternalGetDbType(prop.PropertyType));
                     Object value;
 
-                    if (this.IsNullableType(prop.PropertyType))
+                    if (EntityHelper.InternalIsNullableType(prop.PropertyType))
                     {
                         value = this.LoadNullableValue(row, columns, attr.ColumnName, dbType);
                     }
@@ -79,59 +80,6 @@ namespace DotMaysWind.Data.Orm
             }
 
             return entity;
-        }
-        #endregion
-
-        #region 私有方法
-        private String GetTableName()
-        {
-            Object[] objs = this._entityType.GetCustomAttributes(typeof(DatabaseTableAtrribute), true);
-
-            foreach (Object obj in objs)
-            {
-                DatabaseTableAtrribute attr = obj as DatabaseTableAtrribute;
-
-                if (attr != null)
-                {
-                    return attr.TableName;
-                }
-            }
-
-            return String.Empty;
-        }
-
-        private Dictionary<String, DatabaseColumnAtrribute> GetTableColumns()
-        {
-            Dictionary<String, DatabaseColumnAtrribute> dict = new Dictionary<String, DatabaseColumnAtrribute>();
-            PropertyInfo[] props = this._entityType.GetProperties();
-
-            foreach (PropertyInfo prop in props)
-            {
-                Object[] objs = prop.GetCustomAttributes(typeof(DatabaseColumnAtrribute), true);
-
-                foreach (Object obj in objs)
-                {
-                    DatabaseColumnAtrribute attr = obj as DatabaseColumnAtrribute;
-
-                    if (attr != null)
-                    {
-                        dict[prop.Name] = attr;
-                        break;
-                    }
-                }
-            }
-
-            return dict;
-        }
-
-        private Boolean IsNullableType(Type type)
-        {
-            if (!type.IsGenericType)
-            {
-                return false;
-            }
-
-            return (type.GetGenericTypeDefinition() == typeof(Nullable<>));
         }
         #endregion
     }
