@@ -124,6 +124,19 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <returns>条件语句内容</returns>
         public abstract String GetSqlClause();
+
+        /// <summary>
+        /// 获取当前参数的哈希值
+        /// </summary>
+        /// <returns>当前参数的哈希值</returns>
+        public abstract override Int32 GetHashCode();
+
+        /// <summary>
+        /// 判断两个Sql条件语句是否相同
+        /// </summary>
+        /// <param name="obj">待比较的Sql条件语句</param>
+        /// <returns>两个Sql条件语句是否相同</returns>
+        public abstract override Boolean Equals(Object obj);
         #endregion
 
         #region 重载方法

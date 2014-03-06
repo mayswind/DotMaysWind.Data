@@ -126,7 +126,12 @@ namespace DotMaysWind.Data.Command.Condition
 
             for (Int32 i = 0; i < this._parameters.Count; i++)
             {
-                if (this._parameters[i] != condition._parameters[i])
+                if ((this._parameters[i] != null && condition._parameters[i] == null) || (this._parameters[i] == null && condition._parameters[i] != null))
+                {
+                    return false;
+                }
+
+                if (!this._parameters[i].Equals(condition._parameters[i]))
                 {
                     return false;
                 }

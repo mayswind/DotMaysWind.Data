@@ -74,5 +74,75 @@ namespace DotMaysWind.Data.Command.Condition
             return String.Format("({0} IN ({1}))", this._columnName, this._command.GetSqlCommand());
         }
         #endregion
+
+        #region 重载方法和运算符
+        /// <summary>
+        /// 获取当前参数的哈希值
+        /// </summary>
+        /// <returns>当前参数的哈希值</returns>
+        public override Int32 GetHashCode()
+        {
+            return this._columnName.GetHashCode();
+        }
+
+        /// <summary>
+        /// 判断两个Sql IN语句条件语句是否相同
+        /// </summary>
+        /// <param name="obj">待比较的Sql IN语句条件语句</param>
+        /// <returns>两个Sql IN语句条件语句是否相同</returns>
+        public override Boolean Equals(Object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            SqlInsideCommandCondition condition = obj as SqlInsideCommandCondition;
+
+            if (condition == null)
+            {
+                return false;
+            }
+
+            if (!String.Equals(this._columnName, condition._columnName))
+            {
+                return false;
+            }
+
+            if ((this._command != null && condition._command == null) || (this._command == null && condition._command != null))
+            {
+                return false;
+            }
+
+            if (this._command != null && condition._command != null && !this._command.Equals(condition._command))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 判断两个Sql IN语句条件语句是否相同
+        /// </summary>
+        /// <param name="obj">待比较的Sql IN语句条件语句</param>
+        /// <param name="obj2">待比较的第二个Sql IN语句条件语句</param>
+        /// <returns>两个Sql IN语句条件语句是否相同</returns>
+        public static Boolean operator ==(SqlInsideCommandCondition obj, SqlInsideCommandCondition obj2)
+        {
+            return Object.Equals(obj, obj2);
+        }
+
+        /// <summary>
+        /// 判断两个Sql IN语句条件语句是否不同
+        /// </summary>
+        /// <param name="obj">待比较的Sql IN语句条件语句</param>
+        /// <param name="obj2">待比较的第二个Sql IN语句条件语句</param>
+        /// <returns>两个Sql IN语句条件语句是否不同</returns>
+        public static Boolean operator !=(SqlInsideCommandCondition obj, SqlInsideCommandCondition obj2)
+        {
+            return !Object.Equals(obj, obj2);
+        }
+        #endregion
     }
 }

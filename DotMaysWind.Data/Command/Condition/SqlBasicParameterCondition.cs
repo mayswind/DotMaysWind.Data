@@ -153,12 +153,22 @@ namespace DotMaysWind.Data.Command.Condition
                 return false;
             }
 
-            if (this._parameterOne != condition._parameterOne)
+            if ((this._parameterOne != null && condition._parameterOne == null) || (this._parameterOne == null && condition._parameterOne != null))
             {
                 return false;
             }
 
-            if (this._parameterTwo != condition._parameterTwo)
+            if (this._parameterOne != null && condition._parameterOne != null && !this._parameterOne.Equals(condition._parameterOne))
+            {
+                return false;
+            }
+
+            if ((this._parameterTwo != null && condition._parameterTwo == null) || (this._parameterTwo == null && condition._parameterTwo != null))
+            {
+                return false;
+            }
+
+            if (this._parameterTwo != null && condition._parameterTwo != null && !this._parameterTwo.Equals(condition._parameterTwo))
             {
                 return false;
             }

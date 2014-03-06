@@ -272,7 +272,88 @@ namespace DotMaysWind.Data.Command
         }
         #endregion
 
-        #region 重载方法
+        #region 重载方法和运算符
+        /// <summary>
+        /// 获取当前参数的哈希值
+        /// </summary>
+        /// <returns>当前参数的哈希值</returns>
+        public override Int32 GetHashCode()
+        {
+            return this._parameters.GetHashCode();
+        }
+
+        /// <summary>
+        /// 判断两个Sql语句是否相同
+        /// </summary>
+        /// <param name="obj">待比较的Sql语句</param>
+        /// <returns>两个Sql语句是否相同</returns>
+        public override Boolean Equals(Object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            AbstractSqlCommand cmd = obj as AbstractSqlCommand;
+
+            if (cmd == null)
+            {
+                return false;
+            }
+
+            if (!String.Equals(this._tableName, cmd._tableName))
+            {
+                return false;
+            }
+
+            if (!String.Equals(this.GetSqlCommand(), cmd.GetSqlCommand()))
+            {
+                return false;
+            }
+
+            if (this._parameters.Count != cmd._parameters.Count)
+            {
+                return false;
+            }
+
+            for (Int32 i = 0; i < this._parameters.Count; i++)
+            {
+                if ((this._parameters[i] != null && cmd._parameters[i] == null) || (this._parameters[i] == null && cmd._parameters[i] != null))
+                {
+                    return false;
+                }
+
+                if (!this._parameters[i].Equals(cmd._parameters[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 判断两个Sql语句是否相同
+        /// </summary>
+        /// <param name="obj">待比较的Sql语句</param>
+        /// <param name="obj2">待比较的第二个Sql语句</param>
+        /// <returns>两个Sql语句是否相同</returns>
+        public static Boolean operator ==(AbstractSqlCommand obj, AbstractSqlCommand obj2)
+        {
+            return Object.Equals(obj, obj2);
+        }
+
+        /// <summary>
+        /// 判断两个Sql语句是否不同
+        /// </summary>
+        /// <param name="obj">待比较的Sql语句</param>
+        /// <param name="obj2">待比较的第二个Sql语句</param>
+        /// <returns>两个Sql语句是否不同</returns>
+        public static Boolean operator !=(AbstractSqlCommand obj, AbstractSqlCommand obj2)
+        {
+            return !Object.Equals(obj, obj2);
+        }
+
         /// <summary>
         /// 返回当前对象的信息
         /// </summary>
