@@ -6,15 +6,11 @@ using DotMaysWind.Data.Command.Condition;
 namespace DotMaysWind.Data.UnitTest
 {
     /// <summary>
-    ///这是 SqlOperatorsTest 的测试类，旨在
-    ///包含所有 SqlOperatorsTest 单元测试
+    /// Sql运算符测试
     ///</summary>
     [TestClass()]
     public class SqlOperatorsTest
     {
-        /// <summary>
-        ///GetOperatorFormat 的测试
-        ///</summary>
         [TestMethod()]
         public void GetOperatorFormatTest()
         {
@@ -52,7 +48,7 @@ namespace DotMaysWind.Data.UnitTest
                 SqlOperator.NotBetween,//NOT BETWEEN
             };
 
-            SqlOperator op = new SqlOperator(); // TODO: 初始化为适当的值
+            SqlOperator op = new SqlOperator();
             String expected = String.Empty;
             String actual = String.Empty;
 
