@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DotMaysWind.Data.Linq
+namespace DotMaysWind.Data.Orm
 {
     /// <summary>
     /// 无特性异常
