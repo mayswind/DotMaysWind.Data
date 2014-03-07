@@ -121,6 +121,7 @@
     <Compile Include="Orm\DatabaseTableAtrribute.cs" />
     <Compile Include="Orm\Helper\EntityHelper.cs" />
     <Compile Include="Orm\InsertCommandExtension.cs" />
+    <Compile Include="Orm\SelectCommandExtension.cs" />
     <Compile Include="Orm\UpdateCommandExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlParameter.cs" />

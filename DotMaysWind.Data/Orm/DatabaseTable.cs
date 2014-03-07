@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 
+using DotMaysWind.Data.Command;
 using DotMaysWind.Data.Helper;
 using DotMaysWind.Data.Orm.Helper;
 
@@ -44,6 +45,8 @@ namespace DotMaysWind.Data.Orm
             this._columns = EntityHelper.InternalGetTableColumns(this._entityType);
         }
         #endregion
+
+
 
         #region 方法
         /// <summary>

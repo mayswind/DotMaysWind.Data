@@ -76,30 +76,6 @@ namespace DotMaysWind.Data.Command
         {
             throw new CommandNotSupportException();
         }
-
-        /// <summary>
-        /// 获取单个实体
-        /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
-        /// <param name="table">数据库表格</param>
-        /// <exception cref="CommandNotSupportException">删除语句不支持获取实体</exception>
-        /// <returns>数据实体</returns>
-        public override T ToEntity<T>(AbstractDatabaseTable<T> table)
-        {
-            throw new CommandNotSupportException();
-        }
-
-        /// <summary>
-        /// 获取实体列表
-        /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
-        /// <param name="table">数据库表格</param>
-        /// <exception cref="CommandNotSupportException">删除语句不支持获取实体</exception>
-        /// <returns>数据实体列表</returns>
-        public override List<T> ToEntityList<T>(AbstractDatabaseTable<T> table)
-        {
-            throw new CommandNotSupportException();
-        }
         #endregion
     }
 }

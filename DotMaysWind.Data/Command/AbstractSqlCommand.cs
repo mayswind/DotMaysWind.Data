@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 
-using DotMaysWind.Data.Orm;
-
 namespace DotMaysWind.Data.Command
 {
     /// <summary>
@@ -215,38 +213,6 @@ namespace DotMaysWind.Data.Command
         public virtual DataTable ToDataTable()
         {
             return this._database.ExecuteDataTable(this);
-        }
-
-        /// <summary>
-        /// 获取单个实体
-        /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
-        /// <param name="table">数据库表格</param>
-        /// <returns>数据实体</returns>
-        public virtual T ToEntity<T>(AbstractDatabaseTable<T> table) where T : class
-        {
-            if (table == null)
-            {
-                throw new ArgumentNullException("table");
-            }
-
-            return table.GetEntity(this._database.ExecuteDataRow(this));
-        }
-
-        /// <summary>
-        /// 获取实体列表
-        /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
-        /// <param name="table">数据库表格</param>
-        /// <returns>数据实体列表</returns>
-        public virtual List<T> ToEntityList<T>(AbstractDatabaseTable<T> table) where T : class
-        {
-            if (table == null)
-            {
-                throw new ArgumentNullException("table");
-            }
-
-            return table.GetEntities(this._database.ExecuteDataTable(this));
         }
         #endregion
 
