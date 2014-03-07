@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 
 using DotMaysWind.Data.Command.Condition;
-using DotMaysWind.Data.Orm;
 
 namespace DotMaysWind.Data.Command
 {
