@@ -10,7 +10,7 @@ namespace DotMaysWind.Data.Orm
     /// 抽象数据库表类
     /// </summary>
     /// <typeparam name="T">数据表实体</typeparam>
-    public abstract class AbstractDatabaseTable<T> where T : class
+    public abstract class AbstractDatabaseTable<T> : IDatabaseTable where T : class
     {
         #region 字段
         private Database _baseDatabase;
@@ -20,7 +20,7 @@ namespace DotMaysWind.Data.Orm
         /// <summary>
         /// 获取数据表名
         /// </summary>
-        protected abstract String TableName { get; }
+        public abstract String TableName { get; }
 
         /// <summary>
         /// 获取实体
