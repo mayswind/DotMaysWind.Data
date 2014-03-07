@@ -63,7 +63,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public InsertCommand Add(String columnName, Object value)
         {
-            this._parameters.Add(SqlParameter.Create(columnName, value));
+            this._parameters.Add(SqlParameter.Create(columnName, Constants.InsertNewParameterNamePrefix + columnName, value));
             return this;
         }
 
@@ -76,7 +76,21 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public InsertCommand Add(String columnName, DbType dbType, Object value)
         {
-            this._parameters.Add(SqlParameter.Create(columnName, dbType, value));
+            this._parameters.Add(SqlParameter.Create(columnName, Constants.InsertNewParameterNamePrefix + columnName, dbType, value));
+            return this;
+        }
+
+        /// <summary>
+        /// 插入指定参数并返回当前语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="paramName">参数名称</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">内容</param>
+        /// <returns>当前语句</returns>
+        public InsertCommand Add(String columnName, String paramName, DbType dbType, Object value)
+        {
+            this._parameters.Add(SqlParameter.Create(columnName, paramName, dbType, value));
             return this;
         }
 

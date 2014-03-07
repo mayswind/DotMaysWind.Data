@@ -65,7 +65,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public UpdateCommand Set(String columnName, Object value)
         {
-            this._parameters.Add(SqlParameter.Create(columnName, value));
+            this._parameters.Add(SqlParameter.Create(columnName, Constants.UpdateOldParameterNamePrefix + columnName, value));
             return this;
         }
 
@@ -78,7 +78,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public UpdateCommand Set(String columnName, DbType dbType, Object value)
         {
-            this._parameters.Add(SqlParameter.Create(columnName, dbType, value));
+            this._parameters.Add(SqlParameter.Create(columnName, Constants.UpdateOldParameterNamePrefix + columnName, dbType, value));
             return this;
         }
 
