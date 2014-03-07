@@ -99,36 +99,20 @@ namespace DotMaysWind.Data.Orm.Helper
         /// 获取指定Sql参数
         /// </summary>
         /// <param name="attr">实体属性特性</param>
-        /// <param name="paramPrefix">参数名前缀</param>
         /// <param name="value">属性值</param>
         /// <returns>Sql参数集合</returns>
-        internal static SqlParameter InternalGetSqlParameter(DatabaseColumnAtrribute attr, String paramPrefix, Object value)
+        internal static SqlParameter InternalGetSqlParameter(DatabaseColumnAtrribute attr, Object value)
         {
             SqlParameter parameter = null;
 
             if (attr.DbType.HasValue)
             {
-                parameter = SqlParameter.Create(attr.ColumnName, paramPrefix + attr.ColumnName, attr.DbType.Value, value);
+                parameter = SqlParameter.Create(attr.ColumnName, attr.DbType.Value, value);
             }
             else
             {
-                parameter = SqlParameter.Create(attr.ColumnName, paramPrefix + attr.ColumnName, value);
+                parameter = SqlParameter.Create(attr.ColumnName, value);
             }
-
-            return parameter;
-        }
-
-        /// <summary>
-        /// 获取指定Sql参数
-        /// </summary>
-        /// <param name="attr">实体属性特性</param>
-        /// <param name="paramPrefix">参数名前缀</param>
-        /// <param name="dbType">数据类型</param>
-        /// <param name="value">属性值</param>
-        /// <returns>Sql参数集合</returns>
-        internal static SqlParameter InternalGetSqlParameter(DatabaseColumnAtrribute attr, String paramPrefix, DbType dbType, Object value)
-        {
-            SqlParameter parameter = SqlParameter.Create(attr.ColumnName, paramPrefix + attr.ColumnName, dbType, value);
 
             return parameter;
         }
@@ -137,9 +121,8 @@ namespace DotMaysWind.Data.Orm.Helper
         /// 获取指定实体类的Sql参数集合
         /// </summary>
         /// <param name="entity">实体类</param>
-        /// <param name="paramPrefix">参数名前缀</param>
         /// <returns>Sql参数集合</returns>
-        internal static SqlParameter[] InternalGetSqlParameters(Object entity, String paramPrefix)
+        internal static SqlParameter[] InternalGetSqlParameters(Object entity)
         {
             List<SqlParameter> parameters = new List<SqlParameter>();
 
@@ -160,7 +143,7 @@ namespace DotMaysWind.Data.Orm.Helper
                 {
                     if ((attr = obj as DatabaseColumnAtrribute) != null)
                     {
-                        SqlParameter parameter = EntityHelper.InternalGetSqlParameter(attr, paramPrefix, prop.GetValue(entity, null));
+                        SqlParameter parameter = EntityHelper.InternalGetSqlParameter(attr, prop.GetValue(entity, null));
                         parameters.Add(parameter);
                         break;
                     }

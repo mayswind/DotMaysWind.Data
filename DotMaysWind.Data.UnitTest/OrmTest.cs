@@ -4,6 +4,7 @@ using System.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using DotMaysWind.Data.Command;
+using DotMaysWind.Data.Linq;
 using DotMaysWind.Data.Orm;
 
 namespace DotMaysWind.Data.UnitTest
@@ -53,13 +54,43 @@ namespace DotMaysWind.Data.UnitTest
 
                 sql = cmd.GetSqlCommand().Trim();
                 parameters = cmd.GetAllParameters().ToArray();
+            }
 
-                
+            public void TestInsert2(TestEntity entity, out String sql, out SqlParameter[] parameters)
+            {
+                InsertCommand cmd = this.Insert()
+                    .Add<TestEntity>(c => c.Test1, entity.Test1)
+                    .Add<TestEntity>(c => c.Test2, entity.Test2)
+                    .Add<TestEntity>(c => c.Test3, entity.Test3)
+                    .Add<TestEntity>(c => c.Test4, entity.Test4)
+                    .Add<TestEntity>(c => c.Test5, entity.Test5)
+                    .Add<TestEntity>(c => c.Test6, entity.Test6)
+                    .Add<TestEntity>(c => c.Test7, entity.Test7)
+                    .Add<TestEntity>(c => c.Test8, entity.Test8);
+
+                sql = cmd.GetSqlCommand().Trim();
+                parameters = cmd.GetAllParameters().ToArray();
             }
 
             public void TestUpdate(TestEntity entity, out String sql, out SqlParameter[] parameters)
             {
                 UpdateCommand cmd = this.Update().Set(entity);
+
+                sql = cmd.GetSqlCommand().Trim();
+                parameters = cmd.GetAllParameters().ToArray();
+            }
+
+            public void TestUpdate2(TestEntity entity, out String sql, out SqlParameter[] parameters)
+            {
+                UpdateCommand cmd = this.Update()
+                    .Set<TestEntity>(c => c.Test1, entity.Test1)
+                    .Set<TestEntity>(c => c.Test2, entity.Test2)
+                    .Set<TestEntity>(c => c.Test3, entity.Test3)
+                    .Set<TestEntity>(c => c.Test4, entity.Test4)
+                    .Set<TestEntity>(c => c.Test5, entity.Test5)
+                    .Set<TestEntity>(c => c.Test6, entity.Test6)
+                    .Set<TestEntity>(c => c.Test7, entity.Test7)
+                    .Set<TestEntity>(c => c.Test8, entity.Test8);
 
                 sql = cmd.GetSqlCommand().Trim();
                 parameters = cmd.GetAllParameters().ToArray();
@@ -71,10 +102,7 @@ namespace DotMaysWind.Data.UnitTest
         {
             Database fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient");
             TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
-            
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
-            String actualSql = "";
-            SqlParameter[] actualParameter = null;
 
             String expectedSql = "INSERT INTO TestTable ( Test1,Test2,Test3,Test4,Test5,Test6,Test7,Test8 ) " +
                 "VALUES ( @PN_NEW_Test1,@PN_NEW_Test2,@PN_NEW_Test3,@PN_NEW_Test4,@PN_NEW_Test5,@PN_NEW_Test6,@PN_NEW_Test7,@PN_NEW_Test8 )";
@@ -90,13 +118,21 @@ namespace DotMaysWind.Data.UnitTest
                 SqlParameter.Create("Test8", "NEW_Test8", DbType.Int16, entity.Test8),
             };
 
+            String actualSql = "";
+            SqlParameter[] actualParameter = null;
             provider.TestInsert(entity, out actualSql, out actualParameter);
 
+            String actualSql2 = "";
+            SqlParameter[] actualParameter2 = null;
+            provider.TestInsert2(entity, out actualSql2, out actualParameter2);
+
             Assert.AreEqual(expectedSql, actualSql);
+            Assert.AreEqual(expectedSql, actualSql2);
 
             for (Int32 i = 0; i < actualParameter.Length; i++)
             {
                 Assert.AreEqual(expectedParameter[i], actualParameter[i]);
+                Assert.AreEqual(expectedParameter[i], actualParameter2[i]);
             }
         }
 
@@ -105,10 +141,7 @@ namespace DotMaysWind.Data.UnitTest
         {
             Database fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient");
             TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
-
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
-            String actualSql = "";
-            SqlParameter[] actualParameter = null;
 
             String expectedSql = "UPDATE TestTable SET Test1=@PN_OLD_Test1,Test2=@PN_OLD_Test2,Test3=@PN_OLD_Test3,Test4=@PN_OLD_Test4,Test5=@PN_OLD_Test5,Test6=@PN_OLD_Test6,Test7=@PN_OLD_Test7,Test8=@PN_OLD_Test8";
             SqlParameter[] expectedParameter = new SqlParameter[8]
@@ -123,13 +156,21 @@ namespace DotMaysWind.Data.UnitTest
                 SqlParameter.Create("Test8", "OLD_Test8", DbType.Int16, entity.Test8),
             };
 
+            String actualSql = "";
+            SqlParameter[] actualParameter = null;
             provider.TestUpdate(entity, out actualSql, out actualParameter);
 
+            String actualSql2 = "";
+            SqlParameter[] actualParameter2 = null;
+            provider.TestUpdate2(entity, out actualSql2, out actualParameter2);
+
             Assert.AreEqual(expectedSql, actualSql);
+            Assert.AreEqual(expectedSql, actualSql2);
 
             for (Int32 i = 0; i < actualParameter.Length; i++)
             {
                 Assert.AreEqual(expectedParameter[i], actualParameter[i]);
+                Assert.AreEqual(expectedParameter[i], actualParameter2[i]);
             }
         }
     }

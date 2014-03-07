@@ -19,8 +19,12 @@ namespace DotMaysWind.Data.Orm
         /// <returns>当前语句</returns>
         public static UpdateCommand Set(this UpdateCommand cmd, Object entity)
         {
-            SqlParameter[] parameters = EntityHelper.InternalGetSqlParameters(entity, Constants.UpdateOldParameterNamePrefix);
-            cmd.Set(parameters);
+            SqlParameter[] parameters = EntityHelper.InternalGetSqlParameters(entity);
+
+            for (Int32 i = 0; i < parameters.Length; i++)
+            {
+                cmd.Set(parameters[i].ColumnName, parameters[i].DbType, parameters[i].Value);
+            }
 
             return cmd;
         }

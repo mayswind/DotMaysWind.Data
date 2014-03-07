@@ -3,8 +3,8 @@ using System.Linq.Expressions;
 
 using DotMaysWind.Data.Command;
 using DotMaysWind.Data.Command.Condition;
+using DotMaysWind.Data.Linq.Helper;
 using DotMaysWind.Data.Orm;
-using DotMaysWind.Data.Orm.Helper;
 
 namespace DotMaysWind.Data.Linq
 {
@@ -21,6 +21,7 @@ namespace DotMaysWind.Data.Linq
         /// <param name="sourceCommand">来源语句</param>
         /// <param name="expr">Linq表达式</param>
         /// <exception cref="LinqNotSupportedException">Linq操作不支持</exception>
+        /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>Sql条件语句</returns>
         public static AbstractSqlCondition Create<T>(AbstractSqlCommand sourceCommand, Expression<Func<T, Boolean>> expr)
         {
@@ -33,6 +34,7 @@ namespace DotMaysWind.Data.Linq
         /// <typeparam name="T">实体类类型</typeparam>
         /// <param name="expr">Linq表达式</param>
         /// <exception cref="LinqNotSupportedException">Linq操作不支持</exception>
+        /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>Sql条件语句</returns>
         public static AbstractSqlCondition Create<T>(Expression<Func<T, Boolean>> expr)
         {
@@ -89,9 +91,14 @@ namespace DotMaysWind.Data.Linq
 
         private static AbstractSqlCondition ParseBinaryExpression(AbstractSqlCommand sourceCommand, BinaryExpression expr, SqlOperator op)
         {
-            MemberExpression left = SqlLinqCondition.GetMemberExpression(expr.Left);
-            String columnName = SqlLinqCondition.GetColumnName(sourceCommand, left);
+            MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Left);
             String entityName = left.Expression.ToString();
+            String columnName = ExpressionHelper.GetColumnName(sourceCommand, left);
+
+            if (String.IsNullOrEmpty(columnName))
+            {
+                throw new NullAttributeException();
+            }
 
             SqlParameter param = null;
             SqlBasicParameterCondition condition = null;
@@ -102,7 +109,7 @@ namespace DotMaysWind.Data.Linq
 
                 if (right.Expression != null && String.Equals(entityName, right.Expression.ToString()))
                 {
-                    String columnName2 = SqlLinqCondition.GetColumnName(sourceCommand, right);
+                    String columnName2 = ExpressionHelper.GetColumnName(sourceCommand, right);
 
                     param = SqlParameter.CreateCustomAction(columnName, columnName2);
                     condition = SqlCondition.Create(param, op);
@@ -111,7 +118,7 @@ namespace DotMaysWind.Data.Linq
                 }
             }
 
-            Object value = SqlLinqCondition.GetExpressionValue(expr.Right);
+            Object value = ExpressionHelper.GetExpressionValue(expr.Right);
 
             if (value == null && (op == SqlOperator.Equal || op == SqlOperator.NotEqual))
             {
@@ -122,44 +129,6 @@ namespace DotMaysWind.Data.Linq
             condition = SqlCondition.Create(param, op);
 
             return condition;
-        }
-        #endregion
-
-        #region 通用方法
-        private static MemberExpression GetMemberExpression(Expression expr)
-        {
-            if (expr.NodeType == ExpressionType.Convert)
-            {
-                expr = (expr as UnaryExpression).Operand;
-            }
-
-            MemberExpression mexpr = expr as MemberExpression;
-
-            return mexpr;
-        }
-
-        private static String GetColumnName(AbstractSqlCommand sourceCommand, MemberExpression expr)
-        {
-            DatabaseColumnAtrribute attr = (sourceCommand != null && sourceCommand.SourceDatabaseTable != null ? sourceCommand.SourceDatabaseTable[expr.Member.Name] : null);
-
-            if (attr == null)
-            {
-                attr = EntityHelper.InternalGetColumnAtrribute(expr.Member.DeclaringType, expr.Member.Name);
-            }
-
-            return (attr != null ? attr.ColumnName : String.Empty);
-        }
-
-        private static Object GetExpressionValue(Expression expr)
-        {
-            if (expr.NodeType == ExpressionType.Constant)
-            {
-                return (expr as ConstantExpression).Value;
-            }
-            else
-            {
-                return Expression.Lambda(expr).Compile().DynamicInvoke();
-            }
         }
         #endregion
         #endregion
