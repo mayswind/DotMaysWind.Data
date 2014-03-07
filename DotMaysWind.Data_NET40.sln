@@ -5,7 +5,9 @@ VisualStudioVersion = 11.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotMaysWind.Data_NET40", "DotMaysWind.Data\DotMaysWind.Data_NET40.csproj", "{9A6C3468-2A77-48F8-A38A-79FC4B8CD794}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotMaysWind.Data.UnitTest", "DotMaysWind.Data.UnitTest\DotMaysWind.Data.UnitTest_NET40.csproj", "{3B4C047A-8A3A-43D1-83A7-0054B0FFDF35}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotMaysWind.Data.UnitTest_NET40", "DotMaysWind.Data.UnitTest\DotMaysWind.Data.UnitTest_NET40.csproj", "{3B4C047A-8A3A-43D1-83A7-0054B0FFDF35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotMaysWind.Data.Test", "DotMaysWind.Data.Test\DotMaysWind.Data.Test_NET40.csproj", "{CE5EAF78-5A8B-46F8-BE85-F84BB69B9088}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{3B4C047A-8A3A-43D1-83A7-0054B0FFDF35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B4C047A-8A3A-43D1-83A7-0054B0FFDF35}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B4C047A-8A3A-43D1-83A7-0054B0FFDF35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE5EAF78-5A8B-46F8-BE85-F84BB69B9088}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE5EAF78-5A8B-46F8-BE85-F84BB69B9088}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE5EAF78-5A8B-46F8-BE85-F84BB69B9088}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE5EAF78-5A8B-46F8-BE85-F84BB69B9088}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
