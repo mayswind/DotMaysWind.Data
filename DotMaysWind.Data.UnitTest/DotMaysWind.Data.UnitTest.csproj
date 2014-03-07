@@ -47,12 +47,16 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LinqTest.cs" />
-    <Compile Include="OrmTest.cs" />
+    <Compile Include="ConditionUnitTest.cs" />
+    <Compile Include="InsertCommandUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlOperatorsTest.cs" />
+    <Compile Include="SqlOperatorsUnitTest.cs" />
+    <Compile Include="TestEntity.cs" />
+    <Compile Include="TestEntityDataProvider.cs" />
+    <Compile Include="UpdateCommandUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotMaysWind.Data\DotMaysWind.Data.csproj">

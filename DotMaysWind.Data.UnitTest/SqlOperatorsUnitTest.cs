@@ -9,7 +9,7 @@ namespace DotMaysWind.Data.UnitTest
     /// Sql运算符测试
     ///</summary>
     [TestClass()]
-    public class SqlOperatorsTest
+    public class SqlOperatorsUnitTest
     {
         [TestMethod()]
         public void GetOperatorFormatTest()
