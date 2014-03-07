@@ -14,16 +14,16 @@ namespace DotMaysWind.Data.UnitTest
     [TestClass]
     public class LinqTest
     {
-        [DatabaseTableAtrribute("TestTable")]
+        [DatabaseTableAttribute("TestTable")]
         private class TestEntity
         {
-            [DatabaseColumnAtrribute("TestColumn1")]
+            [DatabaseColumnAttribute("TestColumn1")]
             public Int32 Test1 { get; set; }
 
-            [DatabaseColumnAtrribute("TestColumn2")]
+            [DatabaseColumnAttribute("TestColumn2")]
             public DateTime Test2 { get; set; }
 
-            [DatabaseColumnAtrribute("TestColumn3")]
+            [DatabaseColumnAttribute("TestColumn3")]
             public DateTime? Test3 { get; set; }
         }
 

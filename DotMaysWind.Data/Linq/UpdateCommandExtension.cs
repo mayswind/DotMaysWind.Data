@@ -44,7 +44,7 @@ namespace DotMaysWind.Data.Linq
                 throw new ExpressionInvalidException();
             }
 
-            DatabaseColumnAtrribute attr = ExpressionHelper.GetColumnAttribute(cmd, left);
+            DatabaseColumnAttribute attr = ExpressionHelper.GetColumnAttribute(cmd, left);
 
             if (attr == null)
             {
@@ -59,6 +59,62 @@ namespace DotMaysWind.Data.Linq
             {
                 return cmd.Set(attr.ColumnName, value);
             }
+        }
+
+        /// <summary>
+        /// 指定字段名自增并返回当前语句
+        /// </summary>
+        /// <typeparam name="T">实体类类型</typeparam>
+        /// <param name="cmd">更新语句</param>
+        /// <param name="expr">实体类属性</param>
+        /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
+        /// <exception cref="NullAttributeException">没有设置特性</exception>
+        /// <returns>当前语句</returns>
+        public static UpdateCommand Increase<T>(this UpdateCommand cmd, Expression<Func<T, Object>> expr)
+        {
+            MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Body);
+
+            if (left == null)
+            {
+                throw new ExpressionInvalidException();
+            }
+
+            DatabaseColumnAttribute attr = ExpressionHelper.GetColumnAttribute(cmd, left);
+
+            if (attr == null)
+            {
+                throw new NullAttributeException();
+            }
+
+            return cmd.Increase(attr.ColumnName);
+        }
+
+        /// <summary>
+        /// 指定字段名自减并返回当前语句
+        /// </summary>
+        /// <typeparam name="T">实体类类型</typeparam>
+        /// <param name="cmd">更新语句</param>
+        /// <param name="expr">实体类属性</param>
+        /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
+        /// <exception cref="NullAttributeException">没有设置特性</exception>
+        /// <returns>当前语句</returns>
+        public static UpdateCommand Decrease<T>(this UpdateCommand cmd, Expression<Func<T, Object>> expr)
+        {
+            MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Body);
+
+            if (left == null)
+            {
+                throw new ExpressionInvalidException();
+            }
+
+            DatabaseColumnAttribute attr = ExpressionHelper.GetColumnAttribute(cmd, left);
+
+            if (attr == null)
+            {
+                throw new NullAttributeException();
+            }
+
+            return cmd.Decrease(attr.ColumnName);
         }
     }
 }

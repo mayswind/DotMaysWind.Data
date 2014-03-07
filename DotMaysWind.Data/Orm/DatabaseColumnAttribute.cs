@@ -7,7 +7,7 @@ namespace DotMaysWind.Data.Orm
     /// 数据库列特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
-    public class DatabaseColumnAtrribute : Attribute
+    public class DatabaseColumnAttribute : Attribute
     {
         #region 字段
         private String _columnName;
@@ -37,7 +37,7 @@ namespace DotMaysWind.Data.Orm
         /// 初始化数据库列特性
         /// </summary>
         /// <param name="columnName">数据库列名</param>
-        public DatabaseColumnAtrribute(String columnName)
+        public DatabaseColumnAttribute(String columnName)
         {
             this._columnName = columnName;
         }
@@ -47,7 +47,7 @@ namespace DotMaysWind.Data.Orm
         /// </summary>
         /// <param name="columnName">数据库列名</param>
         /// <param name="dbType">数据类型</param>
-        public DatabaseColumnAtrribute(String columnName, DbType dbType)
+        public DatabaseColumnAttribute(String columnName, DbType dbType)
         {
             this._columnName = columnName;
             this._dbType = dbType;

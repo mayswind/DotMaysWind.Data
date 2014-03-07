@@ -6,7 +6,7 @@ namespace DotMaysWind.Data.Orm
     /// 数据库表特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
-    public class DatabaseTableAtrribute : Attribute
+    public class DatabaseTableAttribute : Attribute
     {
         #region 字段
         private String _tableName;
@@ -27,7 +27,7 @@ namespace DotMaysWind.Data.Orm
         /// 初始化数据库表特性
         /// </summary>
         /// <param name="tableName">数据库表名</param>
-        public DatabaseTableAtrribute(String tableName)
+        public DatabaseTableAttribute(String tableName)
         {
             this._tableName = tableName;
         }

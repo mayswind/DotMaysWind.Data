@@ -35,13 +35,13 @@ namespace DotMaysWind.Data.Linq.Helper
         /// <param name="sourceCommand">来源Sql语句</param>
         /// <param name="expr">表达式</param>
         /// <returns>表达式所指的列特性</returns>
-        internal static DatabaseColumnAtrribute GetColumnAttribute(AbstractSqlCommand sourceCommand, MemberExpression expr)
+        internal static DatabaseColumnAttribute GetColumnAttribute(AbstractSqlCommand sourceCommand, MemberExpression expr)
         {
-            DatabaseColumnAtrribute attr = (sourceCommand != null && sourceCommand.SourceDatabaseTable != null ? sourceCommand.SourceDatabaseTable[expr.Member.Name] : null);
+            DatabaseColumnAttribute attr = (sourceCommand != null && sourceCommand.SourceDatabaseTable != null ? sourceCommand.SourceDatabaseTable[expr.Member.Name] : null);
 
             if (attr == null)
             {
-                attr = EntityHelper.InternalGetColumnAtrribute(expr.Member.DeclaringType, expr.Member.Name);
+                attr = EntityHelper.InternalGetColumnAttribute(expr.Member.DeclaringType, expr.Member.Name);
             }
 
             return attr;
@@ -55,7 +55,7 @@ namespace DotMaysWind.Data.Linq.Helper
         /// <returns>表达式所指的列名</returns>
         internal static String GetColumnName(AbstractSqlCommand sourceCommand, MemberExpression expr)
         {
-            DatabaseColumnAtrribute attr = ExpressionHelper.GetColumnAttribute(sourceCommand, expr);
+            DatabaseColumnAttribute attr = ExpressionHelper.GetColumnAttribute(sourceCommand, expr);
 
             return (attr != null ? attr.ColumnName : String.Empty);
         }

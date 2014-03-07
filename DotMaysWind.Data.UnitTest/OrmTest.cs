@@ -15,31 +15,31 @@ namespace DotMaysWind.Data.UnitTest
     [TestClass()]
     public class OrmTest
     {
-        [DatabaseTableAtrribute("TestTable")]
+        [DatabaseTableAttribute("TestTable")]
         private class TestEntity
         {
-            [DatabaseColumnAtrribute("Test1")]
+            [DatabaseColumnAttribute("Test1")]
             public String Test1 { get; set; }
 
-            [DatabaseColumnAtrribute("Test2")]
+            [DatabaseColumnAttribute("Test2")]
             public Int32 Test2 { get; set; }
 
-            [DatabaseColumnAtrribute("Test3")]
+            [DatabaseColumnAttribute("Test3")]
             public Double Test3 { get; set; }
 
-            [DatabaseColumnAtrribute("Test4")]
+            [DatabaseColumnAttribute("Test4")]
             public DateTime Test4 { get; set; }
 
-            [DatabaseColumnAtrribute("Test5")]
+            [DatabaseColumnAttribute("Test5")]
             public Int32? Test5 { get; set; }
 
-            [DatabaseColumnAtrribute("Test6")]
+            [DatabaseColumnAttribute("Test6")]
             public Double? Test6 { get; set; }
 
-            [DatabaseColumnAtrribute("Test7")]
+            [DatabaseColumnAttribute("Test7")]
             public DateTime? Test7 { get; set; }
 
-            [DatabaseColumnAtrribute("Test8", DbType.Int16)]
+            [DatabaseColumnAttribute("Test8", DbType.Int16)]
             public Int32 Test8 { get; set; }
         }
 

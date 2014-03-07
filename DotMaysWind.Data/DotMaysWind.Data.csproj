@@ -127,9 +127,9 @@
     <Compile Include="Linq\SqlLinqCondition.cs" />
     <Compile Include="Linq\UpdateCommandExtension.cs" />
     <Compile Include="Orm\AbstractDatabaseTable.cs" />
-    <Compile Include="Orm\DatabaseColumnAtrribute.cs" />
+    <Compile Include="Orm\DatabaseColumnAttribute.cs" />
     <Compile Include="Orm\DatabaseTable.cs" />
-    <Compile Include="Orm\DatabaseTableAtrribute.cs" />
+    <Compile Include="Orm\DatabaseTableAttribute.cs" />
     <Compile Include="Orm\Helper\EntityHelper.cs" />
     <Compile Include="Orm\IDatabaseTable.cs" />
     <Compile Include="Orm\IDatabaseTableWithMapping.cs" />

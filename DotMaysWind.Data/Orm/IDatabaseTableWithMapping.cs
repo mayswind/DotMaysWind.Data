@@ -22,6 +22,6 @@ namespace DotMaysWind.Data.Orm
         /// </summary>
         /// <param name="propertyName">实体类属性名称</param>
         /// <returns>字段特性</returns>
-        DatabaseColumnAtrribute this[String propertyName] { get; }
+        DatabaseColumnAttribute this[String propertyName] { get; }
     }
 }

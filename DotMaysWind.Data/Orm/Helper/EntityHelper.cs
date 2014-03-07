@@ -19,11 +19,11 @@ namespace DotMaysWind.Data.Orm.Helper
         /// <returns>表格名称</returns>
         internal static String InternalGetTableName(Type entityType)
         {
-            Object[] objs = entityType.GetCustomAttributes(typeof(DatabaseTableAtrribute), true);
+            Object[] objs = entityType.GetCustomAttributes(typeof(DatabaseTableAttribute), true);
 
             foreach (Object obj in objs)
             {
-                DatabaseTableAtrribute attr = obj as DatabaseTableAtrribute;
+                DatabaseTableAttribute attr = obj as DatabaseTableAttribute;
 
                 if (attr != null)
                 {
@@ -40,7 +40,7 @@ namespace DotMaysWind.Data.Orm.Helper
         /// <param name="entityType">实体类型</param>
         /// <param name="propertyName">实体属性名称</param>
         /// <returns>字段特性</returns>
-        internal static DatabaseColumnAtrribute InternalGetColumnAtrribute(Type entityType, String propertyName)
+        internal static DatabaseColumnAttribute InternalGetColumnAttribute(Type entityType, String propertyName)
         {
             PropertyInfo[] props = entityType.GetProperties();
 
@@ -51,12 +51,12 @@ namespace DotMaysWind.Data.Orm.Helper
                     continue;
                 }
 
-                DatabaseColumnAtrribute attr = null;
-                Object[] objs = prop.GetCustomAttributes(typeof(DatabaseColumnAtrribute), true);
+                DatabaseColumnAttribute attr = null;
+                Object[] objs = prop.GetCustomAttributes(typeof(DatabaseColumnAttribute), true);
 
                 foreach (Object obj in objs)
                 {
-                    if ((attr = obj as DatabaseColumnAtrribute) != null)
+                    if ((attr = obj as DatabaseColumnAttribute) != null)
                     {
                         return attr;
                     }
@@ -71,18 +71,18 @@ namespace DotMaysWind.Data.Orm.Helper
         /// </summary>
         /// <param name="entityType">实体类型</param>
         /// <returns>实体列特性集合</returns>
-        internal static Dictionary<String, DatabaseColumnAtrribute> InternalGetTableColumns(Type entityType)
+        internal static Dictionary<String, DatabaseColumnAttribute> InternalGetTableColumns(Type entityType)
         {
-            Dictionary<String, DatabaseColumnAtrribute> dict = new Dictionary<String, DatabaseColumnAtrribute>();
+            Dictionary<String, DatabaseColumnAttribute> dict = new Dictionary<String, DatabaseColumnAttribute>();
             PropertyInfo[] props = entityType.GetProperties();
 
             foreach (PropertyInfo prop in props)
             {
-                Object[] objs = prop.GetCustomAttributes(typeof(DatabaseColumnAtrribute), true);
+                Object[] objs = prop.GetCustomAttributes(typeof(DatabaseColumnAttribute), true);
 
                 foreach (Object obj in objs)
                 {
-                    DatabaseColumnAtrribute attr = obj as DatabaseColumnAtrribute;
+                    DatabaseColumnAttribute attr = obj as DatabaseColumnAttribute;
 
                     if (attr != null)
                     {
@@ -101,7 +101,7 @@ namespace DotMaysWind.Data.Orm.Helper
         /// <param name="attr">实体属性特性</param>
         /// <param name="value">属性值</param>
         /// <returns>Sql参数集合</returns>
-        internal static SqlParameter InternalGetSqlParameter(DatabaseColumnAtrribute attr, Object value)
+        internal static SqlParameter InternalGetSqlParameter(DatabaseColumnAttribute attr, Object value)
         {
             SqlParameter parameter = null;
 
@@ -136,12 +136,12 @@ namespace DotMaysWind.Data.Orm.Helper
 
             foreach (PropertyInfo prop in props)
             {
-                DatabaseColumnAtrribute attr = null;
-                Object[] objs = prop.GetCustomAttributes(typeof(DatabaseColumnAtrribute), true);
+                DatabaseColumnAttribute attr = null;
+                Object[] objs = prop.GetCustomAttributes(typeof(DatabaseColumnAttribute), true);
 
                 foreach (Object obj in objs)
                 {
-                    if ((attr = obj as DatabaseColumnAtrribute) != null)
+                    if ((attr = obj as DatabaseColumnAttribute) != null)
                     {
                         SqlParameter parameter = EntityHelper.InternalGetSqlParameter(attr, prop.GetValue(entity, null));
                         parameters.Add(parameter);

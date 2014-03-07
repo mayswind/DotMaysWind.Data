@@ -16,7 +16,7 @@ namespace DotMaysWind.Data.Orm
     public class DatabaseTable<T> : AbstractDatabaseTable<T>, IDatabaseTableWithMapping where T : class, new()
     {
         #region 字段
-        private Dictionary<String, DatabaseColumnAtrribute> _mapping;
+        private Dictionary<String, DatabaseColumnAttribute> _mapping;
         private Type _entityType;
         private String _tableName;
         #endregion
@@ -45,7 +45,7 @@ namespace DotMaysWind.Data.Orm
         /// </summary>
         /// <param name="propertyName">实体类属性名称</param>
         /// <returns>字段特性</returns>
-        DatabaseColumnAtrribute IDatabaseTableWithMapping.this[String propertyName]
+        DatabaseColumnAttribute IDatabaseTableWithMapping.this[String propertyName]
         {
             get
             {
@@ -54,7 +54,7 @@ namespace DotMaysWind.Data.Orm
                     return null;
                 }
 
-                DatabaseColumnAtrribute attr = null;
+                DatabaseColumnAttribute attr = null;
 
                 if (!this._mapping.TryGetValue(propertyName, out attr))
                 {
@@ -167,7 +167,7 @@ namespace DotMaysWind.Data.Orm
 
             foreach (PropertyInfo prop in props)
             {
-                DatabaseColumnAtrribute attr = null;
+                DatabaseColumnAttribute attr = null;
 
                 if (this._mapping.TryGetValue(prop.Name, out attr) && attr != null)
                 {

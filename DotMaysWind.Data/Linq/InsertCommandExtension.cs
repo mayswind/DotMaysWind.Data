@@ -31,7 +31,7 @@ namespace DotMaysWind.Data.Linq
                 throw new ExpressionInvalidException();
             }
 
-            DatabaseColumnAtrribute attr = ExpressionHelper.GetColumnAttribute(cmd, left);
+            DatabaseColumnAttribute attr = ExpressionHelper.GetColumnAttribute(cmd, left);
 
             if (attr == null)
             {
