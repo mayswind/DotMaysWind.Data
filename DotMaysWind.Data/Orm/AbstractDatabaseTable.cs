@@ -62,7 +62,7 @@ namespace DotMaysWind.Data.Orm
         /// <summary>
         /// 创建新的Sql插入语句类
         /// </summary>
-        protected InsertCommand Insert()
+        protected virtual InsertCommand Insert()
         {
             return this._baseDatabase.CreateInsertCommand(this.TableName);
         }
@@ -70,7 +70,7 @@ namespace DotMaysWind.Data.Orm
         /// <summary>
         /// 创建新的Sql更新语句类
         /// </summary>
-        protected UpdateCommand Update()
+        protected virtual UpdateCommand Update()
         {
             return this._baseDatabase.CreateUpdateCommand(this.TableName);
         }
@@ -78,7 +78,7 @@ namespace DotMaysWind.Data.Orm
         /// <summary>
         /// 创建新的Sql删除语句类
         /// </summary>
-        protected DeleteCommand Delete()
+        protected virtual DeleteCommand Delete()
         {
             return this._baseDatabase.CreateDeleteCommand(this.TableName);
         }
@@ -86,7 +86,7 @@ namespace DotMaysWind.Data.Orm
         /// <summary>
         /// 创建新的Sql选择语句类
         /// </summary>
-        protected SelectCommand Select()
+        protected virtual SelectCommand Select()
         {
             return this._baseDatabase.CreateSelectCommand(this.TableName);
         }
@@ -95,7 +95,7 @@ namespace DotMaysWind.Data.Orm
         /// 创建新的Sql选择语句类
         /// </summary>
         /// <param name="pageSize">页面大小</param>
-        protected SelectCommand Select(Int32 pageSize)
+        protected virtual SelectCommand Select(Int32 pageSize)
         {
             return this._baseDatabase.CreateSelectCommand(this.TableName, pageSize);
         }
@@ -103,36 +103,12 @@ namespace DotMaysWind.Data.Orm
         /// <summary>
         /// 创建新的Sql选择语句类
         /// </summary>
-        /// <param name="from">选择的从Sql语句</param>
-        /// <param name="fromAliasesName">从Sql语句的别名</param>
-        /// <param name="pageSize">页面大小</param>
-        protected SelectCommand Select(SelectCommand from, String fromAliasesName, Int32 pageSize)
-        {
-            return this._baseDatabase.CreateSelectCommand(from, fromAliasesName, pageSize);
-        }
-
-        /// <summary>
-        /// 创建新的Sql选择语句类
-        /// </summary>
         /// <param name="pageSize">页面大小</param>
         /// <param name="pageIndex">页面索引</param>
         /// <param name="recordCount">记录总数</param>
-        protected SelectCommand Select(Int32 pageSize, Int32 pageIndex, Int32 recordCount)
+        protected virtual SelectCommand Select(Int32 pageSize, Int32 pageIndex, Int32 recordCount)
         {
             return this._baseDatabase.CreateSelectCommand(this.TableName, pageSize, pageIndex, recordCount);
-        }
-
-        /// <summary>
-        /// 创建新的Sql选择语句类
-        /// </summary>
-        /// <param name="isFromSql">是否从Sql语句中选择</param>
-        /// <param name="from">数据表或Sql语句</param>
-        /// <param name="pageSize">页面大小</param>
-        /// <param name="pageIndex">页面索引</param>
-        /// <param name="recordCount">记录总数</param>
-        protected SelectCommand Select(Boolean isFromSql, String from, Int32 pageSize, Int32 pageIndex, Int32 recordCount)
-        {
-            return this._baseDatabase.CreateSelectCommand(isFromSql, from, pageSize, pageIndex, recordCount);
         }
         #endregion
 
