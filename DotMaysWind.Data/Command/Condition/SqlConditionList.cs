@@ -8,7 +8,7 @@ namespace DotMaysWind.Data.Command.Condition
     /// <summary>
     /// Sql条件语句集合类
     /// </summary>
-    public class SqlConditionList : AbstractSqlCondition, IEnumerable<ISqlCondition>, ICollection<ISqlCondition>
+    public sealed class SqlConditionList : AbstractSqlCondition, IEnumerable<ISqlCondition>, ICollection<ISqlCondition>
     {
         #region 字段
         private List<ISqlCondition> _list;
