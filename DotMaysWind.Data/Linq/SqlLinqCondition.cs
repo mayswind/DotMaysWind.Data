@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq.Expressions;
 
+using DotMaysWind.Data.Command;
 using DotMaysWind.Data.Command.Condition;
+using DotMaysWind.Data.Orm;
 using DotMaysWind.Data.Orm.Helper;
 
 namespace DotMaysWind.Data.Linq
@@ -15,13 +17,26 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 创建新的Sql条件语句
         /// </summary>
-        /// <param name="expr">Linq表达式</param>
         /// <typeparam name="T">实体类类型</typeparam>
+        /// <param name="sourceCommand">来源语句</param>
+        /// <param name="expr">Linq表达式</param>
+        /// <exception cref="LinqNotSupportedException">Linq操作不支持</exception>
+        /// <returns>Sql条件语句</returns>
+        public static AbstractSqlCondition Create<T>(AbstractSqlCommand sourceCommand, Expression<Func<T, Boolean>> expr)
+        {
+            return SqlLinqCondition.ParseCondition(sourceCommand, expr.Body);
+        }
+
+        /// <summary>
+        /// 创建新的Sql条件语句
+        /// </summary>
+        /// <typeparam name="T">实体类类型</typeparam>
+        /// <param name="expr">Linq表达式</param>
         /// <exception cref="LinqNotSupportedException">Linq操作不支持</exception>
         /// <returns>Sql条件语句</returns>
         public static AbstractSqlCondition Create<T>(Expression<Func<T, Boolean>> expr)
         {
-            return SqlLinqCondition.ParseCondition(expr.Body);
+            return SqlLinqCondition.ParseCondition(null, expr.Body);
         }
         #endregion
 
@@ -29,52 +44,53 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 获取Sql语句条件
         /// </summary>
+        /// <param name="sourceCommand">来源语句</param>
         /// <param name="expr">Linq表达式</param>
         /// <returns>Sql语句条件</returns>
-        private static AbstractSqlCondition ParseCondition(Expression expr)
+        private static AbstractSqlCondition ParseCondition(AbstractSqlCommand sourceCommand, Expression expr)
         {
             BinaryExpression bexpr = expr as BinaryExpression;
 
             if (bexpr != null)
             {
-                return ParseBinaryExpression(bexpr);
+                return ParseBinaryExpression(sourceCommand, bexpr);
             }
 
             throw new LinqNotSupportedException("Not supported this linq operation!");
         }
 
         #region 二元运算
-        private static AbstractSqlCondition ParseBinaryExpression(BinaryExpression expr)
+        private static AbstractSqlCondition ParseBinaryExpression(AbstractSqlCommand sourceCommand, BinaryExpression expr)
         {
             switch (expr.NodeType)
             {
                 case ExpressionType.Equal:
-                    return ParseBinaryExpression(expr, SqlOperator.Equal);
+                    return ParseBinaryExpression(sourceCommand, expr, SqlOperator.Equal);
                 case ExpressionType.NotEqual:
-                    return ParseBinaryExpression(expr, SqlOperator.NotEqual);
+                    return ParseBinaryExpression(sourceCommand, expr, SqlOperator.NotEqual);
                 case ExpressionType.GreaterThan:
-                    return ParseBinaryExpression(expr, SqlOperator.GreaterThan);
+                    return ParseBinaryExpression(sourceCommand, expr, SqlOperator.GreaterThan);
                 case ExpressionType.LessThan:
-                    return ParseBinaryExpression(expr, SqlOperator.LessThan);
+                    return ParseBinaryExpression(sourceCommand, expr, SqlOperator.LessThan);
                 case ExpressionType.GreaterThanOrEqual:
-                    return ParseBinaryExpression(expr, SqlOperator.GreaterThanOrEqual);
+                    return ParseBinaryExpression(sourceCommand, expr, SqlOperator.GreaterThanOrEqual);
                 case ExpressionType.LessThanOrEqual:
-                    return ParseBinaryExpression(expr, SqlOperator.LessThanOrEqual);
+                    return ParseBinaryExpression(sourceCommand, expr, SqlOperator.LessThanOrEqual);
                 case ExpressionType.And:
                 case ExpressionType.AndAlso:
-                    return SqlLinqCondition.ParseCondition(expr.Left) & SqlLinqCondition.ParseCondition(expr.Right);
+                    return SqlLinqCondition.ParseCondition(sourceCommand, expr.Left) & SqlLinqCondition.ParseCondition(sourceCommand, expr.Right);
                 case ExpressionType.Or:
                 case ExpressionType.OrElse:
-                    return SqlLinqCondition.ParseCondition(expr.Left) | SqlLinqCondition.ParseCondition(expr.Right);
+                    return SqlLinqCondition.ParseCondition(sourceCommand, expr.Left) | SqlLinqCondition.ParseCondition(sourceCommand, expr.Right);
                 default:
                     throw new LinqNotSupportedException("Not supported this linq operation!");
             }
         }
 
-        private static AbstractSqlCondition ParseBinaryExpression(BinaryExpression expr, SqlOperator op)
+        private static AbstractSqlCondition ParseBinaryExpression(AbstractSqlCommand sourceCommand, BinaryExpression expr, SqlOperator op)
         {
             MemberExpression left = SqlLinqCondition.GetMemberExpression(expr.Left);
-            String columnName = SqlLinqCondition.GetColumnName(left);
+            String columnName = SqlLinqCondition.GetColumnName(sourceCommand, left);
             String entityName = left.Expression.ToString();
 
             SqlParameter param = null;
@@ -86,7 +102,7 @@ namespace DotMaysWind.Data.Linq
 
                 if (right.Expression != null && String.Equals(entityName, right.Expression.ToString()))
                 {
-                    String columnName2 = SqlLinqCondition.GetColumnName(right);
+                    String columnName2 = SqlLinqCondition.GetColumnName(sourceCommand, right);
 
                     param = SqlParameter.CreateCustomAction(columnName, columnName2);
                     condition = SqlCondition.Create(param, op);
@@ -122,9 +138,16 @@ namespace DotMaysWind.Data.Linq
             return mexpr;
         }
 
-        private static String GetColumnName(MemberExpression expr)
+        private static String GetColumnName(AbstractSqlCommand sourceCommand, MemberExpression expr)
         {
-            return EntityHelper.InternalGetColumnName(expr.Member.DeclaringType, expr.Member.Name);
+            DatabaseColumnAtrribute attr = (sourceCommand != null && sourceCommand.SourceDatabaseTable != null ? sourceCommand.SourceDatabaseTable[expr.Member.Name] : null);
+
+            if (attr == null)
+            {
+                attr = EntityHelper.InternalGetColumnAtrribute(expr.Member.DeclaringType, expr.Member.Name);
+            }
+
+            return (attr != null ? attr.ColumnName : String.Empty);
         }
 
         private static Object GetExpressionValue(Expression expr)

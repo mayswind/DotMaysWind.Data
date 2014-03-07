@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 
+using DotMaysWind.Data.Command;
 using DotMaysWind.Data.Helper;
 using DotMaysWind.Data.Orm.Helper;
 
@@ -12,10 +13,10 @@ namespace DotMaysWind.Data.Orm
     /// 数据库表类
     /// </summary>
     /// <typeparam name="T">实体类型</typeparam>
-    public class DatabaseTable<T> : AbstractDatabaseTable<T> where T : class, new()
+    public class DatabaseTable<T> : AbstractDatabaseTable<T>, IDatabaseTableWithMapping where T : class, new()
     {
         #region 字段
-        private Dictionary<String, DatabaseColumnAtrribute> _columns;
+        private Dictionary<String, DatabaseColumnAtrribute> _mapping;
         private Type _entityType;
         private String _tableName;
         #endregion
@@ -27,6 +28,41 @@ namespace DotMaysWind.Data.Orm
         public override String TableName
         {
             get { return this._tableName; }
+        }
+
+        /// <summary>
+        /// 获取实体类型
+        /// </summary>
+        Type IDatabaseTableWithMapping.EntityType
+        {
+            get { return this._entityType; }
+        }
+        #endregion
+
+        #region 索引器
+        /// <summary>
+        /// 获取实体类属性名称对应的字段特性
+        /// </summary>
+        /// <param name="propertyName">实体类属性名称</param>
+        /// <returns>字段特性</returns>
+        DatabaseColumnAtrribute IDatabaseTableWithMapping.this[String propertyName]
+        {
+            get
+            {
+                if (this._mapping == null)
+                {
+                    return null;
+                }
+
+                DatabaseColumnAtrribute attr = null;
+
+                if (!this._mapping.TryGetValue(propertyName, out attr))
+                {
+                    return null;
+                }
+
+                return attr;
+            }
         }
         #endregion
 
@@ -41,11 +77,83 @@ namespace DotMaysWind.Data.Orm
         {
             this._entityType = typeof(T);
             this._tableName = EntityHelper.InternalGetTableName(this._entityType);
-            this._columns = EntityHelper.InternalGetTableColumns(this._entityType);
+            this._mapping = EntityHelper.InternalGetTableColumns(this._entityType);
         }
         #endregion
 
-        #region 方法
+        #region CreateCommand
+        /// <summary>
+        /// 创建新的Sql插入语句类
+        /// </summary>
+        protected override InsertCommand Insert()
+        {
+            InsertCommand cmd = base.Insert();
+            cmd.SourceDatabaseTable = this;
+
+            return cmd;
+        }
+
+        /// <summary>
+        /// 创建新的Sql更新语句类
+        /// </summary>
+        protected override UpdateCommand Update()
+        {
+            UpdateCommand cmd = base.Update();
+            cmd.SourceDatabaseTable = this;
+
+            return cmd;
+        }
+
+        /// <summary>
+        /// 创建新的Sql删除语句类
+        /// </summary>
+        protected override DeleteCommand Delete()
+        {
+            DeleteCommand cmd = base.Delete();
+            cmd.SourceDatabaseTable = this;
+
+            return cmd;
+        }
+
+        /// <summary>
+        /// 创建新的Sql选择语句类
+        /// </summary>
+        protected override SelectCommand Select()
+        {
+            SelectCommand cmd = base.Select();
+            cmd.SourceDatabaseTable = this;
+
+            return cmd;
+        }
+
+        /// <summary>
+        /// 创建新的Sql选择语句类
+        /// </summary>
+        /// <param name="pageSize">页面大小</param>
+        protected override SelectCommand Select(Int32 pageSize)
+        {
+            SelectCommand cmd = base.Select(pageSize);
+            cmd.SourceDatabaseTable = this;
+
+            return cmd;
+        }
+
+        /// <summary>
+        /// 创建新的Sql选择语句类
+        /// </summary>
+        /// <param name="pageSize">页面大小</param>
+        /// <param name="pageIndex">页面索引</param>
+        /// <param name="recordCount">记录总数</param>
+        protected override SelectCommand Select(Int32 pageSize, Int32 pageIndex, Int32 recordCount)
+        {
+            SelectCommand cmd = base.Select(pageSize, pageIndex, recordCount);
+            cmd.SourceDatabaseTable = this;
+
+            return cmd;
+        }
+        #endregion
+
+        #region 保护方法
         /// <summary>
         /// 获取实体
         /// </summary>
@@ -61,7 +169,7 @@ namespace DotMaysWind.Data.Orm
             {
                 DatabaseColumnAtrribute attr = null;
 
-                if (this._columns.TryGetValue(prop.Name, out attr) && attr != null)
+                if (this._mapping.TryGetValue(prop.Name, out attr) && attr != null)
                 {
                     DbType dbType = (attr.DbType.HasValue ? attr.DbType.Value : DbTypeHelper.InternalGetDbType(prop.PropertyType));
                     Object value;

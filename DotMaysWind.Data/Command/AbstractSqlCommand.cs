@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 
+using DotMaysWind.Data.Orm;
+
 namespace DotMaysWind.Data.Command
 {
     /// <summary>
@@ -25,6 +27,11 @@ namespace DotMaysWind.Data.Command
         /// 基础参数组
         /// </summary>
         protected List<SqlParameter> _parameters;
+
+        /// <summary>
+        /// 支持映射的数据表
+        /// </summary>
+        private IDatabaseTableWithMapping _sourceTable;
         #endregion
 
         #region 属性
@@ -55,6 +62,15 @@ namespace DotMaysWind.Data.Command
         public String TableName
         {
             get { return this._tableName; }
+        }
+
+        /// <summary>
+        /// 获取或设置支持映射的数据表
+        /// </summary>
+        internal IDatabaseTableWithMapping SourceDatabaseTable
+        {
+            get { return this._sourceTable; }
+            set { this._sourceTable = value; }
         }
         #endregion
 
