@@ -385,28 +385,31 @@ namespace DotMaysWind.Data
                 return 0;
             }
 
-            using (transaction = this.CreateTransaction())
+            try
             {
-                try
+                transaction = this.CreateTransaction();
+                transaction.Open();
+
+                for (Int32 i = 0; i < commands.Length; i++)
                 {
-                    transaction.Open();
-
-                    for (Int32 i = 0; i < commands.Length; i++)
-                    {
-                        count += transaction.ExecuteNonQuery(commands[i]);
-                    }
-
-                    transaction.Commit();
+                    count += transaction.ExecuteNonQuery(commands[i]);
                 }
-                catch
-                {
-                    count = 0;
 
+                transaction.Commit();
+            }
+            catch
+            {
+                count = 0;
+
+                if (transaction != null)
+                {
                     transaction.Rollback();
                 }
-                finally
+            }
+            finally
+            {
+                if (transaction != null)
                 {
-                    transaction.Close();
                     transaction.Dispose();
                 }
             }

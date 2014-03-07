@@ -80,16 +80,33 @@ namespace DotMaysWind.Data
         /// </summary>
         public void Dispose()
         {
-            if (this._transcation != null)
-            {
-                this._transcation.Dispose();
-                this._transcation = null;
-            }
+            this.Dispose(true);
+        }
 
-            if (this._connection != null)
+        /// <summary>
+        /// 释放事务所占连接和空间
+        /// </summary>
+        /// <param name="disposing">是否清理托管资源</param>
+        protected virtual void Dispose(Boolean disposing)
+        {
+            if (disposing)
             {
-                this._connection.Dispose();
-                this._connection = null;
+                if (this._connection != null)
+                {
+                    this._connection.Close();
+                }
+
+                if (this._transcation != null)
+                {
+                    this._transcation.Dispose();
+                    this._transcation = null;
+                }
+
+                if (this._connection != null)
+                {
+                    this._connection.Dispose();
+                    this._connection = null;
+                }
             }
         }
 
