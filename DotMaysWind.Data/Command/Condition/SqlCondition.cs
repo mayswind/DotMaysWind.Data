@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 
@@ -1044,6 +1045,57 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 创建新的Sql IN条件语句
         /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="columnName">字段名</param>
+        /// <param name="isNotIn">是否不在范围内</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlInsideParametersCondition In<T>(String columnName, Boolean isNotIn, DbType dbType, IEnumerable<T> values)
+        {
+            List<SqlParameter> parameters = new List<SqlParameter>();
+
+            if (values != null)
+            {
+                Int32 i = 0;
+
+                foreach (Object obj in values)
+                {
+                    parameters.Add(SqlParameter.Create(columnName, columnName + "_" + (i++).ToString(), dbType, obj));
+                }
+            }
+
+            return new SqlInsideParametersCondition(isNotIn, parameters.ToArray());
+        }
+
+        /// <summary>
+        /// 创建新的Sql IN条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="columnName">字段名</param>
+        /// <param name="isNotIn">是否不在范围内</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlInsideParametersCondition In<T>(String columnName, Boolean isNotIn, IEnumerable<T> values)
+        {
+            List<SqlParameter> parameters = new List<SqlParameter>();
+
+            if (values != null)
+            {
+                Int32 i = 0;
+
+                foreach (Object obj in values)
+                {
+                    parameters.Add(SqlParameter.Create(columnName, columnName + "_" + (i++).ToString(), obj));
+                }
+            }
+
+            return new SqlInsideParametersCondition(isNotIn, parameters.ToArray());
+        }
+
+        /// <summary>
+        /// 创建新的Sql IN条件语句
+        /// </summary>
         /// <param name="columnName">字段名</param>
         /// <param name="isNotIn">是否不在范围内</param>
         /// <param name="dbType">数据类型</param>
@@ -1157,6 +1209,31 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 创建新的Sql IN条件语句
         /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlInsideParametersCondition In<T>(String columnName, DbType dbType, IEnumerable<T> values)
+        {
+            return SqlCondition.In(columnName, false, dbType, values);
+        }
+
+        /// <summary>
+        /// 创建新的Sql IN条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="columnName">字段名</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlInsideParametersCondition In<T>(String columnName, IEnumerable<T> values)
+        {
+            return SqlCondition.In(columnName, false, values);
+        }
+
+        /// <summary>
+        /// 创建新的Sql IN条件语句
+        /// </summary>
         /// <param name="columnName">字段名</param>
         /// <param name="dbType">数据类型</param>
         /// <param name="values">逗号分隔的数据集合</param>
@@ -1222,6 +1299,31 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
         public static SqlInsideParametersCondition NotIn(String columnName, params Object[] values)
+        {
+            return SqlCondition.In(columnName, true, values);
+        }
+
+        /// <summary>
+        /// 创建新的Sql NOT IN条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlInsideParametersCondition NotIn<T>(String columnName, DbType dbType, IEnumerable<T> values)
+        {
+            return SqlCondition.In(columnName, true, dbType, values);
+        }
+
+        /// <summary>
+        /// 创建新的Sql NOT IN条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="columnName">字段名</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlInsideParametersCondition NotIn<T>(String columnName, IEnumerable<T> values)
         {
             return SqlCondition.In(columnName, true, values);
         }
