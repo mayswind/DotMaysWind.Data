@@ -62,6 +62,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ConditionForLinqUnitTest.cs" />
     <Compile Include="ConditionUnitTest.cs" />
     <Compile Include="InsertCommandUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq.Expressions;
 
 using DotMaysWind.Data.Command;
@@ -56,6 +57,13 @@ namespace DotMaysWind.Data.Linq
             if (bexpr != null)
             {
                 return ParseBinaryExpression(sourceCommand, bexpr);
+            }
+
+            MethodCallExpression mcexpr = expr as MethodCallExpression;
+
+            if (mcexpr != null)
+            {
+                return ParseMethodCallExpression(sourceCommand, mcexpr);
             }
 
             throw new LinqNotSupportedException("Not supported this linq operation!");
@@ -127,6 +135,98 @@ namespace DotMaysWind.Data.Linq
 
             param = SqlParameter.Create(columnName, value);
             condition = SqlCondition.Create(param, op);
+
+            return condition;
+        }
+        #endregion
+
+        #region 扩展方法
+        private static AbstractSqlCondition ParseMethodCallExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr)
+        {
+            switch (expr.Method.Name)
+            {
+                case "Like":
+                    return ParseLikeCallExpression(sourceCommand, expr, "{0}", false);
+                case "LikeAll":
+                    return ParseLikeCallExpression(sourceCommand, expr, "%{0}%", false);
+                case "LikeStartWith":
+                    return ParseLikeCallExpression(sourceCommand, expr, "{0}%", false);
+                case "LikeEndWith":
+                    return ParseLikeCallExpression(sourceCommand, expr, "%{0}", false);
+                case "NotLike":
+                    return ParseLikeCallExpression(sourceCommand, expr, "{0}", true);
+                case "NotLikeAll":
+                    return ParseLikeCallExpression(sourceCommand, expr, "%{0}%", true);
+                case "NotLikeStartWith":
+                    return ParseLikeCallExpression(sourceCommand, expr, "{0}%", true);
+                case "NotLikeEndWith":
+                    return ParseLikeCallExpression(sourceCommand, expr, "%{0}", true);
+                case "In":
+                    return ParseInCallExpression(sourceCommand, expr, false);
+                case "NotIn":
+                    return ParseInCallExpression(sourceCommand, expr, true);
+                case "IsNull":
+                    return ParseNullExpression(sourceCommand, expr, false);
+                case "IsNotNull":
+                    return ParseNullExpression(sourceCommand, expr, true);
+            }
+
+            throw new LinqNotSupportedException("Not supported this method!");
+        }
+
+        private static AbstractSqlCondition ParseLikeCallExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, String format, Boolean isNot)
+        {
+            MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Arguments[0]);
+            String columnName = ExpressionHelper.GetColumnName(sourceCommand, left);
+            String value = ExpressionHelper.GetExpressionValue(expr.Arguments[1]) as String;
+
+            AbstractSqlCondition condition = null;
+
+            if (isNot)
+            {
+                condition = SqlCondition.NotLike(columnName, String.Format(format, value));
+            }
+            else
+            {
+                condition = SqlCondition.Like(columnName, String.Format(format, value));
+            }
+
+            return condition;
+        }
+
+        private static AbstractSqlCondition ParseInCallExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, Boolean isNot)
+        {
+            MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Arguments[0]);
+            String columnName = ExpressionHelper.GetColumnName(sourceCommand, left);
+            Object value = ExpressionHelper.GetExpressionValue(expr.Arguments[1]);
+
+            AbstractSqlCondition condition = null;
+            Array array = value as Array;
+
+            if (expr.Arguments.Count == 2 && array != null)
+            {
+                condition = SqlCondition.In(columnName, isNot, array);
+            }
+            else if (expr.Arguments.Count == 3)
+            {
+                Char separator = (Char)ExpressionHelper.GetExpressionValue(expr.Arguments[2]);
+                condition = SqlCondition.In(columnName, isNot, value as String, separator);
+            }
+            else
+            {
+                condition = SqlCondition.In(columnName, isNot, value as SelectCommand);
+            }
+
+            return condition;
+        }
+
+        private static AbstractSqlCondition ParseNullExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, Boolean isNot)
+        {
+            MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Arguments[0]);
+            String columnName = ExpressionHelper.GetColumnName(sourceCommand, left);
+
+            SqlParameter param = SqlParameter.Create(columnName, null);
+            AbstractSqlCondition condition = SqlCondition.Create(param, (isNot ? SqlOperator.IsNotNull : SqlOperator.IsNull));
 
             return condition;
         }
