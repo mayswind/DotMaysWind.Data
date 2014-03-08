@@ -153,24 +153,32 @@ namespace DotMaysWind.Data.Command.Condition
                 return false;
             }
 
-            if ((this._parameterOne != null && condition._parameterOne == null) || (this._parameterOne == null && condition._parameterOne != null))
-            {
-                return false;
-            }
+            Int32 paramCount = ((Byte)this._operator) / 100;
 
-            if (this._parameterOne != null && condition._parameterOne != null && !this._parameterOne.Equals(condition._parameterOne))
+            if (paramCount >= 1)
             {
-                return false;
-            }
+                if ((this._parameterOne != null && condition._parameterOne == null) || (this._parameterOne == null && condition._parameterOne != null))
+                {
+                    return false;
+                }
 
-            if ((this._parameterTwo != null && condition._parameterTwo == null) || (this._parameterTwo == null && condition._parameterTwo != null))
-            {
-                return false;
+                if (this._parameterOne != null && condition._parameterOne != null && !this._parameterOne.Equals(condition._parameterOne))
+                {
+                    return false;
+                }
             }
-
-            if (this._parameterTwo != null && condition._parameterTwo != null && !this._parameterTwo.Equals(condition._parameterTwo))
+            
+            if (paramCount >= 2)
             {
-                return false;
+                if ((this._parameterTwo != null && condition._parameterTwo == null) || (this._parameterTwo == null && condition._parameterTwo != null))
+                {
+                    return false;
+                }
+
+                if (this._parameterTwo != null && condition._parameterTwo != null && !this._parameterTwo.Equals(condition._parameterTwo))
+                {
+                    return false;
+                }
             }
 
             return true;
