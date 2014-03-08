@@ -1119,7 +1119,7 @@ namespace DotMaysWind.Data.Command.Condition
 
                 for (Int32 i = 0; i < valuesArray.Length; i++)
                 {
-                    parameters.Add(SqlParameter.Create(columnName, columnName + "_" + i.ToString(), dbType, valuesArray[i]));
+                    parameters.Add(SqlParameter.Create(columnName, columnName + "_" + i.ToString(), dbType, valuesArray[i].Trim()));
                 }
             }
 
@@ -1147,7 +1147,7 @@ namespace DotMaysWind.Data.Command.Condition
 
                 for (Int32 i = 0; i < valuesArray.Length; i++)
                 {
-                    Object value = Convert.ChangeType(valuesArray[i], t);
+                    Object value = Convert.ChangeType(valuesArray[i].Trim(), t);
                     parameters.Add(SqlParameter.Create(columnName, columnName + "_" + i.ToString(), dbType, value));
                 }
             }
@@ -1173,7 +1173,7 @@ namespace DotMaysWind.Data.Command.Condition
 
                 for (Int32 i = 0; i < valuesArray.Length; i++)
                 {
-                    parameters.Add(SqlParameter.Create(columnName, columnName + "_" + i.ToString(), DbType.Int32, Convert.ToInt32(valuesArray[i])));
+                    parameters.Add(SqlParameter.Create(columnName, columnName + "_" + i.ToString(), DbType.Int32, Convert.ToInt32(valuesArray[i].Trim())));
                 }
             }
 
