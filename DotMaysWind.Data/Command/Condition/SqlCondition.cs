@@ -668,7 +668,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition LikeStartWith(String columnName, String value)
         {
-            return SqlCondition.Like(SqlParameter.Create(columnName, "%" + value));
+            return SqlCondition.Like(SqlParameter.Create(columnName, value + "%"));
         }
 
         /// <summary>
@@ -680,7 +680,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition LikeStartWith(String columnName, String paramName, String value)
         {
-            return SqlCondition.Like(SqlParameter.Create(columnName, paramName, "%" + value));
+            return SqlCondition.Like(SqlParameter.Create(columnName, paramName, value + "%"));
         }
 
         /// <summary>
@@ -691,7 +691,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition NotLikeStartWith(String columnName, String value)
         {
-            return SqlCondition.NotLike(SqlParameter.Create(columnName, "%" + value));
+            return SqlCondition.NotLike(SqlParameter.Create(columnName, value + "%"));
         }
 
         /// <summary>
@@ -703,7 +703,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql查询语句类</returns>
         public static SqlBasicParameterCondition NotLikeStartWith(String columnName, String paramName, String value)
         {
-            return SqlCondition.NotLike(SqlParameter.Create(columnName, paramName, "%" + value));
+            return SqlCondition.NotLike(SqlParameter.Create(columnName, paramName, value + "%"));
         }
         #endregion
 
@@ -716,7 +716,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition LikeEndWith(String columnName, String value)
         {
-            return SqlCondition.Like(SqlParameter.Create(columnName, value + "%"));
+            return SqlCondition.Like(SqlParameter.Create(columnName, "%" + value));
         }
 
         /// <summary>
@@ -728,7 +728,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition LikeEndWith(String columnName, String paramName, String value)
         {
-            return SqlCondition.Like(SqlParameter.Create(columnName, paramName, value + "%"));
+            return SqlCondition.Like(SqlParameter.Create(columnName, paramName, "%" + value));
         }
 
         /// <summary>
@@ -739,7 +739,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition NotLikeEndWith(String columnName, String value)
         {
-            return SqlCondition.NotLike(SqlParameter.Create(columnName, value + "%"));
+            return SqlCondition.NotLike(SqlParameter.Create(columnName, "%" + value));
         }
 
         /// <summary>
@@ -751,7 +751,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql查询语句类</returns>
         public static SqlBasicParameterCondition NotLikeEndWith(String columnName, String paramName, String value)
         {
-            return SqlCondition.NotLike(SqlParameter.Create(columnName, paramName, value + "%"));
+            return SqlCondition.NotLike(SqlParameter.Create(columnName, paramName, "%" + value));
         }
         #endregion
         #endregion
