@@ -182,6 +182,46 @@ namespace DotMaysWind.Data.UnitTest
         }
         #endregion
 
+        #region 范围条件
+        [TestMethod]
+        public void LinqCreateBetweenConditionTest()
+        {
+            SqlBasicParameterCondition expectedCondition = SqlCondition.Between("TestColumn1", "1", "2");
+            SqlBasicParameterCondition actualCondition = SqlLinqCondition.Create<TestEntity>(c => c.Test1.Between("1", "2")) as SqlBasicParameterCondition;
+
+            Assert.AreEqual(expectedCondition, actualCondition);
+
+            SqlBasicParameterCondition expectedCondition2 = SqlCondition.Between("TestColumn2", 1, 2);
+            SqlBasicParameterCondition actualCondition2 = SqlLinqCondition.Create<TestEntity>(c => c.Test2.Between(1, 2)) as SqlBasicParameterCondition;
+
+            Assert.AreEqual(expectedCondition2, actualCondition2);
+
+            SqlBasicParameterCondition expectedCondition3 = SqlCondition.Between("TestColumn5", 1, 2);
+            SqlBasicParameterCondition actualCondition3 = SqlLinqCondition.Create<TestEntity>(c => c.Test5.Between(1, 2)) as SqlBasicParameterCondition;
+
+            Assert.AreEqual(expectedCondition3, actualCondition3);
+        }
+
+        [TestMethod]
+        public void LinqCreateNotBetweenConditionTest()
+        {
+            SqlBasicParameterCondition expectedCondition = SqlCondition.NotBetween("TestColumn1", "1", "2");
+            SqlBasicParameterCondition actualCondition = SqlLinqCondition.Create<TestEntity>(c => c.Test1.NotBetween("1", "2")) as SqlBasicParameterCondition;
+
+            Assert.AreEqual(expectedCondition, actualCondition);
+
+            SqlBasicParameterCondition expectedCondition2 = SqlCondition.NotBetween("TestColumn2", 1, 2);
+            SqlBasicParameterCondition actualCondition2 = SqlLinqCondition.Create<TestEntity>(c => c.Test2.NotBetween(1, 2)) as SqlBasicParameterCondition;
+
+            Assert.AreEqual(expectedCondition2, actualCondition2);
+
+            SqlBasicParameterCondition expectedCondition3 = SqlCondition.NotBetween("TestColumn5", 1, 2);
+            SqlBasicParameterCondition actualCondition3 = SqlLinqCondition.Create<TestEntity>(c => c.Test5.NotBetween(1, 2)) as SqlBasicParameterCondition;
+
+            Assert.AreEqual(expectedCondition3, actualCondition3);
+        }
+        #endregion
+
         #region 相似条件
         [TestMethod]
         public void LinqCreateLikeConditionTest()

@@ -9,6 +9,78 @@ namespace DotMaysWind.Data.Linq
     /// </summary>
     public static class EntityPropertyExtension
     {
+        #region IsNull
+        /// <summary>
+        /// 判断属性所指字段内容是否为空
+        /// </summary>
+        /// <typeparam name="T">属性类型</typeparam>
+        /// <param name="key">实体属性</param>
+        /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
+        /// <returns>内容是否为空</returns>
+        public static Boolean IsNull<T>(this T key) where T : struct
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 判断属性所指字段内容是否为空
+        /// </summary>
+        /// <typeparam name="T">属性类型</typeparam>
+        /// <param name="key">实体属性</param>
+        /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
+        /// <returns>内容是否为空</returns>
+        public static Boolean IsNull<T>(this T? key) where T : struct
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 判断属性所指字段内容是否为空
+        /// </summary>
+        /// <param name="key">实体属性</param>
+        /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
+        /// <returns>内容是否为空</returns>
+        public static Boolean IsNull(this String key)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region IsNotNull
+        /// <summary>
+        /// 判断属性所指字段内容是否不为空
+        /// </summary>
+        /// <typeparam name="T">属性类型</typeparam>
+        /// <param name="key">实体属性</param>
+        /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
+        /// <returns>内容是否不为空</returns>
+        public static Boolean IsNotNull<T>(this T key) where T : struct
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static Boolean IsNotNull<T>(this T? key) where T : struct
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static Boolean IsNotNull(this String key)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
         #region Like
         /// <summary>
         /// 判断属性所指字段是否与指定内容相似
@@ -109,73 +181,87 @@ namespace DotMaysWind.Data.Linq
         }
         #endregion
 
-        #region IsNull
+        #region Between
         /// <summary>
-        /// 判断属性所指字段内容是否为空
+        /// 判断属性所指字段是否在指定范围内
         /// </summary>
         /// <typeparam name="T">属性类型</typeparam>
         /// <param name="key">实体属性</param>
+        /// <param name="start">开始值</param>
+        /// <param name="end">结束值</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
-        /// <returns>内容是否为空</returns>
-        public static Boolean IsNull<T>(this T key) where T : struct
+        /// <returns>是否在指定范围内</returns>
+        public static Boolean Between<T>(this T key, T start, T end) where T : struct
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// 判断属性所指字段内容是否为空
+        /// 判断属性所指字段是否在指定范围内
         /// </summary>
         /// <typeparam name="T">属性类型</typeparam>
         /// <param name="key">实体属性</param>
+        /// <param name="start">开始值</param>
+        /// <param name="end">结束值</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
-        /// <returns>内容是否为空</returns>
-        public static Boolean IsNull<T>(this T? key) where T : struct
+        /// <returns>是否在指定范围内</returns>
+        public static Boolean Between<T>(this T? key, T start, T end) where T : struct
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// 判断属性所指字段内容是否为空
+        /// 判断属性所指字段是否在指定范围内
         /// </summary>
         /// <param name="key">实体属性</param>
+        /// <param name="start">开始值</param>
+        /// <param name="end">结束值</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
-        /// <returns>内容是否为空</returns>
-        public static Boolean IsNull(this String key)
+        /// <returns>是否在指定范围内</returns>
+        public static Boolean Between(this String key, String start, String end)
         {
             throw new NotImplementedException();
         }
         #endregion
 
-        #region IsNotNull
+        #region Between
         /// <summary>
-        /// 判断属性所指字段内容是否不为空
+        /// 判断属性所指字段是否不在指定范围内
         /// </summary>
         /// <typeparam name="T">属性类型</typeparam>
         /// <param name="key">实体属性</param>
+        /// <param name="start">开始值</param>
+        /// <param name="end">结束值</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
-        /// <returns>内容是否不为空</returns>
-        public static Boolean IsNotNull<T>(this T key) where T : struct
+        /// <returns>是否不在指定范围内</returns>
+        public static Boolean NotBetween<T>(this T key, T start, T end) where T : struct
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// 
+        /// 判断属性所指字段是否不在指定范围内
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public static Boolean IsNotNull<T>(this T? key) where T : struct
+        /// <typeparam name="T">属性类型</typeparam>
+        /// <param name="key">实体属性</param>
+        /// <param name="start">开始值</param>
+        /// <param name="end">结束值</param>
+        /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
+        /// <returns>是否不在指定范围内</returns>
+        public static Boolean NotBetween<T>(this T? key, T start, T end) where T : struct
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// 
+        /// 判断属性所指字段是否不在指定范围内
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public static Boolean IsNotNull(this String key)
+        /// <param name="key">实体属性</param>
+        /// <param name="start">开始值</param>
+        /// <param name="end">结束值</param>
+        /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
+        /// <returns>是否不在指定范围内</returns>
+        public static Boolean NotBetween(this String key, String start, String end)
         {
             throw new NotImplementedException();
         }

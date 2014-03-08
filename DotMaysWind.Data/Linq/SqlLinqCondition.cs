@@ -151,6 +151,10 @@ namespace DotMaysWind.Data.Linq
         {
             switch (expr.Method.Name)
             {
+                case "IsNull":
+                    return ParseNullExpression(sourceCommand, expr, false);
+                case "IsNotNull":
+                    return ParseNullExpression(sourceCommand, expr, true);
                 case "Like":
                     return ParseLikeCallExpression(sourceCommand, expr, "{0}", false);
                 case "LikeAll":
@@ -167,17 +171,28 @@ namespace DotMaysWind.Data.Linq
                     return ParseLikeCallExpression(sourceCommand, expr, "{0}%", true);
                 case "NotLikeEndWith":
                     return ParseLikeCallExpression(sourceCommand, expr, "%{0}", true);
+                case "Between":
+                    return ParseBetweenCallExpression(sourceCommand, expr, false);
+                case "NotBetween":
+                    return ParseBetweenCallExpression(sourceCommand, expr, true);
                 case "In":
                     return ParseInCallExpression(sourceCommand, expr, false);
                 case "NotIn":
                     return ParseInCallExpression(sourceCommand, expr, true);
-                case "IsNull":
-                    return ParseNullExpression(sourceCommand, expr, false);
-                case "IsNotNull":
-                    return ParseNullExpression(sourceCommand, expr, true);
             }
 
             throw new LinqNotSupportedException("Not supported this method!");
+        }
+
+        private static AbstractSqlCondition ParseNullExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, Boolean isNot)
+        {
+            MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Arguments[0]);
+            String columnName = ExpressionHelper.GetColumnName(sourceCommand, left);
+
+            SqlParameter param = SqlParameter.Create(columnName, null);
+            AbstractSqlCondition condition = SqlCondition.Create(param, (isNot ? SqlOperator.IsNotNull : SqlOperator.IsNull));
+
+            return condition;
         }
 
         private static AbstractSqlCondition ParseLikeCallExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, String format, Boolean isNot)
@@ -195,6 +210,27 @@ namespace DotMaysWind.Data.Linq
             else
             {
                 condition = SqlCondition.Like(columnName, String.Format(format, value));
+            }
+
+            return condition;
+        }
+
+        private static AbstractSqlCondition ParseBetweenCallExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, Boolean isNot)
+        {
+            MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Arguments[0]);
+            String columnName = ExpressionHelper.GetColumnName(sourceCommand, left);
+            Object start = ExpressionHelper.GetExpressionValue(expr.Arguments[1]) as Object;
+            Object end = ExpressionHelper.GetExpressionValue(expr.Arguments[2]) as Object;
+
+            AbstractSqlCondition condition = null;
+
+            if (isNot)
+            {
+                condition = SqlCondition.NotBetween(columnName, start, end);
+            }
+            else
+            {
+                condition = SqlCondition.Between(columnName, start, end);
             }
 
             return condition;
@@ -225,17 +261,6 @@ namespace DotMaysWind.Data.Linq
             }
 
             throw new LinqNotSupportedException("Not supported this method!");
-        }
-
-        private static AbstractSqlCondition ParseNullExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, Boolean isNot)
-        {
-            MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Arguments[0]);
-            String columnName = ExpressionHelper.GetColumnName(sourceCommand, left);
-
-            SqlParameter param = SqlParameter.Create(columnName, null);
-            AbstractSqlCondition condition = SqlCondition.Create(param, (isNot ? SqlOperator.IsNotNull : SqlOperator.IsNull));
-
-            return condition;
         }
         #endregion
 
