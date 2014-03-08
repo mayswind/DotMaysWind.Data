@@ -60,7 +60,7 @@ namespace DotMaysWind.Data.Command
         /// 获取所有参数集合
         /// </summary>
         /// <returns>所有参数集合</returns>
-        public override List<SqlParameter> GetAllParameters()
+        public override SqlParameter[] GetAllParameters()
         {
             List<SqlParameter> result = new List<SqlParameter>();
             result.AddRange(this._parameters);
@@ -71,7 +71,7 @@ namespace DotMaysWind.Data.Command
                 result.AddRange(whereParameters);
             }
 
-            return result;
+            return result.ToArray();
         }
         #endregion
     }

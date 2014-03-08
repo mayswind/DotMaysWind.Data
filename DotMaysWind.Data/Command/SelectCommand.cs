@@ -405,7 +405,7 @@ namespace DotMaysWind.Data.Command
 
             this._queryFields.Add(SqlQueryField.InternalCreateFromFunction(command.GetSqlCommand(true), aliasesName));
 
-            List<SqlParameter> parameters = command.GetAllParameters();
+            SqlParameter[] parameters = command.GetAllParameters();
             if (parameters != null)
             {
                 this._parameters.AddRange(parameters);
@@ -827,7 +827,7 @@ namespace DotMaysWind.Data.Command
         /// 获取所有参数集合
         /// </summary>
         /// <returns>所有参数集合</returns>
-        public override List<SqlParameter> GetAllParameters()
+        public override SqlParameter[] GetAllParameters()
         {
             List<SqlParameter> result = new List<SqlParameter>();
             result.AddRange(this._parameters);
@@ -853,7 +853,7 @@ namespace DotMaysWind.Data.Command
                 result.AddRange(havingParameters);
             }
 
-            return result;
+            return result.ToArray();
         }
         #endregion
         #endregion

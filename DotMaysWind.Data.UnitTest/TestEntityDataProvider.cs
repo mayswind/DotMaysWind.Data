@@ -16,7 +16,7 @@ namespace DotMaysWind.Data.UnitTest
             InsertCommand cmd = this.Insert().Add(entity);
 
             sql = cmd.GetSqlCommand().Trim();
-            parameters = cmd.GetAllParameters().ToArray();
+            parameters = cmd.GetAllParameters();
         }
 
         public void LinqInsert(TestEntity entity, out String sql, out SqlParameter[] parameters)
@@ -32,7 +32,7 @@ namespace DotMaysWind.Data.UnitTest
                 .Add<TestEntity>(c => c.Test8, entity.Test8);
 
             sql = cmd.GetSqlCommand().Trim();
-            parameters = cmd.GetAllParameters().ToArray();
+            parameters = cmd.GetAllParameters();
         }
 
         public void EntityUpdate(TestEntity entity, out String sql, out SqlParameter[] parameters)
@@ -40,7 +40,7 @@ namespace DotMaysWind.Data.UnitTest
             UpdateCommand cmd = this.Update().Set(entity);
 
             sql = cmd.GetSqlCommand().Trim();
-            parameters = cmd.GetAllParameters().ToArray();
+            parameters = cmd.GetAllParameters();
         }
 
         public void LinqUpdate(TestEntity entity, out String sql, out SqlParameter[] parameters)
@@ -56,7 +56,7 @@ namespace DotMaysWind.Data.UnitTest
                 .Set<TestEntity>(c => c.Test8, entity.Test8);
 
             sql = cmd.GetSqlCommand().Trim();
-            parameters = cmd.GetAllParameters().ToArray();
+            parameters = cmd.GetAllParameters();
         }
 
         public void LinqIncrease(TestEntity entity, out String sql, out SqlParameter[] parameters)
@@ -64,7 +64,7 @@ namespace DotMaysWind.Data.UnitTest
             UpdateCommand cmd = this.Update().Increase<TestEntity>(c => c.Test2);
 
             sql = cmd.GetSqlCommand().Trim();
-            parameters = cmd.GetAllParameters().ToArray();
+            parameters = cmd.GetAllParameters();
         }
 
         public void LinqDecrease(TestEntity entity, out String sql, out SqlParameter[] parameters)
@@ -72,7 +72,7 @@ namespace DotMaysWind.Data.UnitTest
             UpdateCommand cmd = this.Update().Decrease<TestEntity>(c => c.Test2);
 
             sql = cmd.GetSqlCommand().Trim();
-            parameters = cmd.GetAllParameters().ToArray();
+            parameters = cmd.GetAllParameters();
         }
     }
 }

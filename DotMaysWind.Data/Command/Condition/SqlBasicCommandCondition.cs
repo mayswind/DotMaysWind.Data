@@ -66,9 +66,7 @@ namespace DotMaysWind.Data.Command.Condition
                 return null;
             }
 
-            List<SqlParameter> parameters = this._command.GetAllParameters();
-
-            return parameters.ToArray();
+            return this._command.GetAllParameters();
         }
 
         /// <summary>

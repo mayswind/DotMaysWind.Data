@@ -54,7 +54,7 @@ namespace DotMaysWind.Data.Command.Join
                 return null;
             }
 
-            return this._anotherTableCommand.GetAllParameters().ToArray();
+            return this._anotherTableCommand.GetAllParameters();
         }
 
         /// <summary>

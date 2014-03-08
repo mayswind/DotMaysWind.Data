@@ -28,7 +28,7 @@ namespace DotMaysWind.Data.Command
         /// 输出条件语句内容
         /// </summary>
         /// <returns>条件语句内容</returns>
-        List<SqlParameter> GetAllParameters();
+        SqlParameter[] GetAllParameters();
 
         /// <summary>
         /// 输出SQL语句

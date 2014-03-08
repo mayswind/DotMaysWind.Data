@@ -136,7 +136,7 @@ namespace DotMaysWind.Data.Command
 
             this._parameters.Add(SqlParameter.CreateCustomAction(columnName, command.GetSqlCommand()));
 
-            List<SqlParameter> parameters = command.GetAllParameters();
+            SqlParameter[] parameters = command.GetAllParameters();
 
             if (parameters != null)
             {
