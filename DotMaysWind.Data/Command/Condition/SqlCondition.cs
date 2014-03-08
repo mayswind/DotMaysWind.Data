@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+
+using DotMaysWind.Data.Helper;
 
 namespace DotMaysWind.Data.Command.Condition
 {
@@ -1033,9 +1034,11 @@ namespace DotMaysWind.Data.Command.Condition
 
             if (values != null)
             {
+                DbType dbType = DbTypeHelper.InternalGetDbType(values[0]);
+
                 for (Int32 i = 0; i < values.Length; i++)
                 {
-                    parameters.Add(SqlParameter.Create(columnName, columnName + "_" + i.ToString(), values[i]));
+                    parameters.Add(SqlParameter.Create(columnName, columnName + "_" + i.ToString(), dbType, values[i]));
                 }
             }
 
@@ -1082,11 +1085,17 @@ namespace DotMaysWind.Data.Command.Condition
 
             if (values != null)
             {
+                DbType? dbType = null;
                 Int32 i = 0;
 
                 foreach (Object obj in values)
                 {
-                    parameters.Add(SqlParameter.Create(columnName, columnName + "_" + (i++).ToString(), obj));
+                    if (!dbType.HasValue)
+                    {
+                        dbType = DbTypeHelper.InternalGetDbType(obj);
+                    }
+
+                    parameters.Add(SqlParameter.Create(columnName, columnName + "_" + (i++).ToString(), dbType.Value, obj));
                 }
             }
 
