@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Linq.Expressions;
 
 using DotMaysWind.Data.Command;
@@ -200,24 +199,25 @@ namespace DotMaysWind.Data.Linq
             String columnName = ExpressionHelper.GetColumnName(sourceCommand, left);
             Object value = ExpressionHelper.GetExpressionValue(expr.Arguments[1]);
 
-            AbstractSqlCondition condition = null;
             Array array = value as Array;
 
-            if (expr.Arguments.Count == 2 && array != null)
+            if (array != null)
             {
-                condition = SqlCondition.In(columnName, isNot, array);
-            }
-            else if (expr.Arguments.Count == 3)
-            {
-                Char separator = (Char)ExpressionHelper.GetExpressionValue(expr.Arguments[2]);
-                condition = SqlCondition.In(columnName, isNot, value as String, separator);
-            }
-            else
-            {
-                condition = SqlCondition.In(columnName, isNot, value as SelectCommand);
+                AbstractSqlCondition condition = SqlCondition.In(columnName, isNot, array);
+
+                return condition;
             }
 
-            return condition;
+            SelectCommand cmd = value as SelectCommand;
+
+            if (cmd != null)
+            {
+                AbstractSqlCondition condition = SqlCondition.In(columnName, isNot, cmd);
+
+                return condition;
+            }
+
+            throw new LinqNotSupportedException("Not supported this method!");
         }
 
         private static AbstractSqlCondition ParseNullExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, Boolean isNot)
