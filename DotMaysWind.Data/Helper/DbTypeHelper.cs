@@ -19,24 +19,39 @@ namespace DotMaysWind.Data.Helper
             TypeDict = new Dictionary<Type, DbType>();
 
             TypeDict[typeof(Byte[])] = DbType.Binary;
+
             TypeDict[typeof(Boolean)] = DbType.Boolean;
+            TypeDict[typeof(Boolean?)] = DbType.Boolean;
             
             TypeDict[typeof(Byte)] = DbType.Byte;
+            TypeDict[typeof(Byte?)] = DbType.Byte;
             TypeDict[typeof(SByte)] = DbType.SByte;
+            TypeDict[typeof(SByte?)] = DbType.SByte;
 
             TypeDict[typeof(Int16)] = DbType.Int16;
+            TypeDict[typeof(Int16?)] = DbType.Int16;
             TypeDict[typeof(Int32)] = DbType.Int32;
+            TypeDict[typeof(Int32?)] = DbType.Int32;
             TypeDict[typeof(Int64)] = DbType.Int64;
+            TypeDict[typeof(Int64?)] = DbType.Int64;
             TypeDict[typeof(UInt16)] = DbType.UInt16;
+            TypeDict[typeof(UInt16?)] = DbType.UInt16;
             TypeDict[typeof(UInt32)] = DbType.UInt32;
+            TypeDict[typeof(UInt32?)] = DbType.UInt32;
             TypeDict[typeof(UInt64)] = DbType.UInt64;
+            TypeDict[typeof(UInt64?)] = DbType.UInt64;
 
             TypeDict[typeof(Single)] = DbType.Single;
+            TypeDict[typeof(Single?)] = DbType.Single;
             TypeDict[typeof(Double)] = DbType.Double;
+            TypeDict[typeof(Double?)] = DbType.Double;
             TypeDict[typeof(Decimal)] = DbType.Decimal;
+            TypeDict[typeof(Decimal?)] = DbType.Decimal;
             
             TypeDict[typeof(DateTime)] = DbType.DateTime;
+            TypeDict[typeof(DateTime?)] = DbType.DateTime;
             TypeDict[typeof(DateTimeOffset)] = DbType.DateTimeOffset;
+            TypeDict[typeof(DateTimeOffset?)] = DbType.DateTimeOffset;
 
             TypeDict[typeof(String)] = DbType.String;
         }

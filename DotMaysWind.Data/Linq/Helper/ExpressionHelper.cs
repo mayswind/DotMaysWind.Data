@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 
 using DotMaysWind.Data.Command;
+using DotMaysWind.Data.Helper;
 using DotMaysWind.Data.Orm;
 using DotMaysWind.Data.Orm.Helper;
 
@@ -42,6 +43,24 @@ namespace DotMaysWind.Data.Linq.Helper
             if (attr == null)
             {
                 attr = EntityHelper.InternalGetColumnAttribute(expr.Member.DeclaringType, expr.Member.Name);
+            }
+
+            return attr;
+        }
+
+        /// <summary>
+        /// 获取一定包含数据类型的表达式所指的列特性
+        /// </summary>
+        /// <param name="sourceCommand">来源Sql语句</param>
+        /// <param name="expr">表达式</param>
+        /// <returns>表达式所指的列特性</returns>
+        internal static DatabaseColumnAttribute GetColumnAttributeWithDbType(AbstractSqlCommand sourceCommand, MemberExpression expr)
+        {
+            DatabaseColumnAttribute attr = ExpressionHelper.GetColumnAttribute(sourceCommand, expr);
+
+            if (attr != null && !attr.DbType.HasValue)
+            {
+                attr.DbType = DbTypeHelper.InternalGetDbType(expr.Type);
             }
 
             return attr;

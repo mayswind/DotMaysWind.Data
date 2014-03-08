@@ -24,11 +24,12 @@ namespace DotMaysWind.Data.Orm
         }
 
         /// <summary>
-        /// 获取数据列数据类型
+        /// 获取或设置数据列数据类型
         /// </summary>
         public DbType? DbType
         {
             get { return this._dbType; }
+            set { this._dbType = value; }
         }
         #endregion
 

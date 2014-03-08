@@ -16,10 +16,10 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 创建新的Sql条件语句
         /// </summary>
-        /// <param name="parameter">参数</param>
         /// <param name="op">条件运算符</param>
+        /// <param name="parameter">参数</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition Create(SqlParameter parameter, SqlOperator op)
+        public static SqlBasicParameterCondition Create(SqlOperator op, SqlParameter parameter)
         {
             return new SqlBasicParameterCondition(parameter, op);
         }
@@ -27,11 +27,11 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 创建双参数新的Sql条件语句
         /// </summary>
+        /// <param name="op">条件运算符</param>
         /// <param name="parameterOne">参数一</param>
         /// <param name="parameterTwo">参数二</param>
-        /// <param name="op">条件运算符</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition Create(SqlParameter parameterOne, SqlParameter parameterTwo, SqlOperator op)
+        public static SqlBasicParameterCondition Create(SqlOperator op, SqlParameter parameterOne, SqlParameter parameterTwo)
         {
             return new SqlBasicParameterCondition(parameterOne, parameterTwo, op);
         }
@@ -49,6 +49,19 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
+        /// 创建双参数新的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="op">条件运算符</param>
+        /// <param name="valueOne">数据一</param>
+        /// <param name="valueTwo">数据二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition Create(String columnName, SqlOperator op, Object valueOne, Object valueTwo)
+        {
+            return new SqlBasicParameterCondition(SqlParameter.Create(columnName, columnName + "_One", valueOne), SqlParameter.Create(columnName, columnName + "_Two", valueTwo), op);
+        }
+
+        /// <summary>
         /// 创建单参数新的Sql条件语句
         /// </summary>
         /// <param name="columnName">字段名</param>
@@ -59,6 +72,20 @@ namespace DotMaysWind.Data.Command.Condition
         public static SqlBasicParameterCondition Create(String columnName, SqlOperator op, DbType dbType, Object value)
         {
             return new SqlBasicParameterCondition(SqlParameter.Create(columnName, dbType, value), op);
+        }
+
+        /// <summary>
+        /// 创建双参数新的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="op">条件运算符</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="valueOne">数据一</param>
+        /// <param name="valueTwo">数据二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition Create(String columnName, SqlOperator op, DbType dbType, Object valueOne, Object valueTwo)
+        {
+            return new SqlBasicParameterCondition(SqlParameter.Create(columnName, columnName + "_One", dbType, valueOne), SqlParameter.Create(columnName, columnName + "_Two", dbType, valueTwo), op);
         }
 
         /// <summary>
@@ -75,6 +102,20 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
+        /// 创建双参数新的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="paramName">参数名</param>
+        /// <param name="op">条件运算符</param>
+        /// <param name="valueOne">数据一</param>
+        /// <param name="valueTwo">数据二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition Create(String columnName, String paramName, SqlOperator op, Object valueOne, Object valueTwo)
+        {
+            return new SqlBasicParameterCondition(SqlParameter.Create(columnName, paramName + "_One", valueOne), SqlParameter.Create(columnName, paramName + "_Two", valueTwo), op);
+        }
+
+        /// <summary>
         /// 创建单参数新的Sql条件语句
         /// </summary>
         /// <param name="columnName">字段名</param>
@@ -86,6 +127,21 @@ namespace DotMaysWind.Data.Command.Condition
         public static SqlBasicParameterCondition Create(String columnName, String paramName, SqlOperator op, DbType dbType, Object value)
         {
             return new SqlBasicParameterCondition(SqlParameter.Create(columnName, paramName, dbType, value), op);
+        }
+
+        /// <summary>
+        /// 创建双参数新的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="paramName">参数名</param>
+        /// <param name="op">条件运算符</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="valueOne">数据一</param>
+        /// <param name="valueTwo">数据二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition Create(String columnName, String paramName, SqlOperator op, DbType dbType, Object valueOne, Object valueTwo)
+        {
+            return new SqlBasicParameterCondition(SqlParameter.Create(columnName, paramName + "_One", dbType, valueOne), SqlParameter.Create(columnName, paramName + "_Two", dbType, valueTwo), op);
         }
 
         /// <summary>

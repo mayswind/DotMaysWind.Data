@@ -26,9 +26,9 @@ namespace DotMaysWind.Data.UnitTest
                 SqlParameter.Create("TestColumn2", "NEW_TestColumn2", entity.Test2),
                 SqlParameter.Create("TestColumn3", "NEW_TestColumn3", entity.Test3),
                 SqlParameter.Create("TestColumn4", "NEW_TestColumn4", entity.Test4),
-                SqlParameter.Create("TestColumn5", "NEW_TestColumn5", entity.Test5),
-                SqlParameter.Create("TestColumn6", "NEW_TestColumn6", entity.Test6),
-                SqlParameter.Create("TestColumn7", "NEW_TestColumn7", entity.Test7),
+                SqlParameter.Create("TestColumn5", "NEW_TestColumn5", DbType.Int32, entity.Test5),
+                SqlParameter.Create("TestColumn6", "NEW_TestColumn6", DbType.Double, entity.Test6),
+                SqlParameter.Create("TestColumn7", "NEW_TestColumn7", DbType.DateTime, entity.Test7),
                 SqlParameter.Create("TestColumn8", "NEW_TestColumn8", DbType.Int16, entity.Test8),
             };
 
@@ -59,9 +59,9 @@ namespace DotMaysWind.Data.UnitTest
                 SqlParameter.Create("TestColumn2", "NEW_TestColumn2", entity.Test2),
                 SqlParameter.Create("TestColumn3", "NEW_TestColumn3", entity.Test3),
                 SqlParameter.Create("TestColumn4", "NEW_TestColumn4", entity.Test4),
-                SqlParameter.Create("TestColumn5", "NEW_TestColumn5", entity.Test5),
-                SqlParameter.Create("TestColumn6", "NEW_TestColumn6", entity.Test6),
-                SqlParameter.Create("TestColumn7", "NEW_TestColumn7", entity.Test7),
+                SqlParameter.Create("TestColumn5", "NEW_TestColumn5", DbType.Int32, entity.Test5),
+                SqlParameter.Create("TestColumn6", "NEW_TestColumn6", DbType.Double, entity.Test6),
+                SqlParameter.Create("TestColumn7", "NEW_TestColumn7", DbType.DateTime, entity.Test7),
                 SqlParameter.Create("TestColumn8", "NEW_TestColumn8", DbType.Int16, entity.Test8),
             };
 

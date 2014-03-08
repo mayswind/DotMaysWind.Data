@@ -12,6 +12,22 @@ namespace DotMaysWind.Data.Orm.Helper
     /// </summary>
     internal static class EntityHelper
     {
+        #region 字段
+        private static Type TypeOfDatabaseTableAttribute;
+        private static Type TypeOfDatabaseColumnAttribute;
+        private static Type TypeOfNullable;
+        #endregion
+
+        #region 构造方法
+        static EntityHelper()
+        {
+            TypeOfDatabaseTableAttribute = typeof(DatabaseTableAttribute);
+            TypeOfDatabaseColumnAttribute = typeof(DatabaseColumnAttribute);
+            TypeOfNullable = typeof(Nullable<>);
+        }
+        #endregion
+
+        #region 方法
         /// <summary>
         /// 获取实体类映射表格名称
         /// </summary>
@@ -19,7 +35,7 @@ namespace DotMaysWind.Data.Orm.Helper
         /// <returns>表格名称</returns>
         internal static String InternalGetTableName(Type entityType)
         {
-            Object[] objs = entityType.GetCustomAttributes(typeof(DatabaseTableAttribute), true);
+            Object[] objs = entityType.GetCustomAttributes(TypeOfDatabaseTableAttribute, true);
 
             foreach (Object obj in objs)
             {
@@ -52,7 +68,7 @@ namespace DotMaysWind.Data.Orm.Helper
                 }
 
                 DatabaseColumnAttribute attr = null;
-                Object[] objs = prop.GetCustomAttributes(typeof(DatabaseColumnAttribute), true);
+                Object[] objs = prop.GetCustomAttributes(TypeOfDatabaseColumnAttribute, true);
 
                 foreach (Object obj in objs)
                 {
@@ -78,7 +94,7 @@ namespace DotMaysWind.Data.Orm.Helper
 
             foreach (PropertyInfo prop in props)
             {
-                Object[] objs = prop.GetCustomAttributes(typeof(DatabaseColumnAttribute), true);
+                Object[] objs = prop.GetCustomAttributes(TypeOfDatabaseColumnAttribute, true);
 
                 foreach (Object obj in objs)
                 {
@@ -93,28 +109,6 @@ namespace DotMaysWind.Data.Orm.Helper
             }
 
             return dict;
-        }
-
-        /// <summary>
-        /// 获取指定Sql参数
-        /// </summary>
-        /// <param name="attr">实体属性特性</param>
-        /// <param name="value">属性值</param>
-        /// <returns>Sql参数集合</returns>
-        internal static SqlParameter InternalGetSqlParameter(DatabaseColumnAttribute attr, Object value)
-        {
-            SqlParameter parameter = null;
-
-            if (attr.DbType.HasValue)
-            {
-                parameter = SqlParameter.Create(attr.ColumnName, attr.DbType.Value, value);
-            }
-            else
-            {
-                parameter = SqlParameter.Create(attr.ColumnName, value);
-            }
-
-            return parameter;
         }
 
         /// <summary>
@@ -137,16 +131,28 @@ namespace DotMaysWind.Data.Orm.Helper
             foreach (PropertyInfo prop in props)
             {
                 DatabaseColumnAttribute attr = null;
-                Object[] objs = prop.GetCustomAttributes(typeof(DatabaseColumnAttribute), true);
+                DbType? dbType = null;
+                Object[] objs = prop.GetCustomAttributes(TypeOfDatabaseColumnAttribute, true);
 
                 foreach (Object obj in objs)
                 {
                     if ((attr = obj as DatabaseColumnAttribute) != null)
                     {
-                        SqlParameter parameter = EntityHelper.InternalGetSqlParameter(attr, prop.GetValue(entity, null));
-                        parameters.Add(parameter);
                         break;
                     }
+                }
+
+                if (attr != null)
+                {
+                    dbType = attr.DbType;
+
+                    if (!dbType.HasValue)
+                    {
+                        dbType = DbTypeHelper.InternalGetDbType(prop.PropertyType);
+                    }
+
+                    SqlParameter parameter = SqlParameter.Create(attr.ColumnName, dbType.Value, prop.GetValue(entity, null));
+                    parameters.Add(parameter);
                 }
             }
 
@@ -165,7 +171,8 @@ namespace DotMaysWind.Data.Orm.Helper
                 return false;
             }
 
-            return (type.GetGenericTypeDefinition() == typeof(Nullable<>));
+            return (type.GetGenericTypeDefinition() == TypeOfNullable);
         }
+        #endregion
     }
 }

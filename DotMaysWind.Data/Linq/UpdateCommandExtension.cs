@@ -44,21 +44,14 @@ namespace DotMaysWind.Data.Linq
                 throw new ExpressionInvalidException();
             }
 
-            DatabaseColumnAttribute attr = ExpressionHelper.GetColumnAttribute(cmd, left);
+            DatabaseColumnAttribute attr = ExpressionHelper.GetColumnAttributeWithDbType(cmd, left);
 
             if (attr == null)
             {
                 throw new NullAttributeException();
             }
 
-            if (attr.DbType.HasValue)
-            {
-                return cmd.Set(attr.ColumnName, attr.DbType.Value, value);
-            }
-            else
-            {
-                return cmd.Set(attr.ColumnName, value);
-            }
+            return cmd.Set(attr.ColumnName, attr.DbType.Value, value);
         }
 
         /// <summary>
