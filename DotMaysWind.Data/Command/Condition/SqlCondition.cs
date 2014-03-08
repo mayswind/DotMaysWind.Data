@@ -986,7 +986,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="parameters">参数集合</param>
         /// <exception cref="ArgumentNullException">参数集合不能为空</exception>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition In(Boolean isNotIn, List<SqlParameter> parameters)
+        public static SqlInsideParametersCondition In(Boolean isNotIn, params SqlParameter[] parameters)
         {
             if (parameters == null)
             {
@@ -1016,7 +1016,7 @@ namespace DotMaysWind.Data.Command.Condition
                 }
             }
 
-            return new SqlInsideParametersCondition(isNotIn, parameters);
+            return new SqlInsideParametersCondition(isNotIn, parameters.ToArray());
         }
 
         /// <summary>
@@ -1038,7 +1038,7 @@ namespace DotMaysWind.Data.Command.Condition
                 }
             }
 
-            return new SqlInsideParametersCondition(isNotIn, parameters);
+            return new SqlInsideParametersCondition(isNotIn, parameters.ToArray());
         }
 
         /// <summary>
@@ -1063,7 +1063,7 @@ namespace DotMaysWind.Data.Command.Condition
                 }
             }
 
-            return new SqlInsideParametersCondition(isNotIn, parameters);
+            return new SqlInsideParametersCondition(isNotIn, parameters.ToArray());
         }
 
         /// <summary>
@@ -1091,7 +1091,7 @@ namespace DotMaysWind.Data.Command.Condition
                 }
             }
 
-            return new SqlInsideParametersCondition(isNotIn, parameters);
+            return new SqlInsideParametersCondition(isNotIn, parameters.ToArray());
         }
 
         /// <summary>
@@ -1115,7 +1115,7 @@ namespace DotMaysWind.Data.Command.Condition
                 }
             }
 
-            return new SqlInsideParametersCondition(isNotIn, parameters);
+            return new SqlInsideParametersCondition(isNotIn, parameters.ToArray());
         }
         #endregion
 
@@ -1126,7 +1126,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="parameters">参数集合</param>
         /// <exception cref="ArgumentNullException">参数集合不能为空</exception>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition In(List<SqlParameter> parameters)
+        public static SqlInsideParametersCondition In(params SqlParameter[] parameters)
         {
             return SqlCondition.In(false, parameters);
         }
@@ -1198,7 +1198,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="parameters">参数集合</param>
         /// <exception cref="ArgumentNullException">参数集合不能为空</exception>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition NotIn(List<SqlParameter> parameters)
+        public static SqlInsideParametersCondition NotIn(params SqlParameter[] parameters)
         {
             return SqlCondition.In(true, parameters);
         }
