@@ -16,6 +16,16 @@ namespace DotMaysWind.Data.Command.Condition
 
         #region 方法
         /// <summary>
+        /// Sql条件语句执行非操作
+        /// </summary>
+        /// <param name="condition">条件</param>
+        /// <returns>条件列表</returns>
+        public static SqlNotCondition operator !(AbstractSqlCondition condition)
+        {
+            return SqlCondition.Not(condition);
+        }
+
+        /// <summary>
         /// 两个Sql条件语句执行与操作
         /// </summary>
         /// <param name="condition1">条件1</param>

@@ -1428,13 +1428,13 @@ namespace DotMaysWind.Data.Command.Condition
         #endregion
         #endregion
 
-        #region 条件组
+        #region And/Or/Not
         #region General
         /// <summary>
         /// 创建新的Sql条件语句集合
         /// </summary>
         /// <param name="concatType">连接类型</param>
-        /// <param name="conditions">查询语句集合</param>
+        /// <param name="conditions">条件语句集合</param>
         /// <returns>Sql条件语句集合</returns>
         public static SqlConditionList CreateList(SqlWhereConcatType concatType, params ISqlCondition[] conditions)
         {
@@ -1455,7 +1455,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// 创建新的Sql条件语句集合
         /// </summary>
         /// <param name="concatType">连接类型</param>
-        /// <param name="conditions">查询语句集合</param>
+        /// <param name="conditions">条件语句集合</param>
         /// <exception cref="ArgumentNullException">查询语句集合不能为空</exception>
         /// <returns>Sql条件语句集合</returns>
         public static SqlConditionList CreateList(SqlWhereConcatType concatType, List<ISqlCondition> conditions)
@@ -1473,7 +1473,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 创建与连接的Sql条件语句集合
         /// </summary>
-        /// <param name="conditions">查询语句集合</param>
+        /// <param name="conditions">条件语句集合</param>
         /// <returns>Sql条件语句集合</returns>
         public static SqlConditionList And(params ISqlCondition[] conditions)
         {
@@ -1483,7 +1483,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 创建与连接的Sql条件语句集合
         /// </summary>
-        /// <param name="conditions">查询语句集合</param>
+        /// <param name="conditions">条件语句集合</param>
         /// <returns>Sql条件语句集合</returns>
         public static SqlConditionList And(List<ISqlCondition> conditions)
         {
@@ -1495,7 +1495,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 创建或连接的Sql条件语句集合
         /// </summary>
-        /// <param name="conditions">查询语句集合</param>
+        /// <param name="conditions">条件语句集合</param>
         /// <returns>Sql条件语句集合</returns>
         public static SqlConditionList Or(params ISqlCondition[] conditions)
         {
@@ -1505,11 +1505,29 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 创建或连接的Sql条件语句集合
         /// </summary>
-        /// <param name="conditions">查询语句集合</param>
+        /// <param name="conditions">条件语句集合</param>
         /// <returns>Sql条件语句集合</returns>
         public static SqlConditionList Or(List<ISqlCondition> conditions)
         {
             return SqlCondition.CreateList(SqlWhereConcatType.Or, conditions.ToArray());
+        }
+        #endregion
+
+        #region Not
+        /// <summary>
+        /// 创建新的Sql Not条件语句
+        /// </summary>
+        /// <param name="condition">条件语句</param>
+        /// <exception cref="ArgumentNullException">Sql条件语句不能为空</exception>
+        /// <returns>Sql Not条件语句</returns>
+        public static SqlNotCondition Not(ISqlCondition condition)
+        {
+            if (condition == null)
+            {
+                throw new ArgumentNullException("condition");
+            }
+
+            return new SqlNotCondition(condition);
         }
         #endregion
         #endregion

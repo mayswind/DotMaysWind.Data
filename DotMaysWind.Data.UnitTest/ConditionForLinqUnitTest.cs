@@ -247,5 +247,17 @@ namespace DotMaysWind.Data.UnitTest
             Assert.AreEqual(expectedCondition2, actualCondition2);
         }
         #endregion
+
+        #region Not
+        [TestMethod]
+        public void CreateNotConditionTest()
+        {
+            SqlBasicParameterCondition baseCondition = SqlCondition.Equal("TestColumn2", 1);
+            SqlNotCondition expectedCondition = !baseCondition;
+            SqlNotCondition actualCondition = SqlLinqCondition.Create<TestEntity>(c => !(c.Test2 == 1)) as SqlNotCondition;
+
+            Assert.AreEqual(expectedCondition, actualCondition);
+        }
+        #endregion
     }
 }

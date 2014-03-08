@@ -30,6 +30,11 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 条件列表
         /// </summary>
-        ConditionList = 4
+        ConditionList = 4,
+
+        /// <summary>
+        /// Not条件
+        /// </summary>
+        NotCondition = 5,
     }
 }

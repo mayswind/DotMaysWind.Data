@@ -61,6 +61,7 @@
     <Compile Include="Command\Condition\SqlConditionType.cs" />
     <Compile Include="Command\Condition\SqlInsideCommandCondition.cs" />
     <Compile Include="Command\Condition\SqlInsideParametersCondition.cs" />
+    <Compile Include="Command\Condition\SqlNotCondition.cs" />
     <Compile Include="Command\Condition\SqlOperator.cs" />
     <Compile Include="Command\CustomCommand.cs" />
     <Compile Include="Command\DeleteCommand.cs" />

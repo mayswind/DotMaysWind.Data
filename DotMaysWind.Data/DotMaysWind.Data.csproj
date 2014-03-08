@@ -62,6 +62,7 @@
     <Compile Include="Command\AbstractSqlCommandWithWhere.cs" />
     <Compile Include="Command\Condition\AbstractSqlCondition.cs" />
     <Compile Include="Command\Condition\SqlBasicCommandCondition.cs" />
+    <Compile Include="Command\Condition\SqlNotCondition.cs" />
     <Compile Include="Command\Function\AbstractSqlBasicFunction.cs" />
     <Compile Include="Command\Function\SqlComplexFunction.cs" />
     <Compile Include="Command\Function\SqlDatePart.cs" />

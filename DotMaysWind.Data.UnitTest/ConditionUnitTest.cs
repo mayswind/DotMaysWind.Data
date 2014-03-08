@@ -31,5 +31,27 @@ namespace DotMaysWind.Data.UnitTest
             Assert.AreEqual(expectedCondition, actualCondition);
         }
         #endregion
+
+        #region Not
+        [TestMethod]
+        public void CreateNotConditionTest()
+        {
+            SqlBasicParameterCondition baseCondition = SqlCondition.Equal("TestColumn2", 1);
+            SqlNotCondition actualCondition = !baseCondition;
+
+            String expectedConditionClause = "(NOT((TestColumn2 = @PN_TestColumn2)))";
+            String actualConditionClause = actualCondition.GetSqlClause();
+
+            SqlParameter[] expectedParameters = baseCondition.GetAllParameters();
+            SqlParameter[] actualParameters = baseCondition.GetAllParameters();
+
+            Assert.AreEqual(expectedConditionClause, actualConditionClause);
+
+            for (Int32 i = 0; i < expectedParameters.Length; i++)
+            {
+                Assert.AreEqual(expectedParameters[i], actualParameters[i]);
+            }
+        }
+        #endregion
     }
 }

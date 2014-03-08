@@ -65,6 +65,13 @@ namespace DotMaysWind.Data.Linq
                 return ParseMethodCallExpression(sourceCommand, mcexpr);
             }
 
+            UnaryExpression uexpr = expr as UnaryExpression;
+
+            if (uexpr != null)
+            {
+                return ParseUnaryExpression(sourceCommand, uexpr);
+            }
+
             throw new LinqNotSupportedException("Not supported this linq operation!");
         }
 
@@ -229,6 +236,19 @@ namespace DotMaysWind.Data.Linq
             AbstractSqlCondition condition = SqlCondition.Create(param, (isNot ? SqlOperator.IsNotNull : SqlOperator.IsNull));
 
             return condition;
+        }
+        #endregion
+
+        #region 一元方法
+        private static AbstractSqlCondition ParseUnaryExpression(AbstractSqlCommand sourceCommand, UnaryExpression expr)
+        {
+            switch (expr.NodeType)
+            {
+                case ExpressionType.Not:
+                    return !ParseCondition(sourceCommand, expr.Operand);
+                default:
+                    throw new LinqNotSupportedException("Not supported this linq operation!");
+            }
         }
         #endregion
         #endregion
