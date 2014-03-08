@@ -221,5 +221,104 @@ namespace DotMaysWind.Data.Command
             return new SqlQueryField(function, aliasesName);
         }
         #endregion
+
+        #region 重载方法和运算符
+        /// <summary>
+        /// 获取当前参数的哈希值
+        /// </summary>
+        /// <returns>当前参数的哈希值</returns>
+        public override Int32 GetHashCode()
+        {
+            return this._fieldName.GetHashCode();
+        }
+
+        /// <summary>
+        /// 判断两个Sql查询字段是否相同
+        /// </summary>
+        /// <param name="obj">待比较的Sql查询字段</param>
+        /// <returns>两个Sql查询字段是否相同</returns>
+        public override Boolean Equals(Object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            SqlQueryField queryField = obj as SqlQueryField;
+
+            if (queryField == null)
+            {
+                return false;
+            }
+
+            if (!String.Equals(this._tableName, queryField._tableName))
+            {
+                return false;
+            }
+
+            if (!String.Equals(this._fieldName, queryField._fieldName))
+            {
+                return false;
+            }
+
+            if (!String.Equals(this._aliasesName, queryField._aliasesName))
+            {
+                return false;
+            }
+
+            if (_useFunction != queryField._useFunction)
+            {
+                return false;
+            }
+
+            if (!String.Equals(this._function, queryField._function))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 判断两个Sql查询字段是否相同
+        /// </summary>
+        /// <param name="obj">待比较的Sql查询字段</param>
+        /// <param name="obj2">待比较的第二个Sql查询字段</param>
+        /// <returns>两个Sql查询字段是否相同</returns>
+        public static Boolean operator ==(SqlQueryField obj, SqlQueryField obj2)
+        {
+            return Object.Equals(obj, obj2);
+        }
+
+        /// <summary>
+        /// 判断两个Sql查询字段是否不同
+        /// </summary>
+        /// <param name="obj">待比较的Sql查询字段</param>
+        /// <param name="obj2">待比较的第二个Sql查询字段</param>
+        /// <returns>两个Sql查询字段是否不同</returns>
+        public static Boolean operator !=(SqlQueryField obj, SqlQueryField obj2)
+        {
+            return !Object.Equals(obj, obj2);
+        }
+
+        /// <summary>
+        /// 隐式从字段名创建Sql查询字段
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <returns>Sql查询字段</returns>
+        public static implicit operator SqlQueryField(String columnName)
+        {
+            return SqlQueryField.InternalCreateFromColumn(columnName);
+        }
+
+        /// <summary>
+        /// 返回当前对象的信息
+        /// </summary>
+        /// <returns>当前对象的信息</returns>
+        public override String ToString()
+        {
+            return String.Format("{0}, {1} {2}", base.ToString(), this._fieldName);
+        }
+        #endregion
     }
 }

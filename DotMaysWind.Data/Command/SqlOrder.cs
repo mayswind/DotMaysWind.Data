@@ -160,6 +160,16 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
+        /// 隐式从字段名创建Sql排序语句
+        /// </summary>
+        /// <param name="fieldName">字段名</param>
+        /// <returns>Sql查询字段</returns>
+        public static implicit operator SqlOrder(String fieldName)
+        {
+            return SqlOrder.Create(fieldName);
+        }
+
+        /// <summary>
         /// 返回当前对象的信息
         /// </summary>
         /// <returns>当前对象的信息</returns>
