@@ -10,6 +10,7 @@ namespace DotMaysWind.Data.Command.Condition
     {
         #region 字段
         private String _columnName;
+        private Boolean _isNotIn;
         private SelectCommand _command;
         #endregion
 
@@ -20,6 +21,14 @@ namespace DotMaysWind.Data.Command.Condition
         public override SqlConditionType ConditionType
         {
             get { return SqlConditionType.InsideCommandCondition; }
+        }
+
+        /// <summary>
+        /// 获取是否不在范围内
+        /// </summary>
+        public Boolean IsNotIn
+        {
+            get { return this._isNotIn; }
         }
 
         /// <summary>
@@ -36,10 +45,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// 初始化Sql IN语句条件语句类
         /// </summary>
         /// <param name="columnName">字段名称</param>
+        /// <param name="isNotIn">是否不在范围内</param>
         /// <param name="command">选择语句</param>
-        internal SqlInsideCommandCondition(String columnName, SelectCommand command)
+        internal SqlInsideCommandCondition(String columnName, Boolean isNotIn, SelectCommand command)
         {
             this._columnName = columnName;
+            this._isNotIn = isNotIn;
             this._command = command;
         }
         #endregion
@@ -71,7 +82,7 @@ namespace DotMaysWind.Data.Command.Condition
                 return String.Empty;
             }
 
-            return String.Format("({0} IN ({1}))", this._columnName, this._command.GetSqlCommand());
+            return String.Format("({0} {1} ({2}))", this._columnName, (this._isNotIn ? "NOT IN" : "IN"), this._command.GetSqlCommand());
         }
         #endregion
 
@@ -100,6 +111,11 @@ namespace DotMaysWind.Data.Command.Condition
             SqlInsideCommandCondition condition = obj as SqlInsideCommandCondition;
 
             if (condition == null)
+            {
+                return false;
+            }
+
+            if (this._isNotIn != condition._isNotIn)
             {
                 return false;
             }

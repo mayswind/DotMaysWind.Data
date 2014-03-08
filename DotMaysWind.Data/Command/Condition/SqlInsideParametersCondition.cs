@@ -10,6 +10,7 @@ namespace DotMaysWind.Data.Command.Condition
     public class SqlInsideParametersCondition : AbstractSqlCondition
     {
         #region 字段
+        private Boolean _isNotIn;
         private List<SqlParameter> _parameters;
         #endregion
 
@@ -20,6 +21,14 @@ namespace DotMaysWind.Data.Command.Condition
         public override SqlConditionType ConditionType
         {
             get { return SqlConditionType.InsideParametersCondition; }
+        }
+
+        /// <summary>
+        /// 获取是否不在范围内
+        /// </summary>
+        public Boolean IsNotIn
+        {
+            get { return this._isNotIn; }
         }
 
         /// <summary>
@@ -35,9 +44,11 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 初始化Sql IN参数条件语句类
         /// </summary>
+        /// <param name="isNotIn">是否不在范围内</param>
         /// <param name="parameters">参数集合</param>
-        internal SqlInsideParametersCondition(List<SqlParameter> parameters)
+        internal SqlInsideParametersCondition(Boolean isNotIn, List<SqlParameter> parameters)
         {
+            this._isNotIn = isNotIn;
             this._parameters = parameters;
         }
         #endregion
@@ -68,7 +79,7 @@ namespace DotMaysWind.Data.Command.Condition
             }
 
             StringBuilder sb = new StringBuilder();
-            sb.Append('(').Append(this._parameters[0].ColumnName).Append(" IN (");
+            sb.Append('(').Append(this._parameters[0].ColumnName).Append((this._isNotIn ? " NOT IN (" : " IN ("));
 
             for (Int32 i = 0; i < this._parameters.Count; i++)
             {
@@ -115,6 +126,11 @@ namespace DotMaysWind.Data.Command.Condition
             SqlInsideParametersCondition condition = obj as SqlInsideParametersCondition;
 
             if (condition == null)
+            {
+                return false;
+            }
+
+            if (this._isNotIn != condition._isNotIn)
             {
                 return false;
             }
