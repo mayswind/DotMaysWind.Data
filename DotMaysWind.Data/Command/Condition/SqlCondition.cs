@@ -1106,15 +1106,16 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="columnName">字段名</param>
         /// <param name="isNotIn">是否不在范围内</param>
         /// <param name="dbType">数据类型</param>
-        /// <param name="values">逗号分隔的数据集合</param>
+        /// <param name="values">分隔符号分隔的数据集合</param>
+        /// <param name="separator">分隔符号集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition In(String columnName, Boolean isNotIn, DbType dbType, String values)
+        public static SqlInsideParametersCondition In(String columnName, Boolean isNotIn, DbType dbType, String values, params Char[] separator)
         {
             List<SqlParameter> parameters = new List<SqlParameter>();
 
             if (!String.IsNullOrEmpty(values))
             {
-                String[] valuesArray = values.Split(',');
+                String[] valuesArray = values.Split(separator);
 
                 for (Int32 i = 0; i < valuesArray.Length; i++)
                 {
@@ -1132,15 +1133,16 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="columnName">字段名</param>
         /// <param name="isNotIn">是否不在范围内</param>
         /// <param name="dbType">数据类型</param>
-        /// <param name="values">逗号分隔的数据集合</param>
+        /// <param name="values">分隔符号分隔的数据集合</param>
+        /// <param name="separator">分隔符号集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition In<T>(String columnName, Boolean isNotIn, DbType dbType, String values) where T : IConvertible
+        public static SqlInsideParametersCondition In<T>(String columnName, Boolean isNotIn, DbType dbType, String values, params Char[] separator) where T : IConvertible
         {
             List<SqlParameter> parameters = new List<SqlParameter>();
 
             if (!String.IsNullOrEmpty(values))
             {
-                String[] valuesArray = values.Split(',');
+                String[] valuesArray = values.Split(separator);
                 Type t = typeof(T);
 
                 for (Int32 i = 0; i < valuesArray.Length; i++)
@@ -1158,15 +1160,16 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="columnName">字段名</param>
         /// <param name="isNotIn">是否不在范围内</param>
-        /// <param name="values">逗号分隔的数据集合</param>
+        /// <param name="values">分隔符号分隔的数据集合</param>
+        /// <param name="separator">分隔符号集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition InInt32(String columnName, Boolean isNotIn, String values)
+        public static SqlInsideParametersCondition InInt32(String columnName, Boolean isNotIn, String values, params Char[] separator)
         {
             List<SqlParameter> parameters = new List<SqlParameter>();
 
             if (!String.IsNullOrEmpty(values))
             {
-                String[] valuesArray = values.Split(',');
+                String[] valuesArray = values.Split(separator);
 
                 for (Int32 i = 0; i < valuesArray.Length; i++)
                 {
@@ -1241,11 +1244,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="columnName">字段名</param>
         /// <param name="dbType">数据类型</param>
-        /// <param name="values">逗号分隔的数据集合</param>
+        /// <param name="values">分隔符号分隔的数据集合</param>
+        /// <param name="separator">分隔符号集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition In(String columnName, DbType dbType, String values)
+        public static SqlInsideParametersCondition In(String columnName, DbType dbType, String values, params Char[] separator)
         {
-            return SqlCondition.In(columnName, false, dbType, values);
+            return SqlCondition.In(columnName, false, dbType, values, separator);
         }
 
         /// <summary>
@@ -1254,22 +1258,24 @@ namespace DotMaysWind.Data.Command.Condition
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="columnName">字段名</param>
         /// <param name="dbType">数据类型</param>
-        /// <param name="values">逗号分隔的数据集合</param>
+        /// <param name="values">分隔符号分隔的数据集合</param>
+        /// <param name="separator">分隔符号集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition In<T>(String columnName, DbType dbType, String values) where T : IConvertible
+        public static SqlInsideParametersCondition In<T>(String columnName, DbType dbType, String values, params Char[] separator) where T : IConvertible
         {
-            return SqlCondition.In<T>(columnName, false, dbType, values);
+            return SqlCondition.In<T>(columnName, false, dbType, values, separator);
         }
 
         /// <summary>
         /// 创建新的Sql IN条件语句
         /// </summary>
         /// <param name="columnName">字段名</param>
-        /// <param name="values">逗号分隔的数据集合</param>
+        /// <param name="values">分隔符号分隔的数据集合</param>
+        /// <param name="separator">分隔符号集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition InInt32(String columnName, String values)
+        public static SqlInsideParametersCondition InInt32(String columnName, String values, params Char[] separator)
         {
-            return SqlCondition.InInt32(columnName, false, values);
+            return SqlCondition.InInt32(columnName, false, values, separator);
         }
         #endregion
 
@@ -1336,11 +1342,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="columnName">字段名</param>
         /// <param name="dbType">数据类型</param>
-        /// <param name="values">逗号分隔的数据集合</param>
+        /// <param name="values">分隔符号分隔的数据集合</param>
+        /// <param name="separator">分隔符号集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition NotIn(String columnName, DbType dbType, String values)
+        public static SqlInsideParametersCondition NotIn(String columnName, DbType dbType, String values, params Char[] separator)
         {
-            return SqlCondition.In(columnName, true, dbType, values);
+            return SqlCondition.In(columnName, true, dbType, values, separator);
         }
 
         /// <summary>
@@ -1349,22 +1356,24 @@ namespace DotMaysWind.Data.Command.Condition
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="columnName">字段名</param>
         /// <param name="dbType">数据类型</param>
-        /// <param name="values">逗号分隔的数据集合</param>
+        /// <param name="values">分隔符号分隔的数据集合</param>
+        /// <param name="separator">分隔符号集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition NotIn<T>(String columnName, DbType dbType, String values) where T : IConvertible
+        public static SqlInsideParametersCondition NotIn<T>(String columnName, DbType dbType, String values, params Char[] separator) where T : IConvertible
         {
-            return SqlCondition.In<T>(columnName, true, dbType, values);
+            return SqlCondition.In<T>(columnName, true, dbType, values, separator);
         }
 
         /// <summary>
         /// 创建新的Sql NOT IN条件语句
         /// </summary>
         /// <param name="columnName">字段名</param>
-        /// <param name="values">逗号分隔的数据集合</param>
+        /// <param name="values">分隔符号分隔的数据集合</param>
+        /// <param name="separator">分隔符号集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition NotInInt32(String columnName, String values)
+        public static SqlInsideParametersCondition NotInInt32(String columnName, String values, params Char[] separator)
         {
-            return SqlCondition.InInt32(columnName, true, values);
+            return SqlCondition.InInt32(columnName, true, values, separator);
         }
         #endregion
         #endregion
