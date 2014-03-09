@@ -13,6 +13,93 @@ namespace DotMaysWind.Data.Linq
     /// </summary>
     public static class SelectCommandExtension
     {
+        #region Query
+        /// <summary>
+        /// 查询指定字段名并返回当前语句
+        /// </summary>
+        /// <typeparam name="T">实体类类型</typeparam>
+        /// <param name="cmd">查询语句</param>
+        /// <param name="expr">实体类属性</param>
+        /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
+        /// <exception cref="NullAttributeException">没有设置特性</exception>
+        /// <returns>当前语句</returns>
+        public static SelectCommand Querys<T>(this SelectCommand cmd, Expression<Func<T, Object>> expr)
+        {
+            NewExpression left = expr.Body as NewExpression;
+
+            if (left == null)
+            {
+                throw new ExpressionInvalidException();
+            }
+
+            foreach (MemberExpression member in left.Arguments)
+            {
+                DatabaseColumnAttribute attr = ExpressionHelper.GetColumnAttribute(cmd, member);
+
+                if (attr == null)
+                {
+                    continue;
+                }
+
+                cmd.Query(attr.ColumnName);
+            }
+
+            return cmd;
+        }
+
+        /// <summary>
+        /// 查询指定字段名并返回当前语句
+        /// </summary>
+        /// <typeparam name="T">实体类类型</typeparam>
+        /// <param name="cmd">查询语句</param>
+        /// <param name="expr">实体类属性</param>
+        /// <param name="aliasesName">字段名的别名</param>
+        /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
+        /// <exception cref="NullAttributeException">没有设置特性</exception>
+        /// <returns>当前语句</returns>
+        public static SelectCommand Query<T>(this SelectCommand cmd, Expression<Func<T, Object>> expr, String aliasesName)
+        {
+            DatabaseColumnAttribute attr = SelectCommandExtension.GetColumnAttribute(cmd, expr.Body);
+
+            return cmd.Query(attr.ColumnName, aliasesName);
+        }
+
+        /// <summary>
+        /// 查询指定字段名并返回当前语句
+        /// </summary>
+        /// <typeparam name="T">实体类类型</typeparam>
+        /// <param name="cmd">查询语句</param>
+        /// <param name="expr">实体类属性</param>
+        /// <param name="function">合计函数类型</param>
+        /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
+        /// <exception cref="NullAttributeException">没有设置特性</exception>
+        /// <returns>当前语句</returns>
+        public static SelectCommand Query<T>(this SelectCommand cmd, Expression<Func<T, Object>> expr, SqlAggregateFunction function)
+        {
+            DatabaseColumnAttribute attr = SelectCommandExtension.GetColumnAttribute(cmd, expr.Body);
+
+            return cmd.Query(function, attr.ColumnName);
+        }
+
+        /// <summary>
+        /// 查询指定字段名并返回当前语句
+        /// </summary>
+        /// <typeparam name="T">实体类类型</typeparam>
+        /// <param name="cmd">查询语句</param>
+        /// <param name="expr">实体类属性</param>
+        /// <param name="function">合计函数类型</param>
+        /// <param name="aliasesName">字段名的别名</param>
+        /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
+        /// <exception cref="NullAttributeException">没有设置特性</exception>
+        /// <returns>当前语句</returns>
+        public static SelectCommand Query<T>(this SelectCommand cmd, Expression<Func<T, Object>> expr, SqlAggregateFunction function, String aliasesName)
+        {
+            DatabaseColumnAttribute attr = SelectCommandExtension.GetColumnAttribute(cmd, expr.Body);
+
+            return cmd.Query(function, attr.ColumnName, aliasesName);
+        }
+        #endregion
+
         #region Having/Where/OrderBy/GroupBy
         /// <summary>
         /// 设置指定查询的语句并返回当前语句
@@ -43,7 +130,7 @@ namespace DotMaysWind.Data.Linq
         /// 按指定列排序并返回当前语句
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
-        /// <param name="cmd">更新语句</param>
+        /// <param name="cmd">查询语句</param>
         /// <param name="expr">实体类属性</param>
         /// <param name="orderType">排序类型</param>
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
@@ -51,19 +138,7 @@ namespace DotMaysWind.Data.Linq
         /// <returns>当前语句</returns>
         public static SelectCommand OrderBy<T>(this SelectCommand cmd, Expression<Func<T, Object>> expr, SqlOrderType orderType)
         {
-            MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Body);
-
-            if (left == null)
-            {
-                throw new ExpressionInvalidException();
-            }
-
-            DatabaseColumnAttribute attr = ExpressionHelper.GetColumnAttribute(cmd, left);
-
-            if (attr == null)
-            {
-                throw new NullAttributeException();
-            }
+            DatabaseColumnAttribute attr = SelectCommandExtension.GetColumnAttribute(cmd, expr.Body);
 
             return cmd.OrderBy(attr.ColumnName, orderType);
         }
@@ -72,26 +147,14 @@ namespace DotMaysWind.Data.Linq
         /// 分组指定字段名并返回当前语句
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
-        /// <param name="cmd">更新语句</param>
+        /// <param name="cmd">查询语句</param>
         /// <param name="expr">实体类属性</param>
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
         public static SelectCommand GroupBy<T>(this SelectCommand cmd, Expression<Func<T, Object>> expr)
         {
-            MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Body);
-
-            if (left == null)
-            {
-                throw new ExpressionInvalidException();
-            }
-
-            DatabaseColumnAttribute attr = ExpressionHelper.GetColumnAttribute(cmd, left);
-
-            if (attr == null)
-            {
-                throw new NullAttributeException();
-            }
+            DatabaseColumnAttribute attr = SelectCommandExtension.GetColumnAttribute(cmd, expr.Body);
 
             return cmd.GroupBy(attr.ColumnName);
         }
@@ -104,7 +167,7 @@ namespace DotMaysWind.Data.Linq
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <typeparam name="TAnother">另个表格的实体类类型</typeparam>
-        /// <param name="cmd">更新语句</param>
+        /// <param name="cmd">查询语句</param>
         /// <param name="joinType">连接模式</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
         /// <param name="anotherTableName">另个表格名称</param>
@@ -138,7 +201,7 @@ namespace DotMaysWind.Data.Linq
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <typeparam name="TAnother">另个表格的实体类类型</typeparam>
-        /// <param name="cmd">更新语句</param>
+        /// <param name="cmd">查询语句</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
         /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherExpr">另个实体类主键属性</param>
@@ -155,7 +218,7 @@ namespace DotMaysWind.Data.Linq
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <typeparam name="TAnother">另个表格的实体类类型</typeparam>
-        /// <param name="cmd">更新语句</param>
+        /// <param name="cmd">查询语句</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
         /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherExpr">另个实体类主键属性</param>
@@ -172,7 +235,7 @@ namespace DotMaysWind.Data.Linq
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <typeparam name="TAnother">另个表格的实体类类型</typeparam>
-        /// <param name="cmd">更新语句</param>
+        /// <param name="cmd">查询语句</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
         /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherExpr">另个实体类主键属性</param>
@@ -189,7 +252,7 @@ namespace DotMaysWind.Data.Linq
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <typeparam name="TAnother">另个表格的实体类类型</typeparam>
-        /// <param name="cmd">更新语句</param>
+        /// <param name="cmd">查询语句</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
         /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherExpr">另个实体类主键属性</param>
@@ -208,7 +271,7 @@ namespace DotMaysWind.Data.Linq
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <typeparam name="TAnother">另个表格的实体类类型</typeparam>
-        /// <param name="cmd">更新语句</param>
+        /// <param name="cmd">查询语句</param>
         /// <param name="joinType">连接模式</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
         /// <param name="anotherTableCommand">另个表格命令</param>
@@ -242,7 +305,7 @@ namespace DotMaysWind.Data.Linq
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <typeparam name="TAnother">另个表格的实体类类型</typeparam>
-        /// <param name="cmd">更新语句</param>
+        /// <param name="cmd">查询语句</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
         /// <param name="anotherTableCommand">另个表格命令</param>
         /// <param name="anotherExpr">另个实体类主键属性</param>
@@ -259,7 +322,7 @@ namespace DotMaysWind.Data.Linq
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <typeparam name="TAnother">另个表格的实体类类型</typeparam>
-        /// <param name="cmd">更新语句</param>
+        /// <param name="cmd">查询语句</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
         /// <param name="anotherTableCommand">另个表格命令</param>
         /// <param name="anotherExpr">另个实体类主键属性</param>
@@ -276,7 +339,7 @@ namespace DotMaysWind.Data.Linq
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <typeparam name="TAnother">另个表格的实体类类型</typeparam>
-        /// <param name="cmd">更新语句</param>
+        /// <param name="cmd">查询语句</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
         /// <param name="anotherTableCommand">另个表格命令</param>
         /// <param name="anotherExpr">另个实体类主键属性</param>
@@ -293,7 +356,7 @@ namespace DotMaysWind.Data.Linq
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <typeparam name="TAnother">另个表格的实体类类型</typeparam>
-        /// <param name="cmd">更新语句</param>
+        /// <param name="cmd">查询语句</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
         /// <param name="anotherTableCommand">另个表格命令</param>
         /// <param name="anotherExpr">另个实体类主键属性</param>
@@ -305,6 +368,27 @@ namespace DotMaysWind.Data.Linq
             return cmd.Join<T, TAnother>(SqlJoinType.FullJoin, currentExpr, anotherTableCommand, anotherExpr);
         }
         #endregion
+        #endregion
+
+        #region 私有方法
+        private static DatabaseColumnAttribute GetColumnAttribute(SelectCommand cmd, Expression expr)
+        {
+            MemberExpression left = ExpressionHelper.GetMemberExpression(expr);
+
+            if (expr == null)
+            {
+                throw new ExpressionInvalidException();
+            }
+
+            DatabaseColumnAttribute attr = ExpressionHelper.GetColumnAttribute(cmd, left);
+
+            if (attr == null)
+            {
+                throw new NullAttributeException();
+            }
+
+            return attr;
+        }
         #endregion
     }
 }
