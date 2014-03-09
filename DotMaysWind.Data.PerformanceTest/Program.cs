@@ -11,6 +11,7 @@ namespace DotMaysWind.Data.PerformanceTest
             Int32 cycle = 10000;
 
             Console.WriteLine("DotMaysWind.Data Performance Test, Cycle = {0}", cycle);
+            Console.WriteLine(".NET Framework CLR : {0}", Environment.Version);
 
             Console.WriteLine();
             Console.WriteLine("Select Command Generate:");
