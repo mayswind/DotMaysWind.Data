@@ -631,7 +631,7 @@ namespace DotMaysWind.Data.Command
         #endregion
         #endregion
 
-        #region Top/Distinct/GroupBy/Having/Where
+        #region Top First Paged/Distinct/GroupBy/Having/Where
         /// <summary>
         /// 设置选择记录数目返回记录唯一并返回当前语句
         /// </summary>
@@ -640,6 +640,7 @@ namespace DotMaysWind.Data.Command
         public SelectCommand Top(Int32 pageSize)
         {
             this._pageSize = pageSize;
+
             return this;
         }
 
@@ -650,6 +651,23 @@ namespace DotMaysWind.Data.Command
         public SelectCommand First()
         {
             this._pageSize = 1;
+
+            return this;
+        }
+
+        /// <summary>
+        /// 设置分页设置并返回当前语句
+        /// </summary>
+        /// <param name="pageSize">页面大小</param>
+        /// <param name="pageIndex">页面索引</param>
+        /// <param name="recordCount">记录总数</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand Paged(Int32 pageSize, Int32 pageIndex, Int32 recordCount)
+        {
+            this._pageSize = pageSize;
+            this._pageIndex = pageIndex;
+            this._recordCount = recordCount;
+
             return this;
         }
 
@@ -660,6 +678,7 @@ namespace DotMaysWind.Data.Command
         public SelectCommand Distinct()
         {
             this._useDistinct = true;
+
             return this;
         }
 
