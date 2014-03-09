@@ -631,6 +631,62 @@ namespace DotMaysWind.Data.Command
         #endregion
         #endregion
 
+        #region AggregateFunction
+        /// <summary>
+        /// 获取指定字段记录数
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="columnName">字段名称</param>
+        /// <returns>指定字段记录数</returns>
+        private override T Count<T>(String columnName)
+        {
+            return this.Query(SqlAggregateFunction.Count, columnName).Result<T>();
+        }
+
+        /// <summary>
+        /// 获取指定字段记录数
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <returns>指定字段记录数</returns>
+        public override T Count<T>()
+        {
+            return this.Query(SqlAggregateFunction.Count).Result<T>();
+        }
+
+        /// <summary>
+        /// 获取指定字段最大值
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="columnName">字段名称</param>
+        /// <returns>指定字段最大值</returns>
+        private override T Max<T>(String columnName)
+        {
+            return this.Query(SqlAggregateFunction.Max, columnName).Result<T>();
+        }
+
+        /// <summary>
+        /// 获取指定字段最小值
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="columnName">字段名称</param>
+        /// <returns>指定字段最小值</returns>
+        private override T Min<T>(String columnName)
+        {
+            return this.Query(SqlAggregateFunction.Min, columnName).Result<T>();
+        }
+
+        /// <summary>
+        /// 获取指定字段平均值
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="columnName">字段名称</param>
+        /// <returns>指定字段平均值</returns>
+        private override T Avg<T>(String columnName)
+        {
+            return this.Query(SqlAggregateFunction.Avg, columnName).Result<T>();
+        }
+        #endregion
+
         #region Top First Paged/Distinct/GroupBy/Having/Where
         /// <summary>
         /// 设置选择记录数目返回记录唯一并返回当前语句
