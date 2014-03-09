@@ -7,7 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotMaysWind.Data_NET40", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotMaysWind.Data.UnitTest_NET40", "DotMaysWind.Data.UnitTest\DotMaysWind.Data.UnitTest_NET40.csproj", "{3B4C047A-8A3A-43D1-83A7-0054B0FFDF35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotMaysWind.Data.Test", "DotMaysWind.Data.Test\DotMaysWind.Data.Test_NET40.csproj", "{CE5EAF78-5A8B-46F8-BE85-F84BB69B9088}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotMaysWind.Data.Test_NET40", "DotMaysWind.Data.Test\DotMaysWind.Data.Test_NET40.csproj", "{CE5EAF78-5A8B-46F8-BE85-F84BB69B9088}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotMaysWind.Data.PerformanceTest", "DotMaysWind.Data.PerformanceTest\DotMaysWind.Data.PerformanceTest_NET40.csproj", "{FB458F3C-5CB4-4C14-8DB7-DBC07749C390}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{CE5EAF78-5A8B-46F8-BE85-F84BB69B9088}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE5EAF78-5A8B-46F8-BE85-F84BB69B9088}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE5EAF78-5A8B-46F8-BE85-F84BB69B9088}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB458F3C-5CB4-4C14-8DB7-DBC07749C390}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB458F3C-5CB4-4C14-8DB7-DBC07749C390}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB458F3C-5CB4-4C14-8DB7-DBC07749C390}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB458F3C-5CB4-4C14-8DB7-DBC07749C390}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
