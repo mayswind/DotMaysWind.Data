@@ -279,12 +279,12 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="tableName">表格名称</param>
         /// <param name="function">合计函数类型</param>
-        /// <param name="fieldName">要查询的字段名</param>
+        /// <param name="columnName">要查询的字段名</param>
         /// <param name="aliasesName">别名</param>
         /// <returns>当前语句</returns>
-        public SelectCommand Query(String tableName, SqlAggregateFunction function, String fieldName, String aliasesName)
+        public SelectCommand Query(String tableName, SqlAggregateFunction function, String columnName, String aliasesName)
         {
-            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(tableName, function, fieldName, aliasesName));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(tableName, function, columnName, aliasesName));
             return this;
         }
         #endregion
@@ -294,12 +294,12 @@ namespace DotMaysWind.Data.Command
         /// 查询指定合计函数并返回当前语句
         /// </summary>
         /// <param name="function">合计函数类型</param>
-        /// <param name="fieldName">要查询的字段名</param>
+        /// <param name="columnName">要查询的字段名</param>
         /// <param name="aliasesName">别名</param>
         /// <returns>当前语句</returns>
-        public SelectCommand Query(SqlAggregateFunction function, String fieldName, String aliasesName)
+        public SelectCommand Query(SqlAggregateFunction function, String columnName, String aliasesName)
         {
-            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(function, fieldName, aliasesName));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(function, columnName, aliasesName));
             return this;
         }
 
@@ -308,11 +308,11 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="tableName">表格名称</param>
         /// <param name="function">合计函数类型</param>
-        /// <param name="fieldName">要查询的字段名</param>
+        /// <param name="columnName">要查询的字段名</param>
         /// <returns>当前语句</returns>
-        public SelectCommand Query(String tableName, SqlAggregateFunction function, String fieldName)
+        public SelectCommand Query(String tableName, SqlAggregateFunction function, String columnName)
         {
-            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(tableName, function, fieldName));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(tableName, function, columnName));
             return this;
         }
 
@@ -320,11 +320,11 @@ namespace DotMaysWind.Data.Command
         /// 查询指定合计函数并返回当前语句
         /// </summary>
         /// <param name="function">合计函数类型</param>
-        /// <param name="fieldName">要查询的字段名</param>
+        /// <param name="columnName">要查询的字段名</param>
         /// <returns>当前语句</returns>
-        public SelectCommand Query(SqlAggregateFunction function, String fieldName)
+        public SelectCommand Query(SqlAggregateFunction function, String columnName)
         {
-            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(function, fieldName));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(function, columnName));
             return this;
         }
 

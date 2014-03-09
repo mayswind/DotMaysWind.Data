@@ -8,7 +8,7 @@ namespace DotMaysWind.Data.Command
     public class SqlOrder
     {
         #region 字段
-        private String _fieldName;
+        private String _columnName;
         private SqlOrderType _orderType;
         #endregion
 
@@ -18,8 +18,8 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         public String FieldName
         {
-            get { return this._fieldName; }
-            set { this._fieldName = value; }
+            get { return this._columnName; }
+            set { this._columnName = value; }
         }
 
         /// <summary>
@@ -36,11 +36,11 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 初始化新的Sql语句排序类
         /// </summary>
-        /// <param name="fieldName">字段名</param>
+        /// <param name="columnName">字段名</param>
         /// <param name="orderType">排序方式</param>
-        private SqlOrder(String fieldName, SqlOrderType orderType)
+        private SqlOrder(String columnName, SqlOrderType orderType)
         {
-            this._fieldName = fieldName;
+            this._columnName = columnName;
             this._orderType = orderType;
         }
         #endregion
@@ -68,30 +68,30 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 初始化新的Sql语句排序类
         /// </summary>
-        /// <param name="fieldName">字段名</param>
-        public static SqlOrder Create(String fieldName)
+        /// <param name="columnName">字段名</param>
+        public static SqlOrder Create(String columnName)
         {
-            return new SqlOrder(fieldName, SqlOrderType.Asc);
+            return new SqlOrder(columnName, SqlOrderType.Asc);
         }
 
         /// <summary>
         /// 初始化新的Sql语句排序类
         /// </summary>
-        /// <param name="fieldName">字段名</param>
+        /// <param name="columnName">字段名</param>
         /// <param name="orderType">排序方式</param>
-        public static SqlOrder Create(String fieldName, SqlOrderType orderType)
+        public static SqlOrder Create(String columnName, SqlOrderType orderType)
         {
-            return new SqlOrder(fieldName, orderType);
+            return new SqlOrder(columnName, orderType);
         }
 
         /// <summary>
         /// 初始化新的Sql语句排序类
         /// </summary>
-        /// <param name="fieldName">字段名</param>
+        /// <param name="columnName">字段名</param>
         /// <param name="isAscending">是否升序</param>
-        public static SqlOrder Create(String fieldName, Boolean isAscending)
+        public static SqlOrder Create(String columnName, Boolean isAscending)
         {
-            return new SqlOrder(fieldName, (isAscending ? SqlOrderType.Asc : SqlOrderType.Desc));
+            return new SqlOrder(columnName, (isAscending ? SqlOrderType.Asc : SqlOrderType.Desc));
         }
         #endregion
 
@@ -102,7 +102,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前参数的哈希值</returns>
         public override Int32 GetHashCode()
         {
-            return this._fieldName.GetHashCode();
+            return this._columnName.GetHashCode();
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace DotMaysWind.Data.Command
                 return false;
             }
 
-            if (!String.Equals(this._fieldName, order._fieldName))
+            if (!String.Equals(this._columnName, order._columnName))
             {
                 return false;
             }
@@ -162,11 +162,11 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 隐式从字段名创建Sql排序语句
         /// </summary>
-        /// <param name="fieldName">字段名</param>
+        /// <param name="columnName">字段名</param>
         /// <returns>Sql查询字段</returns>
-        public static implicit operator SqlOrder(String fieldName)
+        public static implicit operator SqlOrder(String columnName)
         {
-            return SqlOrder.Create(fieldName);
+            return SqlOrder.Create(columnName);
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前对象的信息</returns>
         public override String ToString()
         {
-            return String.Format("{0}, {1} {2}", base.ToString(), this._fieldName, this._orderType.ToString());
+            return String.Format("{0}, {1} {2}", base.ToString(), this._columnName, this._orderType.ToString());
         }
         #endregion
     }

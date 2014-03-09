@@ -148,13 +148,13 @@ namespace DotMaysWind.Data.Command.Condition
         /// 创建单参数新的Sql条件语句
         /// </summary>
         /// <param name="function">合计函数类型</param>
-        /// <param name="fieldName">要查询的字段名</param>
+        /// <param name="columnName">要查询的字段名</param>
         /// <param name="op">条件运算符</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition Create(SqlAggregateFunction function, String fieldName, SqlOperator op, Object value)
+        public static SqlBasicParameterCondition Create(SqlAggregateFunction function, String columnName, SqlOperator op, Object value)
         {
-            return new SqlBasicParameterCondition(SqlParameter.Create(String.Format("{0}({1})", function.ToString().ToUpperInvariant(), fieldName), value), op);
+            return new SqlBasicParameterCondition(SqlParameter.Create(String.Format("{0}({1})", function.ToString().ToUpperInvariant(), columnName), value), op);
         }
 
         /// <summary>

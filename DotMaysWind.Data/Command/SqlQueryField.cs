@@ -9,7 +9,7 @@ namespace DotMaysWind.Data.Command
     {
         #region 字段
         private String _tableName;
-        private String _fieldName;
+        private String _columnName;
         private String _aliasesName;
 
         private Boolean _useFunction;
@@ -31,8 +31,8 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         public String FieldName
         {
-            get { return this._fieldName; }
-            set { this._fieldName = value; }
+            get { return this._columnName; }
+            set { this._columnName = value; }
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace DotMaysWind.Data.Command
         private SqlQueryField(String tableName, String columnName, String aliasesName)
         {
             this._tableName = tableName;
-            this._fieldName = columnName;
+            this._columnName = columnName;
             this._aliasesName = aliasesName;
             this._useFunction = false;
             this._function = String.Empty;
@@ -87,7 +87,7 @@ namespace DotMaysWind.Data.Command
         private SqlQueryField(String tableName, SqlAggregateFunction function, String columnName, String aliasesName)
         {
             this._tableName = tableName;
-            this._fieldName = columnName;
+            this._columnName = columnName;
             this._aliasesName = aliasesName;
             this._useFunction = true;
             this._function = function.ToString().ToUpperInvariant();
@@ -101,7 +101,7 @@ namespace DotMaysWind.Data.Command
         private SqlQueryField(String function, String aliasesName)
         {
             this._tableName = String.Empty;
-            this._fieldName = String.Empty;
+            this._columnName = String.Empty;
             this._aliasesName = aliasesName;
             this._useFunction = true;
             this._function = function;
@@ -229,7 +229,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前参数的哈希值</returns>
         public override Int32 GetHashCode()
         {
-            return this._fieldName.GetHashCode();
+            return this._columnName.GetHashCode();
         }
 
         /// <summary>
@@ -256,7 +256,7 @@ namespace DotMaysWind.Data.Command
                 return false;
             }
 
-            if (!String.Equals(this._fieldName, queryField._fieldName))
+            if (!String.Equals(this._columnName, queryField._columnName))
             {
                 return false;
             }
@@ -317,7 +317,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前对象的信息</returns>
         public override String ToString()
         {
-            return String.Format("{0}, {1} {2}", base.ToString(), this._fieldName);
+            return String.Format("{0}, {1} {2}", base.ToString(), this._columnName);
         }
         #endregion
     }
