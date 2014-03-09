@@ -90,6 +90,10 @@ namespace DotMaysWind.Data.Linq.Helper
             {
                 return (expr as ConstantExpression).Value;
             }
+            else if (expr.NodeType == ExpressionType.Convert)
+            {
+                return ExpressionHelper.GetExpressionValue((expr as UnaryExpression).Operand);
+            }
             else
             {
                 return Expression.Lambda(expr).Compile().DynamicInvoke();
