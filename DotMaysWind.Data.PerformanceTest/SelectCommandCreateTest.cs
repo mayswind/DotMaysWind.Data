@@ -47,7 +47,7 @@ namespace DotMaysWind.Data.PerformanceTest
                 .Querys<TestEntity>(c => new { c.Test1, c.Test2, c.Test5, c.Test8 })
                 .Query<TestEntity>(c => c.Test3, "TTTT")
                 .Query<TestEntity>(c => c.Test4, SqlAggregateFunction.Max, "MMMM")
-                .Where<TestEntity>(c => c.Test2 >= 123 || (c.Test4 > DateTime.Now && c.Test7 < DateTime.Now.AddDays(7)))
+                .Where<TestEntity>(c => c.Test2 >= 123 || (c.Test5 > 1 && c.Test5 < 10))
                 .GroupBy<TestEntity>(c => c.Test3)
                 .InnerJoin<TestEntity, TestEntity>(c => c.Test2, "AnotherTable", d => d.Test2)
                 .OrderBy<TestEntity>(c => c.Test6, SqlOrderType.Asc);
