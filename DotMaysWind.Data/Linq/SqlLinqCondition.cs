@@ -158,10 +158,13 @@ namespace DotMaysWind.Data.Linq
                 case "Like":
                     return ParseLikeCallExpression(sourceCommand, expr, "{0}", false);
                 case "LikeAll":
+                case "Contains":
                     return ParseLikeCallExpression(sourceCommand, expr, "%{0}%", false);
                 case "LikeStartWith":
+                case "StartsWith":
                     return ParseLikeCallExpression(sourceCommand, expr, "{0}%", false);
                 case "LikeEndWith":
+                case "EndsWith":
                     return ParseLikeCallExpression(sourceCommand, expr, "%{0}", false);
                 case "NotLike":
                     return ParseLikeCallExpression(sourceCommand, expr, "{0}", true);
