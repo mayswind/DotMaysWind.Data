@@ -3,6 +3,10 @@ using System.Data;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using DotMaysWind.Data.Command;
+using DotMaysWind.Data.Linq;
+using DotMaysWind.Data.Orm;
+
 namespace DotMaysWind.Data.UnitTest
 {
     /// <summary>
@@ -32,9 +36,9 @@ namespace DotMaysWind.Data.UnitTest
                 SqlParameter.Create("TestColumn8", "NEW_TestColumn8", DbType.Int16, entity.Test8),
             };
 
-            String actualSql = "";
-            SqlParameter[] actualParameter = null;
-            provider.EntityInsert(entity, out actualSql, out actualParameter);
+            InsertCommand cmd = fakeDb.CreateInsertCommand(provider.TableName).Add(entity);
+            String actualSql = cmd.GetSqlCommand().Trim();
+            SqlParameter[] actualParameter = cmd.GetAllParameters();
 
             Assert.AreEqual(expectedSql, actualSql);
 
@@ -65,9 +69,18 @@ namespace DotMaysWind.Data.UnitTest
                 SqlParameter.Create("TestColumn8", "NEW_TestColumn8", DbType.Int16, entity.Test8),
             };
 
-            String actualSql = "";
-            SqlParameter[] actualParameter = null;
-            provider.LinqInsert(entity, out actualSql, out actualParameter);
+            InsertCommand cmd = fakeDb.CreateInsertCommand(provider.TableName)
+                .Add<TestEntity>(c => c.Test1, entity.Test1)
+                .Add<TestEntity>(c => c.Test2, entity.Test2)
+                .Add<TestEntity>(c => c.Test3, entity.Test3)
+                .Add<TestEntity>(c => c.Test4, entity.Test4)
+                .Add<TestEntity>(c => c.Test5, entity.Test5)
+                .Add<TestEntity>(c => c.Test6, entity.Test6)
+                .Add<TestEntity>(c => c.Test7, entity.Test7)
+                .Add<TestEntity>(c => c.Test8, entity.Test8);
+
+            String actualSql = cmd.GetSqlCommand().Trim();
+            SqlParameter[] actualParameter = cmd.GetAllParameters();
 
             Assert.AreEqual(expectedSql, actualSql);
 

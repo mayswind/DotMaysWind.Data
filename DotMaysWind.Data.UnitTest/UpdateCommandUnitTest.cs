@@ -3,6 +3,10 @@ using System.Data;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using DotMaysWind.Data.Command;
+using DotMaysWind.Data.Linq;
+using DotMaysWind.Data.Orm;
+
 namespace DotMaysWind.Data.UnitTest
 {
     /// <summary>
@@ -31,9 +35,9 @@ namespace DotMaysWind.Data.UnitTest
                 SqlParameter.Create("TestColumn8", "OLD_TestColumn8", DbType.Int16, entity.Test8),
             };
 
-            String actualSql = "";
-            SqlParameter[] actualParameter = null;
-            provider.EntityUpdate(entity, out actualSql, out actualParameter);
+            UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Set(entity);
+            String actualSql = cmd.GetSqlCommand().Trim();
+            SqlParameter[] actualParameter = cmd.GetAllParameters();
 
             Assert.AreEqual(expectedSql, actualSql);
 
@@ -63,9 +67,18 @@ namespace DotMaysWind.Data.UnitTest
                 SqlParameter.Create("TestColumn8", "OLD_TestColumn8", DbType.Int16, entity.Test8),
             };
 
-            String actualSql = "";
-            SqlParameter[] actualParameter = null;
-            provider.LinqUpdate(entity, out actualSql, out actualParameter);
+            UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName)
+                .Set<TestEntity>(c => c.Test1, entity.Test1)
+                .Set<TestEntity>(c => c.Test2, entity.Test2)
+                .Set<TestEntity>(c => c.Test3, entity.Test3)
+                .Set<TestEntity>(c => c.Test4, entity.Test4)
+                .Set<TestEntity>(c => c.Test5, entity.Test5)
+                .Set<TestEntity>(c => c.Test6, entity.Test6)
+                .Set<TestEntity>(c => c.Test7, entity.Test7)
+                .Set<TestEntity>(c => c.Test8, entity.Test8);
+
+            String actualSql = cmd.GetSqlCommand().Trim();
+            SqlParameter[] actualParameter = cmd.GetAllParameters();
 
             Assert.AreEqual(expectedSql, actualSql);
 
@@ -85,9 +98,9 @@ namespace DotMaysWind.Data.UnitTest
             String expectedSql = "UPDATE TestTable SET TestColumn2=TestColumn2+1";
             SqlParameter[] expectedParameter = new SqlParameter[1] { SqlParameter.CreateCustomAction("TestColumn2", "TestColumn2+1") };
 
-            String actualSql = "";
-            SqlParameter[] actualParameter = null;
-            provider.LinqIncrease(entity, out actualSql, out actualParameter);
+            UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Increase<TestEntity>(c => c.Test2);
+            String actualSql = cmd.GetSqlCommand().Trim();
+            SqlParameter[] actualParameter = cmd.GetAllParameters();
 
             Assert.AreEqual(expectedSql, actualSql);
         }
@@ -102,9 +115,9 @@ namespace DotMaysWind.Data.UnitTest
             String expectedSql = "UPDATE TestTable SET TestColumn2=TestColumn2-1";
             SqlParameter[] expectedParameter = new SqlParameter[1] { SqlParameter.CreateCustomAction("TestColumn2", "TestColumn2-1") };
 
-            String actualSql = "";
-            SqlParameter[] actualParameter = null;
-            provider.LinqDecrease(entity, out actualSql, out actualParameter);
+            UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Decrease<TestEntity>(c => c.Test2);
+            String actualSql = cmd.GetSqlCommand().Trim();
+            SqlParameter[] actualParameter = cmd.GetAllParameters();
 
             Assert.AreEqual(expectedSql, actualSql);
         }
