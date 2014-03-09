@@ -638,7 +638,7 @@ namespace DotMaysWind.Data.Command
         /// <typeparam name="T">返回结果的类型</typeparam>
         /// <param name="columnName">字段名称</param>
         /// <returns>指定字段记录数</returns>
-        private override T Count<T>(String columnName)
+        private T Count<T>(String columnName)
         {
             return this.Query(SqlAggregateFunction.Count, columnName).Result<T>();
         }
@@ -648,7 +648,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <typeparam name="T">返回结果的类型</typeparam>
         /// <returns>指定字段记录数</returns>
-        public override T Count<T>()
+        public T Count<T>()
         {
             return this.Query(SqlAggregateFunction.Count).Result<T>();
         }
@@ -659,7 +659,7 @@ namespace DotMaysWind.Data.Command
         /// <typeparam name="T">返回结果的类型</typeparam>
         /// <param name="columnName">字段名称</param>
         /// <returns>指定字段最大值</returns>
-        private override T Max<T>(String columnName)
+        private T Max<T>(String columnName)
         {
             return this.Query(SqlAggregateFunction.Max, columnName).Result<T>();
         }
@@ -670,7 +670,7 @@ namespace DotMaysWind.Data.Command
         /// <typeparam name="T">返回结果的类型</typeparam>
         /// <param name="columnName">字段名称</param>
         /// <returns>指定字段最小值</returns>
-        private override T Min<T>(String columnName)
+        private T Min<T>(String columnName)
         {
             return this.Query(SqlAggregateFunction.Min, columnName).Result<T>();
         }
@@ -681,7 +681,7 @@ namespace DotMaysWind.Data.Command
         /// <typeparam name="T">返回结果的类型</typeparam>
         /// <param name="columnName">字段名称</param>
         /// <returns>指定字段平均值</returns>
-        private override T Avg<T>(String columnName)
+        private T Avg<T>(String columnName)
         {
             return this.Query(SqlAggregateFunction.Avg, columnName).Result<T>();
         }
