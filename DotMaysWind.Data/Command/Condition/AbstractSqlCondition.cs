@@ -16,6 +16,53 @@ namespace DotMaysWind.Data.Command.Condition
 
         #region 方法
         /// <summary>
+        /// 获取条件语句参数集合
+        /// </summary>
+        /// <returns>条件语句参数集合</returns>
+        public abstract SqlParameter[] GetAllParameters();
+
+        /// <summary>
+        /// 输出条件语句内容
+        /// </summary>
+        /// <returns>条件语句内容</returns>
+        public abstract String GetSqlClause();
+
+        /// <summary>
+        /// 获取当前参数的哈希值
+        /// </summary>
+        /// <returns>当前参数的哈希值</returns>
+        public abstract override Int32 GetHashCode();
+
+        /// <summary>
+        /// 判断两个Sql条件语句是否相同
+        /// </summary>
+        /// <param name="obj">待比较的Sql条件语句</param>
+        /// <returns>两个Sql条件语句是否相同</returns>
+        public abstract override Boolean Equals(Object obj);
+
+        /// <summary>
+        /// 与指定Sql条件执行与操作
+        /// </summary>
+        /// <param name="condition">条件</param>
+        /// <returns>条件列表</returns>
+        public SqlConditionList And(AbstractSqlCondition condition)
+        {
+            return SqlCondition.And(this, condition);
+        }
+
+        /// <summary>
+        /// 与指定Sql条件执行或操作
+        /// </summary>
+        /// <param name="condition">条件</param>
+        /// <returns>条件列表</returns>
+        public SqlConditionList Or(AbstractSqlCondition condition)
+        {
+            return SqlCondition.Or(this, condition);
+        }
+        #endregion
+
+        #region 重载方法和运算符
+        /// <summary>
         /// Sql条件语句执行非操作
         /// </summary>
         /// <param name="condition">条件</param>
@@ -123,33 +170,6 @@ namespace DotMaysWind.Data.Command.Condition
             }
         }
 
-        /// <summary>
-        /// 获取条件语句参数集合
-        /// </summary>
-        /// <returns>条件语句参数集合</returns>
-        public abstract SqlParameter[] GetAllParameters();
-
-        /// <summary>
-        /// 输出条件语句内容
-        /// </summary>
-        /// <returns>条件语句内容</returns>
-        public abstract String GetSqlClause();
-
-        /// <summary>
-        /// 获取当前参数的哈希值
-        /// </summary>
-        /// <returns>当前参数的哈希值</returns>
-        public abstract override Int32 GetHashCode();
-
-        /// <summary>
-        /// 判断两个Sql条件语句是否相同
-        /// </summary>
-        /// <param name="obj">待比较的Sql条件语句</param>
-        /// <returns>两个Sql条件语句是否相同</returns>
-        public abstract override Boolean Equals(Object obj);
-        #endregion
-
-        #region 重载方法
         /// <summary>
         /// 返回当前对象的信息
         /// </summary>
