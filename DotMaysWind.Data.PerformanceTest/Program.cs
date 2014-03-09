@@ -10,7 +10,7 @@ namespace DotMaysWind.Data.PerformanceTest
             Stopwatch stopWatch = new Stopwatch();
             Int32 cycle = 10000;
 
-            Console.WriteLine("Performance Test, Cycle = {0}", cycle);
+            Console.WriteLine("DotMaysWind.Data Performance Test, Cycle = {0}", cycle);
 
             Console.WriteLine();
             Console.WriteLine("Select Command Generate:");
