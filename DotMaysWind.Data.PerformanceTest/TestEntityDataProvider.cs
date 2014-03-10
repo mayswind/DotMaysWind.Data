@@ -9,8 +9,8 @@ namespace DotMaysWind.Data.PerformanceTest
 {
     public class TestEntityDataProvider : DatabaseTable<TestEntity>
     {
-        public TestEntityDataProvider(Database db)
-            : base(db) { }
+        public TestEntityDataProvider()
+            : base(DbHelper.FakeDb) { }
 
         public DbCommand SelectTest()
         {

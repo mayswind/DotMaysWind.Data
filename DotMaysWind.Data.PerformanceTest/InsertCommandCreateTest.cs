@@ -15,7 +15,6 @@ namespace DotMaysWind.Data.PerformanceTest
     internal static class InsertCommandCreateTest
     {
         #region 字段
-        private static Database _fakeDb;
         private static TestEntityDataProvider _provider;
         private static TestEntity _entity;
         #endregion
@@ -23,15 +22,29 @@ namespace DotMaysWind.Data.PerformanceTest
         #region 构造方法
         static InsertCommandCreateTest()
         {
-            _fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient");
-            _provider = new TestEntityDataProvider(_fakeDb);
-
+            _provider = new TestEntityDataProvider();
             _entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
         }
         #endregion
 
         #region 测试方法
-        internal static void DatabaseNormalCreateInsertCommand()
+        internal static void BaseCreateInsertCommand()
+        {
+            String sql = "INSERT INTO TestTable (TestColumn1,TestColumn2,TestColumn3,TestColumn4,TestColumn5,TestColumn6,TestColumn7,TestColumn8) VALUES (@PN_NEW_TestColumn1,@PN_NEW_TestColumn2,@PN_NEW_TestColumn3,@PN_NEW_TestColumn4,@PN_NEW_TestColumn5,@PN_NEW_TestColumn6,@PN_NEW_TestColumn7,@PN_NEW_TestColumn8)";
+
+            DbCommand dbCommand = DbHelper.FakeDb.CreateDbCommand();
+            dbCommand.CommandText = sql;
+            dbCommand.Parameters.Add(DbHelper.InternalCreateDbParameter("TestColumn1", "@PN_NEW_TestColumn1", DbType.String, _entity.Test1));
+            dbCommand.Parameters.Add(DbHelper.InternalCreateDbParameter("TestColumn2", "@PN_NEW_TestColumn2", DbType.Int32, _entity.Test2));
+            dbCommand.Parameters.Add(DbHelper.InternalCreateDbParameter("TestColumn3", "@PN_NEW_TestColumn3", DbType.Double, _entity.Test3));
+            dbCommand.Parameters.Add(DbHelper.InternalCreateDbParameter("TestColumn4", "@PN_NEW_TestColumn4", DbType.DateTime, _entity.Test4));
+            dbCommand.Parameters.Add(DbHelper.InternalCreateDbParameter("TestColumn5", "@PN_NEW_TestColumn5", DbType.Int32, _entity.Test5));
+            dbCommand.Parameters.Add(DbHelper.InternalCreateDbParameter("TestColumn6", "@PN_NEW_TestColumn6", DbType.Double, _entity.Test6));
+            dbCommand.Parameters.Add(DbHelper.InternalCreateDbParameter("TestColumn7", "@PN_NEW_TestColumn7", DbType.DateTime, _entity.Test7));
+            dbCommand.Parameters.Add(DbHelper.InternalCreateDbParameter("TestColumn8", "@PN_NEW_TestColumn8", DbType.Int16, _entity.Test8));
+        }
+
+        internal static void DatabaseArrayCreateInsertCommand()
         {
             SqlParameter[] insertParameters = new SqlParameter[8]
             {
@@ -45,12 +58,27 @@ namespace DotMaysWind.Data.PerformanceTest
                 SqlParameter.Create("TestColumn8", "NEW_TestColumn8", DbType.Int16, _entity.Test8),
             };
 
-            DbCommand dbCommand = _fakeDb.CreateInsertCommand(_provider.TableName).Add(insertParameters).ToDbCommand();
+            DbCommand dbCommand = DbHelper.FakeDb.CreateInsertCommand(_provider.TableName).Add(insertParameters).ToDbCommand();
+        }
+
+        internal static void DatabaseNormalCreateInsertCommand()
+        {
+            InsertCommand command = DbHelper.FakeDb.CreateInsertCommand(_provider.TableName)
+                .Add("TestColumn1", _entity.Test1)
+                .Add("TestColumn2", _entity.Test2)
+                .Add("TestColumn3", _entity.Test3)
+                .Add("TestColumn4", _entity.Test4)
+                .Add("TestColumn5", _entity.Test5)
+                .Add("TestColumn6", _entity.Test6)
+                .Add("TestColumn7", _entity.Test7)
+                .Add("TestColumn8", DbType.Int16, _entity.Test8);
+
+            DbCommand dbCommand = command.ToDbCommand();
         }
 
         internal static void DatabaseEntityCreateInsertCommand()
         {
-            DbCommand dbCommand = _fakeDb.CreateInsertCommand(_provider.TableName).Add(_entity).ToDbCommand();
+            DbCommand dbCommand = DbHelper.FakeDb.CreateInsertCommand(_provider.TableName).Add(_entity).ToDbCommand();
         }
 
         internal static void ProviderEntityCreateInsertCommand()
@@ -60,7 +88,7 @@ namespace DotMaysWind.Data.PerformanceTest
 
         internal static void DatabaseLinqCreateInsertCommand()
         {
-            InsertCommand command = _fakeDb.CreateInsertCommand(_provider.TableName)
+            InsertCommand command = DbHelper.FakeDb.CreateInsertCommand(_provider.TableName)
                 .Add<TestEntity>(c => c.Test1, _entity.Test1)
                 .Add<TestEntity>(c => c.Test2, _entity.Test2)
                 .Add<TestEntity>(c => c.Test3, _entity.Test3)
