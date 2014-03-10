@@ -114,7 +114,6 @@ namespace DotMaysWind.Data.Linq
                 throw new NullAttributeException();
             }
 
-            SqlParameter param = null;
             SqlBasicParameterCondition condition = null;
 
             if (expr.Right.NodeType == ExpressionType.MemberAccess)//如果右侧为实体属性
@@ -125,8 +124,7 @@ namespace DotMaysWind.Data.Linq
                 {
                     String columnName2 = ExpressionHelper.GetColumnName(sourceCommand, right);
 
-                    param = SqlParameter.CreateCustomAction(columnAttr.ColumnName, columnName2);
-                    condition = SqlCondition.Create(op, param);
+                    condition = SqlCondition.InternalCreateColumn(columnAttr.ColumnName, op, columnName2);
 
                     return condition;
                 }
@@ -139,8 +137,7 @@ namespace DotMaysWind.Data.Linq
                 op = (op == SqlOperator.Equal ? SqlOperator.IsNull : SqlOperator.IsNotNull);
             }
 
-            param = SqlParameter.Create(columnAttr.ColumnName, columnAttr.DbType.Value, value);
-            condition = SqlCondition.Create(op, param);
+            condition = SqlCondition.InternalCreate(columnAttr.ColumnName, op, columnAttr.DbType.Value, value);
 
             return condition;
         }
@@ -197,8 +194,7 @@ namespace DotMaysWind.Data.Linq
                 throw new NullAttributeException();
             }
 
-            SqlParameter param = SqlParameter.Create(columnAttr.ColumnName, columnAttr.DbType.Value, null);
-            AbstractSqlCondition condition = SqlCondition.Create((isNot ? SqlOperator.IsNotNull : SqlOperator.IsNull), param);
+            AbstractSqlCondition condition = SqlCondition.InternalCreate(columnAttr.ColumnName, (isNot ? SqlOperator.IsNotNull : SqlOperator.IsNull), columnAttr.DbType.Value, null);
 
             return condition;
         }
@@ -214,7 +210,7 @@ namespace DotMaysWind.Data.Linq
                 throw new NullAttributeException();
             }
 
-            AbstractSqlCondition condition = SqlCondition.Create(columnAttr.ColumnName, (isNot ? SqlOperator.NotLike : SqlOperator.Like), columnAttr.DbType.Value, String.Format(format, value));
+            AbstractSqlCondition condition = SqlCondition.InternalCreate(columnAttr.ColumnName, (isNot ? SqlOperator.NotLike : SqlOperator.Like), columnAttr.DbType.Value, String.Format(format, value));
 
             return condition;
         }
@@ -231,7 +227,7 @@ namespace DotMaysWind.Data.Linq
                 throw new NullAttributeException();
             }
 
-            AbstractSqlCondition condition = SqlCondition.Create(columnAttr.ColumnName, (isNot ? SqlOperator.NotBetween : SqlOperator.Between), columnAttr.DbType.Value, start, end);
+            AbstractSqlCondition condition = SqlCondition.InternalCreate(columnAttr.ColumnName, (isNot ? SqlOperator.NotBetween : SqlOperator.Between), columnAttr.DbType.Value, start, end);
 
             return condition;
         }
@@ -251,7 +247,7 @@ namespace DotMaysWind.Data.Linq
 
             if (array != null)
             {
-                AbstractSqlCondition condition = SqlCondition.In(columnAttr.ColumnName, isNot, columnAttr.DbType.Value, array);
+                AbstractSqlCondition condition = SqlCondition.InternalCreateIn(columnAttr.ColumnName, isNot, columnAttr.DbType.Value, array);
 
                 return condition;
             }
@@ -260,7 +256,7 @@ namespace DotMaysWind.Data.Linq
 
             if (cmd != null)
             {
-                AbstractSqlCondition condition = SqlCondition.In(columnAttr.ColumnName, isNot, cmd);
+                AbstractSqlCondition condition = SqlCondition.InternalCreateIn(columnAttr.ColumnName, isNot, cmd);
 
                 return condition;
             }
