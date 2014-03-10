@@ -39,7 +39,7 @@ namespace DotMaysWind.Data.UnitTest
             SqlBasicParameterCondition baseCondition = SqlCondition.Equal("TestColumn2", 1);
             SqlNotCondition actualCondition = !baseCondition;
 
-            String expectedConditionClause = "(NOT((TestColumn2 = @PN_TestColumn2)))";
+            String expectedConditionClause = "(NOT((TestColumn2 = @PN_TestColumn2_Equal)))";
             String actualConditionClause = actualCondition.GetSqlClause();
 
             SqlParameter[] expectedParameters = baseCondition.GetAllParameters();

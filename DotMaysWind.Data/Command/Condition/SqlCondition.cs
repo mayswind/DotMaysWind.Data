@@ -14,26 +14,14 @@ namespace DotMaysWind.Data.Command.Condition
         #region 基本参数条件
         #region General
         /// <summary>
-        /// 创建新的Sql条件语句
+        /// 创建单参数新的Sql条件语句
         /// </summary>
+        /// <param name="columnName">字段名</param>
         /// <param name="op">条件运算符</param>
-        /// <param name="parameter">参数</param>
         /// <returns>Sql条件语句</returns>
-        private static SqlBasicParameterCondition InternalCreate(SqlOperator op, SqlParameter parameter)
+        internal static SqlBasicParameterCondition InternalCreate(String columnName, SqlOperator op)
         {
-            return new SqlBasicParameterCondition(parameter, op);
-        }
-
-        /// <summary>
-        /// 创建双参数新的Sql条件语句
-        /// </summary>
-        /// <param name="parameterOne">参数一</param>
-        /// <param name="op">条件运算符</param>
-        /// <param name="parameterTwo">参数二</param>
-        /// <returns>Sql条件语句</returns>
-        private static SqlBasicParameterCondition InternalCreate(SqlParameter parameterOne, SqlOperator op, SqlParameter parameterTwo)
-        {
-            return new SqlBasicParameterCondition(parameterOne, parameterTwo, op);
+            return new SqlBasicParameterCondition(SqlParameter.Create(columnName, columnName + "_" + op.ToString(), null), op);
         }
 
         /// <summary>
@@ -45,20 +33,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         internal static SqlBasicParameterCondition InternalCreate(String columnName, SqlOperator op, Object value)
         {
-            return new SqlBasicParameterCondition(SqlParameter.Create(columnName, value), op);
-        }
-
-        /// <summary>
-        /// 创建单参数新的Sql条件语句
-        /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <param name="op">条件运算符</param>
-        /// <param name="dbType">数据类型</param>
-        /// <param name="value">数据</param>
-        /// <returns>Sql条件语句</returns>
-        internal static SqlBasicParameterCondition InternalCreate(String columnName, SqlOperator op, DbType dbType, Object value)
-        {
-            return new SqlBasicParameterCondition(SqlParameter.Create(columnName, dbType, value), op);
+            return new SqlBasicParameterCondition(SqlParameter.Create(columnName, columnName + "_" + op.ToString(), value), op);
         }
 
         /// <summary>
@@ -72,6 +47,19 @@ namespace DotMaysWind.Data.Command.Condition
         internal static SqlBasicParameterCondition InternalCreate(String columnName, String paramName, SqlOperator op, Object value)
         {
             return new SqlBasicParameterCondition(SqlParameter.Create(columnName, paramName, value), op);
+        }
+
+        /// <summary>
+        /// 创建单参数新的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="op">条件运算符</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalCreate(String columnName, SqlOperator op, DbType dbType, Object value)
+        {
+            return new SqlBasicParameterCondition(SqlParameter.Create(columnName, columnName + "_" + op.ToString(), dbType, value), op);
         }
 
         /// <summary>
@@ -98,7 +86,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         internal static SqlBasicParameterCondition InternalCreate(String columnName, SqlOperator op, Object valueOne, Object valueTwo)
         {
-            return new SqlBasicParameterCondition(SqlParameter.Create(columnName, columnName + "_One", valueOne), SqlParameter.Create(columnName, columnName + "_Two", valueTwo), op);
+            return new SqlBasicParameterCondition(SqlParameter.Create(columnName, columnName + "_" + op.ToString() + "_One", valueOne), SqlParameter.Create(columnName, columnName + "_" + op.ToString() + "_Two", valueTwo), op);
         }
 
         /// <summary>
@@ -112,7 +100,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         internal static SqlBasicParameterCondition InternalCreate(String columnName, SqlOperator op, DbType dbType, Object valueOne, Object valueTwo)
         {
-            return new SqlBasicParameterCondition(SqlParameter.Create(columnName, columnName + "_One", dbType, valueOne), SqlParameter.Create(columnName, columnName + "_Two", dbType, valueTwo), op);
+            return new SqlBasicParameterCondition(SqlParameter.Create(columnName, columnName + "_" + op.ToString() + "_One", dbType, valueOne), SqlParameter.Create(columnName, columnName + "_" + op.ToString() + "_Two", dbType, valueTwo), op);
         }
 
         /// <summary>
@@ -181,7 +169,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition Create(SqlAggregateFunction function, String columnName, SqlOperator op, Object value)
         {
-            return SqlCondition.InternalCreate(op, SqlParameter.Create(String.Format("{0}({1})", function.ToString().ToUpperInvariant(), columnName), value));
+            return SqlCondition.InternalCreate(String.Format("{0}({1})", function.ToString().ToUpperInvariant(), columnName), op, value);
         }
 
         /// <summary>
@@ -201,31 +189,11 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 创建判断是否为空的Sql条件语句
         /// </summary>
-        /// <param name="parameter">参数</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition IsNull(SqlParameter parameter)
-        {
-            return SqlCondition.InternalCreate(SqlOperator.IsNull, parameter);
-        }
-
-        /// <summary>
-        /// 创建判断是否为空的Sql条件语句
-        /// </summary>
         /// <param name="columnName">字段名</param>
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition IsNull(String columnName)
         {
-            return SqlCondition.IsNull(SqlParameter.Create(columnName, null));
-        }
-
-        /// <summary>
-        /// 创建判断是否非空的Sql条件语句
-        /// </summary>
-        /// <param name="parameter">参数</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition IsNotNull(SqlParameter parameter)
-        {
-            return SqlCondition.InternalCreate(SqlOperator.IsNotNull, parameter);
+            return SqlCondition.InternalCreate(columnName, SqlOperator.IsNull);
         }
 
         /// <summary>
@@ -235,21 +203,11 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition IsNotNull(String columnName)
         {
-            return SqlCondition.IsNotNull(SqlParameter.Create(columnName, null));
+            return SqlCondition.InternalCreate(columnName, SqlOperator.IsNotNull);
         }
         #endregion
 
         #region Equal/NotEqual
-        /// <summary>
-        /// 创建判断是否相等的Sql条件语句
-        /// </summary>
-        /// <param name="parameter">参数</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition Equal(SqlParameter parameter)
-        {
-            return SqlCondition.InternalCreate(SqlOperator.Equal, parameter);
-        }
-
         /// <summary>
         /// 创建判断是否相等的Sql条件语句
         /// </summary>
@@ -258,7 +216,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition Equal(String columnName, Object value)
         {
-            return SqlCondition.Equal(SqlParameter.Create(columnName, value));
+            return SqlCondition.InternalCreate(columnName, SqlOperator.Equal, value);
         }
 
         /// <summary>
@@ -270,7 +228,30 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition Equal(String columnName, String paramName, Object value)
         {
-            return SqlCondition.Equal(SqlParameter.Create(columnName, paramName, value));
+            return SqlCondition.InternalCreate(columnName, paramName, SqlOperator.Equal, value);
+        }
+
+        /// <summary>
+        /// 创建判断是否相等的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition Equal(String columnName, DbType dbType, Object value)
+        {
+            return SqlCondition.InternalCreate(columnName, SqlOperator.Equal, dbType, value);
+        }
+
+        /// <summary>
+        /// 创建判断是否相等的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition EqualColumn(String columnName, String columnNameTwo)
+        {
+            return SqlCondition.InternalCreateColumn(columnName, SqlOperator.Equal, columnNameTwo);
         }
 
         /// <summary>
@@ -282,28 +263,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition EqualColumn(String columnName, String tableNameTwo, String columnNameTwo)
         {
-            return SqlCondition.Equal(SqlParameter.CreateCustomAction(columnName, GetFieldName(tableNameTwo, columnNameTwo)));
-        }
-
-        /// <summary>
-        /// 创建判断是否相等的Sql条件语句
-        /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <param name="columnNameTwo">字段名二</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition EqualColumn(String columnName, String columnNameTwo)
-        {
-            return SqlCondition.Equal(SqlParameter.CreateCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)));
-        }
-
-        /// <summary>
-        /// 创建判断是否不等的Sql条件语句
-        /// </summary>
-        /// <param name="parameter">参数</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition NotEqual(SqlParameter parameter)
-        {
-            return SqlCondition.InternalCreate(SqlOperator.NotEqual, parameter);
+            return SqlCondition.InternalCreateColumn(columnName, SqlOperator.Equal, tableNameTwo, columnNameTwo);
         }
 
         /// <summary>
@@ -314,7 +274,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition NotEqual(String columnName, Object value)
         {
-            return SqlCondition.NotEqual(SqlParameter.Create(columnName, value));
+            return SqlCondition.InternalCreate(columnName, SqlOperator.NotEqual, value);
         }
 
         /// <summary>
@@ -326,7 +286,30 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql查询语句类</returns>
         public static SqlBasicParameterCondition NotEqual(String columnName, String paramName, Object value)
         {
-            return SqlCondition.NotEqual(SqlParameter.Create(columnName, paramName, value));
+            return SqlCondition.InternalCreate(columnName, paramName, SqlOperator.NotEqual, value);
+        }
+
+        /// <summary>
+        /// 创建判断是否不等的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition NotEqual(String columnName, DbType dbType, Object value)
+        {
+            return SqlCondition.InternalCreate(columnName, SqlOperator.NotEqual, dbType, value);
+        }
+
+        /// <summary>
+        /// 创建判断是否不等的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition NotEqualColumn(String columnName, String columnNameTwo)
+        {
+            return SqlCondition.InternalCreateColumn(columnName, SqlOperator.NotEqual, columnNameTwo);
         }
 
         /// <summary>
@@ -338,32 +321,11 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition NotEqualColumn(String columnName, String tableNameTwo, String columnNameTwo)
         {
-            return SqlCondition.NotEqual(SqlParameter.CreateCustomAction(columnName, GetFieldName(tableNameTwo, columnNameTwo)));
-        }
-
-        /// <summary>
-        /// 创建判断是否不等的Sql条件语句
-        /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <param name="columnNameTwo">字段名二</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition NotEqualColumn(String columnName, String columnNameTwo)
-        {
-            return SqlCondition.NotEqual(SqlParameter.CreateCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)));
+            return SqlCondition.InternalCreateColumn(columnName, SqlOperator.NotEqual, tableNameTwo, columnNameTwo);
         }
         #endregion
 
         #region GreaterThan/LessThan
-        /// <summary>
-        /// 创建判断是否大于的Sql条件语句
-        /// </summary>
-        /// <param name="parameter">参数</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition GreaterThan(SqlParameter parameter)
-        {
-            return SqlCondition.InternalCreate(SqlOperator.GreaterThan, parameter);
-        }
-
         /// <summary>
         /// 创建判断是否大于的Sql条件语句
         /// </summary>
@@ -372,7 +334,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition GreaterThan(String columnName, Object value)
         {
-            return SqlCondition.GreaterThan(SqlParameter.Create(columnName, value));
+            return SqlCondition.InternalCreate(columnName, SqlOperator.GreaterThan, value);
         }
 
         /// <summary>
@@ -384,7 +346,30 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition GreaterThan(String columnName, String paramName, Object value)
         {
-            return SqlCondition.GreaterThan(SqlParameter.Create(columnName, paramName, value));
+            return SqlCondition.InternalCreate(columnName, paramName, SqlOperator.GreaterThan, value);
+        }
+
+        /// <summary>
+        /// 创建判断是否大于的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition GreaterThan(String columnName, DbType dbType, Object value)
+        {
+            return SqlCondition.InternalCreate(columnName, SqlOperator.GreaterThan, dbType, value);
+        }
+
+        /// <summary>
+        /// 创建判断是否大于的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition GreaterThanColumn(String columnName, String columnNameTwo)
+        {
+            return SqlCondition.InternalCreateColumn(columnName, SqlOperator.GreaterThan, columnNameTwo);
         }
 
         /// <summary>
@@ -396,28 +381,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition GreaterThanColumn(String columnName, String tableNameTwo, String columnNameTwo)
         {
-            return SqlCondition.GreaterThan(SqlParameter.CreateCustomAction(columnName, GetFieldName(tableNameTwo, columnNameTwo)));
-        }
-
-        /// <summary>
-        /// 创建判断是否大于的Sql条件语句
-        /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <param name="columnNameTwo">字段名二</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition GreaterThanColumn(String columnName, String columnNameTwo)
-        {
-            return SqlCondition.GreaterThan(SqlParameter.CreateCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)));
-        }
-
-        /// <summary>
-        /// 创建判断是否小于的Sql条件语句
-        /// </summary>
-        /// <param name="parameter">参数</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition LessThan(SqlParameter parameter)
-        {
-            return SqlCondition.InternalCreate(SqlOperator.LessThan, parameter);
+            return SqlCondition.InternalCreateColumn(columnName, SqlOperator.GreaterThan, tableNameTwo, columnNameTwo);
         }
 
         /// <summary>
@@ -428,7 +392,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition LessThan(String columnName, Object value)
         {
-            return SqlCondition.LessThan(SqlParameter.Create(columnName, value));
+            return SqlCondition.InternalCreate(columnName, SqlOperator.LessThan, value);
         }
 
         /// <summary>
@@ -440,7 +404,30 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql查询语句类</returns>
         public static SqlBasicParameterCondition LessThan(String columnName, String paramName, Object value)
         {
-            return SqlCondition.LessThan(SqlParameter.Create(columnName, paramName, value));
+            return SqlCondition.InternalCreate(columnName, paramName, SqlOperator.LessThan, value);
+        }
+
+        /// <summary>
+        /// 创建判断是否小于的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition LessThan(String columnName, DbType dbType, Object value)
+        {
+            return SqlCondition.InternalCreate(columnName, SqlOperator.LessThan, dbType, value);
+        }
+
+        /// <summary>
+        /// 创建判断是否小于的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition LessThanColumn(String columnName, String columnNameTwo)
+        {
+            return SqlCondition.InternalCreateColumn(columnName, SqlOperator.LessThan, columnNameTwo);
         }
 
         /// <summary>
@@ -452,32 +439,11 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition LessThanColumn(String columnName, String tableNameTwo, String columnNameTwo)
         {
-            return SqlCondition.LessThan(SqlParameter.CreateCustomAction(columnName, GetFieldName(tableNameTwo, columnNameTwo)));
-        }
-
-        /// <summary>
-        /// 创建判断是否小于的Sql条件语句
-        /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <param name="columnNameTwo">字段名二</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition LessThanColumn(String columnName, String columnNameTwo)
-        {
-            return SqlCondition.LessThan(SqlParameter.CreateCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)));
+            return SqlCondition.InternalCreateColumn(columnName, SqlOperator.LessThan, tableNameTwo, columnNameTwo);
         }
         #endregion
 
         #region GreaterThanOrEqual/LessThanOrEqual
-        /// <summary>
-        /// 创建判断是否大于等于的Sql条件语句
-        /// </summary>
-        /// <param name="parameter">参数</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition GreaterThanOrEqual(SqlParameter parameter)
-        {
-            return SqlCondition.InternalCreate(SqlOperator.GreaterThanOrEqual, parameter);
-        }
-
         /// <summary>
         /// 创建判断是否大于等于的Sql条件语句
         /// </summary>
@@ -486,7 +452,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition GreaterThanOrEqual(String columnName, Object value)
         {
-            return SqlCondition.GreaterThanOrEqual(SqlParameter.Create(columnName, value));
+            return SqlCondition.InternalCreate(columnName, SqlOperator.GreaterThanOrEqual, value);
         }
 
         /// <summary>
@@ -498,7 +464,30 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition GreaterThanOrEqual(String columnName, String paramName, Object value)
         {
-            return SqlCondition.GreaterThanOrEqual(SqlParameter.Create(columnName, paramName, value));
+            return SqlCondition.InternalCreate(columnName, paramName, SqlOperator.GreaterThanOrEqual, value);
+        }
+
+        /// <summary>
+        /// 创建判断是否大于等于的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition GreaterThanOrEqual(String columnName, DbType dbType, Object value)
+        {
+            return SqlCondition.InternalCreate(columnName, SqlOperator.GreaterThanOrEqual, dbType, value);
+        }
+
+        /// <summary>
+        /// 创建判断是否大于等于的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition GreaterThanOrEqualColumn(String columnName, String columnNameTwo)
+        {
+            return SqlCondition.InternalCreateColumn(columnName, SqlOperator.GreaterThanOrEqual, columnNameTwo);
         }
 
         /// <summary>
@@ -510,28 +499,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition GreaterThanOrEqualColumn(String columnName, String tableNameTwo, String columnNameTwo)
         {
-            return SqlCondition.GreaterThanOrEqual(SqlParameter.CreateCustomAction(columnName, GetFieldName(tableNameTwo, columnNameTwo)));
-        }
-
-        /// <summary>
-        /// 创建判断是否大于等于的Sql条件语句
-        /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <param name="columnNameTwo">字段名二</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition GreaterThanOrEqualColumn(String columnName, String columnNameTwo)
-        {
-            return SqlCondition.GreaterThanOrEqual(SqlParameter.CreateCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)));
-        }
-
-        /// <summary>
-        /// 创建判断是否小于等于的Sql条件语句
-        /// </summary>
-        /// <param name="parameter">参数</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition LessThanOrEqual(SqlParameter parameter)
-        {
-            return SqlCondition.InternalCreate(SqlOperator.LessThanOrEqual, parameter);
+            return SqlCondition.InternalCreateColumn(columnName, SqlOperator.GreaterThanOrEqual, tableNameTwo, columnNameTwo);
         }
 
         /// <summary>
@@ -542,7 +510,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition LessThanOrEqual(String columnName, Object value)
         {
-            return SqlCondition.LessThanOrEqual(SqlParameter.Create(columnName, value));
+            return SqlCondition.InternalCreate(columnName, SqlOperator.LessThanOrEqual, value);
         }
 
         /// <summary>
@@ -554,7 +522,30 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql查询语句类</returns>
         public static SqlBasicParameterCondition LessThanOrEqual(String columnName, String paramName, Object value)
         {
-            return SqlCondition.LessThanOrEqual(SqlParameter.Create(columnName, paramName, value));
+            return SqlCondition.InternalCreate(columnName, paramName, SqlOperator.LessThanOrEqual, value);
+        }
+
+        /// <summary>
+        /// 创建判断是否小于等于的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition LessThanOrEqual(String columnName, DbType dbType, Object value)
+        {
+            return SqlCondition.InternalCreate(columnName, SqlOperator.LessThanOrEqual, dbType, value);
+        }
+
+        /// <summary>
+        /// 创建判断是否小于等于的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition LessThanOrEqualColumn(String columnName, String columnNameTwo)
+        {
+            return SqlCondition.InternalCreateColumn(columnName, SqlOperator.LessThanOrEqual, columnNameTwo);
         }
 
         /// <summary>
@@ -566,18 +557,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition LessThanOrEqualColumn(String columnName, String tableNameTwo, String columnNameTwo)
         {
-            return SqlCondition.LessThanOrEqual(SqlParameter.CreateCustomAction(columnName, GetFieldName(tableNameTwo, columnNameTwo)));
-        }
-
-        /// <summary>
-        /// 创建判断是否小于等于的Sql条件语句
-        /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <param name="columnNameTwo">字段名二</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition LessThanOrEqualColumn(String columnName, String columnNameTwo)
-        {
-            return SqlCondition.LessThanOrEqual(SqlParameter.CreateCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)));
+            return SqlCondition.InternalCreateColumn(columnName, SqlOperator.LessThanOrEqual, tableNameTwo, columnNameTwo);
         }
         #endregion
 
@@ -586,22 +566,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 创建判断是否相似的Sql条件语句
         /// </summary>
-        /// <param name="parameter">参数</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition Like(SqlParameter parameter)
-        {
-            return SqlCondition.InternalCreate(SqlOperator.Like, parameter);
-        }
-
-        /// <summary>
-        /// 创建判断是否相似的Sql条件语句
-        /// </summary>
         /// <param name="columnName">字段名</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition Like(String columnName, String value)
         {
-            return SqlCondition.Like(SqlParameter.Create(columnName, value));
+            return SqlCondition.InternalCreate(columnName, SqlOperator.Like, value);
         }
 
         /// <summary>
@@ -613,7 +583,30 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition Like(String columnName, String paramName, String value)
         {
-            return SqlCondition.Like(SqlParameter.Create(columnName, paramName, value));
+            return SqlCondition.InternalCreate(columnName, paramName, SqlOperator.Like, value);
+        }
+
+        /// <summary>
+        /// 创建判断是否相似的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition Like(String columnName, DbType dbType, Object value)
+        {
+            return SqlCondition.InternalCreate(columnName, SqlOperator.Like, dbType, value);
+        }
+
+        /// <summary>
+        /// 创建判断是否相似的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition LikeColumn(String columnName, String columnNameTwo)
+        {
+            return SqlCondition.InternalCreateColumn(columnName, SqlOperator.Like, columnNameTwo);
         }
 
         /// <summary>
@@ -625,28 +618,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition LikeColumn(String columnName, String tableNameTwo, String columnNameTwo)
         {
-            return SqlCondition.Like(SqlParameter.CreateCustomAction(columnName, GetFieldName(tableNameTwo, columnNameTwo)));
-        }
-
-        /// <summary>
-        /// 创建判断是否相似的Sql条件语句
-        /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <param name="columnNameTwo">字段名二</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition LikeColumn(String columnName, String columnNameTwo)
-        {
-            return SqlCondition.Like(SqlParameter.CreateCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)));
-        }
-
-        /// <summary>
-        /// 创建判断是否不相似的Sql条件语句
-        /// </summary>
-        /// <param name="parameter">参数</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition NotLike(SqlParameter parameter)
-        {
-            return SqlCondition.InternalCreate(SqlOperator.NotLike, parameter);
+            return SqlCondition.InternalCreateColumn(columnName, SqlOperator.Like, tableNameTwo, columnNameTwo);
         }
 
         /// <summary>
@@ -657,7 +629,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition NotLike(String columnName, String value)
         {
-            return SqlCondition.NotLike(SqlParameter.Create(columnName, value));
+            return SqlCondition.InternalCreate(columnName, SqlOperator.NotLike, value);
         }
 
         /// <summary>
@@ -669,7 +641,30 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql查询语句类</returns>
         public static SqlBasicParameterCondition NotLike(String columnName, String paramName, String value)
         {
-            return SqlCondition.NotLike(SqlParameter.Create(columnName, paramName, value));
+            return SqlCondition.InternalCreate(columnName, paramName, SqlOperator.NotLike, value);
+        }
+
+        /// <summary>
+        /// 创建判断是否结尾不包含的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition NotLike(String columnName, DbType dbType, Object value)
+        {
+            return SqlCondition.InternalCreate(columnName, SqlOperator.NotLike, dbType, value);
+        }
+
+        /// <summary>
+        /// 创建判断是否结尾不包含的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition NotLikeColumn(String columnName, String columnNameTwo)
+        {
+            return SqlCondition.InternalCreateColumn(columnName, SqlOperator.NotLike, columnNameTwo);
         }
 
         /// <summary>
@@ -681,18 +676,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition NotLikeColumn(String columnName, String tableNameTwo, String columnNameTwo)
         {
-            return SqlCondition.NotLike(SqlParameter.CreateCustomAction(columnName, GetFieldName(tableNameTwo, columnNameTwo)));
-        }
-
-        /// <summary>
-        /// 创建判断是否结尾不包含的Sql条件语句
-        /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <param name="columnNameTwo">字段名二</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition NotLikeColumn(String columnName, String columnNameTwo)
-        {
-            return SqlCondition.NotLike(SqlParameter.CreateCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)));
+            return SqlCondition.InternalCreateColumn(columnName, SqlOperator.NotLike, tableNameTwo, columnNameTwo);
         }
         #endregion
 
@@ -705,7 +689,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition LikeAll(String columnName, String value)
         {
-            return SqlCondition.Like(SqlParameter.Create(columnName, "%" + value + "%"));
+            return SqlCondition.Like(columnName, "%" + value + "%");
         }
 
         /// <summary>
@@ -717,7 +701,19 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition LikeAll(String columnName, String paramName, String value)
         {
-            return SqlCondition.Like(SqlParameter.Create(columnName, paramName, "%" + value + "%"));
+            return SqlCondition.Like(columnName, paramName, "%" + value + "%");
+        }
+
+        /// <summary>
+        /// 创建判断是否包含的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition LikeAll(String columnName, DbType dbType, Object value)
+        {
+            return SqlCondition.Like(columnName, dbType, "%" + value + "%");
         }
 
         /// <summary>
@@ -728,7 +724,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition NotLikeAll(String columnName, String value)
         {
-            return SqlCondition.NotLike(SqlParameter.Create(columnName, "%" + value + "%"));
+            return SqlCondition.NotLike(columnName, "%" + value + "%");
         }
 
         /// <summary>
@@ -740,7 +736,19 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql查询语句类</returns>
         public static SqlBasicParameterCondition NotLikeAll(String columnName, String paramName, String value)
         {
-            return SqlCondition.NotLike(SqlParameter.Create(columnName, paramName, "%" + value + "%"));
+            return SqlCondition.NotLike(columnName, paramName, "%" + value + "%");
+        }
+
+        /// <summary>
+        /// 创建判断是否不包含的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition NotLikeAll(String columnName, DbType dbType, Object value)
+        {
+            return SqlCondition.NotLike(columnName, dbType, "%" + value + "%");
         }
         #endregion
 
@@ -753,7 +761,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition LikeStartWith(String columnName, String value)
         {
-            return SqlCondition.Like(SqlParameter.Create(columnName, value + "%"));
+            return SqlCondition.Like(columnName, value + "%");
         }
 
         /// <summary>
@@ -765,7 +773,19 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition LikeStartWith(String columnName, String paramName, String value)
         {
-            return SqlCondition.Like(SqlParameter.Create(columnName, paramName, value + "%"));
+            return SqlCondition.Like(columnName, paramName, value + "%");
+        }
+
+        /// <summary>
+        /// 创建判断是否开头包含的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition LikeStartWith(String columnName, DbType dbType, Object value)
+        {
+            return SqlCondition.Like(columnName, dbType, value + "%");
         }
 
         /// <summary>
@@ -776,7 +796,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition NotLikeStartWith(String columnName, String value)
         {
-            return SqlCondition.NotLike(SqlParameter.Create(columnName, value + "%"));
+            return SqlCondition.NotLike(columnName, value + "%");
         }
 
         /// <summary>
@@ -788,7 +808,19 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql查询语句类</returns>
         public static SqlBasicParameterCondition NotLikeStartWith(String columnName, String paramName, String value)
         {
-            return SqlCondition.NotLike(SqlParameter.Create(columnName, paramName, value + "%"));
+            return SqlCondition.NotLike(columnName, paramName, value + "%");
+        }
+
+        /// <summary>
+        /// 创建判断是否开头不包含的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition NotLikeStartWith(String columnName, DbType dbType, Object value)
+        {
+            return SqlCondition.NotLike(columnName, dbType, value + "%");
         }
         #endregion
 
@@ -801,7 +833,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition LikeEndWith(String columnName, String value)
         {
-            return SqlCondition.Like(SqlParameter.Create(columnName, "%" + value));
+            return SqlCondition.Like(columnName, "%" + value);
         }
 
         /// <summary>
@@ -813,7 +845,19 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition LikeEndWith(String columnName, String paramName, String value)
         {
-            return SqlCondition.Like(SqlParameter.Create(columnName, paramName, "%" + value));
+            return SqlCondition.Like(columnName, paramName, "%" + value);
+        }
+
+        /// <summary>
+        /// 创建判断是否结尾包含的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition LikeEndWith(String columnName, DbType dbType, Object value)
+        {
+            return SqlCondition.Like(columnName, dbType, "%" + value);
         }
 
         /// <summary>
@@ -824,7 +868,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition NotLikeEndWith(String columnName, String value)
         {
-            return SqlCondition.NotLike(SqlParameter.Create(columnName, "%" + value));
+            return SqlCondition.NotLike(columnName, "%" + value);
         }
 
         /// <summary>
@@ -836,23 +880,24 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql查询语句类</returns>
         public static SqlBasicParameterCondition NotLikeEndWith(String columnName, String paramName, String value)
         {
-            return SqlCondition.NotLike(SqlParameter.Create(columnName, paramName, "%" + value));
+            return SqlCondition.NotLike(columnName, paramName, "%" + value);
+        }
+
+        /// <summary>
+        /// 创建判断是否结尾不包含的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition NotLikeEndWith(String columnName, DbType dbType, Object value)
+        {
+            return SqlCondition.NotLike(columnName, dbType, "%" + value);
         }
         #endregion
         #endregion
 
         #region Between/NotBetween
-        /// <summary>
-        /// 创建判断是否在范围内的Sql条件语句
-        /// </summary>
-        /// <param name="parameterOne">参数一</param>
-        /// <param name="parameterTwo">参数二</param>
-        /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition Between(SqlParameter parameterOne, SqlParameter parameterTwo)
-        {
-            return SqlCondition.InternalCreate(parameterOne, SqlOperator.Between, parameterTwo);
-        }
-
         /// <summary>
         /// 创建判断是否在范围内的Sql条件语句
         /// </summary>
@@ -862,7 +907,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition Between(String columnName, Object valueOne, Object valueTwo)
         {
-            return SqlCondition.Between(SqlParameter.Create(columnName, columnName + "_One", valueOne), SqlParameter.Create(columnName, columnName + "_Two", valueTwo));
+            return SqlCondition.InternalCreate(columnName, SqlOperator.Between, valueOne, valueTwo);
         }
 
         /// <summary>
@@ -875,18 +920,20 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition Between(String columnName, String paramName, Object valueOne, Object valueTwo)
         {
-            return SqlCondition.Between(SqlParameter.Create(columnName, paramName + "_One", valueOne), SqlParameter.Create(columnName, paramName + "_Two", valueTwo));
+            return SqlCondition.InternalCreate(columnName, paramName, SqlOperator.Between, valueOne, valueTwo);
         }
 
         /// <summary>
-        /// 创建判断是否不在范围内的Sql条件语句
+        /// 创建判断是否在范围内的Sql条件语句
         /// </summary>
-        /// <param name="parameterOne">参数一</param>
-        /// <param name="parameterTwo">参数二</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="valueOne">数据一</param>
+        /// <param name="valueTwo">数据二</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition NotBetween(SqlParameter parameterOne, SqlParameter parameterTwo)
+        public static SqlBasicParameterCondition Between(String columnName, DbType dbType, Object valueOne, Object valueTwo)
         {
-            return SqlCondition.InternalCreate(parameterOne, SqlOperator.NotBetween, parameterTwo);
+            return SqlCondition.InternalCreate(columnName, SqlOperator.Between, dbType, valueOne, valueTwo);
         }
 
         /// <summary>
@@ -898,7 +945,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition NotBetween(String columnName, Object valueOne, Object valueTwo)
         {
-            return SqlCondition.NotBetween(SqlParameter.Create(columnName, columnName + "_One", valueOne), SqlParameter.Create(columnName, columnName + "_Two", valueTwo));
+            return SqlCondition.InternalCreate(columnName, SqlOperator.NotBetween, valueOne, valueTwo);
         }
 
         /// <summary>
@@ -911,7 +958,20 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql查询语句类</returns>
         public static SqlBasicParameterCondition NotBetween(String columnName, String paramName, Object valueOne, Object valueTwo)
         {
-            return SqlCondition.NotBetween(SqlParameter.Create(columnName, paramName + "_One", valueOne), SqlParameter.Create(columnName, paramName + "_Two", valueTwo));
+            return SqlCondition.InternalCreate(columnName, paramName, SqlOperator.NotBetween, valueOne, valueTwo);
+        }
+
+        /// <summary>
+        /// 创建判断是否不在范围内的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="valueOne">数据一</param>
+        /// <param name="valueTwo">数据二</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition NotBetween(String columnName, DbType dbType, Object valueOne, Object valueTwo)
+        {
+            return SqlCondition.InternalCreate(columnName, SqlOperator.NotBetween, dbType, valueOne, valueTwo);
         }
         #endregion
         #endregion
@@ -1069,7 +1129,7 @@ namespace DotMaysWind.Data.Command.Condition
             {
                 for (Int32 i = 0; i < values.Length; i++)
                 {
-                    parameters.Add(SqlParameter.Create(columnName, columnName + "_" + i.ToString(), dbType, values[i]));
+                    parameters.Add(SqlParameter.Create(columnName, columnName + (isNotIn ? "_NotIn_" : "_In_") + i.ToString(), dbType, values[i]));
                 }
             }
 
@@ -1093,7 +1153,7 @@ namespace DotMaysWind.Data.Command.Condition
 
                 for (Int32 i = 0; i < values.Length; i++)
                 {
-                    parameters.Add(SqlParameter.Create(columnName, columnName + "_" + i.ToString(), dbType, values[i]));
+                    parameters.Add(SqlParameter.Create(columnName, columnName + (isNotIn ? "_NotIn_" : "_In_") + i.ToString(), dbType, values[i]));
                 }
             }
 
@@ -1118,7 +1178,7 @@ namespace DotMaysWind.Data.Command.Condition
 
                 foreach (Object obj in values)
                 {
-                    parameters.Add(SqlParameter.Create(columnName, columnName + "_" + (i++).ToString(), dbType, obj));
+                    parameters.Add(SqlParameter.Create(columnName, columnName + (isNotIn ? "_NotIn_" : "_In_") + (i++).ToString(), dbType, obj));
                 }
             }
 
@@ -1148,7 +1208,7 @@ namespace DotMaysWind.Data.Command.Condition
                         dbType = DbTypeHelper.InternalGetDbType(obj);
                     }
 
-                    parameters.Add(SqlParameter.Create(columnName, columnName + "_" + (i++).ToString(), dbType.Value, obj));
+                    parameters.Add(SqlParameter.Create(columnName, columnName + (isNotIn ? "_NotIn_" : "_In_") + (i++).ToString(), dbType.Value, obj));
                 }
             }
 
@@ -1174,7 +1234,7 @@ namespace DotMaysWind.Data.Command.Condition
 
                 for (Int32 i = 0; i < valuesArray.Length; i++)
                 {
-                    parameters.Add(SqlParameter.Create(columnName, columnName + "_" + i.ToString(), dbType, valuesArray[i].Trim()));
+                    parameters.Add(SqlParameter.Create(columnName, columnName + (isNotIn ? "_NotIn_" : "_In_") + i.ToString(), dbType, valuesArray[i].Trim()));
                 }
             }
 
@@ -1203,7 +1263,7 @@ namespace DotMaysWind.Data.Command.Condition
                 for (Int32 i = 0; i < valuesArray.Length; i++)
                 {
                     Object value = Convert.ChangeType(valuesArray[i].Trim(), t);
-                    parameters.Add(SqlParameter.Create(columnName, columnName + "_" + i.ToString(), dbType, value));
+                    parameters.Add(SqlParameter.Create(columnName, columnName + (isNotIn ? "_NotIn_" : "_In_") + i.ToString(), dbType, value));
                 }
             }
 
@@ -1228,7 +1288,7 @@ namespace DotMaysWind.Data.Command.Condition
 
                 for (Int32 i = 0; i < valuesArray.Length; i++)
                 {
-                    parameters.Add(SqlParameter.Create(columnName, columnName + "_" + i.ToString(), DbType.Int32, Convert.ToInt32(valuesArray[i].Trim())));
+                    parameters.Add(SqlParameter.Create(columnName, columnName + (isNotIn ? "_NotIn_" : "_In_") + i.ToString(), DbType.Int32, Convert.ToInt32(valuesArray[i].Trim())));
                 }
             }
 
