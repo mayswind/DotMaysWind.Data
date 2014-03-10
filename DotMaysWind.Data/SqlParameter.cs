@@ -149,7 +149,7 @@ namespace DotMaysWind.Data
         /// <returns>Sql语句参数类</returns>
         public static SqlParameter Create(String columnName, SqlDbType dbType, Object value)
         {
-            return SqlParameter.Create(columnName, columnName.Replace("(", "").Replace(")", ""), dbType, value);
+            return SqlParameter.Create(columnName, columnName.Replace("(", "_").Replace(")", ""), dbType, value);
         }
 
         /// <summary>
