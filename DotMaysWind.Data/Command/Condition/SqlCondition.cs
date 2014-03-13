@@ -176,6 +176,49 @@ namespace DotMaysWind.Data.Command.Condition
         /// 创建单参数新的Sql条件语句
         /// </summary>
         /// <param name="function">合计函数类型</param>
+        /// <param name="columnName">要查询的字段名</param>
+        /// <param name="op">条件运算符</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition Create(SqlAggregateFunction function, String columnName, SqlOperator op, DbType dbType, Object value)
+        {
+            return SqlCondition.InternalCreate(String.Format("{0}({1})", function.ToString().ToUpperInvariant(), columnName), op, dbType, value);
+        }
+
+        /// <summary>
+        /// 创建单参数新的Sql条件语句
+        /// </summary>
+        /// <param name="function">合计函数类型</param>
+        /// <param name="columnName">要查询的字段名</param>
+        /// <param name="paramName">参数名</param>
+        /// <param name="op">条件运算符</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition Create(SqlAggregateFunction function, String columnName, String paramName, SqlOperator op, Object value)
+        {
+            return SqlCondition.InternalCreate(String.Format("{0}({1})", function.ToString().ToUpperInvariant(), columnName), paramName, op, value);
+        }
+
+        /// <summary>
+        /// 创建单参数新的Sql条件语句
+        /// </summary>
+        /// <param name="function">合计函数类型</param>
+        /// <param name="columnName">要查询的字段名</param>
+        /// <param name="paramName">参数名</param>
+        /// <param name="op">条件运算符</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition Create(SqlAggregateFunction function, String columnName, String paramName, SqlOperator op, DbType dbType, Object value)
+        {
+            return SqlCondition.InternalCreate(String.Format("{0}({1})", function.ToString().ToUpperInvariant(), columnName), paramName, op, dbType, value);
+        }
+
+        /// <summary>
+        /// 创建单参数新的Sql条件语句
+        /// </summary>
+        /// <param name="function">合计函数类型</param>
         /// <param name="op">条件运算符</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
