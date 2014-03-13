@@ -161,7 +161,7 @@ namespace DotMaysWind.Data
         /// <returns>Sql语句参数类</returns>
         public static SqlParameter Create(String columnName, String parameterName, Object value)
         {
-            return SqlParameter.Create(columnName, parameterName, DbTypeHelper.InternalGetDbType(value), value);
+            return SqlParameter.Create(columnName, parameterName.Replace("(", "_").Replace(")", ""), DbTypeHelper.InternalGetDbType(value), value);
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace DotMaysWind.Data
         /// <returns>Sql语句参数类</returns>
         public static SqlParameter Create(String columnName, String parameterName, DbType dbType, Object value)
         {
-            SqlParameter param = new SqlParameter(columnName, parameterName, value);
+            SqlParameter param = new SqlParameter(columnName, parameterName.Replace("(", "_").Replace(")", ""), value);
             param.DbType = dbType;
 
             return param;
@@ -190,7 +190,7 @@ namespace DotMaysWind.Data
         /// <returns>Sql语句参数类</returns>
         public static SqlParameter Create(String columnName, String parameterName, SqlDbType dbType, Object value)
         {
-            SqlParameter param = new SqlParameter(columnName, parameterName, value);
+            SqlParameter param = new SqlParameter(columnName, parameterName.Replace("(", "_").Replace(")", ""), value);
             param.SqlDbType = dbType;
 
             return param;
