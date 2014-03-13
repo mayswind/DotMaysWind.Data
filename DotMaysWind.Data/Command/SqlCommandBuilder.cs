@@ -312,13 +312,37 @@ namespace DotMaysWind.Data.Command
 
             if (!hasJoins)
             {
-                this._stringBuilder.Append(from).Append(' ');
+                if (isFromSql)
+                {
+                    this._stringBuilder.Append('(');
+                }
+
+                this._stringBuilder.Append(from);
+
+                if (isFromSql)
+                {
+                    this._stringBuilder.Append(')');
+                }
+
+                this._stringBuilder.Append(' ');
             }
             else
             {
                 StringBuilder sb = new StringBuilder();
 
-                sb.Append(from).Append(' ').Append(joins[0].GetSqlClause());
+                if (isFromSql)
+                {
+                    this._stringBuilder.Append('(');
+                }
+
+                sb.Append(from);
+                
+                if (isFromSql)
+                {
+                    this._stringBuilder.Append(')');
+                }
+                
+                this._stringBuilder.Append(' ').Append(joins[0].GetSqlClause());
 
                 if (joins.Count > 1)
                 {

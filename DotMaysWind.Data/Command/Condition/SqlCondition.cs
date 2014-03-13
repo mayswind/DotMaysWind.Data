@@ -16,6 +16,17 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 创建单参数新的Sql条件语句
         /// </summary>
+        /// <param name="parameter">Sql参数</param>
+        /// <param name="op">条件运算符</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalCreate(SqlParameter parameter, SqlOperator op)
+        {
+            return new SqlBasicParameterCondition(parameter, op);
+        }
+
+        /// <summary>
+        /// 创建单参数新的Sql条件语句
+        /// </summary>
         /// <param name="columnName">字段名</param>
         /// <param name="op">条件运算符</param>
         /// <returns>Sql条件语句</returns>

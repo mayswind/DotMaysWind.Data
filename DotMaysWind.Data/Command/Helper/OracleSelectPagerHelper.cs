@@ -51,13 +51,13 @@ namespace DotMaysWind.Data.Command.Helper
                 innestCommand.SqlHaving = cmd.SqlHaving;
                 innestCommand.SqlOrders = cmd.SqlOrders;
                 
-                SelectCommand innerCommand = new SelectCommand(cmd.Database, innestCommand, "T");
-                innerCommand.SqlWhere = SqlCondition.LessThanOrEqual("ROWNUM", realPageIndex * cmd.PageSize);
+                SelectCommand innerCommand = new SelectCommand(cmd.Database, innestCommand, "");
+                innerCommand.SqlWhere = SqlCondition.InternalCreate(SqlParameter.CreateCustomAction("ROWNUM", (realPageIndex * cmd.PageSize).ToString()), SqlOperator.LessThanOrEqual);
                 innerCommand.InternalQuerys(cmd.QueryFields.ToArray());
                 innerCommand.InternalQuerys(SqlQueryField.InternalCreateFromFunction("ROWNUM", "RN"));
 
-                sb.AppendSelectFrom(innerCommand.GetSqlCommand("T"), true);
-                sb.AppendWhere(SqlCondition.GreaterThanOrEqual("RN", (realPageIndex - 1) * cmd.PageSize + 1));
+                sb.AppendSelectFrom(innerCommand.GetSqlCommand(), true);
+                sb.AppendWhere(SqlCondition.InternalCreate(SqlParameter.CreateCustomAction("RN", ((realPageIndex - 1) * cmd.PageSize + 1).ToString()), SqlOperator.GreaterThanOrEqual));
             }
 
             return sb.ToString();
