@@ -276,6 +276,24 @@ namespace DotMaysWind.Data
         /// <summary>
         /// 返回执行指定Sql语句后返回的结果
         /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="command">指定Sql语句</param>
+        /// <param name="dbType">数据类型</param>
+        /// <exception cref="ArgumentNullException">Sql语句不能为空</exception>
+        /// <returns>返回的结果</returns>
+        public T ExecuteScalar<T>(ISqlCommand command, DbType dbType)
+        {
+            if (command == null)
+            {
+                throw new ArgumentNullException("command");
+            }
+
+            return this.ExecuteScalar<T>(command.ToDbCommand(), dbType);
+        }
+
+        /// <summary>
+        /// 返回执行指定Sql语句后返回的结果
+        /// </summary>
         /// <param name="command">指定Sql语句</param>
         /// <exception cref="ArgumentNullException">Sql语句不能为空</exception>
         /// <returns>返回的结果</returns>
@@ -297,13 +315,26 @@ namespace DotMaysWind.Data
         /// <returns>返回的结果</returns>
         public T ExecuteScalar<T>(DbCommand dbCommand)
         {
+            DbType dbType = DbTypeHelper.InternalGetDbType(typeof(T));
+            return this.ExecuteScalar<T>(dbCommand, dbType);
+        }
+
+        /// <summary>
+        /// 返回执行指定Sql语句后返回的结果
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="dbCommand">数据库命令</param>
+        /// <param name="dbType">数据类型</param>
+        /// <returns>返回的结果</returns>
+        public T ExecuteScalar<T>(DbCommand dbCommand, DbType dbType)
+        {
             if (dbCommand == null)
             {
                 throw new ArgumentNullException("dbCommand");
             }
 
             Object obj = this.ExecuteScalar(dbCommand);
-            return (Convert.IsDBNull(obj) ? default(T) : (T)obj);
+            return (Convert.IsDBNull(obj) ? default(T) : (T)DbConvert.ToValue(obj, dbType));
         }
 
         /// <summary>
