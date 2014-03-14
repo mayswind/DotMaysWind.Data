@@ -307,19 +307,20 @@ namespace DotMaysWind.Data.Command
         internal SqlCommandBuilder AppendSelectFromAndJoins(String from, Boolean isFromSql, List<ISqlJoin> joins)
         {
             Boolean hasJoins = (joins != null && joins.Count > 0);
+            Boolean hasParentheses = (from.Length > 0 && from[0] == '(');
 
             this._stringBuilder.Append("FROM ");
 
             if (!hasJoins)
             {
-                if (isFromSql)
+                if (isFromSql && !hasParentheses)
                 {
                     this._stringBuilder.Append('(');
                 }
 
                 this._stringBuilder.Append(from);
 
-                if (isFromSql)
+                if (isFromSql && !hasParentheses)
                 {
                     this._stringBuilder.Append(')');
                 }
@@ -330,14 +331,14 @@ namespace DotMaysWind.Data.Command
             {
                 StringBuilder sb = new StringBuilder();
 
-                if (isFromSql)
+                if (isFromSql && !hasParentheses)
                 {
                     this._stringBuilder.Append('(');
                 }
 
                 sb.Append(from);
-                
-                if (isFromSql)
+
+                if (isFromSql && !hasParentheses)
                 {
                     this._stringBuilder.Append(')');
                 }
