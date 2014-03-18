@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>DotMaysWind.Data.UnitTest.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>DotMaysWind.Data.UnitTest.snk</AssemblyOriginatorKeyFile>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
@@ -67,7 +67,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="DotMaysWind.Data.UnitTest.pfx" />
+    <None Include="DotMaysWind.Data.UnitTest.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

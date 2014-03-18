@@ -39,7 +39,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>DotMaysWind.Data.UnitTest.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>DotMaysWind.Data.UnitTest.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -73,13 +73,13 @@
     <Compile Include="UpdateCommandUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DotMaysWind.Data.UnitTest.pfx" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DotMaysWind.Data\DotMaysWind.Data_NET40.csproj">
       <Project>{9a6c3468-2a77-48f8-a38a-79fc4b8cd794}</Project>
       <Name>DotMaysWind.Data_NET40</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DotMaysWind.Data.UnitTest.snk" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

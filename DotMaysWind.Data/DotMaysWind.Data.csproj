@@ -21,7 +21,7 @@
     <SccProvider>
     </SccProvider>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>DotMaysWind.Data.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>DotMaysWind.Data.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
   </PropertyGroup>
@@ -37,11 +37,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Release\.NET 2.0\</OutputPath>
+    <OutputPath>..\Release\.NET 3.5\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\Release\.NET 2.0\DotMaysWind.Data.XML</DocumentationFile>
+    <DocumentationFile>..\Release\.NET 3.5\DotMaysWind.Data.XML</DocumentationFile>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -145,7 +145,7 @@
     <Compile Include="TransactionScopeConnections.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DotMaysWind.Data.pfx" />
+    <None Include="DotMaysWind.Data.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
