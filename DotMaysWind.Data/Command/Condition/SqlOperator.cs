@@ -18,7 +18,7 @@ namespace DotMaysWind.Data.Command.Condition
         IsNotNull = 1,//IS NOT NULL
 
         /// <summary>
-        /// 判断是否氙灯
+        /// 判断是否相等
         /// </summary>
         Equal = 100,//=
 
