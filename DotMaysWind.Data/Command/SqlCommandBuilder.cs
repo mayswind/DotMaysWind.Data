@@ -14,43 +14,23 @@ namespace DotMaysWind.Data.Command
     {
         #region 字段
         private StringBuilder _stringBuilder;
-        private DatabaseType _dbType;
+        private AbstractDatabase _database;
         #endregion
 
         #region 构造方法
         /// <summary>
         /// 初始化SQL语句创建类
         /// </summary>
-        /// <param name="dbType">数据库类型</param>
-        internal SqlCommandBuilder(DatabaseType dbType)
+        /// <param name="database">数据库</param>
+        internal SqlCommandBuilder(AbstractDatabase database)
         {
             this._stringBuilder = new StringBuilder();
-            this._dbType = dbType;
+            this._database = database;
         }
         #endregion
 
         #region 方法
         #region 添加固定字符串
-        /*/// <summary>
-        /// 添加SQL左括号并返回当前SQL语句创建类
-        /// </summary>
-        /// <returns>当前SQL语句创建类</returns>
-        internal SqlCommandBuilder AppendLeftParentheses()
-        {
-            this._stringBuilder.Append("( ");
-            return this;
-        }
-
-        /// <summary>
-        /// 添加SQL右括号并返回当前SQL语句创建类
-        /// </summary>
-        /// <returns>当前SQL语句创建类</returns>
-        internal SqlCommandBuilder AppendRightParentheses()
-        {
-            this._stringBuilder.Append(") ");
-            return this;
-        }*/
-
         /// <summary>
         /// 添加SQL添加语句前缀并返回当前SQL语句创建类
         /// </summary>

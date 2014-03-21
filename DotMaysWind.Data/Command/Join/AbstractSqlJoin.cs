@@ -74,11 +74,12 @@ namespace DotMaysWind.Data.Command.Join
         /// <summary>
         /// 初始化Sql连接语句抽象类
         /// </summary>
+        /// <param name="baseCommand">源选择语句</param>
         /// <param name="joinType">连接模式</param>
         /// <param name="currentTableName">当前表格名称</param>
         /// <param name="currentTableField">当前表格主键</param>
         /// <param name="anotherTableField">另个表格主键</param>
-        protected AbstractSqlJoin(SqlJoinType joinType, String currentTableName, String currentTableField, String anotherTableField)
+        protected AbstractSqlJoin(SelectCommand baseCommand, SqlJoinType joinType, String currentTableName, String currentTableField, String anotherTableField)
         {
             this._joinType = joinType;
             this._currentTableName = currentTableName;

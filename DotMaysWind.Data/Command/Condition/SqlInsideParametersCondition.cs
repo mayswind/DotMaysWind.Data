@@ -44,9 +44,11 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 初始化Sql IN参数条件语句类
         /// </summary>
+        /// <param name="baseCommand">源Sql语句</param>
         /// <param name="isNotIn">是否不在范围内</param>
         /// <param name="parameters">参数集合</param>
-        internal SqlInsideParametersCondition(Boolean isNotIn, params SqlParameter[] parameters)
+        internal SqlInsideParametersCondition(AbstractSqlCommand baseCommand, Boolean isNotIn, params SqlParameter[] parameters)
+            : base(baseCommand)
         {
             this._isNotIn = isNotIn;
             this._parameters = new List<SqlParameter>();

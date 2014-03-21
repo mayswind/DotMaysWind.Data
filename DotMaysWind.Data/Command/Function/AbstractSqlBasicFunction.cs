@@ -9,9 +9,9 @@ namespace DotMaysWind.Data.Command.Function
     {
         #region 字段
         /// <summary>
-        /// 函数参数
+        /// 源数据库
         /// </summary>
-        protected String _parameter;
+        protected AbstractDatabase _baseDatabase;
         #endregion
 
         #region 属性
@@ -22,24 +22,16 @@ namespace DotMaysWind.Data.Command.Function
         {
             get { return false; }
         }
-
-        /// <summary>
-        /// 获取函数参数
-        /// </summary>
-        public String Parameter
-        {
-            get { return this._parameter; }
-        }
         #endregion
 
         #region 构造方法
         /// <summary>
-        /// 初始化Sql基本函数抽象类
+        /// 初始化Sql基本函数抽象
         /// </summary>
-        /// <param name="parameter">函数参数</param>
-        protected AbstractSqlBasicFunction(String parameter)
+        /// <param name="baseDatabase">源数据库</param>
+        protected AbstractSqlBasicFunction(AbstractDatabase baseDatabase)
         {
-            this._parameter = parameter;
+            this._baseDatabase = baseDatabase;
         }
         #endregion
 
@@ -80,9 +72,8 @@ namespace DotMaysWind.Data.Command.Function
         /// <summary>
         /// 获取函数拼接后字符串
         /// </summary>
-        /// <param name="dbType">数据库类型</param>
         /// <returns>函数拼接后字符串</returns>
-        public abstract String GetSqlFunction(DatabaseType dbType);
+        public abstract String GetSqlText();
         #endregion
     }
 }

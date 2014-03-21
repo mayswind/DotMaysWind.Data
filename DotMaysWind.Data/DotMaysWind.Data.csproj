@@ -57,25 +57,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessDatabase.cs" />
     <Compile Include="CommandNotSupportException.cs" />
     <Compile Include="Command\AbstractSqlCommand.cs" />
     <Compile Include="Command\AbstractSqlCommandWithWhere.cs" />
     <Compile Include="Command\Condition\AbstractSqlCondition.cs" />
     <Compile Include="Command\Condition\SqlBasicCommandCondition.cs" />
+    <Compile Include="Command\Condition\SqlConditionBuilder.cs" />
     <Compile Include="Command\Condition\SqlNotCondition.cs" />
     <Compile Include="Command\Function\AbstractSqlBasicFunction.cs" />
     <Compile Include="Command\Function\SqlComplexFunction.cs" />
-    <Compile Include="Command\Function\SqlDatePart.cs" />
-    <Compile Include="Command\Function\SqlIsNull.cs" />
-    <Compile Include="Command\Function\SqlLower.cs" />
-    <Compile Include="Command\Function\SqlLen.cs" />
-    <Compile Include="Command\Function\SqlLTrim.cs" />
-    <Compile Include="Command\Function\SqlMid.cs" />
-    <Compile Include="Command\Function\SqlNow.cs" />
-    <Compile Include="Command\Function\SqlRound.cs" />
-    <Compile Include="Command\Function\SqlRTrim.cs" />
-    <Compile Include="Command\Function\SqlTrim.cs" />
-    <Compile Include="Command\Function\SqlUpper.cs" />
+    <Compile Include="Command\Function\SqlFunctions.cs" />
+    <Compile Include="Command\Function\SqlInnerFunction.cs" />
+    <Compile Include="Command\Function\SqlInnerFunctionType.cs" />
     <Compile Include="Command\ISqlFunction.cs" />
     <Compile Include="Command\Join\AbstractSqlJoin.cs" />
     <Compile Include="Command\Condition\ISqlCondition.cs" />
@@ -85,9 +79,9 @@
     <Compile Include="Command\Condition\SqlInsideParametersCondition.cs" />
     <Compile Include="Command\CustomCommand.cs" />
     <Compile Include="Command\DeleteCommand.cs" />
-    <Compile Include="Command\Helper\MySQLSelectPagerHelper.cs" />
-    <Compile Include="Command\Helper\OracleSelectPagerHelper.cs" />
-    <Compile Include="Command\Helper\SqlServerSelectPagerHelper.cs" />
+    <Compile Include="Command\Pager\MySQLSelectPager.cs" />
+    <Compile Include="Command\Pager\OracleSelectPager.cs" />
+    <Compile Include="Command\Pager\SqlServerSelectPager.cs" />
     <Compile Include="Command\InsertCommand.cs" />
     <Compile Include="Command\ISqlCommand.cs" />
     <Compile Include="Command\Join\ISqlJoin.cs" />
@@ -98,6 +92,7 @@
     <Compile Include="Command\SqlAggregateFunction.cs" />
     <Compile Include="Command\SqlCommandType.cs" />
     <Compile Include="Command\Join\SqlJoinType.cs" />
+    <Compile Include="Command\SqlDatePartType.cs" />
     <Compile Include="Command\SqlOrder.cs" />
     <Compile Include="Command\SqlOrderType.cs" />
     <Compile Include="Command\Condition\SqlBasicParameterCondition.cs" />
@@ -108,8 +103,7 @@
     <Compile Include="Command\UpdateCommand.cs" />
     <Compile Include="Configuration\ConfigurationManager.cs" />
     <Compile Include="Configuration\DatabaseSettings.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="Database.cs" />
+    <Compile Include="AbstractDatabase.cs" />
     <Compile Include="DatabaseConnectionWrapper.cs" />
     <Compile Include="DatabaseFactory.cs" />
     <Compile Include="DatabaseNotSupportException.cs" />
@@ -118,6 +112,7 @@
     <Compile Include="Helper\DatabaseTypeHelper.cs" />
     <Compile Include="Helper\DataSetHelper.cs" />
     <Compile Include="Helper\DbTypeHelper.cs" />
+    <Compile Include="IDatabase.cs" />
     <Compile Include="Linq\DeleteCommandExtension.cs" />
     <Compile Include="Linq\EntityPropertyExtension.cs" />
     <Compile Include="Linq\ExpressionInvalidException.cs" />
@@ -127,6 +122,8 @@
     <Compile Include="Linq\SelectCommandExtension.cs" />
     <Compile Include="Linq\SqlLinqCondition.cs" />
     <Compile Include="Linq\UpdateCommandExtension.cs" />
+    <Compile Include="MySQLDatabase.cs" />
+    <Compile Include="OracleDatabase.cs" />
     <Compile Include="Orm\AbstractDatabaseTable.cs" />
     <Compile Include="Orm\DatabaseColumnAttribute.cs" />
     <Compile Include="Orm\DatabaseTable.cs" />
@@ -138,10 +135,12 @@
     <Compile Include="Orm\NullAttributeException.cs" />
     <Compile Include="Orm\SelectCommandExtension.cs" />
     <Compile Include="Orm\UpdateCommandExtension.cs" />
+    <Compile Include="SQLiteDatabase.cs" />
     <Compile Include="SqlParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Command\SqlCommandBuilder.cs" />
-    <Compile Include="Transaction.cs" />
+    <Compile Include="SqlServerCeDatabase.cs" />
+    <Compile Include="SqlServerDatabase.cs" />
     <Compile Include="TransactionScopeConnections.cs" />
   </ItemGroup>
   <ItemGroup>

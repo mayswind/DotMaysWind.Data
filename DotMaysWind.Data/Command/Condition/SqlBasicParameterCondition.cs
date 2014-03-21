@@ -43,9 +43,11 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 初始化Sql查询语句类
         /// </summary>
+        /// <param name="baseCommand">源Sql语句</param>
         /// <param name="parameter">参数</param>
         /// <param name="op">条件运算符</param>
-        internal SqlBasicParameterCondition(SqlParameter parameter, SqlOperator op)
+        internal SqlBasicParameterCondition(AbstractSqlCommand baseCommand, SqlParameter parameter, SqlOperator op)
+            : base(baseCommand)
         {
             this._parameterOne = parameter;
             this._parameterTwo = null;
@@ -55,10 +57,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 初始化Sql查询语句类
         /// </summary>
+        /// <param name="baseCommand">源Sql语句</param>
         /// <param name="parameterOne">参数一</param>
         /// <param name="parameterTwo">参数二</param>
         /// <param name="op">条件运算符</param>
-        internal SqlBasicParameterCondition(SqlParameter parameterOne, SqlParameter parameterTwo, SqlOperator op)
+        internal SqlBasicParameterCondition(AbstractSqlCommand baseCommand, SqlParameter parameterOne, SqlParameter parameterTwo, SqlOperator op)
+            : base(baseCommand)
         {
             this._parameterOne = parameterOne;
             this._parameterTwo = parameterTwo;

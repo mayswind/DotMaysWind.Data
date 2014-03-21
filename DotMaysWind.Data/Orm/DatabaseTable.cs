@@ -72,7 +72,7 @@ namespace DotMaysWind.Data.Orm
         /// </summary>
         /// <param name="baseDatabase">数据表所在数据库</param>
         /// <exception cref="ArgumentNullException">数据库不能为空</exception>
-        public DatabaseTable(Database baseDatabase)
+        public DatabaseTable(IDatabase baseDatabase)
             : base(baseDatabase)
         {
             this._entityType = typeof(T);

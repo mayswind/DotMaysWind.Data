@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.Common;
 
 using DotMaysWind.Data.Command.Condition;
-using DotMaysWind.Data.Command.Helper;
 using DotMaysWind.Data.Command.Join;
 
 namespace DotMaysWind.Data.Command
@@ -24,7 +23,8 @@ namespace DotMaysWind.Data.Command
         private List<SqlQueryField> _queryFields;
         private List<String> _groupbys;
         private List<SqlOrder> _orders;
-        
+
+        private Int32 _joinIndex;
         private List<ISqlJoin> _joins;
         private ISqlCondition _having;
         #endregion
@@ -110,6 +110,22 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
+        /// 获取连接索引
+        /// </summary>
+        private Int32 JoinIndex
+        {
+            get
+            {
+                if (this._joinIndex >= Int32.MaxValue)
+                {
+                    this._joinIndex = 0;
+                }
+
+                return this._joinIndex++;
+            }
+        }
+
+        /// <summary>
         /// 获取或设置连接语句列表
         /// </summary>
         public List<ISqlJoin> SqlJoins
@@ -134,7 +150,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="database">数据库</param>
         /// <param name="tableName">数据表名称</param>
-        public SelectCommand(Database database, String tableName)
+        internal SelectCommand(AbstractDatabase database, String tableName)
             : this(database, false, tableName, 0, 0, 0) { }
 
         /// <summary>
@@ -143,7 +159,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="database">数据库</param>
         /// <param name="from">选择的从Sql语句</param>
         /// <param name="fromAliasesName">从Sql语句的别名</param>
-        public SelectCommand(Database database, SelectCommand from, String fromAliasesName)
+        internal SelectCommand(AbstractDatabase database, SelectCommand from, String fromAliasesName)
             : this(database, true, from.GetSqlCommand(fromAliasesName), 0, 0, 0) { }
 
         /// <summary>
@@ -152,7 +168,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="database">数据库</param>
         /// <param name="tableName">数据表名称</param>
         /// <param name="pageSize">页面大小</param>
-        public SelectCommand(Database database, String tableName, Int32 pageSize)
+        internal SelectCommand(AbstractDatabase database, String tableName, Int32 pageSize)
             : this(database, false, tableName, pageSize, 0, 0) { }
 
         /// <summary>
@@ -162,7 +178,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="from">选择的从Sql语句</param>
         /// <param name="fromAliasesName">从Sql语句的别名</param>
         /// <param name="pageSize">页面大小</param>
-        public SelectCommand(Database database, SelectCommand from, String fromAliasesName, Int32 pageSize)
+        internal SelectCommand(AbstractDatabase database, SelectCommand from, String fromAliasesName, Int32 pageSize)
             : this(database, true, from.GetSqlCommand(fromAliasesName), pageSize, 0, 0) { }
 
         /// <summary>
@@ -173,7 +189,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="pageSize">页面大小</param>
         /// <param name="pageIndex">页面索引</param>
         /// <param name="recordCount">记录总数</param>
-        public SelectCommand(Database database, String tableName, Int32 pageSize, Int32 pageIndex, Int32 recordCount)
+        internal SelectCommand(AbstractDatabase database, String tableName, Int32 pageSize, Int32 pageIndex, Int32 recordCount)
             : this(database, false, tableName, pageSize, pageIndex, recordCount) { }
 
         /// <summary>
@@ -185,7 +201,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="pageSize">页面大小</param>
         /// <param name="pageIndex">页面索引</param>
         /// <param name="recordCount">记录总数</param>
-        public SelectCommand(Database database, Boolean isFromSql, String from, Int32 pageSize, Int32 pageIndex, Int32 recordCount)
+        internal SelectCommand(AbstractDatabase database, Boolean isFromSql, String from, Int32 pageSize, Int32 pageIndex, Int32 recordCount)
             : base(database, from)
         {
             this._isFromSql = isFromSql;
@@ -197,6 +213,7 @@ namespace DotMaysWind.Data.Command
             this._pageSize = pageSize;
             this._pageIndex = pageIndex;
             this._recordCount = recordCount;
+            this._joinIndex = 0;
         }
         #endregion
 
@@ -231,7 +248,7 @@ namespace DotMaysWind.Data.Command
             {
                 for (Int32 i = 0; i < queryFields.Length; i++)
                 {
-                    this._queryFields.Add(SqlQueryField.InternalCreateFromColumn(queryFields[i]));
+                    this._queryFields.Add(SqlQueryField.InternalCreateFromColumn(this, queryFields[i]));
                 }
             }
             
@@ -247,7 +264,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand Query(String tableName, String queryField, String aliasesName)
         {
-            this._queryFields.Add(SqlQueryField.InternalCreateFromColumn(tableName, queryField, aliasesName));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromColumn(this, tableName, queryField, aliasesName));
             return this;
         }
 
@@ -259,7 +276,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand Query(String queryField, String aliasesName)
         {
-            this._queryFields.Add(SqlQueryField.InternalCreateFromColumn(queryField, aliasesName));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromColumn(this, queryField, aliasesName));
             return this;
         }
 
@@ -270,10 +287,12 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand Query(String queryField)
         {
-            this._queryFields.Add(SqlQueryField.InternalCreateFromColumn(queryField));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromColumn(this, queryField));
             return this;
         }
+        #endregion
 
+        #region QueryAggregateFunction
         /// <summary>
         /// 查询指定合计函数并返回当前语句
         /// </summary>
@@ -284,12 +303,10 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand Query(String tableName, SqlAggregateFunction function, String columnName, String aliasesName)
         {
-            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(tableName, function, columnName, aliasesName));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, tableName, function, columnName, aliasesName));
             return this;
         }
-        #endregion
 
-        #region QueryAggregateFunction
         /// <summary>
         /// 查询指定合计函数并返回当前语句
         /// </summary>
@@ -299,7 +316,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand Query(SqlAggregateFunction function, String columnName, String aliasesName)
         {
-            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(function, columnName, aliasesName));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, function, columnName, aliasesName));
             return this;
         }
 
@@ -312,7 +329,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand Query(String tableName, SqlAggregateFunction function, String columnName)
         {
-            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(tableName, function, columnName));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, tableName, function, columnName));
             return this;
         }
 
@@ -324,7 +341,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand Query(SqlAggregateFunction function, String columnName)
         {
-            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(function, columnName));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, function, columnName));
             return this;
         }
 
@@ -336,7 +353,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand Query(String tableName, SqlAggregateFunction function)
         {
-            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(tableName, function));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, tableName, function));
             return this;
         }
 
@@ -347,22 +364,12 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand Query(SqlAggregateFunction function)
         {
-            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(function));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, function));
             return this;
         }
         #endregion
 
         #region QuerySqlFunction
-        /// <summary>
-        /// 查询指定函数语句并返回当前语句
-        /// </summary>
-        /// <param name="function">函数</param>
-        /// <returns>当前语句</returns>
-        public SelectCommand Query(ISqlFunction function)
-        {
-            return this.Query(function, String.Empty);
-        }
-
         /// <summary>
         /// 查询指定函数语句并返回当前语句
         /// </summary>
@@ -377,7 +384,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("function");
             }
 
-            this._queryFields.Add(SqlQueryField.InternalCreateFromFunction(function.GetSqlFunction(this.DatabaseType), aliasesName));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromFunction(this, function.GetSqlText(), aliasesName));
 
             if (function.HasParameters)
             {
@@ -385,6 +392,16 @@ namespace DotMaysWind.Data.Command
             }
 
             return this;
+        }
+
+        /// <summary>
+        /// 查询指定函数语句并返回当前语句
+        /// </summary>
+        /// <param name="function">函数</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand Query(ISqlFunction function)
+        {
+            return this.Query(function, String.Empty);
         }
         #endregion
 
@@ -403,7 +420,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("function");
             }
 
-            this._queryFields.Add(SqlQueryField.InternalCreateFromFunction(command.GetSqlCommand(true), aliasesName));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromFunction(this, command.GetSqlCommand(true), aliasesName));
 
             SqlParameter[] parameters = command.GetAllParameters();
             if (parameters != null)
@@ -423,18 +440,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand QueryIdentity()
         {
-            if (this.DatabaseType == DatabaseType.SQLite)
-            {
-                this._queryFields.Add(SqlQueryField.InternalCreateFromFunction("LAST_INSERT_ROWID()"));
-            }
-            else if (this.DatabaseType == DatabaseType.Oracle)
-            {
-                throw new DatabaseNotSupportException("Oracle database does not support identity.");
-            }
-            else
-            {
-                this._queryFields.Add(SqlQueryField.InternalCreateFromFunction("@@IDENTITY"));
-            }
+            this._queryFields.Add(SqlQueryField.InternalCreateFromFunction(this, this._database.InternalGetIdentityFieldName()));
 
             return this;
         }
@@ -443,15 +449,36 @@ namespace DotMaysWind.Data.Command
 
         #region OrderBy
         /// <summary>
-        /// 按指定列排序并返回当前语句
+        /// 按指定列升序排序并返回当前语句
         /// </summary>
-        /// <param name="orders">要排序的信息</param>
+        /// <param name="columnNames">列名信息</param>
         /// <returns>当前语句</returns>
-        public SelectCommand OrderBy(params SqlOrder[] orders)
+        public SelectCommand OrderByAsc(params String[] columnNames)
         {
-            if (orders != null)
+            if (columnNames != null)
             {
-                this._orders.AddRange(orders);
+                for (Int32 i = 0; i < columnNames.Length; i++)
+                {
+                    this._orders.Add(SqlOrder.Create(this, columnNames[i], SqlOrderType.Asc));
+                }
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// 按指定列降序排序并返回当前语句
+        /// </summary>
+        /// <param name="columnNames">列名信息</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand OrderByDesc(params String[] columnNames)
+        {
+            if (columnNames != null)
+            {
+                for (Int32 i = 0; i < columnNames.Length; i++)
+                {
+                    this._orders.Add(SqlOrder.Create(this, columnNames[i], SqlOrderType.Desc));
+                }
             }
 
             return this;
@@ -465,7 +492,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand OrderBy(String columnName, SqlOrderType orderType)
         {
-            this._orders.Add(SqlOrder.Create(columnName, orderType));
+            this._orders.Add(SqlOrder.Create(this, columnName, orderType));
             return this;
         }
 
@@ -477,7 +504,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand OrderBy(String columnName, Boolean isAscending)
         {
-            this._orders.Add(SqlOrder.Create(columnName, isAscending));
+            this._orders.Add(SqlOrder.Create(this, columnName, isAscending));
             return this;
         }
 
@@ -488,7 +515,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand OrderBy(String columnName)
         {
-            this._orders.Add(SqlOrder.Create(columnName));
+            this._orders.Add(SqlOrder.Create(this, columnName));
             return this;
         }
         #endregion
@@ -505,7 +532,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand Join(SqlJoinType joinType, String currentTableField, String anotherTableName, String anotherTableField)
         {
-            this._joins.Add(new SqlJoinTableName(joinType, this._tableName, currentTableField, anotherTableName, anotherTableField));
+            this._joins.Add(new SqlJoinTableName(this, joinType, this._tableName, currentTableField, anotherTableName, anotherTableField));
             return this;
         }
 
@@ -518,7 +545,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand InnerJoin(String currentTableField, String anotherTableName, String anotherTableField)
         {
-            this._joins.Add(new SqlJoinTableName(SqlJoinType.InnerJoin, this._tableName, currentTableField, anotherTableName, anotherTableField));
+            this._joins.Add(new SqlJoinTableName(this, SqlJoinType.InnerJoin, this._tableName, currentTableField, anotherTableName, anotherTableField));
             return this;
         }
 
@@ -531,7 +558,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand LeftJoin(String currentTableField, String anotherTableName, String anotherTableField)
         {
-            this._joins.Add(new SqlJoinTableName(SqlJoinType.LeftJoin, this._tableName, currentTableField, anotherTableName, anotherTableField));
+            this._joins.Add(new SqlJoinTableName(this, SqlJoinType.LeftJoin, this._tableName, currentTableField, anotherTableName, anotherTableField));
             return this;
         }
 
@@ -544,7 +571,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand RightJoin(String currentTableField, String anotherTableName, String anotherTableField)
         {
-            this._joins.Add(new SqlJoinTableName(SqlJoinType.RightJoin, this._tableName, currentTableField, anotherTableName, anotherTableField));
+            this._joins.Add(new SqlJoinTableName(this, SqlJoinType.RightJoin, this._tableName, currentTableField, anotherTableName, anotherTableField));
             return this;
         }
 
@@ -557,7 +584,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand FullJoin(String currentTableField, String anotherTableName, String anotherTableField)
         {
-            this._joins.Add(new SqlJoinTableName(SqlJoinType.FullJoin, this._tableName, currentTableField, anotherTableName, anotherTableField));
+            this._joins.Add(new SqlJoinTableName(this, SqlJoinType.FullJoin, this._tableName, currentTableField, anotherTableName, anotherTableField));
             return this;
         }
         #endregion
@@ -573,7 +600,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand Join(SqlJoinType joinType, String currentTableField, SelectCommand anotherTableCommand, String anotherTableField)
         {
-            this._joins.Add(new SqlJoinTableCommand(joinType, this._tableName, currentTableField, anotherTableCommand, this.SqlJoins.Count, anotherTableField));
+            this._joins.Add(new SqlJoinTableCommand(this, joinType, this._tableName, currentTableField, anotherTableCommand, this.JoinIndex, anotherTableField));
             return this;
         }
 
@@ -586,7 +613,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand InnerJoin(String currentTableField, SelectCommand anotherTableCommand, String anotherTableField)
         {
-            this._joins.Add(new SqlJoinTableCommand(SqlJoinType.InnerJoin, this._tableName, currentTableField, anotherTableCommand, this.SqlJoins.Count, anotherTableField));
+            this._joins.Add(new SqlJoinTableCommand(this, SqlJoinType.InnerJoin, this._tableName, currentTableField, anotherTableCommand, this.JoinIndex, anotherTableField));
             return this;
         }
 
@@ -599,7 +626,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand LeftJoin(String currentTableField, SelectCommand anotherTableCommand, String anotherTableField)
         {
-            this._joins.Add(new SqlJoinTableCommand(SqlJoinType.LeftJoin, this._tableName, currentTableField, anotherTableCommand, this.SqlJoins.Count, anotherTableField));
+            this._joins.Add(new SqlJoinTableCommand(this, SqlJoinType.LeftJoin, this._tableName, currentTableField, anotherTableCommand, this.JoinIndex, anotherTableField));
             return this;
         }
 
@@ -612,7 +639,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand RightJoin(String currentTableField, SelectCommand anotherTableCommand, String anotherTableField)
         {
-            this._joins.Add(new SqlJoinTableCommand(SqlJoinType.RightJoin, this._tableName, currentTableField, anotherTableCommand, this.SqlJoins.Count, anotherTableField));
+            this._joins.Add(new SqlJoinTableCommand(this, SqlJoinType.RightJoin, this._tableName, currentTableField, anotherTableCommand, this.JoinIndex, anotherTableField));
             return this;
         }
 
@@ -625,7 +652,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public SelectCommand FullJoin(String currentTableField, SelectCommand anotherTableCommand, String anotherTableField)
         {
-            this._joins.Add(new SqlJoinTableCommand(SqlJoinType.FullJoin, this._tableName, currentTableField, anotherTableCommand, this.SqlJoins.Count, anotherTableField));
+            this._joins.Add(new SqlJoinTableCommand(this, SqlJoinType.FullJoin, this._tableName, currentTableField, anotherTableCommand, this.JoinIndex, anotherTableField));
             return this;
         }
         #endregion
@@ -768,11 +795,35 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 设置指定查询的语句并返回当前语句
         /// </summary>
+        /// <param name="having">查询语句</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand Having(Func<SqlConditionBuilder, ISqlCondition> having)
+        {
+            this._where = having(this._conditionBuilder);
+
+            return this;
+        }
+
+        /// <summary>
+        /// 设置指定查询的语句并返回当前语句
+        /// </summary>
         /// <param name="where">查询语句</param>
         /// <returns>当前语句</returns>
         public SelectCommand Where(ISqlCondition where)
         {
             this._where = where;
+
+            return this;
+        }
+
+        /// <summary>
+        /// 设置指定查询的语句并返回当前语句
+        /// </summary>
+        /// <param name="where">查询语句</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand Where(Func<SqlConditionBuilder, ISqlCondition> where)
+        {
+            this._where = where(this._conditionBuilder);
 
             return this;
         }
@@ -831,20 +882,7 @@ namespace DotMaysWind.Data.Command
             Int32 pageCount = (this._pageSize == 0 ? 1 : (this._recordCount + this._pageSize - 1) / this._pageSize);
             Int32 pageIndex = (this._pageIndex <= 1 ? 1 : (this._pageIndex > pageCount ? pageCount : this._pageIndex));
             Boolean hasAliasesName = !String.IsNullOrEmpty(aliasesName);
-            String sql = String.Empty;
-
-            if (this.DatabaseType == DatabaseType.MySQL || this.DatabaseType == DatabaseType.SQLite)
-            {
-                sql = MySQLSelectPagerHelper.InternalGetSelectCommand(this, pageIndex, pageCount, orderReverse);
-            }
-            else if (this.DatabaseType == DatabaseType.Oracle)
-            {
-                sql = OracleSelectPagerHelper.InternalGetSelectCommand(this, pageIndex, pageCount, orderReverse);
-            }
-            else
-            {
-                sql = SqlServerSelectPagerHelper.InternalGetSelectCommand(this, pageIndex, pageCount, orderReverse);
-            }
+            String sql = this._database.InternalGetPagerSelectCommand(this, pageIndex, pageCount, orderReverse);
 
             if (containParentheses || hasAliasesName)
             {
@@ -862,7 +900,7 @@ namespace DotMaysWind.Data.Command
                 sql = String.Format(format, sql, aliasesName);
             }
 
-            return this.FollowingProcessSql(sql);
+            return sql;
         }
         #endregion
 

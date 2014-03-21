@@ -51,8 +51,10 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 初始化Sql查询语句集合类
         /// </summary>
+        /// <param name="baseCommand">源Sql语句</param>
         /// <param name="concatType">连接类型</param>
-        internal SqlConditionList(SqlWhereConcatType concatType)
+        internal SqlConditionList(AbstractSqlCommand baseCommand, SqlWhereConcatType concatType)
+            : base(baseCommand)
         {
             this._list = new List<ISqlCondition>();
             this._concatType = concatType;

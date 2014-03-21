@@ -3,7 +3,7 @@
 namespace DotMaysWind.Data.Command
 {
     /// <summary>
-    /// Sql语言合计函数
+    /// Sql合计函数
     /// </summary>
     public enum SqlAggregateFunction : byte
     {

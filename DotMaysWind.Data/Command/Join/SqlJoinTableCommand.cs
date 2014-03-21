@@ -10,7 +10,7 @@ namespace DotMaysWind.Data.Command.Join
     public class SqlJoinTableCommand : AbstractSqlJoin
     {
         #region 字段
-        private Int32 _anotherTableIndentity;
+        private Int32 _anotherTableIdentity;
         private SelectCommand _anotherTableCommand;
         #endregion
 
@@ -28,16 +28,17 @@ namespace DotMaysWind.Data.Command.Join
         /// <summary>
         /// 初始化Sql连接语句类
         /// </summary>
+        /// <param name="cmd">选择语句</param>
         /// <param name="joinType">连接模式</param>
         /// <param name="currentTableName">当前表格名称</param>
         /// <param name="currentTableField">当前表格主键</param>
         /// <param name="anotherTableCommand">另个表格命令</param>
-        /// <param name="anotherTableIndentity">标识</param>
+        /// <param name="anotherTableIdentity">标识</param>
         /// <param name="anotherTableField">另个表格主键</param>
-        internal SqlJoinTableCommand(SqlJoinType joinType, String currentTableName, String currentTableField, SelectCommand anotherTableCommand, Int32 anotherTableIndentity, String anotherTableField)
-            : base(joinType, currentTableName, currentTableField, anotherTableField)
+        internal SqlJoinTableCommand(SelectCommand cmd, SqlJoinType joinType, String currentTableName, String currentTableField, SelectCommand anotherTableCommand, Int32 anotherTableIdentity, String anotherTableField)
+            : base(cmd, joinType, currentTableName, currentTableField, anotherTableField)
         {
-            this._anotherTableIndentity = anotherTableIndentity;
+            this._anotherTableIdentity = anotherTableIdentity;
             this._anotherTableCommand = anotherTableCommand;
         }
         #endregion
@@ -70,7 +71,7 @@ namespace DotMaysWind.Data.Command.Join
 
             StringBuilder sb = new StringBuilder();
 
-            String anotherTableName = String.Format("TBL_{0}", this._anotherTableIndentity);
+            String anotherTableName = String.Format("TBL_{0}", this._anotherTableIdentity);
             String anotherTableContent = this._anotherTableCommand.GetSqlCommand(anotherTableName);
 
             sb.Append(SqlJoinTypes.InternalGetTypeName(this._joinType)).Append(' ').Append(this._anotherTableCommand.GetSqlCommand(anotherTableName)).Append(" ON ");

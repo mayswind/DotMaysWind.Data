@@ -21,8 +21,7 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 获取函数拼接后字符串
         /// </summary>
-        /// <param name="dbType">数据库类型</param>
         /// <returns>函数拼接后字符串</returns>
-        String GetSqlFunction(DatabaseType dbType);
+        String GetSqlText();
     }
 }

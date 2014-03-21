@@ -34,7 +34,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="database">数据库</param>
         /// <param name="tableName">数据表名称</param>
-        public InsertCommand(Database database, String tableName)
+        internal InsertCommand(AbstractDatabase database, String tableName)
             : base(database, tableName) { }
         #endregion
 
@@ -63,7 +63,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public InsertCommand Add(String columnName, Object value)
         {
-            this._parameters.Add(SqlParameter.Create(columnName, Constants.InsertNewParameterNamePrefix + columnName, value));
+            this._parameters.Add(this.CreateSqlParameter(columnName, value));
             return this;
         }
 
@@ -76,21 +76,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public InsertCommand Add(String columnName, DbType dbType, Object value)
         {
-            this._parameters.Add(SqlParameter.Create(columnName, Constants.InsertNewParameterNamePrefix + columnName, dbType, value));
-            return this;
-        }
-
-        /// <summary>
-        /// 插入指定参数并返回当前语句
-        /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <param name="paramName">参数名称</param>
-        /// <param name="dbType">数据类型</param>
-        /// <param name="value">内容</param>
-        /// <returns>当前语句</returns>
-        public InsertCommand Add(String columnName, String paramName, DbType dbType, Object value)
-        {
-            this._parameters.Add(SqlParameter.Create(columnName, paramName, dbType, value));
+            this._parameters.Add(this.CreateSqlParameter(columnName, dbType, value));
             return this;
         }
 
@@ -108,7 +94,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("function");
             }
 
-            this._parameters.Add(SqlParameter.CreateCustomAction(columnName, function.GetSqlFunction(this.DatabaseType)));
+            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, function.GetSqlText()));
 
             if (function.HasParameters)
             {
@@ -132,7 +118,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("command");
             }
 
-            this._parameters.Add(SqlParameter.CreateCustomAction(columnName, command.GetSqlCommand()));
+            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, command.GetSqlCommand()));
 
             SqlParameter[] parameters = command.GetAllParameters();
 
@@ -151,7 +137,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>SQL语句</returns>
         public override String GetSqlCommand()
         {
-            SqlCommandBuilder sb = new SqlCommandBuilder(this.DatabaseType);
+            SqlCommandBuilder sb = new SqlCommandBuilder(this.Database);
             sb.AppendInsertPrefix().AppendTableName(this._tableName);
 
             if (this._parameters.Count > 0)
@@ -159,7 +145,7 @@ namespace DotMaysWind.Data.Command
                 sb.AppendAllColumnNamesWithParentheses(this._parameters).AppendInsertValues().AppendAllParameterNamesWithParentheses(this._parameters);
             }
 
-            return this.FollowingProcessSql(sb.ToString());
+            return sb.ToString();
         }
 
         /// <summary>

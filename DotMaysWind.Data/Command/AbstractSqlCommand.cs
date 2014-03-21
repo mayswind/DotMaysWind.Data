@@ -14,9 +14,9 @@ namespace DotMaysWind.Data.Command
     {
         #region 字段
         /// <summary>
-        /// 数据库类型
+        /// 父数据库
         /// </summary>
-        protected Database _database;
+        protected AbstractDatabase _database;
 
         /// <summary>
         /// 表格名称
@@ -27,6 +27,11 @@ namespace DotMaysWind.Data.Command
         /// 基础参数组
         /// </summary>
         protected List<SqlParameter> _parameters;
+
+        /// <summary>
+        /// 基础参数组索引
+        /// </summary>
+        private Int32 _parameterIndex;
 
         /// <summary>
         /// 支持映射的数据表
@@ -41,19 +46,11 @@ namespace DotMaysWind.Data.Command
         public abstract SqlCommandType CommandType { get; }
 
         /// <summary>
-        /// 获取数据库
+        /// 获取当前数据库
         /// </summary>
-        public Database Database
+        public AbstractDatabase Database
         {
             get { return this._database; }
-        }
-
-        /// <summary>
-        /// 获取数据库类型
-        /// </summary>
-        public DatabaseType DatabaseType
-        {
-            get { return this._database.DatabaseType; }
         }
 
         /// <summary>
@@ -64,6 +61,22 @@ namespace DotMaysWind.Data.Command
             get { return this._tableName; }
         }
 
+        /// <summary>
+        /// 获取参数索引
+        /// </summary>
+        private Int32 ParameterIndex
+        {
+            get
+            {
+                if (this._parameterIndex >= Int32.MaxValue)
+                {
+                    this._parameterIndex = 0;
+                }
+
+                return this._parameterIndex++;
+            }
+        }
+            
         /// <summary>
         /// 获取或设置支持映射的数据表
         /// </summary>
@@ -81,7 +94,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="database">数据库</param>
         /// <param name="tableName">表格名称</param>
         /// <exception cref="ArgumentNullException">数据库不能为空</exception>
-        protected AbstractSqlCommand(Database database, String tableName)
+        protected AbstractSqlCommand(AbstractDatabase database, String tableName)
         {
             if (database == null)
             {
@@ -91,26 +104,54 @@ namespace DotMaysWind.Data.Command
             this._database = database;
             this._tableName = tableName;
             this._parameters = new List<SqlParameter>();
+            this._parameterIndex = 0;
         }
         #endregion
 
-        #region 方法
+        #region 创建参数
         /// <summary>
-        /// 输出SQL语句
+        /// 创建新的Sql语句参数类
         /// </summary>
-        /// <returns>数据库命令</returns>
-        public virtual DbCommand ToDbCommand()
+        /// <param name="columnName">字段名</param>
+        /// <param name="value">赋值内容</param>
+        /// <returns>Sql语句参数类</returns>
+        public SqlParameter CreateSqlParameter(String columnName, Object value)
         {
-            return this.CreateDbCommand();
+            return SqlParameter.InternalCreate(this._database, columnName, this.ParameterIndex, value);
         }
 
+        /// <summary>
+        /// 创建新的Sql语句参数类
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">字段类型</param>
+        /// <param name="value">赋值内容</param>
+        /// <returns>Sql语句参数类</returns>
+        public SqlParameter CreateSqlParameter(String columnName, DbType dbType, Object value)
+        {
+            return SqlParameter.InternalCreate(this._database, columnName, this.ParameterIndex, dbType, value);
+        }
+
+        /// <summary>
+        /// 创建新的Sql语句参数类
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="action">赋值操作</param>
+        /// <returns>Sql语句参数类</returns>
+        public SqlParameter CreateSqlParameterCustomAction(String columnName, String action)
+        {
+            return SqlParameter.InternalCreateCustomAction(this._database, columnName, action);
+        }
+        #endregion
+
+        #region 创建数据库命令
         /// <summary>
         /// 创建数据库命令
         /// </summary>
         /// <returns>数据库命令</returns>
         protected DbCommand CreateDbCommand()
         {
-            DbCommand dbCommand = this._database.DatabaseProvider.CreateCommand();
+            DbCommand dbCommand = this._database.CreateDbCommand();
             dbCommand.CommandType = System.Data.CommandType.Text;
             dbCommand.CommandText = this.GetSqlCommand();
 
@@ -145,7 +186,9 @@ namespace DotMaysWind.Data.Command
                 }
             }
         }
+        #endregion
 
+        #region 输出方法
         /// <summary>
         /// 获取所有参数集合
         /// </summary>
@@ -162,23 +205,16 @@ namespace DotMaysWind.Data.Command
         public abstract String GetSqlCommand();
 
         /// <summary>
-        /// 后处理Sql语句
+        /// 输出SQL命令
         /// </summary>
-        /// <returns>处理后的Sql语句</returns>
-        protected String FollowingProcessSql(String originSql)
+        /// <returns>数据库命令</returns>
+        public virtual DbCommand ToDbCommand()
         {
-            String result = originSql;
-
-            if (this._database.DatabaseType == DatabaseType.Oracle)
-            {
-                result = result.Replace(Constants.GeneralParameterNamePrefix, Constants.OracleParameterNamePrefix);
-            }
-
-            return result;
+            return this.CreateDbCommand();
         }
         #endregion
 
-        #region Result
+        #region 输出结果
         /// <summary>
         /// 获取操作后影响的行数（Insert、Update或Delete）或结果（Select）
         /// </summary>
@@ -235,18 +271,10 @@ namespace DotMaysWind.Data.Command
         #region 私有方法
         private DbParameter CreateDbParameter(SqlParameter param)
         {
-            DbParameter dbParameter = this._database.DatabaseProvider.CreateParameter();
+            DbParameter dbParameter = this._database.CreateDbParameter();
+            dbParameter.SourceColumn = param.ColumnName;
+            dbParameter.ParameterName = param.ParameterName;
             dbParameter.DbType = param.DbType;
-
-            if (this._database.DatabaseType == DatabaseType.Oracle)
-            {
-                dbParameter.ParameterName = param.ParameterName.Replace(Constants.GeneralParameterNamePrefix, Constants.OracleParameterNamePrefix);
-            }
-            else
-            {
-                dbParameter.ParameterName = param.ParameterName;
-            }
-
             dbParameter.Value = param.Value;
             dbParameter.SourceVersion = DataRowVersion.Default;
 

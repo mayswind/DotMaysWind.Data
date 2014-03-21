@@ -26,7 +26,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="database">数据库</param>
         /// <param name="tableName">数据表名称</param>
-        public DeleteCommand(Database database, String tableName)
+        internal DeleteCommand(AbstractDatabase database, String tableName)
             : base(database, tableName) { }
         #endregion
 
@@ -44,15 +44,27 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
+        /// 设置指定查询的语句并返回当前语句
+        /// </summary>
+        /// <param name="where">查询语句</param>
+        /// <returns>当前语句</returns>
+        public DeleteCommand Where(Func<SqlConditionBuilder, ISqlCondition> where)
+        {
+            this._where = where(this._conditionBuilder);
+
+            return this;
+        }
+
+        /// <summary>
         /// 输出SQL语句
         /// </summary>
         /// <returns>SQL语句</returns>
         public override String GetSqlCommand()
         {
-            SqlCommandBuilder sb = new SqlCommandBuilder(this.DatabaseType);
+            SqlCommandBuilder sb = new SqlCommandBuilder(this.Database);
             sb.AppendDeletePrefix().AppendTableName(this._tableName).AppendWhere(this._where);
 
-            return this.FollowingProcessSql(sb.ToString());
+            return sb.ToString();
         }
 
         /// <summary>

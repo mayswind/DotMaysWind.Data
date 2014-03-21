@@ -29,7 +29,7 @@ namespace DotMaysWind.Data
         }
 
         /// <summary>
-        /// 获取或设置参数名
+        /// 获取参数名
         /// </summary>
         public String ParameterName
         {
@@ -37,41 +37,19 @@ namespace DotMaysWind.Data
         }
 
         /// <summary>
-        /// 获取或设置数据类型
+        /// 获取数据类型
         /// </summary>
         public DbType DbType
         {
             get { return this._parameter.DbType; }
-            set { this._parameter.DbType = value; }
         }
 
         /// <summary>
-        /// 获取或设置SQLServer数据类型
-        /// </summary>
-        public SqlDbType SqlDbType
-        {
-            get { return this._parameter.SqlDbType; }
-            set { this._parameter.SqlDbType = value; }
-        }
-
-        /// <summary>
-        /// 获取或设置参数值
+        /// 获取参数值
         /// </summary>
         public Object Value
         {
-            get
-            {
-                if (this._parameter.Value is DateTime)
-                {
-                    DateTime dt = (DateTime)this._parameter.Value;
-                    return dt.ToString("yyyy-MM-dd HH:mm:ss");
-                }
-                else
-                {
-                    return this._parameter.Value;
-                }
-            }
-            set { this._parameter.Value = value; }
+            get { return this._parameter.Value; }
         }
 
         /// <summary>
@@ -87,15 +65,29 @@ namespace DotMaysWind.Data
         /// <summary>
         /// 初始化Sql语句参数类
         /// </summary>
+        /// <param name="database">数据库</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="parameterName">参数名</param>
+        /// <param name="parameterIndex">参数索引</param>
         /// <param name="value">赋值内容</param>
-        private SqlParameter(String columnName, String parameterName, Object value)
+        private SqlParameter(AbstractDatabase database, String columnName, Int32 parameterIndex, Object value)
         {
             this._parameter = new BaseSqlParameter();
             this._parameter.SourceColumn = columnName;
-            this._parameter.ParameterName = Constants.GeneralParameterNamePrefix + parameterName;
-            this._parameter.Value = (value ?? DBNull.Value);
+            this._parameter.ParameterName = database.InternalGetParameterName("PN_IDX_" + parameterIndex.ToString());
+
+            if (value == null)
+            {
+                this._parameter.Value = DBNull.Value;
+            }
+            else if (value is DateTime)
+            {
+                DateTime dt = (DateTime)value;
+                this._parameter.Value = dt.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            else
+            {
+                this._parameter.Value = value;
+            }
 
             this._isUseParameter = true;
         }
@@ -103,9 +95,10 @@ namespace DotMaysWind.Data
         /// <summary>
         /// 初始化Sql语句参数类
         /// </summary>
+        /// <param name="database">数据库</param>
         /// <param name="columnName">字段名</param>
         /// <param name="action">赋值操作</param>
-        private SqlParameter(String columnName, String action)
+        private SqlParameter(AbstractDatabase database, String columnName, String action)
         {
             this._parameter = new BaseSqlParameter();
             this._parameter.SourceColumn = columnName;
@@ -120,62 +113,15 @@ namespace DotMaysWind.Data
         /// <summary>
         /// 创建新的Sql语句参数类
         /// </summary>
+        /// <param name="database">数据库</param>
         /// <param name="columnName">字段名</param>
+        /// <param name="parameterIndex">参数索引</param>
         /// <param name="value">赋值内容</param>
         /// <returns>Sql语句参数类</returns>
-        public static SqlParameter Create(String columnName, Object value)
+        internal static SqlParameter InternalCreate(AbstractDatabase database, String columnName, Int32 parameterIndex, Object value)
         {
-            return SqlParameter.Create(columnName, columnName.Replace("(", "_").Replace(")", ""), DbTypeHelper.InternalGetDbType(value), value);
-        }
-
-        /// <summary>
-        /// 创建新的Sql语句参数类
-        /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <param name="dbType">字段类型</param>
-        /// <param name="value">赋值内容</param>
-        /// <returns>Sql语句参数类</returns>
-        public static SqlParameter Create(String columnName, DbType dbType, Object value)
-        {
-            return SqlParameter.Create(columnName, columnName.Replace("(", "_").Replace(")", ""), dbType, value);
-        }
-
-        /// <summary>
-        /// 创建新的Sql语句参数类
-        /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <param name="dbType">字段类型</param>
-        /// <param name="value">赋值内容</param>
-        /// <returns>Sql语句参数类</returns>
-        public static SqlParameter Create(String columnName, SqlDbType dbType, Object value)
-        {
-            return SqlParameter.Create(columnName, columnName.Replace("(", "_").Replace(")", ""), dbType, value);
-        }
-
-        /// <summary>
-        /// 创建新的Sql语句参数类
-        /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <param name="parameterName">参数名</param>
-        /// <param name="value">赋值内容</param>
-        /// <returns>Sql语句参数类</returns>
-        public static SqlParameter Create(String columnName, String parameterName, Object value)
-        {
-            return SqlParameter.Create(columnName, parameterName.Replace("(", "_").Replace(")", ""), DbTypeHelper.InternalGetDbType(value), value);
-        }
-
-        /// <summary>
-        /// 创建新的Sql语句参数类
-        /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <param name="parameterName">参数名</param>
-        /// <param name="dbType">字段类型</param>
-        /// <param name="value">赋值内容</param>
-        /// <returns>Sql语句参数类</returns>
-        public static SqlParameter Create(String columnName, String parameterName, DbType dbType, Object value)
-        {
-            SqlParameter param = new SqlParameter(columnName, parameterName.Replace("(", "_").Replace(")", ""), value);
-            param.DbType = dbType;
+            SqlParameter param = new SqlParameter(database, columnName, parameterIndex, value);
+            param._parameter.DbType = DbTypeHelper.InternalGetDbType(value);
 
             return param;
         }
@@ -183,15 +129,33 @@ namespace DotMaysWind.Data
         /// <summary>
         /// 创建新的Sql语句参数类
         /// </summary>
+        /// <param name="database">数据库</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="parameterName">参数名</param>
+        /// <param name="parameterIndex">参数索引</param>
+        /// <param name="sqlDbType">字段类型</param>
+        /// <param name="value">赋值内容</param>
+        /// <returns>Sql语句参数类</returns>
+        internal static SqlParameter InternalCreate(AbstractDatabase database, String columnName, Int32 parameterIndex, SqlDbType sqlDbType, Object value)
+        {
+            SqlParameter param = new SqlParameter(database, columnName, parameterIndex, value);
+            param._parameter.SqlDbType = sqlDbType;
+
+            return param;
+        }
+
+        /// <summary>
+        /// 创建新的Sql语句参数类
+        /// </summary>
+        /// <param name="database">数据库</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="parameterIndex">参数索引</param>
         /// <param name="dbType">字段类型</param>
         /// <param name="value">赋值内容</param>
         /// <returns>Sql语句参数类</returns>
-        public static SqlParameter Create(String columnName, String parameterName, SqlDbType dbType, Object value)
+        internal static SqlParameter InternalCreate(AbstractDatabase database, String columnName, Int32 parameterIndex, DbType dbType, Object value)
         {
-            SqlParameter param = new SqlParameter(columnName, parameterName.Replace("(", "_").Replace(")", ""), value);
-            param.SqlDbType = dbType;
+            SqlParameter param = new SqlParameter(database, columnName, parameterIndex, value);
+            param._parameter.DbType = dbType;
 
             return param;
         }
@@ -201,12 +165,13 @@ namespace DotMaysWind.Data
         /// <summary>
         /// 创建新的Sql语句参数类
         /// </summary>
+        /// <param name="database">数据库</param>
         /// <param name="columnName">字段名</param>
         /// <param name="action">赋值操作</param>
         /// <returns>Sql语句参数类</returns>
-        public static SqlParameter CreateCustomAction(String columnName, String action)
+        internal static SqlParameter InternalCreateCustomAction(AbstractDatabase database, String columnName, String action)
         {
-            return new SqlParameter(columnName, action);
+            return new SqlParameter(database, columnName, action);
         }
         #endregion
         #endregion

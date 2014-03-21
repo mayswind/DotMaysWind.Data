@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 
 namespace DotMaysWind.Data.Helper
@@ -8,65 +9,48 @@ namespace DotMaysWind.Data.Helper
     /// </summary>
     internal static class DatabaseTypeHelper
     {
+        #region 字段
+        private static Dictionary<String, DatabaseType> _typeDict;
+        #endregion
+
+        #region 构造方法
+        static DatabaseTypeHelper()
+        {
+            _typeDict = new Dictionary<String, DatabaseType>();
+
+            _typeDict["system.data.sqlserverce"] = DatabaseType.SqlServerCe;
+            _typeDict["microsoft.sqlserverce.client"] = DatabaseType.SqlServerCe;
+
+            _typeDict["system.data.sqlclient"] = DatabaseType.SqlServer;
+
+            _typeDict["system.data.sqlite"] = DatabaseType.SQLite;
+            _typeDict["mono.data.sqliteclient"] = DatabaseType.SQLite;
+
+            _typeDict["mysql.data.mysqlclient"] = DatabaseType.MySQL;
+
+            _typeDict["system.data.oracleclient"] = DatabaseType.Oracle;
+            _typeDict["oracle.dataaccess.client"] = DatabaseType.Oracle;
+        }
+        #endregion
+
+        #region 方法
         /// <summary>
         /// 获取数据库类型
         /// </summary>
-        /// <param name="connectionString">数据库连接字符串</param>
         /// <param name="dbProvider">数据库提供者</param>
+        /// <param name="connectionString">数据库连接字符串</param>
         /// <returns>数据库类型</returns>
-        internal static DatabaseType InternalGetDatabaseType(String connectionString, DbProviderFactory dbProvider)
+        internal static DatabaseType InternalGetDatabaseType(DbProviderFactory dbProvider, String connectionString)
         {
             String providerName = dbProvider.GetType().ToString().ToLowerInvariant();
 
-            #region SqlServer
-            if (providerName.IndexOf("system.data.sqlclient") >= 0)
+            foreach (KeyValuePair<String, DatabaseType> pair in _typeDict)
             {
-                return DatabaseType.SqlServer;
+                if (providerName.IndexOf(pair.Key) >= 0)
+                {
+                    return pair.Value;
+                }
             }
-            #endregion
-
-            #region MySQL
-            if (providerName.IndexOf("mysql.data.mysqlclient") >= 0)
-            {
-                return DatabaseType.MySQL;
-            }
-            #endregion
-
-            #region Sqlite
-            if (providerName.IndexOf("system.data.sqlite") >= 0)
-            {
-                return DatabaseType.SQLite;
-            }
-
-            if (providerName.IndexOf("mono.data.sqliteclient") >= 0)
-            {
-                return DatabaseType.SQLite;
-            }
-            #endregion
-
-            #region SqlServerCe
-            if (providerName.IndexOf("system.data.sqlserverce") >= 0)
-            {
-                return DatabaseType.SqlServerCe;
-            }
-
-            if (providerName.IndexOf("microsoft.sqlserverce.client") >= 0)
-            {
-                return DatabaseType.SqlServerCe;
-            }
-            #endregion
-
-            #region Oracle
-            if (providerName.IndexOf("system.data.oracleclient") >= 0)
-            {
-                return DatabaseType.Oracle;
-            }
-
-            if (providerName.IndexOf("oracle.dataaccess.client") >= 0)
-            {
-                return DatabaseType.Oracle;
-            }
-            #endregion
 
             #region Access
             if (providerName.IndexOf("system.data.oledb") >= 0)
@@ -103,5 +87,6 @@ namespace DotMaysWind.Data.Helper
 
             return DatabaseType.Unknown;
         }
+        #endregion
     }
 }

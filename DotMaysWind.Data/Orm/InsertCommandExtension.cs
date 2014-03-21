@@ -19,11 +19,11 @@ namespace DotMaysWind.Data.Orm
         /// <returns>当前语句</returns>
         public static InsertCommand Add(this InsertCommand cmd, Object entity)
         {
-            SqlParameter[] parameters = EntityHelper.InternalGetSqlParameters(entity);
+            SqlParameter[] parameters = EntityHelper.InternalGetSqlParameters(cmd, entity);
 
-            for (Int32 i = 0; i < parameters.Length; i++)
+            if (parameters != null)
             {
-                cmd.Add(parameters[i].ColumnName, parameters[i].DbType, parameters[i].Value);
+                cmd.Add(parameters);
             }
 
             return cmd;

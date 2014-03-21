@@ -13,11 +13,6 @@ namespace DotMaysWind.Data.Command
         /// 获取语句类型
         /// </summary>
         SqlCommandType CommandType { get; }
-        
-        /// <summary>
-        /// 获取数据库类型
-        /// </summary>
-        DatabaseType DatabaseType { get; }
 
         /// <summary>
         /// 获取数据表名称

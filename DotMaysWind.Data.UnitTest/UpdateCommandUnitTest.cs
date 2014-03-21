@@ -18,21 +18,21 @@ namespace DotMaysWind.Data.UnitTest
         [TestMethod()]
         public void EntityUpdateTest()
         {
-            Database fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient");
+            AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
             TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
-            String expectedSql = "UPDATE TestTable SET TestColumn1=@PN_OLD_TestColumn1,TestColumn2=@PN_OLD_TestColumn2,TestColumn3=@PN_OLD_TestColumn3,TestColumn4=@PN_OLD_TestColumn4,TestColumn5=@PN_OLD_TestColumn5,TestColumn6=@PN_OLD_TestColumn6,TestColumn7=@PN_OLD_TestColumn7,TestColumn8=@PN_OLD_TestColumn8";
+            String expectedSql = "UPDATE TestTable SET TestColumn1=@PN_IDX_0,TestColumn2=@PN_IDX_1,TestColumn3=@PN_IDX_2,TestColumn4=@PN_IDX_3,TestColumn5=@PN_IDX_4,TestColumn6=@PN_IDX_5,TestColumn7=@PN_IDX_6,TestColumn8=@PN_IDX_7";
             SqlParameter[] expectedParameter = new SqlParameter[8]
             {
-                SqlParameter.Create("TestColumn1", "OLD_TestColumn1", entity.Test1),
-                SqlParameter.Create("TestColumn2", "OLD_TestColumn2", entity.Test2),
-                SqlParameter.Create("TestColumn3", "OLD_TestColumn3", entity.Test3),
-                SqlParameter.Create("TestColumn4", "OLD_TestColumn4", entity.Test4),
-                SqlParameter.Create("TestColumn5", "OLD_TestColumn5", DbType.Int32, entity.Test5),
-                SqlParameter.Create("TestColumn6", "OLD_TestColumn6", DbType.Double, entity.Test6),
-                SqlParameter.Create("TestColumn7", "OLD_TestColumn7", DbType.DateTime, entity.Test7),
-                SqlParameter.Create("TestColumn8", "OLD_TestColumn8", DbType.Int16, entity.Test8),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn1", 0, entity.Test1),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn2", 1, entity.Test2),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn3", 2, entity.Test3),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn4", 3, entity.Test4),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn5", 4, DbType.Int32, entity.Test5),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn6", 5, DbType.Double, entity.Test6),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn7", 6, DbType.DateTime, entity.Test7),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn8", 7, DbType.Int16, entity.Test8)
             };
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Set(entity);
@@ -50,21 +50,21 @@ namespace DotMaysWind.Data.UnitTest
         [TestMethod()]
         public void LinqUpdateTest()
         {
-            Database fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient");
+            AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
             TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
-            String expectedSql = "UPDATE TestTable SET TestColumn1=@PN_OLD_TestColumn1,TestColumn2=@PN_OLD_TestColumn2,TestColumn3=@PN_OLD_TestColumn3,TestColumn4=@PN_OLD_TestColumn4,TestColumn5=@PN_OLD_TestColumn5,TestColumn6=@PN_OLD_TestColumn6,TestColumn7=@PN_OLD_TestColumn7,TestColumn8=@PN_OLD_TestColumn8";
+            String expectedSql = "UPDATE TestTable SET TestColumn1=@PN_IDX_0,TestColumn2=@PN_IDX_1,TestColumn3=@PN_IDX_2,TestColumn4=@PN_IDX_3,TestColumn5=@PN_IDX_4,TestColumn6=@PN_IDX_5,TestColumn7=@PN_IDX_6,TestColumn8=@PN_IDX_7";
             SqlParameter[] expectedParameter = new SqlParameter[8]
             {
-                SqlParameter.Create("TestColumn1", "OLD_TestColumn1", entity.Test1),
-                SqlParameter.Create("TestColumn2", "OLD_TestColumn2", entity.Test2),
-                SqlParameter.Create("TestColumn3", "OLD_TestColumn3", entity.Test3),
-                SqlParameter.Create("TestColumn4", "OLD_TestColumn4", entity.Test4),
-                SqlParameter.Create("TestColumn5", "OLD_TestColumn5", DbType.Int32, entity.Test5),
-                SqlParameter.Create("TestColumn6", "OLD_TestColumn6", DbType.Double, entity.Test6),
-                SqlParameter.Create("TestColumn7", "OLD_TestColumn7", DbType.DateTime, entity.Test7),
-                SqlParameter.Create("TestColumn8", "OLD_TestColumn8", DbType.Int16, entity.Test8),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn1", 0, entity.Test1),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn2", 1, entity.Test2),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn3", 2, entity.Test3),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn4", 3, entity.Test4),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn5", 4, DbType.Int32, entity.Test5),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn6", 5, DbType.Double, entity.Test6),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn7", 6, DbType.DateTime, entity.Test7),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn8", 7, DbType.Int16, entity.Test8)
             };
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName)
@@ -91,12 +91,12 @@ namespace DotMaysWind.Data.UnitTest
         [TestMethod()]
         public void LinqIncreaseTest()
         {
-            Database fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient");
+            AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
             TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
             String expectedSql = "UPDATE TestTable SET TestColumn2=TestColumn2+1";
-            SqlParameter[] expectedParameter = new SqlParameter[1] { SqlParameter.CreateCustomAction("TestColumn2", "TestColumn2+1") };
+            SqlParameter[] expectedParameter = new SqlParameter[1] { SqlParameter.InternalCreateCustomAction(fakeDb, "TestColumn2", "TestColumn2+1") };
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Increase<TestEntity>(c => c.Test2);
             String actualSql = cmd.GetSqlCommand().Trim();
@@ -108,12 +108,12 @@ namespace DotMaysWind.Data.UnitTest
         [TestMethod()]
         public void LinqDecreaseTest()
         {
-            Database fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient");
+            AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
             TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
             String expectedSql = "UPDATE TestTable SET TestColumn2=TestColumn2-1";
-            SqlParameter[] expectedParameter = new SqlParameter[1] { SqlParameter.CreateCustomAction("TestColumn2", "TestColumn2-1") };
+            SqlParameter[] expectedParameter = new SqlParameter[1] { SqlParameter.InternalCreateCustomAction(fakeDb, "TestColumn2", "TestColumn2-1") };
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Decrease<TestEntity>(c => c.Test2);
             String actualSql = cmd.GetSqlCommand().Trim();

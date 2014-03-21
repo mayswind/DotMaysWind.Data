@@ -77,11 +77,10 @@ namespace DotMaysWind.Data.Command.Function
         /// <summary>
         /// 获取函数拼接后字符串
         /// </summary>
-        /// <param name="dbType">数据库类型</param>
         /// <returns>函数拼接后字符串</returns>
-        public String GetSqlFunction(DatabaseType dbType)
+        public String GetSqlText()
         {
-            return String.Format("({0}{1}{2})", this._leftMethod, this._basicFunc.GetSqlFunction(dbType), this._rightMethod);
+            return String.Format("({0}{1}{2})", this._leftMethod, this._basicFunc.GetSqlText(), this._rightMethod);
         }
         #endregion
     }

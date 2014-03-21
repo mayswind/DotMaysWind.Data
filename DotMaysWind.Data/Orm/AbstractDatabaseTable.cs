@@ -13,7 +13,7 @@ namespace DotMaysWind.Data.Orm
     public abstract class AbstractDatabaseTable<T> : IDatabaseTable where T : class
     {
         #region 字段
-        private Database _baseDatabase;
+        private IDatabase _baseDatabase;
         #endregion
 
         #region 抽象属性方法
@@ -35,7 +35,7 @@ namespace DotMaysWind.Data.Orm
         /// <summary>
         /// 获取数据表所在数据库
         /// </summary>
-        protected Database Database
+        protected IDatabase Database
         {
             get { return this._baseDatabase; }
         }
@@ -47,7 +47,7 @@ namespace DotMaysWind.Data.Orm
         /// </summary>
         /// <param name="baseDatabase">数据表所在数据库</param>
         /// <exception cref="ArgumentNullException">数据库不能为空</exception>
-        protected AbstractDatabaseTable(Database baseDatabase)
+        protected AbstractDatabaseTable(IDatabase baseDatabase)
         {
             if (baseDatabase == null)
             {

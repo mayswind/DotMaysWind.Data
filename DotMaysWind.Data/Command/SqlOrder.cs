@@ -36,9 +36,10 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 初始化新的Sql语句排序类
         /// </summary>
+        /// <param name="baseCommand">选择语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="orderType">排序方式</param>
-        private SqlOrder(String columnName, SqlOrderType orderType)
+        private SqlOrder(SelectCommand baseCommand, String columnName, SqlOrderType orderType)
         {
             this._columnName = columnName;
             this._orderType = orderType;
@@ -68,30 +69,33 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 初始化新的Sql语句排序类
         /// </summary>
+        /// <param name="cmd">选择语句</param>
         /// <param name="columnName">字段名</param>
-        public static SqlOrder Create(String columnName)
+        internal static SqlOrder Create(SelectCommand cmd, String columnName)
         {
-            return new SqlOrder(columnName, SqlOrderType.Asc);
+            return new SqlOrder(cmd, columnName, SqlOrderType.Asc);
         }
 
         /// <summary>
         /// 初始化新的Sql语句排序类
         /// </summary>
+        /// <param name="cmd">选择语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="orderType">排序方式</param>
-        public static SqlOrder Create(String columnName, SqlOrderType orderType)
+        internal static SqlOrder Create(SelectCommand cmd, String columnName, SqlOrderType orderType)
         {
-            return new SqlOrder(columnName, orderType);
+            return new SqlOrder(cmd, columnName, orderType);
         }
 
         /// <summary>
         /// 初始化新的Sql语句排序类
         /// </summary>
+        /// <param name="cmd">选择语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="isAscending">是否升序</param>
-        public static SqlOrder Create(String columnName, Boolean isAscending)
+        internal static SqlOrder Create(SelectCommand cmd, String columnName, Boolean isAscending)
         {
-            return new SqlOrder(columnName, (isAscending ? SqlOrderType.Asc : SqlOrderType.Desc));
+            return new SqlOrder(cmd, columnName, (isAscending ? SqlOrderType.Asc : SqlOrderType.Desc));
         }
         #endregion
 
@@ -157,16 +161,6 @@ namespace DotMaysWind.Data.Command
         public static Boolean operator !=(SqlOrder obj, SqlOrder obj2)
         {
             return !Object.Equals(obj, obj2);
-        }
-
-        /// <summary>
-        /// 隐式从字段名创建Sql排序语句
-        /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <returns>Sql查询字段</returns>
-        public static implicit operator SqlOrder(String columnName)
-        {
-            return SqlOrder.Create(columnName);
         }
 
         /// <summary>

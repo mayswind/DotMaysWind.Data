@@ -39,7 +39,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="database">数据库</param>
         /// <param name="commandType">语句类型</param>
         /// <param name="commandString">语句内容</param>
-        public CustomCommand(Database database, SqlCommandType commandType, String commandString)
+        internal CustomCommand(AbstractDatabase database, SqlCommandType commandType, String commandString)
             : base(database, String.Empty)
         {
             this._commandType = commandType;
@@ -80,7 +80,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>SQL语句</returns>
         public override String GetSqlCommand()
         {
-            return this.FollowingProcessSql(this._commandString);
+            return this._commandString;
         }
         #endregion
     }

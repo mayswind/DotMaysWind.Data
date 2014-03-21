@@ -6,7 +6,7 @@ namespace DotMaysWind.Data.UnitTest
 {
     public class TestEntityDataProvider : DatabaseTable<TestEntity>
     {
-        public TestEntityDataProvider(Database db)
+        public TestEntityDataProvider(IDatabase db)
             : base(db) { }
     }
 }

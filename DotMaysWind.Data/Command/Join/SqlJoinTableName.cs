@@ -26,13 +26,14 @@ namespace DotMaysWind.Data.Command.Join
         /// <summary>
         /// 初始化Sql连接语句类
         /// </summary>
+        /// <param name="cmd">选择语句</param>
         /// <param name="joinType">连接模式</param>
         /// <param name="currentTableName">当前表格名称</param>
         /// <param name="currentTableField">当前表格主键</param>
         /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherTableField">另个表格主键</param>
-        internal SqlJoinTableName(SqlJoinType joinType, String currentTableName, String currentTableField, String anotherTableName, String anotherTableField)
-            : base(joinType, currentTableName, currentTableField, anotherTableField)
+        internal SqlJoinTableName(SelectCommand cmd, SqlJoinType joinType, String currentTableName, String currentTableField, String anotherTableName, String anotherTableField)
+            : base(cmd, joinType, currentTableName, currentTableField, anotherTableField)
         {
             this._anotherTableName = anotherTableName;
         }

@@ -10,14 +10,14 @@ namespace DotMaysWind.Data.PerformanceTest
     internal static class DbHelper
     {
         #region 字段
-        private static Database _fakeDb;
+        private static IDatabase _fakeDb;
         #endregion
 
         #region 属性
         /// <summary>
         /// 获取当前数据库
         /// </summary>
-        public static Database FakeDb
+        public static IDatabase FakeDb
         {
             get { return _fakeDb; }
         }
@@ -33,7 +33,7 @@ namespace DotMaysWind.Data.PerformanceTest
         #region 方法
         internal static DbParameter InternalCreateDbParameter(String columnName, String paramName, DbType type, Object value)
         {
-            DbParameter param = _fakeDb.DatabaseProvider.CreateParameter();
+            DbParameter param = _fakeDb.CreateDbParameter();
 
             param.SourceColumn = columnName;
             param.ParameterName = paramName;

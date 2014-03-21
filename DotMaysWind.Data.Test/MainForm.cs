@@ -11,7 +11,7 @@ namespace DotMaysWind.Data.Test
     public partial class MainForm : Form
     {
         #region 字段
-        private Database _database;
+        private IDatabase _database;
         #endregion
 
         #region 构造方法

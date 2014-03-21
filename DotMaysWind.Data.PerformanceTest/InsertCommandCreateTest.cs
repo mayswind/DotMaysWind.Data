@@ -44,23 +44,6 @@ namespace DotMaysWind.Data.PerformanceTest
             dbCommand.Parameters.Add(DbHelper.InternalCreateDbParameter("TestColumn8", "@PN_NEW_TestColumn8", DbType.Int16, _entity.Test8));
         }
 
-        internal static void DatabaseArrayCreateInsertCommand()
-        {
-            SqlParameter[] insertParameters = new SqlParameter[8]
-            {
-                SqlParameter.Create("TestColumn1", "NEW_TestColumn1", _entity.Test1),
-                SqlParameter.Create("TestColumn2", "NEW_TestColumn2", _entity.Test2),
-                SqlParameter.Create("TestColumn3", "NEW_TestColumn3", _entity.Test3),
-                SqlParameter.Create("TestColumn4", "NEW_TestColumn4", _entity.Test4),
-                SqlParameter.Create("TestColumn5", "NEW_TestColumn5", DbType.Int32, _entity.Test5),
-                SqlParameter.Create("TestColumn6", "NEW_TestColumn6", DbType.Double, _entity.Test6),
-                SqlParameter.Create("TestColumn7", "NEW_TestColumn7", DbType.DateTime, _entity.Test7),
-                SqlParameter.Create("TestColumn8", "NEW_TestColumn8", DbType.Int16, _entity.Test8),
-            };
-
-            DbCommand dbCommand = DbHelper.FakeDb.CreateInsertCommand(_provider.TableName).Add(insertParameters).ToDbCommand();
-        }
-
         internal static void DatabaseNormalCreateInsertCommand()
         {
             InsertCommand command = DbHelper.FakeDb.CreateInsertCommand(_provider.TableName)

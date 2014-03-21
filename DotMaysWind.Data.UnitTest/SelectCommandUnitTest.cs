@@ -17,15 +17,17 @@ namespace DotMaysWind.Data.UnitTest
         [TestMethod]
         public void LinqSelectTest()
         {
-            Database fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient");
+            IDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient");
             TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
 
             SelectCommand expectedCommand = fakeDb.CreateSelectCommand(provider.TableName)
                 .Querys("TestColumn1", "TestColumn2", "TestColumn5", "TestColumn8")
                 .Query("TestColumn3", "TTTT")
                 .Query(SqlAggregateFunction.Max, "TestColumn4", "MMMM")
-                .Where(SqlCondition.GreaterThanOrEqual("TestColumn2", 123) |
-                    (SqlCondition.GreaterThan("TestColumn4", DateTime.Now) & SqlCondition.LessThan("TestColumn7", DateTime.Now.AddDays(7))))
+                .Where(((SqlConditionBuilder cb) =>
+                {
+                    return cb.GreaterThanOrEqual("TestColumn2", 123) | (cb.GreaterThan("TestColumn4", DateTime.Now) & cb.LessThan("TestColumn7", DateTime.Now.AddDays(7)));
+                }))
                 .GroupBy("TestColumn3")
                 .InnerJoin("TestColumn2", "AnotherTable", "TestColumn2")
                 .OrderBy("TestColumn6", SqlOrderType.Asc);

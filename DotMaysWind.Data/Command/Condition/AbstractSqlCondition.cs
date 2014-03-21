@@ -7,11 +7,26 @@ namespace DotMaysWind.Data.Command.Condition
     /// </summary>
     public abstract class AbstractSqlCondition : ISqlCondition
     {
+        #region 字段
+        private AbstractSqlCommand _baseCommand;
+        #endregion
+
         #region 属性
         /// <summary>
         /// 获取语句类型
         /// </summary>
         public abstract SqlConditionType ConditionType { get; }
+        #endregion
+
+        #region 构造方法
+        /// <summary>
+        /// 初始化新的Sql抽象条件语句
+        /// </summary>
+        /// <param name="baseCommand">源Sql语句</param>
+        internal AbstractSqlCondition(AbstractSqlCommand baseCommand)
+        {
+            this._baseCommand = baseCommand;
+        }
         #endregion
 
         #region 方法
@@ -47,7 +62,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>条件列表</returns>
         public SqlConditionList And(AbstractSqlCondition condition)
         {
-            return SqlCondition.And(this, condition);
+            return SqlCondition.And(this._baseCommand, this, condition);
         }
 
         /// <summary>
@@ -57,7 +72,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>条件列表</returns>
         public SqlConditionList Or(AbstractSqlCondition condition)
         {
-            return SqlCondition.Or(this, condition);
+            return SqlCondition.Or(this._baseCommand, this, condition);
         }
         #endregion
 
@@ -69,7 +84,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>条件列表</returns>
         public static SqlNotCondition operator !(AbstractSqlCondition condition)
         {
-            return SqlCondition.Not(condition);
+            return SqlCondition.Not(condition._baseCommand, condition);
         }
 
         /// <summary>
@@ -80,7 +95,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>条件列表</returns>
         public static SqlConditionList operator &(AbstractSqlCondition condition1, AbstractSqlCondition condition2)
         {
-            return SqlCondition.And(condition1, condition2);
+            return SqlCondition.And(condition1._baseCommand, condition1, condition2);
         }
 
         /// <summary>
@@ -98,7 +113,7 @@ namespace DotMaysWind.Data.Command.Condition
             }
             else
             {
-                return SqlCondition.And(condition1, condition2);
+                return SqlCondition.And(condition1._baseCommand, condition1, condition2);
             }
         }
 
@@ -117,7 +132,7 @@ namespace DotMaysWind.Data.Command.Condition
             }
             else
             {
-                return SqlCondition.And(condition1, condition2);
+                return SqlCondition.And(condition1._baseCommand, condition1, condition2);
             }
         }
 
@@ -129,7 +144,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>条件列表</returns>
         public static SqlConditionList operator |(AbstractSqlCondition condition1, AbstractSqlCondition condition2)
         {
-            return SqlCondition.Or(condition1, condition2);
+            return SqlCondition.Or(condition1._baseCommand, condition1, condition2);
         }
 
         /// <summary>
@@ -147,7 +162,7 @@ namespace DotMaysWind.Data.Command.Condition
             }
             else
             {
-                return SqlCondition.Or(condition1, condition2);
+                return SqlCondition.Or(condition1._baseCommand, condition1, condition2);
             }
         }
 
@@ -166,7 +181,7 @@ namespace DotMaysWind.Data.Command.Condition
             }
             else
             {
-                return SqlCondition.Or(condition1, condition2);
+                return SqlCondition.Or(condition1._baseCommand, condition1, condition2);
             }
         }
 

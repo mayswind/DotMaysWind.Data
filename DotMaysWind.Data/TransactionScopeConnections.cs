@@ -29,7 +29,7 @@ namespace DotMaysWind.Data
         /// </summary>
         /// <param name="db">数据库</param>
         /// <returns>数据库连接</returns>
-        public static DatabaseConnectionWrapper GetConnection(Database db)
+        internal static DatabaseConnectionWrapper GetConnection(AbstractDatabase db)
 		{
             SystemTransaction currentTransaction = SystemTransaction.Current;
 
@@ -67,7 +67,7 @@ namespace DotMaysWind.Data
 			{
                 if (!connectionList.TryGetValue(db.ConnectionString, out connection))
 				{
-                    connection = db.GetNewConnection();
+                    connection = db.InternalGetConnection();
                     connectionList.Add(db.ConnectionString, connection);
 				}
 

@@ -18,22 +18,22 @@ namespace DotMaysWind.Data.UnitTest
         [TestMethod()]
         public void EntityInsertTest()
         {
-            Database fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient");
+            AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
             TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
             String expectedSql = "INSERT INTO TestTable ( TestColumn1,TestColumn2,TestColumn3,TestColumn4,TestColumn5,TestColumn6,TestColumn7,TestColumn8 ) " +
-                "VALUES ( @PN_NEW_TestColumn1,@PN_NEW_TestColumn2,@PN_NEW_TestColumn3,@PN_NEW_TestColumn4,@PN_NEW_TestColumn5,@PN_NEW_TestColumn6,@PN_NEW_TestColumn7,@PN_NEW_TestColumn8 )";
+                "VALUES ( @PN_IDX_0,@PN_IDX_1,@PN_IDX_2,@PN_IDX_3,@PN_IDX_4,@PN_IDX_5,@PN_IDX_6,@PN_IDX_7 )";
             SqlParameter[] expectedParameter = new SqlParameter[8]
             {
-                SqlParameter.Create("TestColumn1", "NEW_TestColumn1", entity.Test1),
-                SqlParameter.Create("TestColumn2", "NEW_TestColumn2", entity.Test2),
-                SqlParameter.Create("TestColumn3", "NEW_TestColumn3", entity.Test3),
-                SqlParameter.Create("TestColumn4", "NEW_TestColumn4", entity.Test4),
-                SqlParameter.Create("TestColumn5", "NEW_TestColumn5", DbType.Int32, entity.Test5),
-                SqlParameter.Create("TestColumn6", "NEW_TestColumn6", DbType.Double, entity.Test6),
-                SqlParameter.Create("TestColumn7", "NEW_TestColumn7", DbType.DateTime, entity.Test7),
-                SqlParameter.Create("TestColumn8", "NEW_TestColumn8", DbType.Int16, entity.Test8),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn1", 0, entity.Test1),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn2", 1, entity.Test2),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn3", 2, entity.Test3),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn4", 3, entity.Test4),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn5", 4, DbType.Int32, entity.Test5),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn6", 5, DbType.Double, entity.Test6),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn7", 6, DbType.DateTime, entity.Test7),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn8", 7, DbType.Int16, entity.Test8)
             };
 
             InsertCommand cmd = fakeDb.CreateInsertCommand(provider.TableName).Add(entity);
@@ -51,22 +51,22 @@ namespace DotMaysWind.Data.UnitTest
         [TestMethod()]
         public void LinqInsertTest()
         {
-            Database fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient");
+            AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
             TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
             String expectedSql = "INSERT INTO TestTable ( TestColumn1,TestColumn2,TestColumn3,TestColumn4,TestColumn5,TestColumn6,TestColumn7,TestColumn8 ) " +
-                "VALUES ( @PN_NEW_TestColumn1,@PN_NEW_TestColumn2,@PN_NEW_TestColumn3,@PN_NEW_TestColumn4,@PN_NEW_TestColumn5,@PN_NEW_TestColumn6,@PN_NEW_TestColumn7,@PN_NEW_TestColumn8 )";
+                "VALUES ( @PN_IDX_0,@PN_IDX_1,@PN_IDX_2,@PN_IDX_3,@PN_IDX_4,@PN_IDX_5,@PN_IDX_6,@PN_IDX_7 )";
             SqlParameter[] expectedParameter = new SqlParameter[8]
             {
-                SqlParameter.Create("TestColumn1", "NEW_TestColumn1", entity.Test1),
-                SqlParameter.Create("TestColumn2", "NEW_TestColumn2", entity.Test2),
-                SqlParameter.Create("TestColumn3", "NEW_TestColumn3", entity.Test3),
-                SqlParameter.Create("TestColumn4", "NEW_TestColumn4", entity.Test4),
-                SqlParameter.Create("TestColumn5", "NEW_TestColumn5", DbType.Int32, entity.Test5),
-                SqlParameter.Create("TestColumn6", "NEW_TestColumn6", DbType.Double, entity.Test6),
-                SqlParameter.Create("TestColumn7", "NEW_TestColumn7", DbType.DateTime, entity.Test7),
-                SqlParameter.Create("TestColumn8", "NEW_TestColumn8", DbType.Int16, entity.Test8),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn1", 0, entity.Test1),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn2", 1, entity.Test2),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn3", 2, entity.Test3),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn4", 3, entity.Test4),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn5", 4, DbType.Int32, entity.Test5),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn6", 5, DbType.Double, entity.Test6),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn7", 6, DbType.DateTime, entity.Test7),
+                SqlParameter.InternalCreate(fakeDb, "TestColumn8", 7, DbType.Int16, entity.Test8)
             };
 
             InsertCommand cmd = fakeDb.CreateInsertCommand(provider.TableName)

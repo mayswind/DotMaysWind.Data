@@ -2,6 +2,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using DotMaysWind.Data.Command;
 using DotMaysWind.Data.Command.Condition;
 
 namespace DotMaysWind.Data.UnitTest
@@ -16,8 +17,12 @@ namespace DotMaysWind.Data.UnitTest
         [TestMethod]
         public void CreateInConditionTest()
         {
-            SqlInsideParametersCondition expectedCondition = SqlCondition.In("TestColumn2", 1, 2, 3, 4, 5);
-            SqlInsideParametersCondition actualCondition = SqlCondition.InInt32("TestColumn2", "1, 2, 3, 4, 5", ',');
+            AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
+            SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
+            SelectCommand actualCommand = new SelectCommand(fakeDb, "");
+
+            SqlInsideParametersCondition expectedCondition = SqlCondition.In(expectedCommand, "TestColumn2", 1, 2, 3, 4, 5);
+            SqlInsideParametersCondition actualCondition = SqlCondition.InInt32(actualCommand, "TestColumn2", "1, 2, 3, 4, 5", ',');
 
             Assert.AreEqual(expectedCondition, actualCondition);
         }
@@ -25,8 +30,12 @@ namespace DotMaysWind.Data.UnitTest
         [TestMethod]
         public void CreateNotInConditionTest()
         {
-            SqlInsideParametersCondition expectedCondition = SqlCondition.NotIn("TestColumn2", 1, 2, 3, 4, 5);
-            SqlInsideParametersCondition actualCondition = SqlCondition.NotInInt32("TestColumn2", "1, 2, 3, 4, 5", ',');
+            AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
+            SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
+            SelectCommand actualCommand = new SelectCommand(fakeDb, "");
+
+            SqlInsideParametersCondition expectedCondition = SqlCondition.NotIn(expectedCommand, "TestColumn2", 1, 2, 3, 4, 5);
+            SqlInsideParametersCondition actualCondition = SqlCondition.NotInInt32(actualCommand, "TestColumn2", "1, 2, 3, 4, 5", ',');
 
             Assert.AreEqual(expectedCondition, actualCondition);
         }
@@ -36,10 +45,13 @@ namespace DotMaysWind.Data.UnitTest
         [TestMethod]
         public void CreateNotConditionTest()
         {
-            SqlBasicParameterCondition baseCondition = SqlCondition.Equal("TestColumn2", 1);
+            AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
+
+            SelectCommand baseCommand = new SelectCommand(fakeDb, "");
+            SqlBasicParameterCondition baseCondition = SqlCondition.Equal(baseCommand, "TestColumn2", 1);
             SqlNotCondition actualCondition = !baseCondition;
 
-            String expectedConditionClause = "(NOT((TestColumn2 = @PN_TestColumn2_Equal)))";
+            String expectedConditionClause = "(NOT((TestColumn2 = @PN_IDX_0)))";
             String actualConditionClause = actualCondition.GetSqlClause();
 
             SqlParameter[] expectedParameters = baseCondition.GetAllParameters();

@@ -27,19 +27,6 @@ namespace DotMaysWind.Data.Linq
         {
             return SqlLinqCondition.ParseCondition(sourceCommand, expr.Body);
         }
-
-        /// <summary>
-        /// 创建新的Sql条件语句
-        /// </summary>
-        /// <typeparam name="T">实体类类型</typeparam>
-        /// <param name="expr">Linq表达式</param>
-        /// <exception cref="LinqNotSupportedException">Linq操作不支持</exception>
-        /// <exception cref="NullAttributeException">没有设置特性</exception>
-        /// <returns>Sql条件语句</returns>
-        public static AbstractSqlCondition Create<T>(Expression<Func<T, Boolean>> expr)
-        {
-            return SqlLinqCondition.ParseCondition(null, expr.Body);
-        }
         #endregion
 
         #region 私有方法
@@ -124,7 +111,7 @@ namespace DotMaysWind.Data.Linq
                 {
                     String columnName2 = ExpressionHelper.GetColumnName(sourceCommand, right);
 
-                    condition = SqlCondition.InternalCreateColumn(columnAttr.ColumnName, op, columnName2);
+                    condition = SqlCondition.InternalCreateColumn(sourceCommand, columnAttr.ColumnName, op, columnName2);
 
                     return condition;
                 }
@@ -137,7 +124,7 @@ namespace DotMaysWind.Data.Linq
                 op = (op == SqlOperator.Equal ? SqlOperator.IsNull : SqlOperator.IsNotNull);
             }
 
-            condition = SqlCondition.InternalCreate(columnAttr.ColumnName, op, columnAttr.DbType.Value, value);
+            condition = SqlCondition.InternalCreate(sourceCommand, columnAttr.ColumnName, op, columnAttr.DbType.Value, value);
 
             return condition;
         }
@@ -194,7 +181,7 @@ namespace DotMaysWind.Data.Linq
                 throw new NullAttributeException();
             }
 
-            AbstractSqlCondition condition = SqlCondition.InternalCreate(columnAttr.ColumnName, (isNot ? SqlOperator.IsNotNull : SqlOperator.IsNull), columnAttr.DbType.Value, null);
+            AbstractSqlCondition condition = SqlCondition.InternalCreate(sourceCommand, columnAttr.ColumnName, (isNot ? SqlOperator.IsNotNull : SqlOperator.IsNull), columnAttr.DbType.Value, null);
 
             return condition;
         }
@@ -210,7 +197,7 @@ namespace DotMaysWind.Data.Linq
                 throw new NullAttributeException();
             }
 
-            AbstractSqlCondition condition = SqlCondition.InternalCreate(columnAttr.ColumnName, (isNot ? SqlOperator.NotLike : SqlOperator.Like), columnAttr.DbType.Value, String.Format(format, value));
+            AbstractSqlCondition condition = SqlCondition.InternalCreate(sourceCommand, columnAttr.ColumnName, (isNot ? SqlOperator.NotLike : SqlOperator.Like), columnAttr.DbType.Value, String.Format(format, value));
 
             return condition;
         }
@@ -227,7 +214,7 @@ namespace DotMaysWind.Data.Linq
                 throw new NullAttributeException();
             }
 
-            AbstractSqlCondition condition = SqlCondition.InternalCreate(columnAttr.ColumnName, (isNot ? SqlOperator.NotBetween : SqlOperator.Between), columnAttr.DbType.Value, start, end);
+            AbstractSqlCondition condition = SqlCondition.InternalCreate(sourceCommand, columnAttr.ColumnName, (isNot ? SqlOperator.NotBetween : SqlOperator.Between), columnAttr.DbType.Value, start, end);
 
             return condition;
         }
@@ -247,7 +234,7 @@ namespace DotMaysWind.Data.Linq
 
             if (array != null)
             {
-                AbstractSqlCondition condition = SqlCondition.InternalCreateIn(columnAttr.ColumnName, isNot, columnAttr.DbType.Value, array);
+                AbstractSqlCondition condition = SqlCondition.InternalCreateIn(sourceCommand, columnAttr.ColumnName, isNot, columnAttr.DbType.Value, array);
 
                 return condition;
             }
@@ -256,7 +243,7 @@ namespace DotMaysWind.Data.Linq
 
             if (cmd != null)
             {
-                AbstractSqlCondition condition = SqlCondition.InternalCreateIn(columnAttr.ColumnName, isNot, cmd);
+                AbstractSqlCondition condition = SqlCondition.InternalCreateIn(sourceCommand, columnAttr.ColumnName, isNot, cmd);
 
                 return condition;
             }

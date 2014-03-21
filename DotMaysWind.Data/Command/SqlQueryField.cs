@@ -18,30 +18,27 @@ namespace DotMaysWind.Data.Command
 
         #region 属性
         /// <summary>
-        /// 获取或设置表格名称
+        /// 获取表格名称
         /// </summary>
         public String TableName
         {
             get { return this._tableName; }
-            set { this._tableName = value; }
         }
 
         /// <summary>
-        /// 获取或设置查询名称
+        /// 获取查询名称
         /// </summary>
         public String FieldName
         {
             get { return this._columnName; }
-            set { this._columnName = value; }
         }
 
         /// <summary>
-        /// 获取或设置字段的别名
+        /// 获取字段的别名
         /// </summary>
         public String AliasesName
         {
             get { return this._aliasesName; }
-            set { this._aliasesName = value; }
         }
 
         /// <summary>
@@ -65,10 +62,11 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 初始化Sql查询字段类
         /// </summary>
+        /// <param name="cmd">源选择语句</param>
         /// <param name="tableName">表格名称</param>
         /// <param name="columnName">字段名称</param>
         /// <param name="aliasesName">字段别名</param>
-        private SqlQueryField(String tableName, String columnName, String aliasesName)
+        private SqlQueryField(SelectCommand cmd, String tableName, String columnName, String aliasesName)
         {
             this._tableName = tableName;
             this._columnName = columnName;
@@ -80,11 +78,12 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 初始化Sql查询字段类
         /// </summary>
+        /// <param name="cmd">源选择语句</param>
         /// <param name="tableName">表格名称</param>
         /// <param name="function">合计函数</param>
         /// <param name="columnName">字段名称</param>
         /// <param name="aliasesName">字段别名</param>
-        private SqlQueryField(String tableName, SqlAggregateFunction function, String columnName, String aliasesName)
+        private SqlQueryField(SelectCommand cmd, String tableName, SqlAggregateFunction function, String columnName, String aliasesName)
         {
             this._tableName = tableName;
             this._columnName = columnName;
@@ -96,9 +95,10 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 初始化Sql查询字段类
         /// </summary>
+        /// <param name="cmd">源选择语句</param>
         /// <param name="function">函数名称</param>
         /// <param name="aliasesName">字段别名</param>
-        private SqlQueryField(String function, String aliasesName)
+        private SqlQueryField(SelectCommand cmd, String function, String aliasesName)
         {
             this._tableName = String.Empty;
             this._columnName = String.Empty;
@@ -112,113 +112,124 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 创建新的Sql查询字段类
         /// </summary>
+        /// <param name="cmd">源选择语句</param>
         /// <param name="tableName">表格名称</param>
         /// <param name="columnName">字段名称</param>
         /// <param name="aliasesName">字段别名</param>
-        internal static SqlQueryField InternalCreateFromColumn(String tableName, String columnName, String aliasesName)
+        internal static SqlQueryField InternalCreateFromColumn(SelectCommand cmd, String tableName, String columnName, String aliasesName)
         {
-            return new SqlQueryField(tableName, columnName, aliasesName);
+            return new SqlQueryField(cmd, tableName, columnName, aliasesName);
         }
 
         /// <summary>
         /// 创建新的Sql查询字段类
         /// </summary>
+        /// <param name="cmd">源选择语句</param>
         /// <param name="columnName">字段名称</param>
         /// <param name="aliasesName">字段别名</param>
-        internal static SqlQueryField InternalCreateFromColumn(String columnName, String aliasesName)
+        internal static SqlQueryField InternalCreateFromColumn(SelectCommand cmd, String columnName, String aliasesName)
         {
-            return new SqlQueryField(String.Empty, columnName, aliasesName);
+            return new SqlQueryField(cmd, String.Empty, columnName, aliasesName);
         }
 
         /// <summary>
         /// 创建新的Sql查询字段类
         /// </summary>
+        /// <param name="cmd">源选择语句</param>
         /// <param name="columnName">字段名称</param>
-        internal static SqlQueryField InternalCreateFromColumn(String columnName)
+        internal static SqlQueryField InternalCreateFromColumn(SelectCommand cmd, String columnName)
         {
-            return new SqlQueryField(String.Empty, columnName, String.Empty);
+            return new SqlQueryField(cmd, String.Empty, columnName, String.Empty);
         }
 
         /// <summary>
         /// 创建新的Sql查询字段类
         /// </summary>
+        /// <param name="cmd">源选择语句</param>
         /// <param name="tableName">表格名称</param>
         /// <param name="function">合计函数</param>
         /// <param name="columnName">字段名称</param>
         /// <param name="aliasesName">字段别名</param>
-        internal static SqlQueryField InternalCreateFromAggregateFunction(String tableName, SqlAggregateFunction function, String columnName, String aliasesName)
+        internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, String tableName, SqlAggregateFunction function, String columnName, String aliasesName)
         {
-            return new SqlQueryField(tableName, function, columnName, aliasesName);
+            return new SqlQueryField(cmd, tableName, function, columnName, aliasesName);
         }
 
         /// <summary>
         /// 创建新的Sql查询字段类
         /// </summary>
+        /// <param name="cmd">源选择语句</param>
         /// <param name="function">合计函数</param>
         /// <param name="columnName">字段名称</param>
         /// <param name="aliasesName">字段别名</param>
-        internal static SqlQueryField InternalCreateFromAggregateFunction(SqlAggregateFunction function, String columnName, String aliasesName)
+        internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, SqlAggregateFunction function, String columnName, String aliasesName)
         {
-            return new SqlQueryField(String.Empty, function, columnName, aliasesName);
+            return new SqlQueryField(cmd, String.Empty, function, columnName, aliasesName);
         }
 
         /// <summary>
         /// 创建新的Sql查询字段类
         /// </summary>
+        /// <param name="cmd">源选择语句</param>
         /// <param name="tableName">表格名称</param>
         /// <param name="function">合计函数</param>
         /// <param name="columnName">字段名称</param>
-        internal static SqlQueryField InternalCreateFromAggregateFunction(String tableName, SqlAggregateFunction function, String columnName)
+        internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, String tableName, SqlAggregateFunction function, String columnName)
         {
-            return new SqlQueryField(tableName, function, columnName, String.Empty);
+            return new SqlQueryField(cmd, tableName, function, columnName, String.Empty);
         }
 
         /// <summary>
         /// 创建新的Sql查询字段类
         /// </summary>
+        /// <param name="cmd">源选择语句</param>
         /// <param name="function">合计函数</param>
         /// <param name="columnName">字段名称</param>
-        internal static SqlQueryField InternalCreateFromAggregateFunction(SqlAggregateFunction function, String columnName)
+        internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, SqlAggregateFunction function, String columnName)
         {
-            return new SqlQueryField(String.Empty, function, columnName, String.Empty);
+            return new SqlQueryField(cmd, String.Empty, function, columnName, String.Empty);
         }
 
         /// <summary>
         /// 创建新的Sql查询字段类
         /// </summary>
+        /// <param name="cmd">源选择语句</param>
         /// <param name="tableName">表格名称</param>
         /// <param name="function">合计函数</param>
-        internal static SqlQueryField InternalCreateFromAggregateFunction(String tableName, SqlAggregateFunction function)
+        internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, String tableName, SqlAggregateFunction function)
         {
-            return new SqlQueryField(tableName, function, "*", String.Empty);
+            return new SqlQueryField(cmd, tableName, function, "*", String.Empty);
         }
 
         /// <summary>
         /// 创建新的Sql查询字段类
         /// </summary>
+        /// <param name="cmd">源选择语句</param>
         /// <param name="function">合计函数</param>
-        internal static SqlQueryField InternalCreateFromAggregateFunction(SqlAggregateFunction function)
+        internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, SqlAggregateFunction function)
         {
-            return new SqlQueryField(String.Empty, function, "*", String.Empty);
+            return new SqlQueryField(cmd, String.Empty, function, "*", String.Empty);
         }
 
         /// <summary>
         /// 创建新的Sql查询字段类
         /// </summary>
+        /// <param name="cmd">源选择语句</param>
         /// <param name="function">函数名称</param>
-        internal static SqlQueryField InternalCreateFromFunction(String function)
+        internal static SqlQueryField InternalCreateFromFunction(SelectCommand cmd, String function)
         {
-            return new SqlQueryField(function, String.Empty);
+            return new SqlQueryField(cmd, function, String.Empty);
         }
 
         /// <summary>
         /// 创建新的Sql查询字段类
         /// </summary>
+        /// <param name="cmd">源选择语句</param>
         /// <param name="function">函数名称</param>
         /// <param name="aliasesName">别名</param>
-        internal static SqlQueryField InternalCreateFromFunction(String function, String aliasesName)
+        internal static SqlQueryField InternalCreateFromFunction(SelectCommand cmd, String function, String aliasesName)
         {
-            return new SqlQueryField(function, aliasesName);
+            return new SqlQueryField(cmd, function, aliasesName);
         }
         #endregion
 
@@ -299,16 +310,6 @@ namespace DotMaysWind.Data.Command
         public static Boolean operator !=(SqlQueryField obj, SqlQueryField obj2)
         {
             return !Object.Equals(obj, obj2);
-        }
-
-        /// <summary>
-        /// 隐式从字段名创建Sql查询字段
-        /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <returns>Sql查询字段</returns>
-        public static implicit operator SqlQueryField(String columnName)
-        {
-            return SqlQueryField.InternalCreateFromColumn(columnName);
         }
 
         /// <summary>

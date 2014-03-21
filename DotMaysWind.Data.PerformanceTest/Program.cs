@@ -23,7 +23,6 @@ namespace DotMaysWind.Data.PerformanceTest
             Console.WriteLine();
             Console.WriteLine("Insert Command Generate:");
             RunTest(stopWatch, cycle, new Action(InsertCommandCreateTest.BaseCreateInsertCommand));
-            RunTest(stopWatch, cycle, new Action(InsertCommandCreateTest.DatabaseArrayCreateInsertCommand));
             RunTest(stopWatch, cycle, new Action(InsertCommandCreateTest.DatabaseNormalCreateInsertCommand));
             RunTest(stopWatch, cycle, new Action(InsertCommandCreateTest.DatabaseEntityCreateInsertCommand));
             RunTest(stopWatch, cycle, new Action(InsertCommandCreateTest.ProviderEntityCreateInsertCommand));

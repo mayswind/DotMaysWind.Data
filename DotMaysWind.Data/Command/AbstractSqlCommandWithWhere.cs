@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 
 using DotMaysWind.Data.Command.Condition;
@@ -16,6 +17,11 @@ namespace DotMaysWind.Data.Command
         /// Where条件语句
         /// </summary>
         protected ISqlCondition _where;
+
+        /// <summary>
+        /// 条件语句生成器
+        /// </summary>
+        protected SqlConditionBuilder _conditionBuilder;
         #endregion
 
         #region 属性
@@ -35,8 +41,11 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="database">数据库</param>
         /// <param name="tableName">表格名称</param>
-        internal AbstractSqlCommandWithWhere(Database database, String tableName)
-            : base(database, tableName) { }
+        protected AbstractSqlCommandWithWhere(AbstractDatabase database, String tableName)
+            : base(database, tableName)
+        {
+            this._conditionBuilder = new SqlConditionBuilder(this);
+        }
         #endregion
 
         #region 方法

@@ -35,8 +35,10 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 初始化Sql Not条件语句类
         /// </summary>
+        /// <param name="baseCommand">源Sql语句</param>
         /// <param name="baseCondition">基础Sql条件语句</param>
-        internal SqlNotCondition(ISqlCondition baseCondition)
+        internal SqlNotCondition(AbstractSqlCommand baseCommand, ISqlCondition baseCondition)
+            : base(baseCommand)
         {
             this._baseCondition = baseCondition;
         }

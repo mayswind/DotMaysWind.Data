@@ -36,7 +36,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="database">数据库</param>
         /// <param name="tableName">数据表名称</param>
-        public UpdateCommand(Database database, String tableName)
+        internal UpdateCommand(AbstractDatabase database, String tableName)
             : base(database, tableName) { }
         #endregion
 
@@ -65,7 +65,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public UpdateCommand Set(String columnName, Object value)
         {
-            this._parameters.Add(SqlParameter.Create(columnName, Constants.UpdateOldParameterNamePrefix + columnName, value));
+            this._parameters.Add(this.CreateSqlParameter(columnName, value));
             return this;
         }
 
@@ -78,21 +78,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public UpdateCommand Set(String columnName, DbType dbType, Object value)
         {
-            this._parameters.Add(SqlParameter.Create(columnName, Constants.UpdateOldParameterNamePrefix + columnName, dbType, value));
-            return this;
-        }
-
-        /// <summary>
-        /// 更新指定参数并返回当前语句
-        /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <param name="paramName">参数名称</param>
-        /// <param name="dbType">数据类型</param>
-        /// <param name="value">内容</param>
-        /// <returns>当前语句</returns>
-        public UpdateCommand Set(String columnName, String paramName, DbType dbType, Object value)
-        {
-            this._parameters.Add(SqlParameter.Create(columnName, paramName, dbType, value));
+            this._parameters.Add(this.CreateSqlParameter(columnName, dbType, value));
             return this;
         }
 
@@ -110,7 +96,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("function");
             }
 
-            this._parameters.Add(SqlParameter.CreateCustomAction(columnName, function.GetSqlFunction(this.DatabaseType)));
+            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, function.GetSqlText()));
 
             if (function.HasParameters)
             {
@@ -134,7 +120,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("command");
             }
 
-            this._parameters.Add(SqlParameter.CreateCustomAction(columnName, command.GetSqlCommand()));
+            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, command.GetSqlCommand()));
 
             SqlParameter[] parameters = command.GetAllParameters();
 
@@ -153,7 +139,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public UpdateCommand Increase(String columnName)
         {
-            this._parameters.Add(SqlParameter.CreateCustomAction(columnName, columnName + "+1"));
+            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, columnName + "+1"));
             return this;
         }
 
@@ -164,7 +150,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前语句</returns>
         public UpdateCommand Decrease(String columnName)
         {
-            this._parameters.Add(SqlParameter.CreateCustomAction(columnName, columnName + "-1"));
+            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, columnName + "-1"));
             return this;
         }
 
@@ -179,6 +165,18 @@ namespace DotMaysWind.Data.Command
 
             return this;
         }
+
+        /// <summary>
+        /// 设置指定查询的语句并返回当前语句
+        /// </summary>
+        /// <param name="where">查询语句</param>
+        /// <returns>当前语句</returns>
+        public UpdateCommand Where(Func<SqlConditionBuilder, ISqlCondition> where)
+        {
+            this._where = where(this._conditionBuilder);
+
+            return this;
+        }
         #endregion
 
         /// <summary>
@@ -187,7 +185,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>SQL语句</returns>
         public override String GetSqlCommand()
         {
-            SqlCommandBuilder sb = new SqlCommandBuilder(this.DatabaseType);
+            SqlCommandBuilder sb = new SqlCommandBuilder(this._database);
 
             sb.AppendUpdatePrefix().AppendTableName(this._tableName);
 
@@ -198,7 +196,7 @@ namespace DotMaysWind.Data.Command
 
             sb.AppendAllParameterEquations(this._parameters).AppendWhere(this._where);
 
-            return this.FollowingProcessSql(sb.ToString());
+            return sb.ToString();
         }
 
         /// <summary>

@@ -44,10 +44,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 初始化Sql查询语句类
         /// </summary>
+        /// <param name="baseCommand">源Sql语句</param>
         /// <param name="columnName">字段名称</param>
         /// <param name="op">条件运算符</param>
         /// <param name="command">选择语句</param>
-        internal SqlBasicCommandCondition(String columnName, SqlOperator op, SelectCommand command)
+        internal SqlBasicCommandCondition(AbstractSqlCommand baseCommand, String columnName, SqlOperator op, SelectCommand command)
+            : base(baseCommand)
         {
             this._columnName = columnName;
             this._operator = op;

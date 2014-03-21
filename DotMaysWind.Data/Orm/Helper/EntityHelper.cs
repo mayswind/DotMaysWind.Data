@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 
+using DotMaysWind.Data.Command;
 using DotMaysWind.Data.Helper;
 
 namespace DotMaysWind.Data.Orm.Helper
@@ -114,9 +115,10 @@ namespace DotMaysWind.Data.Orm.Helper
         /// <summary>
         /// 获取指定实体类的Sql参数集合
         /// </summary>
+        /// <param name="cmd">Sql语句</param>
         /// <param name="entity">实体类</param>
         /// <returns>Sql参数集合</returns>
-        internal static SqlParameter[] InternalGetSqlParameters(Object entity)
+        internal static SqlParameter[] InternalGetSqlParameters(AbstractSqlCommand cmd, Object entity)
         {
             List<SqlParameter> parameters = new List<SqlParameter>();
 
@@ -151,7 +153,7 @@ namespace DotMaysWind.Data.Orm.Helper
                         dbType = DbTypeHelper.InternalGetDbType(prop.PropertyType);
                     }
 
-                    SqlParameter parameter = SqlParameter.Create(attr.ColumnName, dbType.Value, prop.GetValue(entity, null));
+                    SqlParameter parameter = cmd.CreateSqlParameter(attr.ColumnName, dbType.Value, prop.GetValue(entity, null));
                     parameters.Add(parameter);
                 }
             }
