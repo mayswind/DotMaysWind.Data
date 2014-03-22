@@ -147,26 +147,6 @@ namespace DotMaysWind.Data.Command
 
             return sb.ToString();
         }
-
-        /// <summary>
-        /// 获取数据行
-        /// </summary>
-        /// <exception cref="CommandNotSupportException">删除语句不支持获取数据行</exception>
-        /// <returns>数据行</returns>
-        public override DataRow ToDataRow()
-        {
-            throw new CommandNotSupportException();
-        }
-
-        /// <summary>
-        /// 获取数据表格
-        /// </summary>
-        /// <exception cref="CommandNotSupportException">删除语句不支持获取数据表格</exception>
-        /// <returns>数据表格</returns>
-        public override DataTable ToDataTable()
-        {
-            throw new CommandNotSupportException();
-        }
         #endregion
     }
 }

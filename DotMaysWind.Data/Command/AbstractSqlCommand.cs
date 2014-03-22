@@ -232,39 +232,187 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
-        /// 获取操作的结果（Select）
+        /// 获取操作后影响的行数（Insert、Update或Delete）或结果（Select）
         /// </summary>
-        /// <typeparam name="T">返回结果的类型</typeparam>
-        /// <returns>操作的结果（Select）</returns>
-        /// <exception cref="CommandNotSupportException">Insert、Update或Delete不支持本方法</exception>
-        public virtual T Result<T>()
+        /// <param name="connection">数据库连接</param>
+        /// <returns>影响的行数（Insert、Update或Delete）或结果（Select）</returns>
+        public virtual Int32 Result(DbConnection connection)
         {
             if (this.CommandType == SqlCommandType.Select)
             {
-                return this._database.ExecuteScalar<T>(this);
+                return this._database.ExecuteScalar<Int32>(this, connection);
             }
             else
             {
-                throw new CommandNotSupportException();
+                return this._database.ExecuteNonQuery(this, connection);
             }
         }
 
         /// <summary>
-        /// 获取数据行
+        /// 获取操作后影响的行数（Insert、Update或Delete）或结果（Select）
         /// </summary>
-        /// <returns>数据行</returns>
-        public virtual DataRow ToDataRow()
+        /// <param name="transaction">数据库事务</param>
+        /// <returns>影响的行数（Insert、Update或Delete）或结果（Select）</returns>
+        public virtual Int32 Result(DbTransaction transaction)
         {
-            return this._database.ExecuteDataRow(this);
+            if (this.CommandType == SqlCommandType.Select)
+            {
+                return this._database.ExecuteScalar<Int32>(this, transaction);
+            }
+            else
+            {
+                return this._database.ExecuteNonQuery(this, transaction);
+            }
+        }
+
+        /// <summary>
+        /// 获取操作的结果（Select）
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <exception cref="CommandNotSupportException">Insert、Update或Delete语句不支持获取操作的结果</exception>
+        /// <returns>操作的结果（Select）</returns>
+        public virtual T Result<T>()
+        {
+            if (this.CommandType == SqlCommandType.Insert || this.CommandType == SqlCommandType.Update || this.CommandType == SqlCommandType.Delete)
+            {
+                throw new CommandNotSupportException();
+            }
+            else
+            {
+                return this._database.ExecuteScalar<T>(this);
+            }
+        }
+
+        /// <summary>
+        /// 获取操作的结果（Select）
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="connection">数据库连接</param>
+        /// <exception cref="CommandNotSupportException">Insert、Update或Delete语句不支持获取操作的结果</exception>
+        /// <returns>操作的结果（Select）</returns>
+        public virtual T Result<T>(DbConnection connection)
+        {
+            if (this.CommandType == SqlCommandType.Insert || this.CommandType == SqlCommandType.Update || this.CommandType == SqlCommandType.Delete)
+            {
+                throw new CommandNotSupportException();
+            }
+            else
+            {
+                return this._database.ExecuteScalar<T>(this, connection);
+            }
+        }
+
+        /// <summary>
+        /// 获取操作的结果（Select）
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="transaction">数据库事务</param>
+        /// <exception cref="CommandNotSupportException">Insert、Update或Delete语句不支持获取操作的结果</exception>
+        /// <returns>操作的结果（Select）</returns>
+        public virtual T Result<T>(DbTransaction transaction)
+        {
+            if (this.CommandType == SqlCommandType.Insert || this.CommandType == SqlCommandType.Update || this.CommandType == SqlCommandType.Delete)
+            {
+                throw new CommandNotSupportException();
+            }
+            else
+            {
+                return this._database.ExecuteScalar<T>(this, transaction);
+            }
         }
 
         /// <summary>
         /// 获取数据表格
         /// </summary>
+        /// <exception cref="CommandNotSupportException">Insert、Update和Delete语句不支持获取数据表</exception>
         /// <returns>数据表格</returns>
         public virtual DataTable ToDataTable()
         {
+            if (this.CommandType == SqlCommandType.Insert || this.CommandType == SqlCommandType.Update || this.CommandType == SqlCommandType.Delete)
+            {
+                throw new CommandNotSupportException();
+            }
+
             return this._database.ExecuteDataTable(this);
+        }
+
+        /// <summary>
+        /// 获取数据表格
+        /// </summary>
+        /// <param name="connection">数据库连接</param>
+        /// <exception cref="CommandNotSupportException">Insert、Update和Delete语句不支持获取数据表</exception>
+        /// <returns>数据表格</returns>
+        public virtual DataTable ToDataTable(DbConnection connection)
+        {
+            if (this.CommandType == SqlCommandType.Insert || this.CommandType == SqlCommandType.Update || this.CommandType == SqlCommandType.Delete)
+            {
+                throw new CommandNotSupportException();
+            }
+
+            return this._database.ExecuteDataTable(this, connection);
+        }
+
+        /// <summary>
+        /// 获取数据表格
+        /// </summary>
+        /// <param name="transaction">数据库事务</param>
+        /// <exception cref="CommandNotSupportException">Insert、Update和Delete语句不支持获取数据表</exception>
+        /// <returns>数据表格</returns>
+        public virtual DataTable ToDataTable(DbTransaction transaction)
+        {
+            if (this.CommandType == SqlCommandType.Insert || this.CommandType == SqlCommandType.Update || this.CommandType == SqlCommandType.Delete)
+            {
+                throw new CommandNotSupportException();
+            }
+
+            return this._database.ExecuteDataTable(this, transaction);
+        }
+
+        /// <summary>
+        /// 获取数据行
+        /// </summary>
+        /// <exception cref="CommandNotSupportException">Insert、Update和Delete语句不支持获取数据行</exception>
+        /// <returns>数据行</returns>
+        public virtual DataRow ToDataRow()
+        {
+            if (this.CommandType == SqlCommandType.Insert || this.CommandType == SqlCommandType.Update || this.CommandType == SqlCommandType.Delete)
+            {
+                throw new CommandNotSupportException();
+            }
+
+            return this._database.ExecuteDataRow(this);
+        }
+
+        /// <summary>
+        /// 获取数据行
+        /// </summary>
+        /// <param name="connection">数据库连接</param>
+        /// <exception cref="CommandNotSupportException">Insert、Update和Delete语句不支持获取数据行</exception>
+        /// <returns>数据行</returns>
+        public virtual DataRow ToDataRow(DbConnection connection)
+        {
+            if (this.CommandType == SqlCommandType.Insert || this.CommandType == SqlCommandType.Update || this.CommandType == SqlCommandType.Delete)
+            {
+                throw new CommandNotSupportException();
+            }
+
+            return this._database.ExecuteDataRow(this, connection);
+        }
+
+        /// <summary>
+        /// 获取数据行
+        /// </summary>
+        /// <param name="transaction">数据库事务</param>
+        /// <exception cref="CommandNotSupportException">Insert、Update和Delete语句不支持获取数据行</exception>
+        /// <returns>数据行</returns>
+        public virtual DataRow ToDataRow(DbTransaction transaction)
+        {
+            if (this.CommandType == SqlCommandType.Insert || this.CommandType == SqlCommandType.Update || this.CommandType == SqlCommandType.Delete)
+            {
+                throw new CommandNotSupportException();
+            }
+
+            return this._database.ExecuteDataRow(this, transaction);
         }
         #endregion
 
