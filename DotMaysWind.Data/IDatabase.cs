@@ -173,6 +173,22 @@ namespace DotMaysWind.Data
         CustomCommand CreateCustomCommand(SqlCommandType commandType, String commandString);
         #endregion
 
+        #region UsingConnection/Transaction
+        /// <summary>
+        /// 使用持续数据库连接执行操作
+        /// </summary>
+        /// <param name="function">使用持续连接的操作</param>
+        /// <returns>受影响的行数</returns>
+        Int32 UsingConnection(Func<DbConnection, Int32> function);
+
+        /// <summary>
+        /// 使用数据库事务执行操作
+        /// </summary>
+        /// <param name="function">使用事务的操作</param>
+        /// <returns>受影响的行数</returns>
+        Int32 UsingTransaction(Func<DbTransaction, Int32> function);
+        #endregion
+
         #region ExecuteScalar
         /// <summary>
         /// 返回执行指定Sql语句后返回的结果
