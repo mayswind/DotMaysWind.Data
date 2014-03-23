@@ -280,8 +280,13 @@ namespace DotMaysWind.Data
             try
             {
                 connection = this.CreateDbConnection();
+                connection.Open();
 
                 count = function(connection);
+            }
+            catch
+            {
+                throw;
             }
             finally
             {
@@ -324,6 +329,8 @@ namespace DotMaysWind.Data
                 {
                     transaction.Rollback();
                 }
+
+                throw;
             }
             finally
             {
