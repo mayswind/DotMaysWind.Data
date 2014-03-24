@@ -195,18 +195,18 @@ namespace DotMaysWind.Data
         /// 使用持续数据库连接执行操作
         /// </summary>
         /// <param name="function">使用持续连接的操作</param>
-        /// <returns>受影响的行数</returns>
-        public Int32 UsingConnection(Func<DbConnection, Int32> function)
+        /// <returns>内部返回内容</returns>
+        public T UsingConnection<T>(Func<DbConnection, T> function)
         {
             DbConnection connection = null;
-            Int32 count = 0;
+            T result = default(T);
 
             try
             {
                 connection = this.CreateDbConnection();
                 connection.Open();
 
-                count = function(connection);
+                result = function(connection);
             }
             catch
             {
@@ -222,32 +222,42 @@ namespace DotMaysWind.Data
                 }
             }
 
-            return count;
+            return result;
+        }
+
+        /// <summary>
+        /// 使用持续数据库连接执行操作
+        /// </summary>
+        /// <param name="function">使用持续连接的操作</param>
+        /// <returns>受影响的行数</returns>
+        public Int32 UsingConnection(Func<DbConnection, Int32> function)
+        {
+            return this.UsingConnection<Int32>(function);
         }
 
         /// <summary>
         /// 使用数据库事务执行操作
         /// </summary>
         /// <param name="function">使用事务的操作</param>
-        /// <returns>受影响的行数</returns>
-        public Int32 UsingTransaction(Func<DbTransaction, Int32> function)
+        /// <returns>内部返回内容</returns>
+        public T UsingTransaction<T>(Func<DbTransaction, T> function)
         {
             DbConnection connection = null;
             DbTransaction transaction = null;
-            Int32 count = 0;
+            T result = default(T);
 
             try
             {
                 transaction = this.CreateDbTransaction();
                 connection = transaction.Connection;
 
-                count = function(transaction);
+                result = function(transaction);
 
                 transaction.Commit();
             }
             catch
             {
-                count = 0;
+                result = default(T);
 
                 if (transaction != null)
                 {
@@ -276,7 +286,17 @@ namespace DotMaysWind.Data
                 }
             }
 
-            return count;
+            return result;
+        }
+
+        /// <summary>
+        /// 使用数据库事务执行操作
+        /// </summary>
+        /// <param name="function">使用事务的操作</param>
+        /// <returns>受影响的行数</returns>
+        public Int32 UsingTransaction(Func<DbTransaction, Int32> function)
+        {
+            return this.UsingTransaction<Int32>(function);
         }
         #endregion
 
