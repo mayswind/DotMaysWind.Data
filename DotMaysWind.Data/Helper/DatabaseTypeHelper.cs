@@ -18,18 +18,22 @@ namespace DotMaysWind.Data.Helper
         {
             _typeDict = new Dictionary<String, DatabaseType>();
 
-            _typeDict["system.data.sqlserverce"] = DatabaseType.SqlServerCe;
-            _typeDict["microsoft.sqlserverce.client"] = DatabaseType.SqlServerCe;
+            _typeDict[DbProviderFactoryType.OleDbDataProvider.ToLower()] = DatabaseType.Unknown;
 
-            _typeDict["system.data.sqlclient"] = DatabaseType.SqlServer;
+            _typeDict[DbProviderFactoryType.SqlServerCeDataProvider35.ToLower()] = DatabaseType.SqlServerCe;
+            _typeDict[DbProviderFactoryType.SqlServerCeDataProvider40.ToLower()] = DatabaseType.SqlServerCe;
+            _typeDict[DbProviderFactoryType.MicrosoftSqlServerCeDataProvider35.ToLower()] = DatabaseType.SqlServerCe;
+            _typeDict[DbProviderFactoryType.MicrosoftSqlServerCeDataProvider40.ToLower()] = DatabaseType.SqlServerCe;
 
-            _typeDict["system.data.sqlite"] = DatabaseType.SQLite;
-            _typeDict["mono.data.sqliteclient"] = DatabaseType.SQLite;
+            _typeDict[DbProviderFactoryType.SqlClientDataProvider.ToLower()] = DatabaseType.SqlServer;
 
-            _typeDict["mysql.data.mysqlclient"] = DatabaseType.MySQL;
+            _typeDict[DbProviderFactoryType.SQLiteDataProvider.ToLower()] = DatabaseType.SQLite;
+            _typeDict[DbProviderFactoryType.MonoSqliteDataProvider.ToLower()] = DatabaseType.SQLite;
 
-            _typeDict["system.data.oracleclient"] = DatabaseType.Oracle;
-            _typeDict["oracle.dataaccess.client"] = DatabaseType.Oracle;
+            _typeDict[DbProviderFactoryType.MySQLDataProvider.ToLower()] = DatabaseType.MySQL;
+
+            _typeDict[DbProviderFactoryType.OracleClientDataProvider.ToLower()] = DatabaseType.Oracle;
+            _typeDict[DbProviderFactoryType.OracleDataProvider.ToLower()] = DatabaseType.Oracle;
         }
         #endregion
 
@@ -43,47 +47,43 @@ namespace DotMaysWind.Data.Helper
         internal static DatabaseType InternalGetDatabaseType(DbProviderFactory dbProvider, String connectionString)
         {
             String providerName = dbProvider.GetType().ToString().ToLowerInvariant();
+            DatabaseType dbType = DatabaseType.Unknown;
 
-            foreach (KeyValuePair<String, DatabaseType> pair in _typeDict)
+            if (_typeDict.TryGetValue(providerName, out dbType))
             {
-                if (providerName.IndexOf(pair.Key) >= 0)
+                if (dbType == DatabaseType.Unknown)
                 {
-                    return pair.Value;
-                }
-            }
+                    String dataSource = "";
+                    String[] parameters = connectionString.Replace(" ", "").ToLowerInvariant().Split(';');
 
-            #region Access
-            if (providerName.IndexOf("system.data.oledb") >= 0)
-            {
-                String dataSource = "";
-                String[] parameters = connectionString.Replace(" ", "").ToLowerInvariant().Split(';');
-
-                if (parameters != null && parameters.Length > 0)
-                {
-                    Int32 dataSourcePos = -1;
-
-                    for (Int32 i = 0; i < parameters.Length; i++)
+                    if (parameters != null && parameters.Length > 0)
                     {
-                        dataSourcePos = parameters[i].IndexOf("datasource");
+                        Int32 dataSourcePos = -1;
 
-                        if (dataSourcePos > -1)
+                        for (Int32 i = 0; i < parameters.Length; i++)
                         {
-                            dataSource = parameters[i];
-                            break;
+                            dataSourcePos = parameters[i].IndexOf("datasource");
+
+                            if (dataSourcePos > -1)
+                            {
+                                dataSource = parameters[i];
+                                break;
+                            }
                         }
+                    }
+
+                    if (dataSource.IndexOf(".mdb") > -1)
+                    {
+                        dbType = DatabaseType.Access;
+                    }
+                    else if (dataSource.IndexOf(".accdb") > -1)
+                    {
+                        dbType = DatabaseType.Access;
                     }
                 }
 
-                if (dataSource.IndexOf(".mdb") > -1)
-                {
-                    return DatabaseType.Access;
-                }
-                else if (dataSource.IndexOf(".accdb") > -1)
-                {
-                    return DatabaseType.Access;
-                }
+                return dbType;
             }
-            #endregion
 
             return DatabaseType.Unknown;
         }

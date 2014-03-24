@@ -110,6 +110,7 @@
     <Compile Include="DatabaseNotSupportException.cs" />
     <Compile Include="DatabaseType.cs" />
     <Compile Include="DbConvert.cs" />
+    <Compile Include="DbProviderFactoryType.cs" />
     <Compile Include="Helper\DatabaseTypeHelper.cs" />
     <Compile Include="Helper\DataSetHelper.cs" />
     <Compile Include="Helper\DbTypeHelper.cs" />
