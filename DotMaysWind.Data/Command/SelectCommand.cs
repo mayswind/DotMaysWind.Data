@@ -47,21 +47,19 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
-        /// 获取或设置页面大小
+        /// 获取页面大小
         /// </summary>
         public Int32 PageSize
         {
             get { return this._pageSize; }
-            set { this._pageSize = value; }
         }
 
         /// <summary>
-        /// 获取或设置记录开始数
+        /// 获取记录开始数
         /// </summary>
         public Int32 RecordStart
         {
             get { return this._recordStart; }
-            set { this._recordStart = value; }
         }
 
         /// <summary>
@@ -620,9 +618,15 @@ namespace DotMaysWind.Data.Command
         /// 设置选择记录数目返回记录唯一并返回当前语句
         /// </summary>
         /// <param name="pageSize">选择记录数量</param>
+        /// <exception cref="OverflowException">页面大小不能小于0</exception>
         /// <returns>当前语句</returns>
         public SelectCommand Top(Int32 pageSize)
         {
+            if (pageSize < 0)
+            {
+                throw new OverflowException("Pagesize cannot be less than zero!");
+            }
+
             this._pageSize = pageSize;
             this._recordStart = 0;
 
@@ -634,9 +638,15 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="pageSize">页面大小</param>
         /// <param name="recordStart">记录起始数（从0开始计算）</param>
+        /// <exception cref="OverflowException">页面大小不能小于0</exception>
         /// <returns>当前语句</returns>
         public SelectCommand Limit(Int32 pageSize, Int32 recordStart)
         {
+            if (pageSize < 0)
+            {
+                throw new OverflowException("Pagesize cannot be less than zero!");
+            }
+
             this._pageSize = pageSize;
             this._recordStart = recordStart;
 
@@ -648,9 +658,15 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="pageSize">页面大小</param>
         /// <param name="pageIndex">页面索引（从1开始计算）</param>
+        /// <exception cref="OverflowException">页面大小不能小于0</exception>
         /// <returns>当前语句</returns>
         public SelectCommand Paged(Int32 pageSize, Int32 pageIndex)
         {
+            if (pageSize < 0)
+            {
+                throw new OverflowException("Pagesize cannot be less than zero!");
+            }
+
             this._pageSize = pageSize;
             this._recordStart = (pageIndex <= 1 ? 0 : pageIndex - 1) * pageSize;
 
