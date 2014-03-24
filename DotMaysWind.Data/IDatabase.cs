@@ -107,64 +107,6 @@ namespace DotMaysWind.Data
         SelectCommand CreateSelectCommand(SelectCommand from, String fromAliasesName);
 
         /// <summary>
-        /// 创建新的Sql选择语句
-        /// </summary>
-        /// <param name="tableName">数据表名称</param>
-        /// <param name="pageSize">页面大小</param>
-        /// <returns>Sql选择语句</returns>
-        SelectCommand CreateSelectCommand(String tableName, Int32 pageSize);
-
-        /// <summary>
-        /// 创建新的Sql选择语句
-        /// </summary>
-        /// <param name="tableName">数据表名称</param>
-        /// <param name="tableAliasesName">数据表别名</param>
-        /// <param name="pageSize">页面大小</param>
-        /// <returns>Sql选择语句</returns>
-        SelectCommand CreateSelectCommand(String tableName, String tableAliasesName, Int32 pageSize);
-
-        /// <summary>
-        /// 创建新的Sql选择语句
-        /// </summary>
-        /// <param name="from">选择的从Sql语句</param>
-        /// <param name="fromAliasesName">从Sql语句的别名</param>
-        /// <param name="pageSize">页面大小</param>
-        /// <returns>Sql选择语句</returns>
-        SelectCommand CreateSelectCommand(SelectCommand from, String fromAliasesName, Int32 pageSize);
-
-        /// <summary>
-        /// 创建新的Sql选择语句
-        /// </summary>
-        /// <param name="tableName">数据表名称</param>
-        /// <param name="pageSize">页面大小</param>
-        /// <param name="pageIndex">页面索引</param>
-        /// <param name="recordCount">记录总数</param>
-        /// <returns>Sql选择语句</returns>
-        SelectCommand CreateSelectCommand(String tableName, Int32 pageSize, Int32 pageIndex, Int32 recordCount);
-
-        /// <summary>
-        /// 创建新的Sql选择语句
-        /// </summary>
-        /// <param name="tableName">数据表名称</param>
-        /// <param name="tableAliasesName">数据表别名</param>
-        /// <param name="pageSize">页面大小</param>
-        /// <param name="pageIndex">页面索引</param>
-        /// <param name="recordCount">记录总数</param>
-        /// <returns>Sql选择语句</returns>
-        SelectCommand CreateSelectCommand(String tableName, String tableAliasesName, Int32 pageSize, Int32 pageIndex, Int32 recordCount);
-
-        /// <summary>
-        /// 创建新的Sql选择语句
-        /// </summary>
-        /// <param name="isFromSql">是否从Sql语句中选择</param>
-        /// <param name="from">数据表或Sql语句</param>
-        /// <param name="pageSize">页面大小</param>
-        /// <param name="pageIndex">页面索引</param>
-        /// <param name="recordCount">记录总数</param>
-        /// <returns>Sql选择语句</returns>
-        SelectCommand CreateSelectCommand(Boolean isFromSql, String from, Int32 pageSize, Int32 pageIndex, Int32 recordCount);
-
-        /// <summary>
         /// 创建新的Sql自定义语句
         /// </summary>
         /// <param name="commandType">语句类型</param>

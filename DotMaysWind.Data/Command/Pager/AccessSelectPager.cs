@@ -1,13 +1,11 @@
 ﻿using System;
 
-using DotMaysWind.Data.Command.Condition;
-
 namespace DotMaysWind.Data.Command.Pager
 {
     /// <summary>
-    /// Sql Server选择语句分页器
+    /// Access选择语句分页器
     /// </summary>
-    internal static class SqlServerSelectPager
+    internal static class AccessSelectPager
     {
         /// <summary>
         /// 获取选择语句内容
@@ -25,28 +23,34 @@ namespace DotMaysWind.Data.Command.Pager
                 /*
                     SELECT * FROM
                     (
-                        SELECT TOP 30 *, ROW_NUMBER() OVER(ORDER BY ID ASC) AS RN
-                        FROM TABLE_NAME
+                        SELECT TOP 10 * FROM
+                        (
+                            SELECT TOP 30 * 
+                            FROM TABLE_NAME
+                            ORDER BY ID ASC
+                        ) AS T
+                        ORDER BY ID DESC
                     ) AS T
-                    WHERE RN > 20
+                    ORDER BY ID ASC
                 */
-
                 sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.QueryFields);
 
-                SqlCommandBuilder innerBuilder = new SqlCommandBuilder(baseCommand.Database);
-                innerBuilder.AppendSelectOrderBys(baseCommand.SqlOrders, false);
+                SelectCommand innestCommand = new SelectCommand(baseCommand.Database, baseCommand.TableName);
+                innestCommand.QueryFields = baseCommand.QueryFields;
+                innestCommand.PageSize = baseCommand.RecordStart + baseCommand.PageSize;
+                innestCommand.SqlJoins = baseCommand.SqlJoins;
+                innestCommand.SqlWhere = baseCommand.SqlWhere;
+                innestCommand.GroupByColumns = baseCommand.GroupByColumns;
+                innestCommand.SqlHaving = baseCommand.SqlHaving;
+                innestCommand.SqlOrders = baseCommand.SqlOrders;
 
-                SelectCommand innerCommand = new SelectCommand(baseCommand.Database, baseCommand.TableName);
-                innerCommand.InternalQuerys(baseCommand.QueryFields.ToArray());
-                innerCommand.InternalQuerys(SqlQueryField.InternalCreateFromFunction(baseCommand, "ROW_NUMBER() OVER( " + innerBuilder.ToString() + ")", "RN"));
-                innerCommand.PageSize = baseCommand.RecordStart + baseCommand.PageSize;
-                innerCommand.SqlJoins = baseCommand.SqlJoins;
-                innerCommand.SqlWhere = baseCommand.SqlWhere;
-                innerCommand.GroupByColumns = baseCommand.GroupByColumns;
-                innerCommand.SqlHaving = baseCommand.SqlHaving;
+                SelectCommand innerCommand = new SelectCommand(baseCommand.Database, innestCommand, "T");
+                innerCommand.QueryFields = baseCommand.QueryFields;
+                innerCommand.PageSize = baseCommand.PageSize;
+                innerCommand.SqlOrders = baseCommand.SqlOrders;
 
-                sb.AppendSelectFrom(innerCommand.GetSqlCommand("T"), true);
-                sb.AppendWhere(SqlCondition.InternalCreateAction(baseCommand, "RN", SqlOperator.GreaterThan, baseCommand.RecordStart.ToString()));
+                sb.AppendSelectFrom(innerCommand.GetSqlCommand("T", !orderReverse), true);
+                sb.AppendSelectOrderBys(baseCommand.SqlOrders, orderReverse);
             }
             else//正常模式
             {

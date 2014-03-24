@@ -125,32 +125,6 @@ namespace DotMaysWind.Data.Orm
 
             return cmd;
         }
-
-        /// <summary>
-        /// 创建新的Sql选择语句类
-        /// </summary>
-        /// <param name="pageSize">页面大小</param>
-        protected override SelectCommand Select(Int32 pageSize)
-        {
-            SelectCommand cmd = base.Select(pageSize);
-            cmd.SourceDatabaseTable = this;
-
-            return cmd;
-        }
-
-        /// <summary>
-        /// 创建新的Sql选择语句类
-        /// </summary>
-        /// <param name="pageSize">页面大小</param>
-        /// <param name="pageIndex">页面索引</param>
-        /// <param name="recordCount">记录总数</param>
-        protected override SelectCommand Select(Int32 pageSize, Int32 pageIndex, Int32 recordCount)
-        {
-            SelectCommand cmd = base.Select(pageSize, pageIndex, recordCount);
-            cmd.SourceDatabaseTable = this;
-
-            return cmd;
-        }
         #endregion
 
         #region 保护方法

@@ -13,36 +13,26 @@ namespace DotMaysWind.Data.Command.Pager
         /// 获取选择语句内容
         /// </summary>
         /// <param name="baseCommand">源选择语句</param>
-        /// <param name="realPageIndex">实际页索引</param>
-        /// <param name="realPageCount">实际页数量</param>
         /// <param name="orderReverse">是否反转排序</param>
         /// <returns>选择语句内容</returns>
-        internal static String InternalGetPagerCommand(SelectCommand baseCommand, Int32 realPageIndex, Int32 realPageCount, Boolean orderReverse)
+        internal static String InternalGetPagerCommand(SelectCommand baseCommand, Boolean orderReverse)
         {
             SqlCommandBuilder sb = new SqlCommandBuilder(baseCommand.Database);
             sb.AppendSelectPrefix();
             sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.QueryFields);
 
-            if (baseCommand.PageSize == 0)//正常模式
-            {
-                sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.SqlJoins);
-
-                sb.AppendWhere(baseCommand.SqlWhere);
-                sb.AppendSelectGroupBys(baseCommand.GroupByColumns);
-                sb.AppendHaving(baseCommand.SqlHaving);
-                sb.AppendSelectOrderBys(baseCommand.SqlOrders, orderReverse);
-            }
-            else//分页模式
+            if (baseCommand.PageSize > 0 && baseCommand.RecordStart > 0)//分页模式
             {
                 /*
                     SELECT * FROM
                     (
-                        SELECT A.*, ROWNUM RN
-                        FROM (SELECT * FROM TABLE_NAME) A
-                        WHERE ROWNUM <= 40
+                        SELECT *, ROWNUM RN
+                        FROM (SELECT * FROM TABLE_NAME)
+                        WHERE ROWNUM <= 30
                     )
-                    WHERE RN >= 21 
+                    WHERE RN > 20
                 */
+
                 SelectCommand innestCommand = new SelectCommand(baseCommand.Database, baseCommand.TableName);
                 innestCommand.QueryFields = baseCommand.QueryFields;
                 innestCommand.SqlJoins = baseCommand.SqlJoins;
@@ -50,14 +40,30 @@ namespace DotMaysWind.Data.Command.Pager
                 innestCommand.GroupByColumns = baseCommand.GroupByColumns;
                 innestCommand.SqlHaving = baseCommand.SqlHaving;
                 innestCommand.SqlOrders = baseCommand.SqlOrders;
-                
+
                 SelectCommand innerCommand = new SelectCommand(baseCommand.Database, innestCommand, "");
-                innerCommand.SqlWhere = SqlCondition.InternalCreateAction(innerCommand, "ROWNUM", SqlOperator.LessThanOrEqual, (realPageIndex * baseCommand.PageSize).ToString());
+                innerCommand.SqlWhere = SqlCondition.InternalCreateAction(innerCommand, "ROWNUM", SqlOperator.LessThanOrEqual, (baseCommand.RecordStart + baseCommand.PageSize).ToString());
                 innerCommand.InternalQuerys(baseCommand.QueryFields.ToArray());
                 innerCommand.InternalQuerys(SqlQueryField.InternalCreateFromFunction(baseCommand, "ROWNUM", "RN"));
 
                 sb.AppendSelectFrom(innerCommand.GetSqlCommand(), true);
-                sb.AppendWhere(SqlCondition.InternalCreateAction(baseCommand, "RN", SqlOperator.GreaterThanOrEqual, ((realPageIndex - 1) * baseCommand.PageSize + 1).ToString()));
+                sb.AppendWhere(SqlCondition.InternalCreateAction(baseCommand, "RN", SqlOperator.GreaterThan, baseCommand.RecordStart.ToString()));
+            }
+            else//正常模式
+            {
+                sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.SqlJoins);
+
+                ISqlCondition where = baseCommand.SqlWhere;
+
+                if (baseCommand.PageSize > 0)
+                {
+                    where = SqlCondition.And(baseCommand, where, SqlCondition.InternalCreateAction(baseCommand, "ROWNUM", SqlOperator.LessThanOrEqual, baseCommand.PageSize.ToString()));
+                }
+
+                sb.AppendWhere(where);
+                sb.AppendSelectGroupBys(baseCommand.GroupByColumns);
+                sb.AppendHaving(baseCommand.SqlHaving);
+                sb.AppendSelectOrderBys(baseCommand.SqlOrders, orderReverse);
             }
 
             return sb.ToString();

@@ -90,26 +90,6 @@ namespace DotMaysWind.Data.Orm
         {
             return this._baseDatabase.CreateSelectCommand(this.TableName);
         }
-
-        /// <summary>
-        /// 创建新的Sql选择语句类
-        /// </summary>
-        /// <param name="pageSize">页面大小</param>
-        protected virtual SelectCommand Select(Int32 pageSize)
-        {
-            return this._baseDatabase.CreateSelectCommand(this.TableName, pageSize);
-        }
-
-        /// <summary>
-        /// 创建新的Sql选择语句类
-        /// </summary>
-        /// <param name="pageSize">页面大小</param>
-        /// <param name="pageIndex">页面索引</param>
-        /// <param name="recordCount">记录总数</param>
-        protected virtual SelectCommand Select(Int32 pageSize, Int32 pageIndex, Int32 recordCount)
-        {
-            return this._baseDatabase.CreateSelectCommand(this.TableName, pageSize, pageIndex, recordCount);
-        }
         #endregion
 
         #region LoadValue

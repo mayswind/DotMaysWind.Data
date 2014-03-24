@@ -17,8 +17,7 @@ namespace DotMaysWind.Data.Command
         private Boolean _isFromSql;
 
         private Int32 _pageSize;
-        private Int32 _pageIndex;
-        private Int32 _recordCount;
+        private Int32 _recordStart;
         private Boolean _useDistinct;
 
         private List<SqlQueryField> _queryFields;
@@ -57,21 +56,12 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
-        /// 获取或设置当前页码
+        /// 获取或设置记录开始数
         /// </summary>
-        public Int32 PageIndex
+        public Int32 RecordStart
         {
-            get { return this._pageIndex; }
-            set { this._pageIndex = value; }
-        }
-
-        /// <summary>
-        /// 获取或设置记录总数
-        /// </summary>
-        public Int32 RecordCount
-        {
-            get { return this._recordCount; }
-            set { this._recordCount = value; }
+            get { return this._recordStart; }
+            set { this._recordStart = value; }
         }
 
         /// <summary>
@@ -152,7 +142,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="database">数据库</param>
         /// <param name="tableName">数据表名称</param>
         internal SelectCommand(AbstractDatabase database, String tableName)
-            : this(database, false, tableName, 0, 0, 0) { }
+            : this(database, false, tableName) { }
 
         /// <summary>
         /// 初始化Sql选择语句类
@@ -161,37 +151,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="from">选择的从Sql语句</param>
         /// <param name="fromAliasesName">从Sql语句的别名</param>
         internal SelectCommand(AbstractDatabase database, SelectCommand from, String fromAliasesName)
-            : this(database, true, from.GetSqlCommand(fromAliasesName), 0, 0, 0) { }
-
-        /// <summary>
-        /// 初始化Sql选择语句类
-        /// </summary>
-        /// <param name="database">数据库</param>
-        /// <param name="tableName">数据表名称</param>
-        /// <param name="pageSize">页面大小</param>
-        internal SelectCommand(AbstractDatabase database, String tableName, Int32 pageSize)
-            : this(database, false, tableName, pageSize, 0, 0) { }
-
-        /// <summary>
-        /// 初始化Sql选择语句类
-        /// </summary>
-        /// <param name="database">数据库</param>
-        /// <param name="from">选择的从Sql语句</param>
-        /// <param name="fromAliasesName">从Sql语句的别名</param>
-        /// <param name="pageSize">页面大小</param>
-        internal SelectCommand(AbstractDatabase database, SelectCommand from, String fromAliasesName, Int32 pageSize)
-            : this(database, true, from.GetSqlCommand(fromAliasesName), pageSize, 0, 0) { }
-
-        /// <summary>
-        /// 初始化Sql选择语句类
-        /// </summary>
-        /// <param name="database">数据库</param>
-        /// <param name="tableName">数据表名称</param>
-        /// <param name="pageSize">页面大小</param>
-        /// <param name="pageIndex">页面索引</param>
-        /// <param name="recordCount">记录总数</param>
-        internal SelectCommand(AbstractDatabase database, String tableName, Int32 pageSize, Int32 pageIndex, Int32 recordCount)
-            : this(database, false, tableName, pageSize, pageIndex, recordCount) { }
+            : this(database, true, from.GetSqlCommand(fromAliasesName)) { }
 
         /// <summary>
         /// 初始化Sql选择语句类
@@ -199,10 +159,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="database">数据库</param>
         /// <param name="isFromSql">是否从Sql语句中选择</param>
         /// <param name="from">数据表或Sql语句</param>
-        /// <param name="pageSize">页面大小</param>
-        /// <param name="pageIndex">页面索引</param>
-        /// <param name="recordCount">记录总数</param>
-        internal SelectCommand(AbstractDatabase database, Boolean isFromSql, String from, Int32 pageSize, Int32 pageIndex, Int32 recordCount)
+        internal SelectCommand(AbstractDatabase database, Boolean isFromSql, String from)
             : base(database, from)
         {
             this._isFromSql = isFromSql;
@@ -211,9 +168,8 @@ namespace DotMaysWind.Data.Command
             this._orders = new List<SqlOrder>();
             this._joins = new List<ISqlJoin>();
 
-            this._pageSize = pageSize;
-            this._pageIndex = pageIndex;
-            this._recordCount = recordCount;
+            this._pageSize = 0;
+            this._recordStart = 0;
             this._joinIndex = 0;
         }
         #endregion
@@ -659,7 +615,7 @@ namespace DotMaysWind.Data.Command
         #endregion
         #endregion
 
-        #region Top Paged/Distinct/GroupBy/Having/Where
+        #region Top Limit Paged
         /// <summary>
         /// 设置选择记录数目返回记录唯一并返回当前语句
         /// </summary>
@@ -668,6 +624,7 @@ namespace DotMaysWind.Data.Command
         public SelectCommand Top(Int32 pageSize)
         {
             this._pageSize = pageSize;
+            this._recordStart = 0;
 
             return this;
         }
@@ -676,18 +633,32 @@ namespace DotMaysWind.Data.Command
         /// 设置分页设置并返回当前语句
         /// </summary>
         /// <param name="pageSize">页面大小</param>
-        /// <param name="pageIndex">页面索引</param>
-        /// <param name="recordCount">记录总数</param>
+        /// <param name="recordStart">记录起始数</param>
         /// <returns>当前语句</returns>
-        public SelectCommand Paged(Int32 pageSize, Int32 pageIndex, Int32 recordCount)
+        public SelectCommand Limit(Int32 pageSize, Int32 recordStart)
         {
             this._pageSize = pageSize;
-            this._pageIndex = pageIndex;
-            this._recordCount = recordCount;
+            this._recordStart = recordStart;
 
             return this;
         }
 
+        /// <summary>
+        /// 设置分页设置并返回当前语句
+        /// </summary>
+        /// <param name="pageSize">页面大小</param>
+        /// <param name="pageIndex">页面索引（从1开始计算）</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand Paged(Int32 pageSize, Int32 pageIndex)
+        {
+            this._pageSize = pageSize;
+            this._recordStart = (pageIndex <= 1 ? 0 : pageIndex - 1) * pageSize;
+
+            return this;
+        }
+        #endregion
+
+        #region Distinct/GroupBy/Having/Where
         /// <summary>
         /// 设置保证返回记录唯一并返回当前语句
         /// </summary>
@@ -1115,10 +1086,9 @@ namespace DotMaysWind.Data.Command
         /// <returns>SQL语句</returns>
         private String GetSqlCommand(Boolean containParentheses, String aliasesName, Boolean orderReverse)
         {
-            Int32 pageCount = (this._pageSize == 0 ? 1 : (this._recordCount + this._pageSize - 1) / this._pageSize);
-            Int32 pageIndex = (this._pageIndex <= 1 ? 1 : (this._pageIndex > pageCount ? pageCount : this._pageIndex));
+            
             Boolean hasAliasesName = !String.IsNullOrEmpty(aliasesName);
-            String sql = this._database.InternalGetPagerSelectCommand(this, pageIndex, pageCount, orderReverse);
+            String sql = this._database.InternalGetPagerSelectCommand(this, orderReverse);
 
             if (containParentheses || hasAliasesName)
             {

@@ -41,13 +41,11 @@ namespace DotMaysWind.Data
         /// 获取分页后的选择语句
         /// </summary>
         /// <param name="sourceCommand">源选择语句</param>
-        /// <param name="realPageIndex">实际页面索引</param>
-        /// <param name="realPageCount">实际页面数量</param>
         /// <param name="orderReverse">是否反转</param>
         /// <returns>分页后的选择语句</returns>
-        internal override String InternalGetPagerSelectCommand(SelectCommand sourceCommand, Int32 realPageIndex, Int32 realPageCount, Boolean orderReverse)
+        internal override String InternalGetPagerSelectCommand(SelectCommand sourceCommand, Boolean orderReverse)
         {
-            return SqlServerSelectPager.InternalGetPagerCommand(sourceCommand, realPageIndex, realPageCount, orderReverse);
+            return SqlServerSelectPager.InternalGetPagerCommand(sourceCommand, orderReverse);
         }
 
         /// <summary>

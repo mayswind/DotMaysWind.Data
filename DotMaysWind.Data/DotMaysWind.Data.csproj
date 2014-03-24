@@ -79,6 +79,7 @@
     <Compile Include="Command\Condition\SqlInsideParametersCondition.cs" />
     <Compile Include="Command\CustomCommand.cs" />
     <Compile Include="Command\DeleteCommand.cs" />
+    <Compile Include="Command\Pager\AccessSelectPager.cs" />
     <Compile Include="Command\Pager\MySQLSelectPager.cs" />
     <Compile Include="Command\Pager\OracleSelectPager.cs" />
     <Compile Include="Command\Pager\SqlServerSelectPager.cs" />

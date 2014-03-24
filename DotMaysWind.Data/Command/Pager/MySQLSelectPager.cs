@@ -11,11 +11,9 @@ namespace DotMaysWind.Data.Command.Pager
         /// 获取选择语句内容
         /// </summary>
         /// <param name="baseCommand">源选择语句</param>
-        /// <param name="realPageIndex">实际页索引</param>
-        /// <param name="realPageCount">实际页数量</param>
         /// <param name="orderReverse">是否反转排序</param>
         /// <returns>选择语句内容</returns>
-        internal static String InternalGetPagerCommand(SelectCommand baseCommand, Int32 realPageIndex, Int32 realPageCount, Boolean orderReverse)
+        internal static String InternalGetPagerCommand(SelectCommand baseCommand, Boolean orderReverse)
         {
             SqlCommandBuilder sb = new SqlCommandBuilder(baseCommand.Database);
             sb.AppendSelectPrefix();
@@ -28,13 +26,13 @@ namespace DotMaysWind.Data.Command.Pager
             sb.AppendHaving(baseCommand.SqlHaving);
             sb.AppendSelectOrderBys(baseCommand.SqlOrders, orderReverse);
 
-            if (baseCommand.PageSize > 0 && baseCommand.PageIndex == 1)
+            if (baseCommand.PageSize > 0 && baseCommand.RecordStart <= 0)
             {
                 sb.AppendSelectLimit(baseCommand.PageSize);
             }
-            else if (baseCommand.PageSize > 0 && baseCommand.PageIndex > 1)
+            else if (baseCommand.PageSize > 0 && baseCommand.RecordStart > 0)
             {
-                sb.AppendSelectLimit(baseCommand.PageSize * (realPageIndex - 1), baseCommand.PageSize);
+                sb.AppendSelectLimit(baseCommand.RecordStart, baseCommand.PageSize);
             }
 
             return sb.ToString();

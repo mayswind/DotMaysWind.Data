@@ -149,8 +149,9 @@ namespace DotMaysWind.Data.UnitTest
 
             TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
-            SelectCommand cmd = fakeDb.CreateSelectCommand(provider.TableName, 10, 2, 55)
+            SelectCommand cmd = fakeDb.CreateSelectCommand(provider.TableName)
                 .Query("TestColumn4")
+                .Paged(10, 2)
                 .Where<TestEntity>(c => c.Test1 == "test" && c.Test2 != 222 && c.Test4 < DateTime.Now)
                 .OrderBy<TestEntity>(c => c.Test3, SqlOrderType.Desc);
 
@@ -189,8 +190,9 @@ namespace DotMaysWind.Data.UnitTest
 
             TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
-            SelectCommand cmd = fakeDb.CreateSelectCommand(provider.TableName, 10, 2, 55)
+            SelectCommand cmd = fakeDb.CreateSelectCommand(provider.TableName)
                 .Query("TestColumn4")
+                .Paged(10, 2)
                 .Where<TestEntity>(c => c.Test1 == "test" && c.Test2 != 222 && c.Test4 < DateTime.Now)
                 .OrderBy<TestEntity>(c => c.Test3, SqlOrderType.Desc);
 
