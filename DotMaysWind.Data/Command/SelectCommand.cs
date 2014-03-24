@@ -615,7 +615,7 @@ namespace DotMaysWind.Data.Command
         #endregion
         #endregion
 
-        #region Top Limit Paged
+        #region Top/Limit/Paged
         /// <summary>
         /// 设置选择记录数目返回记录唯一并返回当前语句
         /// </summary>
@@ -633,7 +633,7 @@ namespace DotMaysWind.Data.Command
         /// 设置分页设置并返回当前语句
         /// </summary>
         /// <param name="pageSize">页面大小</param>
-        /// <param name="recordStart">记录起始数</param>
+        /// <param name="recordStart">记录起始数（从0开始计算）</param>
         /// <returns>当前语句</returns>
         public SelectCommand Limit(Int32 pageSize, Int32 recordStart)
         {
