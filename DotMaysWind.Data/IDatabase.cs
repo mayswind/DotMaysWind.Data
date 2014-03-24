@@ -120,8 +120,22 @@ namespace DotMaysWind.Data
         /// 使用持续数据库连接执行操作
         /// </summary>
         /// <param name="function">使用持续连接的操作</param>
+        /// <returns>内部返回内容</returns>
+        T UsingConnection<T>(Func<DbConnection, T> function);
+
+        /// <summary>
+        /// 使用持续数据库连接执行操作
+        /// </summary>
+        /// <param name="function">使用持续连接的操作</param>
         /// <returns>受影响的行数</returns>
         Int32 UsingConnection(Func<DbConnection, Int32> function);
+
+        /// <summary>
+        /// 使用数据库事务执行操作
+        /// </summary>
+        /// <param name="function">使用事务的操作</param>
+        /// <returns>内部返回内容</returns>
+        T UsingTransaction<T>(Func<DbTransaction, T> function);
 
         /// <summary>
         /// 使用数据库事务执行操作
