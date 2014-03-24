@@ -13,6 +13,11 @@ namespace DotMaysWind.Data.Command.Condition
         SqlConditionType ConditionType { get; }
 
         /// <summary>
+        /// 获取所在Sql语句
+        /// </summary>
+        ISqlCommand SqlCommand { get; }
+
+        /// <summary>
         /// 获取条件语句参数集合
         /// </summary>
         /// <returns>条件语句参数集合</returns>

@@ -16,6 +16,14 @@ namespace DotMaysWind.Data.Command.Condition
         /// 获取语句类型
         /// </summary>
         public abstract SqlConditionType ConditionType { get; }
+
+        /// <summary>
+        /// 获取所在Sql语句
+        /// </summary>
+        public ISqlCommand SqlCommand
+        {
+            get { return this._baseCommand; }
+        }
         #endregion
 
         #region 构造方法
