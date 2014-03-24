@@ -28,11 +28,12 @@ namespace DotMaysWind.Data.Command.Pager
                             SELECT TOP 30 * 
                             FROM TABLE_NAME
                             ORDER BY ID ASC
-                        ) AS T
+                        ) AS T1
                         ORDER BY ID DESC
-                    ) AS T
+                    ) AS T2
                     ORDER BY ID ASC
                 */
+
                 sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.QueryFields);
 
                 SelectCommand innestCommand = new SelectCommand(baseCommand.Database, baseCommand.TableName);
@@ -44,12 +45,12 @@ namespace DotMaysWind.Data.Command.Pager
                 innestCommand.SqlHaving = baseCommand.SqlHaving;
                 innestCommand.SqlOrders = baseCommand.SqlOrders;
 
-                SelectCommand innerCommand = new SelectCommand(baseCommand.Database, innestCommand, "T");
+                SelectCommand innerCommand = new SelectCommand(baseCommand.Database, innestCommand, "T1");
                 innerCommand.QueryFields = baseCommand.QueryFields;
                 innerCommand.PageSize = baseCommand.PageSize;
                 innerCommand.SqlOrders = baseCommand.SqlOrders;
 
-                sb.AppendSelectFrom(innerCommand.GetSqlCommand("T", !orderReverse), true);
+                sb.AppendSelectFrom(innerCommand.GetSqlCommand("T2", !orderReverse), true);
                 sb.AppendSelectOrderBys(baseCommand.SqlOrders, orderReverse);
             }
             else//正常模式
