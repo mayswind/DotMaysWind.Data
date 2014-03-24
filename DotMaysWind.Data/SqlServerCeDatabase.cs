@@ -45,7 +45,25 @@ namespace DotMaysWind.Data
         /// <returns>分页后的选择语句</returns>
         internal override String InternalGetPagerSelectCommand(SelectCommand sourceCommand, Boolean orderReverse)
         {
-            return AccessSelectPager.InternalGetPagerCommand(sourceCommand, orderReverse);
+            if (sourceCommand.PageSize <= 0 || sourceCommand.RecordStart <= 0)//正常模式或分页模式中的子语句
+            {
+                return AccessSelectPager.InternalGetPagerCommand(sourceCommand, 0, orderReverse);
+            }
+
+            String cntCommand = AccessSelectPager.InternalGetCountCommand(sourceCommand);
+            SqlParameter[] parameters = sourceCommand.GetAllParameters();
+
+            DbCommand dbCommand = this.CreateDbCommand(cntCommand, parameters);
+            Int32 recordCount = this.ExecuteScalar<Int32>(dbCommand);
+
+            if (sourceCommand.RecordStart < recordCount)
+            {
+                return AccessSelectPager.InternalGetPagerCommand(sourceCommand, recordCount, orderReverse);
+            }
+            else
+            {
+                return AccessSelectPager.InternalGetSelectNoneCommand(sourceCommand, orderReverse);
+            }
         }
 
         /// <summary>
