@@ -12,6 +12,28 @@ namespace DotMaysWind.Data.Command.Condition
     /// </summary>
     public static class SqlCondition
     {
+        #region 常量
+        /// <summary>
+        /// 创建永远为真的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition True(AbstractSqlCommand cmd)
+        {
+            return SqlCondition.InternalCreateAction(cmd, "1", SqlOperator.Equal, "1");
+        }
+
+        /// <summary>
+        /// 创建永远为假的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition False(AbstractSqlCommand cmd)
+        {
+            return SqlCondition.InternalCreateAction(cmd, "1", SqlOperator.Equal, "0");
+        }
+        #endregion
+
         #region 基本参数条件
         #region General
         /// <summary>
