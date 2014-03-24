@@ -52,6 +52,7 @@ namespace DotMaysWind.Data.Command
         public Int32 PageSize
         {
             get { return this._pageSize; }
+            internal set { this._pageSize = value; }
         }
 
         /// <summary>
@@ -60,6 +61,7 @@ namespace DotMaysWind.Data.Command
         public Int32 RecordStart
         {
             get { return this._recordStart; }
+            internal set { this._recordStart = value; }
         }
 
         /// <summary>
@@ -1102,7 +1104,6 @@ namespace DotMaysWind.Data.Command
         /// <returns>SQL语句</returns>
         private String GetSqlCommand(Boolean containParentheses, String aliasesName, Boolean orderReverse)
         {
-            
             Boolean hasAliasesName = !String.IsNullOrEmpty(aliasesName);
             String sql = this._database.InternalGetPagerSelectCommand(this, orderReverse);
 
@@ -1139,20 +1140,20 @@ namespace DotMaysWind.Data.Command
                 SqlParameter[] joinParameters = (this._joins[i] == null ? null : this._joins[i].GetAllParameters());
                 if (joinParameters != null)
                 {
-                    this.AddParameterToDbCommand(dbCommand, joinParameters);
+                    this._database.AddParameterToDbCommand(dbCommand, joinParameters);
                 }
             }
 
             SqlParameter[] whereParameters = (this._where == null ? null : this._where.GetAllParameters());
             if (whereParameters != null)
             {
-                this.AddParameterToDbCommand(dbCommand, whereParameters);
+                this._database.AddParameterToDbCommand(dbCommand, whereParameters);
             }
 
             SqlParameter[] havingParameters = (this._having == null ? null : this._having.GetAllParameters());
             if (havingParameters != null)
             {
-                this.AddParameterToDbCommand(dbCommand, havingParameters);
+                this._database.AddParameterToDbCommand(dbCommand, havingParameters);
             }
 
             return dbCommand;
@@ -1189,6 +1190,98 @@ namespace DotMaysWind.Data.Command
             }
 
             return result.ToArray();
+        }
+        #endregion
+
+        #region Result
+        /// <summary>
+        /// 获取操作的结果（Select）
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <returns>操作的结果（Select）</returns>
+        public virtual T Result<T>()
+        {
+            return this._database.ExecuteScalar<T>(this);
+        }
+
+        /// <summary>
+        /// 获取操作的结果（Select）
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="connection">数据库连接</param>
+        /// <returns>操作的结果（Select）</returns>
+        public virtual T Result<T>(DbConnection connection)
+        {
+            return this._database.ExecuteScalar<T>(this, connection);
+        }
+
+        /// <summary>
+        /// 获取操作的结果（Select）
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="transaction">数据库事务</param>
+        /// <returns>操作的结果（Select）</returns>
+        public virtual T Result<T>(DbTransaction transaction)
+        {
+            return this._database.ExecuteScalar<T>(this, transaction);
+        }
+
+        /// <summary>
+        /// 获取数据表格
+        /// </summary>
+        /// <returns>数据表格</returns>
+        public virtual DataTable ToDataTable()
+        {
+            return this._database.ExecuteDataTable(this);
+        }
+
+        /// <summary>
+        /// 获取数据表格
+        /// </summary>
+        /// <param name="connection">数据库连接</param>
+        /// <returns>数据表格</returns>
+        public virtual DataTable ToDataTable(DbConnection connection)
+        {
+            return this._database.ExecuteDataTable(this, connection);
+        }
+
+        /// <summary>
+        /// 获取数据表格
+        /// </summary>
+        /// <param name="transaction">数据库事务</param>
+        /// <returns>数据表格</returns>
+        public virtual DataTable ToDataTable(DbTransaction transaction)
+        {
+            return this._database.ExecuteDataTable(this, transaction);
+        }
+
+        /// <summary>
+        /// 获取数据行
+        /// </summary>
+        /// <returns>数据行</returns>
+        public virtual DataRow ToDataRow()
+        {
+            return this._database.ExecuteDataRow(this);
+        }
+
+        /// <summary>
+        /// 获取数据行
+        /// </summary>
+        /// <param name="connection">数据库连接</param>
+        /// <returns>数据行</returns>
+        public virtual DataRow ToDataRow(DbConnection connection)
+        {
+            return this._database.ExecuteDataRow(this, connection);
+        }
+
+        /// <summary>
+        /// 获取数据行
+        /// </summary>
+        /// <param name="transaction">数据库事务</param>
+        /// <returns>数据行</returns>
+        public virtual DataRow ToDataRow(DbTransaction transaction)
+        {
+            return this._database.ExecuteDataRow(this, transaction);
         }
         #endregion
         #endregion

@@ -82,12 +82,75 @@ namespace DotMaysWind.Data
         }
 
         /// <summary>
+        /// 创建新的数据库参数
+        /// </summary>
+        /// <param name="param">Sql参数</param>
+        /// <returns>数据库参数</returns>
+        public DbParameter CreateDbParameter(SqlParameter param)
+        {
+            DbParameter dbParameter = this.CreateDbParameter();
+
+            dbParameter.SourceColumn = param.ColumnName;
+            dbParameter.ParameterName = param.ParameterName;
+            dbParameter.DbType = param.DbType;
+            dbParameter.Value = param.Value;
+            dbParameter.SourceVersion = DataRowVersion.Default;
+
+            return dbParameter;
+        }
+
+        /// <summary>
         /// 创建新的数据库命令
         /// </summary>
         /// <returns>数据库命令</returns>
         public DbCommand CreateDbCommand()
         {
             return this._dbProvider.CreateCommand();
+        }
+
+        /// <summary>
+        /// 创建新的数据库命令
+        /// </summary>
+        /// <param name="commandText">命令语句</param>
+        /// <param name="parameters">参数集合</param>
+        /// <returns>数据库命令</returns>
+        public DbCommand CreateDbCommand(String commandText, params SqlParameter[] parameters)
+        {
+            DbCommand dbCommand = this.CreateDbCommand();
+            dbCommand.CommandType = CommandType.Text;
+            dbCommand.CommandText = commandText;
+
+            if (parameters != null)
+            {
+                for (Int32 i = 0; i < parameters.Length; i++)
+                {
+                    if (parameters[i].IsUseParameter)
+                    {
+                        dbCommand.Parameters.Add(this.CreateDbParameter(parameters[i]));
+                    }
+                }
+            }
+
+            return dbCommand;
+        }
+
+        /// <summary>
+        /// 添加参数到数据库命令中
+        /// </summary>
+        /// <param name="dbCommand">数据库命令</param>
+        /// <param name="extraParameters">额外参数组</param>
+        public void AddParameterToDbCommand(DbCommand dbCommand, params SqlParameter[] extraParameters)
+        {
+            if (extraParameters != null)
+            {
+                for (Int32 i = 0; i < extraParameters.Length; i++)
+                {
+                    if (extraParameters[i].IsUseParameter)
+                    {
+                        dbCommand.Parameters.Add(this.CreateDbParameter(extraParameters[i]));
+                    }
+                }
+            }
         }
 
         /// <summary>

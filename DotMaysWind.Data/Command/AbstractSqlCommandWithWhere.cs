@@ -59,7 +59,7 @@ namespace DotMaysWind.Data.Command
 
             if (extraParameters != null)
             {
-                this.AddParameterToDbCommand(dbCommand, extraParameters);
+                this._database.AddParameterToDbCommand(dbCommand, extraParameters);
             }
 
             return dbCommand;
