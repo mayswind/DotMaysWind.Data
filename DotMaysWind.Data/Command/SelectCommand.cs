@@ -1052,6 +1052,133 @@ namespace DotMaysWind.Data.Command
             return this._database.ExecuteDataRow(this, transaction);
         }
         #endregion
+
+        #region Result
+        /// <summary>
+        /// 获取操作的结果（Select）
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <returns>操作的结果（Select）</returns>
+        public T Result<T>()
+        {
+            return this._database.ExecuteScalar<T>(this);
+        }
+
+        /// <summary>
+        /// 获取操作的结果（Select）
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="connection">数据库连接</param>
+        /// <returns>操作的结果（Select）</returns>
+        public T Result<T>(DbConnection connection)
+        {
+            return this._database.ExecuteScalar<T>(this, connection);
+        }
+
+        /// <summary>
+        /// 获取操作的结果（Select）
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="transaction">数据库事务</param>
+        /// <returns>操作的结果（Select）</returns>
+        public T Result<T>(DbTransaction transaction)
+        {
+            return this._database.ExecuteScalar<T>(this, transaction);
+        }
+        #endregion
+
+        #region ToDataTable
+        /// <summary>
+        /// 获取数据表格
+        /// </summary>
+        /// <returns>数据表格</returns>
+        public DataTable ToDataTable()
+        {
+            return this._database.ExecuteDataTable(this);
+        }
+
+        /// <summary>
+        /// 获取数据表格
+        /// </summary>
+        /// <param name="connection">数据库连接</param>
+        /// <returns>数据表格</returns>
+        public DataTable ToDataTable(DbConnection connection)
+        {
+            return this._database.ExecuteDataTable(this, connection);
+        }
+
+        /// <summary>
+        /// 获取数据表格
+        /// </summary>
+        /// <param name="transaction">数据库事务</param>
+        /// <returns>数据表格</returns>
+        public DataTable ToDataTable(DbTransaction transaction)
+        {
+            return this._database.ExecuteDataTable(this, transaction);
+        }
+        #endregion
+
+        #region ToDataRow
+        /// <summary>
+        /// 获取数据行
+        /// </summary>
+        /// <returns>数据行</returns>
+        public DataRow ToDataRow()
+        {
+            return this._database.ExecuteDataRow(this);
+        }
+
+        /// <summary>
+        /// 获取数据行
+        /// </summary>
+        /// <param name="connection">数据库连接</param>
+        /// <returns>数据行</returns>
+        public DataRow ToDataRow(DbConnection connection)
+        {
+            return this._database.ExecuteDataRow(this, connection);
+        }
+
+        /// <summary>
+        /// 获取数据行
+        /// </summary>
+        /// <param name="transaction">数据库事务</param>
+        /// <returns>数据行</returns>
+        public DataRow ToDataRow(DbTransaction transaction)
+        {
+            return this._database.ExecuteDataRow(this, transaction);
+        }
+        #endregion
+
+        #region ToDataReader
+        /// <summary>
+        /// 获取数据读取器
+        /// </summary>
+        /// <returns>数据读取器</returns>
+        public IDataReader ToDataReader()
+        {
+            return this._database.ExecuteReader(this);
+        }
+
+        /// <summary>
+        /// 获取数据读取器
+        /// </summary>
+        /// <param name="connection">数据库连接</param>
+        /// <returns>数据读取器</returns>
+        public IDataReader ToDataReader(DbConnection connection)
+        {
+            return this._database.ExecuteReader(this, connection);
+        }
+
+        /// <summary>
+        /// 获取数据读取器
+        /// </summary>
+        /// <param name="transaction">数据库事务</param>
+        /// <returns>数据读取器</returns>
+        public IDataReader ToDataReader(DbTransaction transaction)
+        {
+            return this._database.ExecuteReader(this, transaction);
+        }
+        #endregion
         #endregion
 
         #region GetSqlCommand
@@ -1190,98 +1317,6 @@ namespace DotMaysWind.Data.Command
             }
 
             return result.ToArray();
-        }
-        #endregion
-
-        #region Result
-        /// <summary>
-        /// 获取操作的结果（Select）
-        /// </summary>
-        /// <typeparam name="T">返回结果的类型</typeparam>
-        /// <returns>操作的结果（Select）</returns>
-        public virtual T Result<T>()
-        {
-            return this._database.ExecuteScalar<T>(this);
-        }
-
-        /// <summary>
-        /// 获取操作的结果（Select）
-        /// </summary>
-        /// <typeparam name="T">返回结果的类型</typeparam>
-        /// <param name="connection">数据库连接</param>
-        /// <returns>操作的结果（Select）</returns>
-        public virtual T Result<T>(DbConnection connection)
-        {
-            return this._database.ExecuteScalar<T>(this, connection);
-        }
-
-        /// <summary>
-        /// 获取操作的结果（Select）
-        /// </summary>
-        /// <typeparam name="T">返回结果的类型</typeparam>
-        /// <param name="transaction">数据库事务</param>
-        /// <returns>操作的结果（Select）</returns>
-        public virtual T Result<T>(DbTransaction transaction)
-        {
-            return this._database.ExecuteScalar<T>(this, transaction);
-        }
-
-        /// <summary>
-        /// 获取数据表格
-        /// </summary>
-        /// <returns>数据表格</returns>
-        public virtual DataTable ToDataTable()
-        {
-            return this._database.ExecuteDataTable(this);
-        }
-
-        /// <summary>
-        /// 获取数据表格
-        /// </summary>
-        /// <param name="connection">数据库连接</param>
-        /// <returns>数据表格</returns>
-        public virtual DataTable ToDataTable(DbConnection connection)
-        {
-            return this._database.ExecuteDataTable(this, connection);
-        }
-
-        /// <summary>
-        /// 获取数据表格
-        /// </summary>
-        /// <param name="transaction">数据库事务</param>
-        /// <returns>数据表格</returns>
-        public virtual DataTable ToDataTable(DbTransaction transaction)
-        {
-            return this._database.ExecuteDataTable(this, transaction);
-        }
-
-        /// <summary>
-        /// 获取数据行
-        /// </summary>
-        /// <returns>数据行</returns>
-        public virtual DataRow ToDataRow()
-        {
-            return this._database.ExecuteDataRow(this);
-        }
-
-        /// <summary>
-        /// 获取数据行
-        /// </summary>
-        /// <param name="connection">数据库连接</param>
-        /// <returns>数据行</returns>
-        public virtual DataRow ToDataRow(DbConnection connection)
-        {
-            return this._database.ExecuteDataRow(this, connection);
-        }
-
-        /// <summary>
-        /// 获取数据行
-        /// </summary>
-        /// <param name="transaction">数据库事务</param>
-        /// <returns>数据行</returns>
-        public virtual DataRow ToDataRow(DbTransaction transaction)
-        {
-            return this._database.ExecuteDataRow(this, transaction);
         }
         #endregion
         #endregion
