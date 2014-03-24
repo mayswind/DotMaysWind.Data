@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 
 using DotMaysWind.Data.Command.Condition;
@@ -658,63 +659,7 @@ namespace DotMaysWind.Data.Command
         #endregion
         #endregion
 
-        #region AggregateFunction
-        /// <summary>
-        /// 获取指定字段记录数
-        /// </summary>
-        /// <typeparam name="T">返回结果的类型</typeparam>
-        /// <param name="columnName">字段名称</param>
-        /// <returns>指定字段记录数</returns>
-        public T Count<T>(String columnName)
-        {
-            return this.Query(SqlAggregateFunction.Count, columnName).Result<T>();
-        }
-
-        /// <summary>
-        /// 获取指定字段记录数
-        /// </summary>
-        /// <typeparam name="T">返回结果的类型</typeparam>
-        /// <returns>指定字段记录数</returns>
-        public T Count<T>()
-        {
-            return this.Query(SqlAggregateFunction.Count).Result<T>();
-        }
-
-        /// <summary>
-        /// 获取指定字段最大值
-        /// </summary>
-        /// <typeparam name="T">返回结果的类型</typeparam>
-        /// <param name="columnName">字段名称</param>
-        /// <returns>指定字段最大值</returns>
-        public T Max<T>(String columnName)
-        {
-            return this.Query(SqlAggregateFunction.Max, columnName).Result<T>();
-        }
-
-        /// <summary>
-        /// 获取指定字段最小值
-        /// </summary>
-        /// <typeparam name="T">返回结果的类型</typeparam>
-        /// <param name="columnName">字段名称</param>
-        /// <returns>指定字段最小值</returns>
-        public T Min<T>(String columnName)
-        {
-            return this.Query(SqlAggregateFunction.Min, columnName).Result<T>();
-        }
-
-        /// <summary>
-        /// 获取指定字段平均值
-        /// </summary>
-        /// <typeparam name="T">返回结果的类型</typeparam>
-        /// <param name="columnName">字段名称</param>
-        /// <returns>指定字段平均值</returns>
-        public T Avg<T>(String columnName)
-        {
-            return this.Query(SqlAggregateFunction.Avg, columnName).Result<T>();
-        }
-        #endregion
-
-        #region Top First Paged/Distinct/GroupBy/Having/Where
+        #region Top Paged/Distinct/GroupBy/Having/Where
         /// <summary>
         /// 设置选择记录数目返回记录唯一并返回当前语句
         /// </summary>
@@ -723,17 +668,6 @@ namespace DotMaysWind.Data.Command
         public SelectCommand Top(Int32 pageSize)
         {
             this._pageSize = pageSize;
-
-            return this;
-        }
-
-        /// <summary>
-        /// 设置选择记录数目为1返回记录唯一并返回当前语句
-        /// </summary>
-        /// <returns>当前语句</returns>
-        public SelectCommand First()
-        {
-            this._pageSize = 1;
 
             return this;
         }
@@ -827,6 +761,308 @@ namespace DotMaysWind.Data.Command
 
             return this;
         }
+        #endregion
+
+        #region 输出结果
+        #region AggregateFunction
+        #region Count
+        /// <summary>
+        /// 获取指定字段记录数
+        /// </summary>
+        /// <returns>指定字段记录数</returns>
+        public Int32 Count()
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Count).Result();
+        }
+
+        /// <summary>
+        /// 获取指定字段记录数
+        /// </summary>
+        /// <param name="connection">数据库连接</param>
+        /// <returns>指定字段记录数</returns>
+        public Int32 Count(DbConnection connection)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Count).Result(connection);
+        }
+
+        /// <summary>
+        /// 获取指定字段记录数
+        /// </summary>
+        /// <param name="transaction">数据库事务</param>
+        /// <returns>指定字段记录数</returns>
+        public Int32 Count(DbTransaction transaction)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Count).Result(transaction);
+        }
+
+        /// <summary>
+        /// 获取指定字段记录数
+        /// </summary>
+        /// <param name="columnName">字段名称</param>
+        /// <returns>指定字段记录数</returns>
+        public Int32 Count(String columnName)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Count, columnName).Result();
+        }
+
+        /// <summary>
+        /// 获取指定字段记录数
+        /// </summary>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="connection">数据库连接</param>
+        /// <returns>指定字段记录数</returns>
+        public Int32 Count(String columnName, DbConnection connection)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Count, columnName).Result(connection);
+        }
+
+        /// <summary>
+        /// 获取指定字段记录数
+        /// </summary>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="transaction">数据库事务</param>
+        /// <returns>指定字段记录数</returns>
+        public Int32 Count(String columnName, DbTransaction transaction)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Count, columnName).Result(transaction);
+        }
+        #endregion
+
+        #region Count<T>
+        /// <summary>
+        /// 获取指定字段记录数
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <returns>指定字段记录数</returns>
+        public T Count<T>()
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Count).Result<T>();
+        }
+
+        /// <summary>
+        /// 获取指定字段记录数
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="connection">数据库连接</param>
+        /// <returns>指定字段记录数</returns>
+        public T Count<T>(DbConnection connection)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Count).Result<T>(connection);
+        }
+
+        /// <summary>
+        /// 获取指定字段记录数
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="transaction">数据库事务</param>
+        /// <returns>指定字段记录数</returns>
+        public T Count<T>(DbTransaction transaction)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Count).Result<T>(transaction);
+        }
+
+        /// <summary>
+        /// 获取指定字段记录数
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="columnName">字段名称</param>
+        /// <returns>指定字段记录数</returns>
+        public T Count<T>(String columnName)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Count, columnName).Result<T>();
+        }
+
+        /// <summary>
+        /// 获取指定字段记录数
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="connection">数据库连接</param>
+        /// <returns>指定字段记录数</returns>
+        public T Count<T>(String columnName, DbConnection connection)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Count, columnName).Result<T>(connection);
+        }
+
+        /// <summary>
+        /// 获取指定字段记录数
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="transaction">数据库事务</param>
+        /// <returns>指定字段记录数</returns>
+        public T Count<T>(String columnName, DbTransaction transaction)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Count, columnName).Result<T>(transaction);
+        }
+        #endregion
+
+        #region Max<T>
+        /// <summary>
+        /// 获取指定字段最大值
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="columnName">字段名称</param>
+        /// <returns>指定字段最大值</returns>
+        public T Max<T>(String columnName)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Max, columnName).Result<T>();
+        }
+
+        /// <summary>
+        /// 获取指定字段最大值
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="connection">数据库连接</param>
+        /// <returns>指定字段最大值</returns>
+        public T Max<T>(String columnName, DbConnection connection)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Max, columnName).Result<T>(connection);
+        }
+
+        /// <summary>
+        /// 获取指定字段最大值
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="transaction">数据库事务</param>
+        /// <returns>指定字段最大值</returns>
+        public T Max<T>(String columnName, DbTransaction transaction)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Max, columnName).Result<T>(transaction);
+        }
+        #endregion
+
+        #region Min<T>
+        /// <summary>
+        /// 获取指定字段最小值
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="columnName">字段名称</param>
+        /// <returns>指定字段最小值</returns>
+        public T Min<T>(String columnName)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Min, columnName).Result<T>();
+        }
+
+        /// <summary>
+        /// 获取指定字段最小值
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="connection">数据库连接</param>
+        /// <returns>指定字段最小值</returns>
+        public T Min<T>(String columnName, DbConnection connection)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Min, columnName).Result<T>(connection);
+        }
+
+        /// <summary>
+        /// 获取指定字段最小值
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="transaction">数据库事务</param>
+        /// <returns>指定字段最小值</returns>
+        public T Min<T>(String columnName, DbTransaction transaction)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Min, columnName).Result<T>(transaction);
+        }
+        #endregion
+
+        #region Avg<T>
+        /// <summary>
+        /// 获取指定字段平均值
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="columnName">字段名称</param>
+        /// <returns>指定字段平均值</returns>
+        public T Avg<T>(String columnName)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Avg, columnName).Result<T>();
+        }
+
+        /// <summary>
+        /// 获取指定字段平均值
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="connection">数据库连接</param>
+        /// <returns>指定字段平均值</returns>
+        public T Avg<T>(String columnName, DbConnection connection)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Avg, columnName).Result<T>(connection);
+        }
+
+        /// <summary>
+        /// 获取指定字段平均值
+        /// </summary>
+        /// <typeparam name="T">返回结果的类型</typeparam>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="transaction">数据库事务</param>
+        /// <returns>指定字段平均值</returns>
+        public T Avg<T>(String columnName, DbTransaction transaction)
+        {
+            this._queryFields.Clear();
+            return this.Query(SqlAggregateFunction.Avg, columnName).Result<T>(transaction);
+        }
+        #endregion
+        #endregion
+
+        #region First
+        /// <summary>
+        /// 获取选择记录结果的第一条数据
+        /// </summary>
+        /// <returns>数据行</returns>
+        public DataRow First()
+        {
+            this._pageSize = 1;
+            return this._database.ExecuteDataRow(this);
+        }
+
+        /// <summary>
+        /// 获取选择记录结果的第一条数据
+        /// </summary>
+        /// <param name="connection">数据库连接</param>
+        /// <returns>数据行</returns>
+        public DataRow First(DbConnection connection)
+        {
+            this._pageSize = 1;
+            return this._database.ExecuteDataRow(this, connection);
+        }
+
+        /// <summary>
+        /// 获取选择记录结果的第一条数据
+        /// </summary>
+        /// <param name="transaction">数据库事务</param>
+        /// <returns>数据行</returns>
+        public DataRow First(DbTransaction transaction)
+        {
+            this._pageSize = 1;
+            return this._database.ExecuteDataRow(this, transaction);
+        }
+        #endregion
         #endregion
 
         #region GetSqlCommand
