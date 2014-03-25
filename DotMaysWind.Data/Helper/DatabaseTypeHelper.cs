@@ -47,43 +47,47 @@ namespace DotMaysWind.Data.Helper
         internal static DatabaseType InternalGetDatabaseType(DbProviderFactory dbProvider, String connectionString)
         {
             String providerName = dbProvider.GetType().ToString().ToLowerInvariant();
-            DatabaseType dbType = DatabaseType.Unknown;
 
-            if (_typeDict.TryGetValue(providerName, out dbType))
+            foreach (KeyValuePair<String, DatabaseType> pair in _typeDict)
             {
-                if (dbType == DatabaseType.Unknown)
+                if (providerName.IndexOf(pair.Key) >= 0)
                 {
-                    String dataSource = "";
-                    String[] parameters = connectionString.Replace(" ", "").ToLowerInvariant().Split(';');
+                    return pair.Value;
+                }
+            }
 
-                    if (parameters != null && parameters.Length > 0)
+            #region Access
+            if (providerName.IndexOf("system.data.oledb") >= 0)
+            {
+                String dataSource = "";
+                String[] parameters = connectionString.Replace(" ", "").ToLowerInvariant().Split(';');
+
+                if (parameters != null && parameters.Length > 0)
+                {
+                    Int32 dataSourcePos = -1;
+
+                    for (Int32 i = 0; i < parameters.Length; i++)
                     {
-                        Int32 dataSourcePos = -1;
+                        dataSourcePos = parameters[i].IndexOf("datasource");
 
-                        for (Int32 i = 0; i < parameters.Length; i++)
+                        if (dataSourcePos > -1)
                         {
-                            dataSourcePos = parameters[i].IndexOf("datasource");
-
-                            if (dataSourcePos > -1)
-                            {
-                                dataSource = parameters[i];
-                                break;
-                            }
+                            dataSource = parameters[i];
+                            break;
                         }
-                    }
-
-                    if (dataSource.IndexOf(".mdb") > -1)
-                    {
-                        dbType = DatabaseType.Access;
-                    }
-                    else if (dataSource.IndexOf(".accdb") > -1)
-                    {
-                        dbType = DatabaseType.Access;
                     }
                 }
 
-                return dbType;
+                if (dataSource.IndexOf(".mdb") > -1)
+                {
+                    return DatabaseType.Access;
+                }
+                else if (dataSource.IndexOf(".accdb") > -1)
+                {
+                    return DatabaseType.Access;
+                }
             }
+            #endregion
 
             return DatabaseType.Unknown;
         }
