@@ -279,7 +279,6 @@ namespace DotMaysWind.Data
             {
                 if (connection != null)
                 {
-                    connection.Close();
                     connection.Dispose();
                     connection = null;
                 }
@@ -322,20 +321,10 @@ namespace DotMaysWind.Data
             {
                 result = default(T);
 
-                if (transaction != null)
-                {
-                    transaction.Rollback();
-                }
-
                 throw;
             }
             finally
             {
-                if (connection != null)
-                {
-                    connection.Close();
-                }
-
                 if (transaction != null)
                 {
                     transaction.Dispose();
