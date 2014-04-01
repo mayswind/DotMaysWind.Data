@@ -832,7 +832,7 @@ namespace DotMaysWind.Data.Orm
         /// </summary>
         /// <param name="table">数据表</param>
         /// <returns>数据表实体</returns>
-        internal T GetEntity(DataTable table)
+        protected internal T GetEntity(DataTable table)
         {
             if (!DbConvert.IsDataTableNullOrEmpty(table))
             {
@@ -849,7 +849,7 @@ namespace DotMaysWind.Data.Orm
         /// </summary>
         /// <param name="row">数据行</param>
         /// <returns>数据表实体</returns>
-        internal T GetEntity(DataRow row)
+        protected internal T GetEntity(DataRow row)
         {
             if (row != null)
             {
@@ -868,7 +868,7 @@ namespace DotMaysWind.Data.Orm
         /// </summary>
         /// <param name="table">数据表</param>
         /// <returns>实体列表</returns>
-        internal List<T> GetEntities(DataTable table)
+        protected internal List<T> GetEntities(DataTable table)
         {
             List<T> list = null;
 
