@@ -119,6 +119,7 @@ namespace DotMaysWind.Data
         /// <summary>
         /// 使用持续数据库连接执行操作
         /// </summary>
+        /// <typeparam name="T">返回类型</typeparam>
         /// <param name="function">使用持续连接的操作</param>
         /// <returns>内部返回内容</returns>
         T UsingConnection<T>(Func<DbConnection, T> function);
@@ -133,6 +134,7 @@ namespace DotMaysWind.Data
         /// <summary>
         /// 使用数据库事务执行操作
         /// </summary>
+        /// <typeparam name="T">返回类型</typeparam>
         /// <param name="function">使用事务的操作</param>
         /// <returns>内部返回内容</returns>
         T UsingTransaction<T>(Func<DbTransaction, T> function);
@@ -143,6 +145,60 @@ namespace DotMaysWind.Data
         /// <param name="function">使用事务的操作</param>
         /// <returns>受影响的行数</returns>
         Int32 UsingTransaction(Func<DbTransaction, Int32> function);
+        #endregion
+
+        #region UsingDataReader
+        /// <summary>
+        /// 使用数据库读取器执行操作
+        /// </summary>
+        /// <param name="command">指定Sql语句</param>
+        /// <param name="transaction">数据库事务</param>
+        /// <param name="action">使用数据库读取器的操作</param>
+        void UsingDataReader(ISqlCommand command, DbTransaction transaction, Action<IDataReader> action);
+
+        /// <summary>
+        /// 使用数据库读取器执行操作
+        /// </summary>
+        /// <typeparam name="T">返回类型</typeparam>
+        /// <param name="command">指定Sql语句</param>
+        /// <param name="transaction">数据库事务</param>
+        /// <param name="function">使用数据库读取器的操作</param>
+        /// <returns>返回的内容</returns>
+        T UsingDataReader<T>(ISqlCommand command, DbTransaction transaction, Func<IDataReader, T> function);
+
+        /// <summary>
+        /// 使用数据库读取器执行操作
+        /// </summary>
+        /// <param name="command">指定Sql语句</param>
+        /// <param name="connection">数据库连接</param>
+        /// <param name="action">使用数据库读取器的操作</param>
+        void UsingDataReader(ISqlCommand command, DbConnection connection, Action<IDataReader> action);
+
+        /// <summary>
+        /// 使用数据库读取器执行操作
+        /// </summary>
+        /// <typeparam name="T">返回类型</typeparam>
+        /// <param name="command">指定Sql语句</param>
+        /// <param name="connection">数据库连接</param>
+        /// <param name="function">使用数据库读取器的操作</param>
+        /// <returns>返回的内容</returns>
+        T UsingDataReader<T>(ISqlCommand command, DbConnection connection, Func<IDataReader, T> function);
+
+        /// <summary>
+        /// 使用数据库读取器执行操作
+        /// </summary>
+        /// <param name="command">指定Sql语句</param>
+        /// <param name="action">使用数据库读取器的操作</param>
+        void UsingDataReader(ISqlCommand command, Action<IDataReader> action);
+
+        /// <summary>
+        /// 使用数据库读取器执行操作
+        /// </summary>
+        /// <typeparam name="T">返回类型</typeparam>
+        /// <param name="command">指定Sql语句</param>
+        /// <param name="function">使用数据库读取器的操作</param>
+        /// <returns>返回的内容</returns>
+        T UsingDataReader<T>(ISqlCommand command, Func<IDataReader, T> function);
         #endregion
 
         #region ExecuteScalar
@@ -294,14 +350,6 @@ namespace DotMaysWind.Data
         /// <exception cref="ArgumentNullException">Sql语句不能为空</exception>
         /// <returns>数据读取器</returns>
         IDataReader ExecuteReader(ISqlCommand command, DbConnection connection);
-
-        /// <summary>
-        /// 获得指定Sql语句查询下的数据读取器
-        /// </summary>
-        /// <param name="command">指定Sql语句</param>
-        /// <exception cref="ArgumentNullException">Sql语句不能为空</exception>
-        /// <returns>数据读取器</returns>
-        IDataReader ExecuteReader(ISqlCommand command);
         #endregion
 
         #region ExecuteDataSet/Table/Row

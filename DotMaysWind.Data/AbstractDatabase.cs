@@ -363,6 +363,202 @@ namespace DotMaysWind.Data
         }
         #endregion
 
+        #region UsingDataReader
+        /// <summary>
+        /// 使用数据库读取器执行操作
+        /// </summary>
+        /// <param name="command">指定Sql语句</param>
+        /// <param name="transaction">数据库事务</param>
+        /// <param name="action">使用数据库读取器的操作</param>
+        public void UsingDataReader(ISqlCommand command, DbTransaction transaction, Action<IDataReader> action)
+        {
+            IDataReader reader = null;
+
+            try
+            {
+                reader = this.ExecuteReader(command, transaction);
+                action(reader);
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 使用数据库读取器执行操作
+        /// </summary>
+        /// <typeparam name="T">返回类型</typeparam>
+        /// <param name="command">指定Sql语句</param>
+        /// <param name="transaction">数据库事务</param>
+        /// <param name="function">使用数据库读取器的操作</param>
+        /// <returns>返回的内容</returns>
+        public T UsingDataReader<T>(ISqlCommand command, DbTransaction transaction, Func<IDataReader, T> function)
+        {
+            IDataReader reader = null;
+
+            try
+            {
+                reader = this.ExecuteReader(command, transaction);
+                return function(reader);
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 使用数据库读取器执行操作
+        /// </summary>
+        /// <param name="command">指定Sql语句</param>
+        /// <param name="connection">数据库连接</param>
+        /// <param name="action">使用数据库读取器的操作</param>
+        public void UsingDataReader(ISqlCommand command, DbConnection connection, Action<IDataReader> action)
+        {
+            IDataReader reader = null;
+
+            try
+            {
+                reader = this.ExecuteReader(command, connection);
+                action(reader);
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 使用数据库读取器执行操作
+        /// </summary>
+        /// <typeparam name="T">返回类型</typeparam>
+        /// <param name="command">指定Sql语句</param>
+        /// <param name="connection">数据库连接</param>
+        /// <param name="function">使用数据库读取器的操作</param>
+        /// <returns>返回的内容</returns>
+        public T UsingDataReader<T>(ISqlCommand command, DbConnection connection, Func<IDataReader, T> function)
+        {
+            IDataReader reader = null;
+
+            try
+            {
+                reader = this.ExecuteReader(command, connection);
+                return function(reader);
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 使用数据库读取器执行操作
+        /// </summary>
+        /// <param name="command">指定Sql语句</param>
+        /// <param name="action">使用数据库读取器的操作</param>
+        public void UsingDataReader(ISqlCommand command, Action<IDataReader> action)
+        {
+            DatabaseConnectionWrapper wrapper = null;
+            IDataReader reader = null;
+
+            try
+            {
+                wrapper = this.InternalGetConnection();
+
+                reader = this.ExecuteReader(command, wrapper.Connection);
+                action(reader);
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+
+                if (wrapper != null)
+                {
+                    wrapper.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 使用数据库读取器执行操作
+        /// </summary>
+        /// <typeparam name="T">返回类型</typeparam>
+        /// <param name="command">指定Sql语句</param>
+        /// <param name="function">使用数据库读取器的操作</param>
+        /// <returns>返回的内容</returns>
+        public T UsingDataReader<T>(ISqlCommand command, Func<IDataReader, T> function)
+        {
+            DatabaseConnectionWrapper wrapper = null;
+            IDataReader reader = null;
+
+            try
+            {
+                wrapper = this.InternalGetConnection();
+
+                reader = this.ExecuteReader(command, wrapper.Connection);
+                return function(reader);
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+
+                if (wrapper != null)
+                {
+                    wrapper.Dispose();
+                }
+            }
+        }
+        #endregion
+
         #region ExecuteDbCommandWithConnectionAndTransaction
         /// <summary>
         /// 将数据库连接和数据库事务添加到数据库命令中
@@ -506,7 +702,7 @@ namespace DotMaysWind.Data
         /// <param name="dbCommand">数据库命令</param>
         /// <param name="connection">数据库连接</param>
         /// <param name="transaction">数据库事务</param>
-        /// <exception cref="ArgumentNullException">数据库命令不能为空</exception>
+        /// <exception cref="ArgumentNullException">数据库命令不能为空，数据库连接和事务不能同时为空</exception>
         /// <returns>数据读取器</returns>
         public IDataReader ExecuteReader(DbCommand dbCommand, DbConnection connection, DbTransaction transaction)
         {
@@ -515,23 +711,13 @@ namespace DotMaysWind.Data
                 throw new ArgumentNullException("dbCommand");
             }
 
-            IDataReader result;
-
             if (connection == null && transaction == null)
             {
-                using (DatabaseConnectionWrapper wrapper = this.InternalGetConnection())
-                {
-                    dbCommand.Connection = wrapper.Connection;
-
-                    result = dbCommand.ExecuteReader();
-                }
+                throw new ArgumentNullException("connection");
             }
-            else
-            {
-                this.AddTransactionAndConnectionToDbCommand(dbCommand, connection, transaction);
 
-                result = dbCommand.ExecuteReader();
-            }
+            this.AddTransactionAndConnectionToDbCommand(dbCommand, connection, transaction);
+            IDataReader result = dbCommand.ExecuteReader();
 
             return result;
         }
@@ -655,17 +841,6 @@ namespace DotMaysWind.Data
         public Int32 ExecuteNonQuery(DbCommand dbCommand)
         {
             return this.ExecuteNonQuery(dbCommand, null, null);
-        }
-
-        /// <summary>
-        /// 获得指定Sql语句查询下的数据读取器
-        /// </summary>
-        /// <param name="dbCommand">数据库命令</param>
-        /// <exception cref="ArgumentNullException">数据库命令不能为空</exception>
-        /// <returns>数据读取器</returns>
-        public IDataReader ExecuteReader(DbCommand dbCommand)
-        {
-            return this.ExecuteReader(dbCommand, null, null);
         }
 
         /// <summary>
@@ -1000,23 +1175,6 @@ namespace DotMaysWind.Data
             DbCommand dbCommand = command.ToDbCommand();
             return this.ExecuteReader(dbCommand, connection, null);
         }
-
-        /// <summary>
-        /// 获得指定Sql语句查询下的数据读取器
-        /// </summary>
-        /// <param name="command">指定Sql语句</param>
-        /// <exception cref="ArgumentNullException">Sql语句不能为空</exception>
-        /// <returns>数据读取器</returns>
-        public IDataReader ExecuteReader(ISqlCommand command)
-        {
-            if (command == null)
-            {
-                throw new ArgumentNullException("command");
-            }
-
-            DbCommand dbCommand = command.ToDbCommand();
-            return this.ExecuteReader(dbCommand);
-        }
         #endregion
 
         #region ExecuteDataSet/Table/Row
@@ -1339,8 +1497,7 @@ namespace DotMaysWind.Data
 
             try
             {
-                connection = this._dbProvider.CreateConnection();
-                connection.ConnectionString = this._connectionString;
+                connection = this.CreateDbConnection();
 
                 connection.Open();
             }

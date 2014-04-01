@@ -1153,15 +1153,6 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 获取数据读取器
         /// </summary>
-        /// <returns>数据读取器</returns>
-        public IDataReader ToDataReader()
-        {
-            return this._database.ExecuteReader(this);
-        }
-
-        /// <summary>
-        /// 获取数据读取器
-        /// </summary>
         /// <param name="connection">数据库连接</param>
         /// <returns>数据读取器</returns>
         public IDataReader ToDataReader(DbConnection connection)
@@ -1177,6 +1168,72 @@ namespace DotMaysWind.Data.Command
         public IDataReader ToDataReader(DbTransaction transaction)
         {
             return this._database.ExecuteReader(this, transaction);
+        }
+        #endregion
+
+        #region UsingDataReader
+        /// <summary>
+        /// 使用数据库读取器执行操作
+        /// </summary>
+        /// <param name="transaction">数据库事务</param>
+        /// <param name="action">使用数据库读取器的操作</param>
+        public void UsingDataReader(DbTransaction transaction, Action<IDataReader> action)
+        {
+            this._database.UsingDataReader(this, transaction, action);
+        }
+
+        /// <summary>
+        /// 使用数据库读取器执行操作
+        /// </summary>
+        /// <typeparam name="T">返回类型</typeparam>
+        /// <param name="transaction">数据库事务</param>
+        /// <param name="function">使用数据库读取器的操作</param>
+        /// <returns>返回的内容</returns>
+        public T UsingDataReader<T>(DbTransaction transaction, Func<IDataReader, T> function)
+        {
+            return this._database.UsingDataReader(this, transaction, function);
+        }
+
+        /// <summary>
+        /// 使用数据库读取器执行操作
+        /// </summary>
+        /// <param name="connection">数据库连接</param>
+        /// <param name="action">使用数据库读取器的操作</param>
+        public void UsingDataReader(DbConnection connection, Action<IDataReader> action)
+        {
+            this._database.UsingDataReader(this, connection, action);
+        }
+
+        /// <summary>
+        /// 使用数据库读取器执行操作
+        /// </summary>
+        /// <typeparam name="T">返回类型</typeparam>
+        /// <param name="connection">数据库连接</param>
+        /// <param name="function">使用数据库读取器的操作</param>
+        /// <returns>返回的内容</returns>
+        public T UsingDataReader<T>(DbConnection connection, Func<IDataReader, T> function)
+        {
+            return this._database.UsingDataReader(this, connection, function);
+        }
+
+        /// <summary>
+        /// 使用数据库读取器执行操作
+        /// </summary>
+        /// <param name="action">使用数据库读取器的操作</param>
+        public void UsingDataReader(Action<IDataReader> action)
+        {
+            this._database.UsingDataReader(this, action);
+        }
+
+        /// <summary>
+        /// 使用数据库读取器执行操作
+        /// </summary>
+        /// <typeparam name="T">返回类型</typeparam>
+        /// <param name="function">使用数据库读取器的操作</param>
+        /// <returns>返回的内容</returns>
+        public T UsingDataReader<T>(Func<IDataReader, T> function)
+        {
+            return this._database.UsingDataReader(this, function);
         }
         #endregion
         #endregion
