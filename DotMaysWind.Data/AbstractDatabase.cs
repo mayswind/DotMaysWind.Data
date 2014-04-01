@@ -257,6 +257,20 @@ namespace DotMaysWind.Data
         /// <summary>
         /// 使用持续数据库连接执行操作
         /// </summary>
+        /// <param name="action">使用持续连接的操作</param>
+        /// <returns>内部返回内容</returns>
+        public void UsingConnection(Action<DbConnection> action)
+        {
+            this.UsingConnection(new Func<DbConnection, Boolean>((DbConnection conn) =>
+            {
+                action(conn);
+                return true;
+            }));
+        }
+
+        /// <summary>
+        /// 使用持续数据库连接执行操作
+        /// </summary>
         /// <param name="function">使用持续连接的操作</param>
         /// <returns>内部返回内容</returns>
         public T UsingConnection<T>(Func<DbConnection, T> function)
@@ -295,6 +309,20 @@ namespace DotMaysWind.Data
         public Int32 UsingConnection(Func<DbConnection, Int32> function)
         {
             return this.UsingConnection<Int32>(function);
+        }
+
+        /// <summary>
+        /// 使用数据库事务执行操作
+        /// </summary>
+        /// <param name="action">使用事务的操作</param>
+        /// <returns>内部返回内容</returns>
+        public void UsingTransaction(Action<DbTransaction> action)
+        {
+            this.UsingTransaction(new Func<DbTransaction, Boolean>((DbTransaction trans) =>
+            {
+                action(trans);
+                return true;
+            }));
         }
 
         /// <summary>
