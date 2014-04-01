@@ -389,25 +389,11 @@ namespace DotMaysWind.Data
         /// <param name="action">使用数据库读取器的操作</param>
         public void UsingDataReader(ISqlCommand command, DbTransaction transaction, Action<IDataReader> action)
         {
-            IDataReader reader = null;
-
-            try
+            this.UsingDataReader(command, transaction, new Func<IDataReader, Boolean>((IDataReader reader) =>
             {
-                reader = this.ExecuteReader(command, transaction);
                 action(reader);
-            }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                if (reader != null)
-                {
-                    reader.Close();
-                    reader.Dispose();
-                }
-            }
+                return true;
+            }));
         }
 
         /// <summary>
@@ -449,25 +435,11 @@ namespace DotMaysWind.Data
         /// <param name="action">使用数据库读取器的操作</param>
         public void UsingDataReader(ISqlCommand command, DbConnection connection, Action<IDataReader> action)
         {
-            IDataReader reader = null;
-
-            try
+            this.UsingDataReader(command, connection, new Func<IDataReader, Boolean>((IDataReader reader) =>
             {
-                reader = this.ExecuteReader(command, connection);
                 action(reader);
-            }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                if (reader != null)
-                {
-                    reader.Close();
-                    reader.Dispose();
-                }
-            }
+                return true;
+            }));
         }
 
         /// <summary>
@@ -508,33 +480,11 @@ namespace DotMaysWind.Data
         /// <param name="action">使用数据库读取器的操作</param>
         public void UsingDataReader(ISqlCommand command, Action<IDataReader> action)
         {
-            DatabaseConnectionWrapper wrapper = null;
-            IDataReader reader = null;
-
-            try
+            this.UsingDataReader(command, new Func<IDataReader, Boolean>((IDataReader reader) =>
             {
-                wrapper = this.InternalGetConnection();
-
-                reader = this.ExecuteReader(command, wrapper.Connection);
                 action(reader);
-            }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                if (reader != null)
-                {
-                    reader.Close();
-                    reader.Dispose();
-                }
-
-                if (wrapper != null)
-                {
-                    wrapper.Dispose();
-                }
-            }
+                return true;
+            }));
         }
 
         /// <summary>
