@@ -11,7 +11,9 @@ DotMaysWind.Data
     </connectionStrings>
 
 Orm支持两种风格：
+
 1、手写代码风格：
+
     using System;
     using System.Collections.Generic;
     using System.Data;
@@ -95,6 +97,7 @@ Orm支持两种风格：
     }
 
 2、特性代码风格：
+
     using System;
     using System.Collections.Generic;
 
