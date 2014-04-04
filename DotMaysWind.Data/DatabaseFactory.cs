@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data.Common;
-using System.Data.OracleClient;
 using System.Data.SqlClient;
 
 using DotMaysWind.Data.Configuration;
@@ -25,16 +24,6 @@ namespace DotMaysWind.Data
         public static SqlServerDatabase CreateSqlServerDatabase(String connectionString)
         {
             return new SqlServerDatabase(SqlClientFactory.Instance, connectionString);
-        }
-
-        /// <summary>
-        /// 根据连接字符串创建Oracle数据库
-        /// </summary>
-        /// <param name="connectionString">数据库连接字符串</param>
-        /// <returns>数据库实体</returns>
-        public static OracleDatabase CreateOracleDatabase(String connectionString)
-        {
-            return new OracleDatabase(OracleClientFactory.Instance, connectionString);
         }
 
         /// <summary>
