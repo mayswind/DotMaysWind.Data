@@ -6,6 +6,7 @@ DotMaysWind.Data
 自己参与和负责的项目一直使用该类库操作数据库，目前并将长期处于alpha或beta版。
 
 在Web.config或App.config中配置好连接字符串：
+
     <connectionStrings>
     <add name="MainDatabase" connectionString="Data Source=SERVER_ADDRESS;Initial Catalog=DATABASE_NAME;Pooling=true;User ID='USERNAME';Password='PASSWORD';" providerName="System.Data.SqlClient"/>
     </connectionStrings>
