@@ -42,10 +42,7 @@ namespace DotMaysWind.Data.PerformanceTest
                 .Querys("TestColumn1", "TestColumn2", "TestColumn5", "TestColumn8")
                 .Query("TestColumn3", "TTTT")
                 .Query(SqlAggregateFunction.Max, "TestColumn4", "MMMM")
-                .Where(((SqlConditionBuilder cb) =>
-                {
-                    return cb.GreaterThanOrEqual("TestColumn2", 123) | (cb.GreaterThan("TestColumn5", 1) & cb.LessThan("TestColumn5", 10));
-                }))
+                .Where(c => c.GreaterThanOrEqual("TestColumn2", 123) | (c.GreaterThan("TestColumn5", 1) & c.LessThan("TestColumn5", 10)))
                 .GroupBy("TestColumn3")
                 .InnerJoin("TestColumn2", "AnotherTable", "TestColumn2")
                 .OrderBy("TestColumn6", SqlOrderType.Asc);

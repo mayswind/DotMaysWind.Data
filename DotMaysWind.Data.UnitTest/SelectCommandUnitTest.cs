@@ -24,10 +24,7 @@ namespace DotMaysWind.Data.UnitTest
                 .Querys("TestColumn1", "TestColumn2", "TestColumn5", "TestColumn8")
                 .Query("TestColumn3", "TTTT")
                 .Query(SqlAggregateFunction.Max, "TestColumn4", "MMMM")
-                .Where(((SqlConditionBuilder cb) =>
-                {
-                    return cb.GreaterThanOrEqual("TestColumn2", 123) | (cb.GreaterThan("TestColumn4", DateTime.Now) & cb.LessThan("TestColumn7", DateTime.Now.AddDays(7)));
-                }))
+                .Where(c => c.GreaterThanOrEqual("TestColumn2", 123) | (c.GreaterThan("TestColumn4", DateTime.Now) & c.LessThan("TestColumn7", DateTime.Now.AddDays(7))))
                 .GroupBy("TestColumn3")
                 .InnerJoin("TestColumn2", "AnotherTable", "TestColumn2")
                 .OrderBy("TestColumn6", SqlOrderType.Asc);
