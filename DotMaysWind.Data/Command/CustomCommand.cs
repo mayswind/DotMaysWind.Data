@@ -9,7 +9,7 @@ namespace DotMaysWind.Data.Command
     {
         #region 字段
         private SqlCommandType _commandType;
-        private String _commandString;
+        private String _commandText;
         #endregion
 
         #region 属性
@@ -24,11 +24,11 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 不支持获取或设置数据表名
         /// </summary>
-        /// <exception cref="CommandNotSupportException">不支持获取或设置数据表名</exception>
+        /// <exception cref="NotSupportedException">不支持获取或设置数据表名</exception>
         public new String TableName
         {
-            get { throw new CommandNotSupportException(); }
-            set { throw new CommandNotSupportException(); }
+            get { throw new NotSupportedException(); }
+            set { throw new NotSupportedException(); }
         }
         #endregion
 
@@ -43,7 +43,7 @@ namespace DotMaysWind.Data.Command
             : base(database, String.Empty)
         {
             this._commandType = commandType;
-            this._commandString = commandString;
+            this._commandText = commandString;
         }
         #endregion
 
@@ -66,21 +66,21 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 设置Sql语句并返回当前语句
         /// </summary>
-        /// <param name="commandString">语句内容</param>
+        /// <param name="commandText">语句内容</param>
         /// <returns>当前语句</returns>
-        public CustomCommand SetSqlCommand(String commandString)
+        public CustomCommand SetCommandText(String commandText)
         {
-            this._commandString = commandString;
+            this._commandText = commandText;
             return this;
         }
 
         /// <summary>
-        /// 输出SQL语句
+        /// 获取Sql语句内容
         /// </summary>
-        /// <returns>SQL语句</returns>
-        public override String GetSqlCommand()
+        /// <returns>Sql语句内容</returns>
+        public override String GetCommandText()
         {
-            return this._commandString;
+            return this._commandText;
         }
         #endregion
     }

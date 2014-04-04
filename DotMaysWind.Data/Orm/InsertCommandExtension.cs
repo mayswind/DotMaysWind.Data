@@ -17,6 +17,23 @@ namespace DotMaysWind.Data.Orm
         /// <param name="cmd">插入语句</param>
         /// <param name="entity">实体</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class UserDataProvider : DatabaseTable<User>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public Boolean InsertEntity(User user)
+        ///     {
+        ///         return this.Insert()
+        ///             .Add(user)
+        ///             .Result() > 0;
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public static InsertCommand Add(this InsertCommand cmd, Object entity)
         {
             SqlParameter[] parameters = EntityHelper.InternalGetSqlParameters(cmd, entity);

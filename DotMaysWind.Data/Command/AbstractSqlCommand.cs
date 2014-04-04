@@ -151,7 +151,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>数据库命令</returns>
         protected DbCommand CreateDbCommand()
         {
-            return this._database.CreateDbCommand(this.GetSqlCommand(), this._parameters.ToArray());
+            return this._database.CreateDbCommand(this.GetCommandText(), this._parameters.ToArray());
         }
         #endregion
 
@@ -166,13 +166,13 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
-        /// 输出SQL语句
+        /// 获取Sql语句内容
         /// </summary>
-        /// <returns>SQL语句</returns>
-        public abstract String GetSqlCommand();
+        /// <returns>Sql语句内容</returns>
+        public abstract String GetCommandText();
 
         /// <summary>
-        /// 输出SQL命令
+        /// 输出数据库命令
         /// </summary>
         /// <returns>数据库命令</returns>
         public virtual DbCommand ToDbCommand()
@@ -267,7 +267,7 @@ namespace DotMaysWind.Data.Command
                 return false;
             }
 
-            if (!String.Equals(this.GetSqlCommand(), cmd.GetSqlCommand()))
+            if (!String.Equals(this.GetCommandText(), cmd.GetCommandText()))
             {
                 return false;
             }
@@ -321,7 +321,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前对象的信息</returns>
         public override String ToString()
         {
-            return String.Format("{0}, {1}", base.ToString(), this.GetSqlCommand());
+            return String.Format("{0}, {1}", base.ToString(), this.GetCommandText());
         }
         #endregion
     }

@@ -74,6 +74,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 获取条件语句包含的参数集合
         /// </summary>
+        /// <returns>条件语句参数集合</returns>
         public override SqlParameter[] GetAllParameters()
         {
             Int32 paramCount = ((Byte)this._operator) / 100;
@@ -96,7 +97,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// 输出条件语句
         /// </summary>
         /// <returns>条件语句</returns>
-        public override String GetSqlClause()
+        public override String GetClauseText()
         {
             String format = String.Format("({0})", SqlOperators.InternalGetOperatorFormat(this._operator));
             Int32 paramCount = ((Byte)this._operator) / 100;

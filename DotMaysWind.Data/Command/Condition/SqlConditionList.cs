@@ -65,6 +65,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 获取条件语句包含的参数集合
         /// </summary>
+        /// <returns>条件语句参数集合</returns>
         public override SqlParameter[] GetAllParameters()
         {
             List<SqlParameter> result = new List<SqlParameter>();
@@ -91,7 +92,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// 输出条件语句
         /// </summary>
         /// <returns>条件语句</returns>
-        public override String GetSqlClause()
+        public override String GetClauseText()
         {
             if (this._list.Count <= 0)
             {
@@ -104,7 +105,7 @@ namespace DotMaysWind.Data.Command.Condition
             for (Int32 i = 0; i < this._list.Count; i++)
             {
                 if (i > 0) sb.Append(' ').Append(this._concatType.ToString().ToUpperInvariant()).Append(' ');
-                sb.Append(this._list[i].GetSqlClause());
+                sb.Append(this._list[i].GetClauseText());
             }
 
             sb.Append(")");

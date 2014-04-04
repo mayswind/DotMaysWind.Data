@@ -61,6 +61,22 @@ namespace DotMaysWind.Data.Command
         /// <param name="columnName">字段名</param>
         /// <param name="value">内容</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// InsertCommand cmd = db.CreateInsertCommand("tbl_Users")
+        ///     .Add("UserID", 1)
+        ///     .Add("UserName", "admin");
+        /// 
+        /// //INSERT INTO tbl_Users (UserID, UserName) VALUES (@UserID, @UserName)
+        /// //@UserID = 1
+        /// //@UserName = "admin"
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
         public InsertCommand Add(String columnName, Object value)
         {
             this._parameters.Add(this.CreateSqlParameter(columnName, value));
@@ -74,6 +90,22 @@ namespace DotMaysWind.Data.Command
         /// <param name="dbType">数据类型</param>
         /// <param name="value">内容</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// InsertCommand cmd = db.CreateInsertCommand("tbl_Users")
+        ///     .Add("UserID", DbType.Int32, 1)
+        ///     .Add("UserName", DbType.String, "admin");
+        /// 
+        /// //INSERT INTO tbl_Users (UserID, UserName) VALUES (@UserID, @UserName)
+        /// //@UserID = 1
+        /// //@UserName = "admin"
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
         public InsertCommand Add(String columnName, DbType dbType, Object value)
         {
             this._parameters.Add(this.CreateSqlParameter(columnName, dbType, value));
@@ -87,6 +119,24 @@ namespace DotMaysWind.Data.Command
         /// <param name="function">函数</param>
         /// <exception cref="ArgumentNullException">函数不能为空</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// InsertCommand cmd = db.CreateInsertCommand("tbl_Users")
+        ///     .Add("UserID", 1)
+        ///     .Add("UserName", "admin")
+        ///     .Add("CreateTime", db.Functions.Now());
+        /// 
+        /// //INSERT INTO tbl_Users (UserID, UserName, CreateTime) VALUES (@UserID, @UserName, GETDATE())
+        /// //@UserID = 1
+        /// //@UserName = "admin"
+        /// //"GETDATE()" will be changed into "NOW()" in Access or MySQL, "SYSDATE" in Oracle, or "DATETIME('NOW')" in SQLite.
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
         public InsertCommand Add(String columnName, ISqlFunction function)
         {
             if (function == null)
@@ -94,7 +144,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("function");
             }
 
-            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, function.GetSqlText()));
+            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, function.GetCommandText()));
 
             if (function.HasParameters)
             {
@@ -111,6 +161,28 @@ namespace DotMaysWind.Data.Command
         /// <param name="command">选择语句</param>
         /// <exception cref="ArgumentNullException">选择语句不能为空</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand countCmd = db.CreateSelectCommand("tbl_Uploads")
+        ///     .Query(SqlAggregateFunction.Count)
+        ///     .Where(c => c.Equal("UserID", 1));
+        /// 
+        /// InsertCommand cmd = db.CreateInsertCommand("tbl_Users")
+        ///     .Add("UserID", 1)
+        ///     .Add("UserName", "admin")
+        ///     .Add("UploadCount", countCmd);
+        /// 
+        /// //INSERT INTO tbl_Users (UserID, UserName, UploadCount) VALUES (@UserID_Insert, @UserName, (SELECT COUNT(*) FROM tbl_Uploads WHERE UserID = @UserID_Select))
+        /// //@UserID_Insert = 1
+        /// //@UserName = "admin"
+        /// //@UserID_Select = 1
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
         public InsertCommand Add(String columnName, SelectCommand command)
         {
             if (command == null)
@@ -118,7 +190,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("command");
             }
 
-            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, command.GetSqlCommand()));
+            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, command.GetCommandText()));
 
             SqlParameter[] parameters = command.GetAllParameters();
 
@@ -132,10 +204,10 @@ namespace DotMaysWind.Data.Command
         #endregion
 
         /// <summary>
-        /// 输出SQL语句
+        /// 获取Sql语句内容
         /// </summary>
-        /// <returns>SQL语句</returns>
-        public override String GetSqlCommand()
+        /// <returns>Sql语句内容</returns>
+        public override String GetCommandText()
         {
             SqlCommandBuilder sb = new SqlCommandBuilder(this.Database);
             sb.AppendInsertPrefix().AppendTableName(this._tableName);

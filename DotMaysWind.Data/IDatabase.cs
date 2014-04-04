@@ -109,7 +109,7 @@ namespace DotMaysWind.Data
         /// <summary>
         /// 创建新的Sql自定义语句
         /// </summary>
-        /// <param name="commandType">语句类型</param>
+        /// <param name="commandType">Sql语句类型</param>
         /// <param name="commandString">语句内容</param>
         /// <returns>Sql自定义语句</returns>
         CustomCommand CreateCustomCommand(SqlCommandType commandType, String commandString);
@@ -121,6 +121,22 @@ namespace DotMaysWind.Data
         /// </summary>
         /// <param name="action">使用持续连接的操作</param>
         /// <returns>内部返回内容</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// 
+        /// db.UsingConnection(c =>
+        /// {
+        ///     InsertCommand cmd1 = db.CreateInsertCommand("Table1");
+        ///     InsertCommand cmd2 = db.CreateInsertCommand("Table2");
+        /// 
+        ///     db.ExecuteNonQuery(cmd1, c);
+        ///     db.ExecuteNonQuery(cmd2, c);
+        /// });
+        /// ]]>
+        /// </code>
+        /// </example>
         void UsingConnection(Action<DbConnection> action);
 
         /// <summary>
@@ -129,20 +145,56 @@ namespace DotMaysWind.Data
         /// <typeparam name="T">返回类型</typeparam>
         /// <param name="function">使用持续连接的操作</param>
         /// <returns>内部返回内容</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// 
+        /// db.UsingConnection(c =>
+        /// {
+        ///     SelectCommand cmd1 = db.CreateSelectCommand("Table1");
+        ///     SelectCommand cmd2 = db.CreateSelectCommand("Table2");
+        /// 
+        ///     Int32 count1 = cmd1.Count(c);
+        ///     Int32 count2 = cmd2.Count(c);
+        /// 
+        ///     return count1 + count2;
+        /// });
+        /// ]]>
+        /// </code>
+        /// </example>
         T UsingConnection<T>(Func<DbConnection, T> function);
-
-        /// <summary>
-        /// 使用持续数据库连接执行操作
-        /// </summary>
-        /// <param name="function">使用持续连接的操作</param>
-        /// <returns>受影响的行数</returns>
-        Int32 UsingConnection(Func<DbConnection, Int32> function);
 
         /// <summary>
         /// 使用数据库事务执行操作
         /// </summary>
         /// <param name="action">使用事务的操作</param>
         /// <returns>内部返回内容</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// 
+        /// db.UsingTransaction(t =>
+        /// {
+        ///     try
+        ///     {
+        ///         InsertCommand cmd1 = db.CreateInsertCommand("Table1");
+        ///         InsertCommand cmd2 = db.CreateInsertCommand("Table2");
+        /// 
+        ///         db.ExecuteNonQuery(cmd1, t);
+        ///         db.ExecuteNonQuery(cmd2, t);
+        /// 
+        ///         t.Commit();
+        ///     }
+        ///     catch (Exception ex)
+        ///     {
+        ///         t.Rollback();
+        ///     }
+        /// });
+        /// ]]>
+        /// </code>
+        /// </example>
         void UsingTransaction(Action<DbTransaction> action);
 
         /// <summary>
@@ -151,14 +203,38 @@ namespace DotMaysWind.Data
         /// <typeparam name="T">返回类型</typeparam>
         /// <param name="function">使用事务的操作</param>
         /// <returns>内部返回内容</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// 
+        /// db.UsingTransaction(t =>
+        /// {
+        ///     try
+        ///     {
+        ///         Int32 result = 0;
+        /// 
+        ///         InsertCommand cmd1 = db.CreateInsertCommand("Table1");
+        ///         InsertCommand cmd2 = db.CreateInsertCommand("Table2");
+        /// 
+        ///         result += db.ExecuteNonQuery(cmd1, t);
+        ///         result += db.ExecuteNonQuery(cmd2, t);
+        /// 
+        ///         t.Commit();
+        /// 
+        ///         return result;
+        ///     }
+        ///     catch (Exception ex)
+        ///     {
+        ///         t.Rollback();
+        /// 
+        ///         return -1;
+        ///     }
+        /// });
+        /// ]]>
+        /// </code>
+        /// </example>
         T UsingTransaction<T>(Func<DbTransaction, T> function);
-
-        /// <summary>
-        /// 使用数据库事务执行操作
-        /// </summary>
-        /// <param name="function">使用事务的操作</param>
-        /// <returns>受影响的行数</returns>
-        Int32 UsingTransaction(Func<DbTransaction, Int32> function);
         #endregion
 
         #region UsingDataReader
@@ -203,6 +279,24 @@ namespace DotMaysWind.Data
         /// </summary>
         /// <param name="command">指定Sql语句</param>
         /// <param name="action">使用数据库读取器的操作</param>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("Table1");
+        /// 
+        /// List<String> result = new List<String>();
+        /// 
+        /// db.UsingDataReader(cmd, r =>
+        /// {
+        ///     while (r.Read())
+        ///     {
+        ///         result.Add(r["Column1"] as String);
+        ///     }
+        /// });
+        /// ]]>
+        /// </code>
+        /// </example>
         void UsingDataReader(ISqlCommand command, Action<IDataReader> action);
 
         /// <summary>
@@ -212,6 +306,26 @@ namespace DotMaysWind.Data
         /// <param name="command">指定Sql语句</param>
         /// <param name="function">使用数据库读取器的操作</param>
         /// <returns>返回的内容</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("Table1");
+        /// 
+        /// List<String> result = db.UsingDataReader(cmd, r =>
+        /// {
+        ///     List<String> list = new List<String>();
+        /// 
+        ///     while (r.Read())
+        ///     {
+        ///         list.Add(r["Column1"] as String);
+        ///     }
+        /// 
+        ///     return list;
+        /// });
+        /// ]]>
+        /// </code>
+        /// </example>
         T UsingDataReader<T>(ISqlCommand command, Func<IDataReader, T> function);
         #endregion
 

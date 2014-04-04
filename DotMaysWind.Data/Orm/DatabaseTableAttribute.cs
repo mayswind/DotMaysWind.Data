@@ -5,6 +5,21 @@ namespace DotMaysWind.Data.Orm
     /// <summary>
     /// 数据库表特性
     /// </summary>
+    /// <example>
+    /// <code lang="C#">
+    /// <![CDATA[
+    /// [DatabaseTable("tbl_Users")]
+    /// public class User
+    /// {
+    ///     [DatabaseColumn("UserID")]
+    ///     public Int32 UserID { get; set; }
+    ///     
+    ///     [DatabaseColumn("UserName")]
+    ///     public String UserName { get; set; }
+    /// }
+    /// ]]>
+    /// </code>
+    /// </example>
     [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
     public class DatabaseTableAttribute : Attribute
     {

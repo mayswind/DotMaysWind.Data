@@ -10,7 +10,94 @@ namespace DotMaysWind.Data.Orm
     /// 抽象数据库表类
     /// </summary>
     /// <typeparam name="T">数据表实体</typeparam>
-    public abstract class AbstractDatabaseTable<T> : IDatabaseTable where T : class
+    /// <example>
+    /// <code lang="C#">
+    /// <![CDATA[
+    /// using System;
+    /// using System.Collections.Generic;
+    /// using System.Data;
+    /// 
+    /// using DotMaysWind.Data;
+    /// using DotMaysWind.Data.Orm;
+    /// 
+    /// public class User
+    /// {
+    ///     public Int32 UserID { get; set; }
+    ///     public String UserName { get; set; }
+    /// }
+    /// 
+    /// public class UserDataProvider : AbstractDatabaseTable<User>
+    /// {
+    ///     private const String UserIDColumn = "UserID";
+    ///     private const String UserNameColumn = "UserName";
+    /// 
+    ///     public UserDataProvider()
+    ///         : base(MainDatabase.Instance) { }
+    /// 
+    ///     public override String TableName
+    ///     {
+    ///         get { return "tbl_Users"; }
+    ///     }
+    /// 
+    ///     protected override User CreateEntity(DataRow row, DataColumnCollection columns)
+    ///     {
+    ///         User entity = new User();
+    /// 
+    ///         entity.UserID = this.LoadInt32(row, columns, UserIDColumn);
+    ///         entity.UserName = this.LoadString(row, columns, UserNameColumn);
+    /// 
+    ///         return entity;
+    ///     }
+    /// 
+    ///     public Boolean InsertEntity(User user)
+    ///     {
+    ///         return this.Insert()
+    ///             .Add(UserIDColumn, user.UserID)
+    ///             .Add(UserNameColumn, user.UserName)
+    ///             .Result() > 0;
+    ///     }
+    /// 
+    ///     public Boolean UpdateEntity(User user)
+    ///     {
+    ///         return this.Update()
+    ///             .Set(UserNameColumn, user.UserName)
+    ///             .Where(c => c.Equal(UserIDColumn, user.UserID))
+    ///             .Result() > 0;
+    ///     }
+    /// 
+    ///     public Boolean DeleteEntity(Int32 userID)
+    ///     {
+    ///         return this.Delete()
+    ///             .Where(c => c.Equal(UserIDColumn, userID))
+    ///             .Result() > 0;
+    ///     }
+    /// 
+    ///     public List<User> GetAllEntities()
+    ///     {
+    ///         return this.Select()
+    ///             .Querys(UserIDColumn, UserNameColumn)
+    ///             .ToEntityList<User>(this);
+    ///     }
+    /// }
+    /// 
+    /// internal static class MainDatabase
+    /// {
+    ///     private static IDatabase _database;
+    /// 
+    ///     internal static IDatabase Instance
+    ///     {
+    ///         get { return _database; }
+    ///     }
+    /// 
+    ///     static MainDatabase()
+    ///     {
+    ///         _database = DatabaseFactory.CreateDatabase("MainDatabase");
+    ///     }
+    /// }
+    /// ]]>
+    /// </code>
+    /// </example>
+    public abstract class AbstractDatabaseTable<T> : IDatabaseTable  where T : class
     {
         #region 字段
         private IDatabase _baseDatabase;
@@ -62,6 +149,7 @@ namespace DotMaysWind.Data.Orm
         /// <summary>
         /// 创建新的Sql插入语句类
         /// </summary>
+        /// <returns>Sql插入语句</returns>
         protected virtual InsertCommand Insert()
         {
             return this._baseDatabase.CreateInsertCommand(this.TableName);
@@ -70,6 +158,7 @@ namespace DotMaysWind.Data.Orm
         /// <summary>
         /// 创建新的Sql更新语句类
         /// </summary>
+        /// <returns>Sql更新语句</returns>
         protected virtual UpdateCommand Update()
         {
             return this._baseDatabase.CreateUpdateCommand(this.TableName);
@@ -78,6 +167,7 @@ namespace DotMaysWind.Data.Orm
         /// <summary>
         /// 创建新的Sql删除语句类
         /// </summary>
+        /// <returns>Sql删除语句</returns>
         protected virtual DeleteCommand Delete()
         {
             return this._baseDatabase.CreateDeleteCommand(this.TableName);
@@ -86,6 +176,7 @@ namespace DotMaysWind.Data.Orm
         /// <summary>
         /// 创建新的Sql选择语句类
         /// </summary>
+        /// <returns>Sql选择语句</returns>
         protected virtual SelectCommand Select()
         {
             return this._baseDatabase.CreateSelectCommand(this.TableName);

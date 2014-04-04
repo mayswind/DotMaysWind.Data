@@ -13,7 +13,7 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 判断属性所指字段内容是否为空
         /// </summary>
-        /// <typeparam name="T">属性类型</typeparam>
+        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="key">实体属性</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
         /// <returns>内容是否为空</returns>
@@ -25,7 +25,7 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 判断属性所指字段内容是否为空
         /// </summary>
-        /// <typeparam name="T">属性类型</typeparam>
+        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="key">实体属性</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
         /// <returns>内容是否为空</returns>
@@ -50,7 +50,7 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 判断属性所指字段内容是否不为空
         /// </summary>
-        /// <typeparam name="T">属性类型</typeparam>
+        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="key">实体属性</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
         /// <returns>内容是否不为空</returns>
@@ -60,21 +60,23 @@ namespace DotMaysWind.Data.Linq
         }
 
         /// <summary>
-        /// 
+        /// 判断属性所指字段内容是否不为空
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="key">实体属性</param>
+        /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
+        /// <returns>内容是否为空</returns>
         public static Boolean IsNotNull<T>(this T? key) where T : struct
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// 
+        /// 判断属性所指字段内容是否不为空
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <param name="key">实体属性</param>
+        /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
+        /// <returns>内容是否为空</returns>
         public static Boolean IsNotNull(this String key)
         {
             throw new NotImplementedException();
@@ -185,7 +187,7 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 判断属性所指字段是否在指定范围内
         /// </summary>
-        /// <typeparam name="T">属性类型</typeparam>
+        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="key">实体属性</param>
         /// <param name="start">开始值</param>
         /// <param name="end">结束值</param>
@@ -199,7 +201,7 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 判断属性所指字段是否在指定范围内
         /// </summary>
-        /// <typeparam name="T">属性类型</typeparam>
+        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="key">实体属性</param>
         /// <param name="start">开始值</param>
         /// <param name="end">结束值</param>
@@ -228,7 +230,7 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 判断属性所指字段是否不在指定范围内
         /// </summary>
-        /// <typeparam name="T">属性类型</typeparam>
+        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="key">实体属性</param>
         /// <param name="start">开始值</param>
         /// <param name="end">结束值</param>
@@ -242,7 +244,7 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 判断属性所指字段是否不在指定范围内
         /// </summary>
-        /// <typeparam name="T">属性类型</typeparam>
+        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="key">实体属性</param>
         /// <param name="start">开始值</param>
         /// <param name="end">结束值</param>
@@ -271,7 +273,7 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 判断属性所指字段是否包含指定内容
         /// </summary>
-        /// <typeparam name="T">属性类型</typeparam>
+        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="key">实体属性</param>
         /// <param name="values">指定内容集合</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
@@ -284,7 +286,7 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 判断属性所指字段是否包含指定内容
         /// </summary>
-        /// <typeparam name="T">属性类型</typeparam>
+        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="key">实体属性</param>
         /// <param name="values">指定内容集合</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
@@ -309,6 +311,7 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 判断属性所指字段是否包含指定选择语句查询结果
         /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="key">实体属性</param>
         /// <param name="command">选择语句</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
@@ -321,6 +324,7 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 判断属性所指字段是否包含指定选择语句查询结果
         /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="key">实体属性</param>
         /// <param name="command">选择语句</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
@@ -347,7 +351,7 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 判断属性所指字段是否不包含指定内容
         /// </summary>
-        /// <typeparam name="T">属性类型</typeparam>
+        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="key">实体属性</param>
         /// <param name="values">指定内容集合</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
@@ -360,7 +364,7 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 判断属性所指字段是否不包含指定内容
         /// </summary>
-        /// <typeparam name="T">属性类型</typeparam>
+        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="key">实体属性</param>
         /// <param name="values">指定内容集合</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
@@ -385,6 +389,7 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 判断属性所指字段是否不包含指定选择语句查询结果
         /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="key">实体属性</param>
         /// <param name="command">选择语句</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
@@ -397,6 +402,7 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 判断属性所指字段是否不包含指定选择语句查询结果
         /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="key">实体属性</param>
         /// <param name="command">选择语句</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>

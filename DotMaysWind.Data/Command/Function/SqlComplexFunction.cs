@@ -78,9 +78,9 @@ namespace DotMaysWind.Data.Command.Function
         /// 获取函数拼接后字符串
         /// </summary>
         /// <returns>函数拼接后字符串</returns>
-        public String GetSqlText()
+        public String GetCommandText()
         {
-            return String.Format("({0}{1}{2})", this._leftMethod, this._basicFunc.GetSqlText(), this._rightMethod);
+            return String.Format("({0}{1}{2})", this._leftMethod, this._basicFunc.GetCommandText(), this._rightMethod);
         }
         #endregion
     }

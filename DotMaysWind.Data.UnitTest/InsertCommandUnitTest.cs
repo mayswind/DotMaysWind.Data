@@ -37,7 +37,7 @@ namespace DotMaysWind.Data.UnitTest
             };
 
             InsertCommand cmd = fakeDb.CreateInsertCommand(provider.TableName).Add(entity);
-            String actualSql = cmd.GetSqlCommand().Trim();
+            String actualSql = cmd.GetCommandText().Trim();
             SqlParameter[] actualParameter = cmd.GetAllParameters();
 
             Assert.AreEqual(expectedSql, actualSql);
@@ -79,7 +79,7 @@ namespace DotMaysWind.Data.UnitTest
                 .Add<TestEntity>(c => c.Test7, entity.Test7)
                 .Add<TestEntity>(c => c.Test8, entity.Test8);
 
-            String actualSql = cmd.GetSqlCommand().Trim();
+            String actualSql = cmd.GetCommandText().Trim();
             SqlParameter[] actualParameter = cmd.GetAllParameters();
 
             Assert.AreEqual(expectedSql, actualSql);

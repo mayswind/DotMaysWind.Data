@@ -200,7 +200,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition Create(AbstractSqlCommand cmd, ISqlFunction function, SqlOperator op, Object value)
         {
-            return SqlCondition.InternalCreate(cmd, function.GetSqlText(), op, value);
+            return SqlCondition.InternalCreate(cmd, function.GetCommandText(), op, value);
         }
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition Create(AbstractSqlCommand cmd, ISqlFunction function, SqlOperator op, DbType dbType, Object value)
         {
-            return SqlCondition.InternalCreate(cmd, function.GetSqlText(), op, dbType, value);
+            return SqlCondition.InternalCreate(cmd, function.GetCommandText(), op, dbType, value);
         }
         #endregion
 

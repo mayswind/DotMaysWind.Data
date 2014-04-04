@@ -10,7 +10,7 @@ using DotMaysWind.Data.Helper;
 namespace DotMaysWind.Data
 {
     /// <summary>
-    /// 数据库类
+    /// 抽象数据库类
     /// </summary>
     public abstract class AbstractDatabase : IDatabase
     {
@@ -82,9 +82,9 @@ namespace DotMaysWind.Data
         }
 
         /// <summary>
-        /// 创建新的数据库参数
+        /// 从Sql语句参数中创建数据库参数
         /// </summary>
-        /// <param name="param">Sql参数</param>
+        /// <param name="param">Sql语句参数</param>
         /// <returns>数据库参数</returns>
         public DbParameter CreateDbParameter(SqlParameter param)
         {
@@ -111,7 +111,7 @@ namespace DotMaysWind.Data
         /// <summary>
         /// 创建新的数据库命令
         /// </summary>
-        /// <param name="commandText">命令语句</param>
+        /// <param name="commandText">Sql语句内容</param>
         /// <param name="parameters">参数集合</param>
         /// <returns>数据库命令</returns>
         public DbCommand CreateDbCommand(String commandText, params SqlParameter[] parameters)
@@ -244,7 +244,7 @@ namespace DotMaysWind.Data
         /// <summary>
         /// 创建新的Sql自定义语句
         /// </summary>
-        /// <param name="commandType">语句类型</param>
+        /// <param name="commandType">Sql语句类型</param>
         /// <param name="commandString">语句内容</param>
         /// <returns>Sql自定义语句</returns>
         public CustomCommand CreateCustomCommand(SqlCommandType commandType, String commandString)
@@ -258,19 +258,19 @@ namespace DotMaysWind.Data
         /// 使用持续数据库连接执行操作
         /// </summary>
         /// <param name="action">使用持续连接的操作</param>
-        /// <returns>内部返回内容</returns>
         public void UsingConnection(Action<DbConnection> action)
         {
-            this.UsingConnection(new Func<DbConnection, Boolean>((DbConnection conn) =>
+            this.UsingConnection(connection =>
             {
-                action(conn);
+                action(connection);
                 return true;
-            }));
+            });
         }
 
         /// <summary>
         /// 使用持续数据库连接执行操作
         /// </summary>
+        /// <typeparam name="T">返回类型</typeparam>
         /// <param name="function">使用持续连接的操作</param>
         /// <returns>内部返回内容</returns>
         public T UsingConnection<T>(Func<DbConnection, T> function)
@@ -302,32 +302,22 @@ namespace DotMaysWind.Data
         }
 
         /// <summary>
-        /// 使用持续数据库连接执行操作
-        /// </summary>
-        /// <param name="function">使用持续连接的操作</param>
-        /// <returns>受影响的行数</returns>
-        public Int32 UsingConnection(Func<DbConnection, Int32> function)
-        {
-            return this.UsingConnection<Int32>(function);
-        }
-
-        /// <summary>
         /// 使用数据库事务执行操作
         /// </summary>
         /// <param name="action">使用事务的操作</param>
-        /// <returns>内部返回内容</returns>
         public void UsingTransaction(Action<DbTransaction> action)
         {
-            this.UsingTransaction(new Func<DbTransaction, Boolean>((DbTransaction trans) =>
+            this.UsingTransaction(transaction =>
             {
-                action(trans);
+                action(transaction);
                 return true;
-            }));
+            });
         }
 
         /// <summary>
         /// 使用数据库事务执行操作
         /// </summary>
+        /// <typeparam name="T">返回类型</typeparam>
         /// <param name="function">使用事务的操作</param>
         /// <returns>内部返回内容</returns>
         public T UsingTransaction<T>(Func<DbTransaction, T> function)
@@ -368,16 +358,6 @@ namespace DotMaysWind.Data
 
             return result;
         }
-
-        /// <summary>
-        /// 使用数据库事务执行操作
-        /// </summary>
-        /// <param name="function">使用事务的操作</param>
-        /// <returns>受影响的行数</returns>
-        public Int32 UsingTransaction(Func<DbTransaction, Int32> function)
-        {
-            return this.UsingTransaction<Int32>(function);
-        }
         #endregion
 
         #region UsingDataReader
@@ -389,11 +369,11 @@ namespace DotMaysWind.Data
         /// <param name="action">使用数据库读取器的操作</param>
         public void UsingDataReader(ISqlCommand command, DbTransaction transaction, Action<IDataReader> action)
         {
-            this.UsingDataReader(command, transaction, new Func<IDataReader, Boolean>((IDataReader reader) =>
+            this.UsingDataReader(command, transaction, reader =>
             {
                 action(reader);
                 return true;
-            }));
+            });
         }
 
         /// <summary>
@@ -435,11 +415,11 @@ namespace DotMaysWind.Data
         /// <param name="action">使用数据库读取器的操作</param>
         public void UsingDataReader(ISqlCommand command, DbConnection connection, Action<IDataReader> action)
         {
-            this.UsingDataReader(command, connection, new Func<IDataReader, Boolean>((IDataReader reader) =>
+            this.UsingDataReader(command, connection, reader =>
             {
                 action(reader);
                 return true;
-            }));
+            });
         }
 
         /// <summary>
@@ -480,11 +460,11 @@ namespace DotMaysWind.Data
         /// <param name="action">使用数据库读取器的操作</param>
         public void UsingDataReader(ISqlCommand command, Action<IDataReader> action)
         {
-            this.UsingDataReader(command, new Func<IDataReader, Boolean>((IDataReader reader) =>
+            this.UsingDataReader(command, reader =>
             {
                 action(reader);
                 return true;
-            }));
+            });
         }
 
         /// <summary>
@@ -1080,7 +1060,7 @@ namespace DotMaysWind.Data
                 return 0;
             }
 
-            Int32 result = this.UsingTransaction(new Func<DbTransaction, Int32>((DbTransaction transaction) =>
+            Int32 result = this.UsingTransaction(transaction =>
             {
                 Int32 count = 0;
 
@@ -1090,7 +1070,7 @@ namespace DotMaysWind.Data
                 }
 
                 return count;
-            }));
+            });
 
             return result;
         }

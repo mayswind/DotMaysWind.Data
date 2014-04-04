@@ -52,7 +52,7 @@ namespace DotMaysWind.Data.UnitTest
             SqlNotCondition actualCondition = !baseCondition;
 
             String expectedConditionClause = "(NOT((TestColumn2 = @PN_IDX_0)))";
-            String actualConditionClause = actualCondition.GetSqlClause();
+            String actualConditionClause = actualCondition.GetClauseText();
 
             SqlParameter[] expectedParameters = baseCondition.GetAllParameters();
             SqlParameter[] actualParameters = baseCondition.GetAllParameters();

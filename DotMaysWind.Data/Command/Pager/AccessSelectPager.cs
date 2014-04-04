@@ -40,7 +40,7 @@ namespace DotMaysWind.Data.Command.Pager
                     innerCommand.SqlHaving = baseCommand.SqlHaving;
                     innerCommand.SqlOrders = baseCommand.SqlOrders;
 
-                    sb.AppendSelectFrom(innerCommand.GetSqlCommand("T", !orderReverse), true);
+                    sb.AppendSelectFrom(innerCommand.GetCommandText("T", !orderReverse), true);
                     sb.AppendSelectOrderBys(baseCommand.SqlOrders, orderReverse);
                 }
                 else if (realPageIndex < (realPageCount / 2 + realPageCount % 2))//前1/2部分页
@@ -75,7 +75,7 @@ namespace DotMaysWind.Data.Command.Pager
                     innerCommand.PageSize = baseCommand.PageSize;
                     innerCommand.SqlOrders = baseCommand.SqlOrders;
 
-                    sb.AppendSelectFrom(innerCommand.GetSqlCommand("T2", !orderReverse), true);
+                    sb.AppendSelectFrom(innerCommand.GetCommandText("T2", !orderReverse), true);
                     sb.AppendSelectOrderBys(baseCommand.SqlOrders, orderReverse);
                 }
                 else//后1/2部分页
@@ -92,7 +92,7 @@ namespace DotMaysWind.Data.Command.Pager
                     innerCommand.SqlHaving = baseCommand.SqlHaving;
                     innerCommand.SqlOrders = baseCommand.SqlOrders;
 
-                    sb.AppendSelectFrom(innerCommand.GetSqlCommand("T", !orderReverse), true);
+                    sb.AppendSelectFrom(innerCommand.GetCommandText("T", !orderReverse), true);
                     sb.AppendSelectOrderBys(baseCommand.SqlOrders, orderReverse);
                 }
             }

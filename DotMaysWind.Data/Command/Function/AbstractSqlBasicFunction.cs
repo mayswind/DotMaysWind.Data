@@ -73,7 +73,7 @@ namespace DotMaysWind.Data.Command.Function
         /// 获取函数拼接后字符串
         /// </summary>
         /// <returns>函数拼接后字符串</returns>
-        public abstract String GetSqlText();
+        public abstract String GetCommandText();
         #endregion
     }
 }

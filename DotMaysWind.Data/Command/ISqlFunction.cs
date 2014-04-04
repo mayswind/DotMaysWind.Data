@@ -22,6 +22,6 @@ namespace DotMaysWind.Data.Command
         /// 获取函数拼接后字符串
         /// </summary>
         /// <returns>函数拼接后字符串</returns>
-        String GetSqlText();
+        String GetCommandText();
     }
 }

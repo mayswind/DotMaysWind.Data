@@ -9,7 +9,7 @@ namespace DotMaysWind.Data.Configuration
     public class DatabaseSettings : ConfigurationSection
     {
         /// <summary>
-        /// 默认数据库名称
+        /// 获取或设置默认数据库名称
         /// </summary>
         [ConfigurationProperty("defaultDatabase", IsRequired = true)]
         public String DefaultDatabase

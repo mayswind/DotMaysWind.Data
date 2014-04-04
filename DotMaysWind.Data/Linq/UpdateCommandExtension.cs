@@ -20,6 +20,28 @@ namespace DotMaysWind.Data.Linq
         /// <param name="expr">Linq表达式</param>
         /// <exception cref="LinqNotSupportedException">Linq操作不支持</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class UserDataProvider : DatabaseTable<User>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public Boolean UpdateEntity(User user)
+        ///     {
+        ///         return this.Update()
+        ///             .Set<User>(c => c.UserName, user.UserName)
+        ///             .Where<User>(c => c.UserID == user.UserID)
+        ///             .Result() > 0;
+        ///         
+        ///         //UPDATE tbl_Users SET UserName = @UserName WHERE UserID = @UserID
+        ///         //@UserName = user.UserName
+        ///         //@UserID = user.UserID
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public static UpdateCommand Where<T>(this UpdateCommand cmd, Expression<Func<T, Boolean>> expr)
         {
             return cmd.Where(SqlLinqCondition.Create<T>(cmd, expr));
@@ -35,6 +57,28 @@ namespace DotMaysWind.Data.Linq
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class UserDataProvider : DatabaseTable<User>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public Boolean UpdateEntity(User user)
+        ///     {
+        ///         return this.Update()
+        ///             .Set<User>(c => c.UserName, user.UserName)
+        ///             .Where<User>(c => c.UserID == user.UserID)
+        ///             .Result() > 0;
+        ///         
+        ///         //UPDATE tbl_Users SET UserName = @UserName WHERE UserID = @UserID
+        ///         //@UserName = user.UserName
+        ///         //@UserID = user.UserID
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public static UpdateCommand Set<T>(this UpdateCommand cmd, Expression<Func<T, Object>> expr, Object value)
         {
             MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Body);
@@ -63,6 +107,27 @@ namespace DotMaysWind.Data.Linq
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class UserDataProvider : DatabaseTable<User>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public Boolean UpdateEntity(User user)
+        ///     {
+        ///         return this.Update()
+        ///             .Increase<User>(c => c.LoginTimes)
+        ///             .Where<User>(c => c.UserID == user.UserID)
+        ///             .Result() > 0;
+        ///         
+        ///         //UPDATE tbl_Users SET LoginTimes = LoginTimes + 1 WHERE UserID = @UserID
+        ///         //@UserID = user.UserID
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public static UpdateCommand Increase<T>(this UpdateCommand cmd, Expression<Func<T, Object>> expr)
         {
             MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Body);
@@ -91,6 +156,27 @@ namespace DotMaysWind.Data.Linq
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class UserDataProvider : DatabaseTable<User>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public Boolean UpdateEntity(User user)
+        ///     {
+        ///         return this.Update()
+        ///             .Decrease<User>(c => c.LoginTimes)
+        ///             .Where<User>(c => c.UserID == user.UserID)
+        ///             .Result() > 0;
+        ///         
+        ///         //UPDATE tbl_Users SET LoginTimes = LoginTimes - 1 WHERE UserID = @UserID
+        ///         //@UserID = user.UserID
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public static UpdateCommand Decrease<T>(this UpdateCommand cmd, Expression<Func<T, Object>> expr)
         {
             MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Body);

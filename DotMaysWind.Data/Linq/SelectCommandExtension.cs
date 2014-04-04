@@ -23,6 +23,27 @@ namespace DotMaysWind.Data.Linq
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class UserDataProvider : DatabaseTable<User>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public User GetEntity(Int32 userID)
+        ///     {
+        ///         return this.Select()
+        ///             .Querys<User>(c => new { c.UserID, c.UserName })
+        ///             .Where<User>(c => c.UserID == userID)
+        ///             .ToEntity<User>(this) > 0;
+        ///         
+        ///         //SELECT UserID, UserName From tbl_Users WHERE UserID = @UserID
+        ///         //@UserID = userID
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public static SelectCommand Querys<T>(this SelectCommand cmd, Expression<Func<T, Object>> expr)
         {
             NewExpression left = expr.Body as NewExpression;
@@ -57,6 +78,27 @@ namespace DotMaysWind.Data.Linq
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class UserDataProvider : DatabaseTable<User>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public User GetEntity(Int32 userID)
+        ///     {
+        ///         return this.Select()
+        ///             .Query<User>(c => c.UserName, "Name")
+        ///             .Where<User>(c => c.UserID == userID)
+        ///             .ToEntity<User>(this);
+        ///         
+        ///         //SELECT UserID, UserName AS Name From tbl_Users WHERE UserID = @UserID
+        ///         //@UserID = userID
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public static SelectCommand Query<T>(this SelectCommand cmd, Expression<Func<T, Object>> expr, String aliasesName)
         {
             DatabaseColumnAttribute attr = SelectCommandExtension.GetColumnAttribute(cmd, expr.Body);
@@ -74,6 +116,25 @@ namespace DotMaysWind.Data.Linq
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class UserDataProvider : DatabaseTable<User>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public Int32 Count()
+        ///     {
+        ///         return this.Select()
+        ///             .Query<User>(c => c.UserID, SqlAggregateFunction.Count)
+        ///             .Result<Int32>();
+        ///         
+        ///         //SELECT COUNT(UserID) From tbl_Users
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public static SelectCommand Query<T>(this SelectCommand cmd, Expression<Func<T, Object>> expr, SqlAggregateFunction function)
         {
             DatabaseColumnAttribute attr = SelectCommandExtension.GetColumnAttribute(cmd, expr.Body);
@@ -92,6 +153,25 @@ namespace DotMaysWind.Data.Linq
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class UserDataProvider : DatabaseTable<User>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public Int32 Count()
+        ///     {
+        ///         return this.Select()
+        ///             .Query<User>(c => c.UserID, SqlAggregateFunction.Count, "UserCount")
+        ///             .Result<Int32>();
+        ///         
+        ///         //SELECT COUNT(UserID) AS UserCount From tbl_Users
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public static SelectCommand Query<T>(this SelectCommand cmd, Expression<Func<T, Object>> expr, SqlAggregateFunction function, String aliasesName)
         {
             DatabaseColumnAttribute attr = SelectCommandExtension.GetColumnAttribute(cmd, expr.Body);
@@ -113,6 +193,7 @@ namespace DotMaysWind.Data.Linq
         {
             return cmd.Having(SqlLinqCondition.Create<T>(cmd, expr));
         }
+
         /// <summary>
         /// 设置指定查询的语句并返回当前语句
         /// </summary>
@@ -121,6 +202,27 @@ namespace DotMaysWind.Data.Linq
         /// <param name="expr">Linq表达式</param>
         /// <exception cref="LinqNotSupportedException">Linq操作不支持</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class UserDataProvider : DatabaseTable<User>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public User GetEntity(Int32 userID)
+        ///     {
+        ///         return this.Select()
+        ///             .Querys<User>(c => new { c.UserID, c.UserName })
+        ///             .Where<User>(c => c.UserID == userID)
+        ///             .ToEntity<User>(this) > 0;
+        ///         
+        ///         //SELECT UserID, UserName From tbl_Users WHERE UserID = @UserID
+        ///         //@UserID = userID
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public static SelectCommand Where<T>(this SelectCommand cmd, Expression<Func<T, Boolean>> expr)
         {
             return cmd.Where(SqlLinqCondition.Create<T>(cmd, expr));
@@ -136,6 +238,26 @@ namespace DotMaysWind.Data.Linq
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class UserDataProvider : DatabaseTable<User>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public List<User> GetAllEntities()
+        ///     {
+        ///         return this.Select()
+        ///             .Querys<User>(c => new { c.UserID, c.UserName })
+        ///             .OrderBy<User>(c => c.UserID, SqlOrderType.Desc)
+        ///             .ToEntityList<User>(this);
+        ///         
+        ///         //SELECT UserID, UserName From tbl_Users ORDER BY UserID DESC
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public static SelectCommand OrderBy<T>(this SelectCommand cmd, Expression<Func<T, Object>> expr, SqlOrderType orderType)
         {
             DatabaseColumnAttribute attr = SelectCommandExtension.GetColumnAttribute(cmd, expr.Body);
@@ -152,6 +274,26 @@ namespace DotMaysWind.Data.Linq
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class UserDataProvider : DatabaseTable<User>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public DataTable GetAllEntities()
+        ///     {
+        ///         return this.Select()
+        ///             .Querys<User>(c => new { c.UserType })
+        ///             .GroupBy<User>(c => c.UserType)
+        ///             .ToDataTable(this);
+        ///         
+        ///         //SELECT UserType From tbl_Users GROUP BY UserType
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public static SelectCommand GroupBy<T>(this SelectCommand cmd, Expression<Func<T, Object>> expr)
         {
             DatabaseColumnAttribute attr = SelectCommandExtension.GetColumnAttribute(cmd, expr.Body);

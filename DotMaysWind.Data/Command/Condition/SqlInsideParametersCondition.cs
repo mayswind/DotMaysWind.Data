@@ -64,6 +64,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 获取条件语句包含的参数集合
         /// </summary>
+        /// <returns>条件语句参数集合</returns>
         public override SqlParameter[] GetAllParameters()
         {
             if (this._parameters == null)
@@ -78,7 +79,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// 输出条件语句
         /// </summary>
         /// <returns>条件语句</returns>
-        public override String GetSqlClause()
+        public override String GetClauseText()
         {
             if (this._parameters == null || this._parameters.Count <= 0)
             {

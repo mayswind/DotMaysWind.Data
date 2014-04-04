@@ -8,7 +8,7 @@ namespace DotMaysWind.Data
     public enum DatabaseType : byte
     {
         /// <summary>
-        /// 未知类型
+        /// 未知数据库类型
         /// </summary>
         Unknown = 0,
 

@@ -22,6 +22,28 @@ namespace DotMaysWind.Data.Linq
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class UserDataProvider : DatabaseTable<User>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public Boolean InsertEntity(User user)
+        ///     {
+        ///         return this.Insert()
+        ///             .Add<User>(c => c.UserID, user.UserID)
+        ///             .Add<User>(c => c.UserName, user.UserName)
+        ///             .Result() > 0;
+        ///         
+        ///         //INSERT INTO tbl_Users (UserName, UserID) VALUES (@UserName, @UserID)
+        ///         //@UserID = user.UserID
+        ///         //@UserName = user.UserName
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public static InsertCommand Add<T>(this InsertCommand cmd, Expression<Func<T, Object>> expr, Object value)
         {
             MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Body);

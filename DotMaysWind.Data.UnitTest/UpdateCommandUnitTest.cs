@@ -36,7 +36,7 @@ namespace DotMaysWind.Data.UnitTest
             };
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Set(entity);
-            String actualSql = cmd.GetSqlCommand().Trim();
+            String actualSql = cmd.GetCommandText().Trim();
             SqlParameter[] actualParameter = cmd.GetAllParameters();
 
             Assert.AreEqual(expectedSql, actualSql);
@@ -77,7 +77,7 @@ namespace DotMaysWind.Data.UnitTest
                 .Set<TestEntity>(c => c.Test7, entity.Test7)
                 .Set<TestEntity>(c => c.Test8, entity.Test8);
 
-            String actualSql = cmd.GetSqlCommand().Trim();
+            String actualSql = cmd.GetCommandText().Trim();
             SqlParameter[] actualParameter = cmd.GetAllParameters();
 
             Assert.AreEqual(expectedSql, actualSql);
@@ -99,7 +99,7 @@ namespace DotMaysWind.Data.UnitTest
             SqlParameter[] expectedParameter = new SqlParameter[1] { SqlParameter.InternalCreateCustomAction(fakeDb, "TestColumn2", "TestColumn2+1") };
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Increase<TestEntity>(c => c.Test2);
-            String actualSql = cmd.GetSqlCommand().Trim();
+            String actualSql = cmd.GetCommandText().Trim();
             SqlParameter[] actualParameter = cmd.GetAllParameters();
 
             Assert.AreEqual(expectedSql, actualSql);
@@ -116,7 +116,7 @@ namespace DotMaysWind.Data.UnitTest
             SqlParameter[] expectedParameter = new SqlParameter[1] { SqlParameter.InternalCreateCustomAction(fakeDb, "TestColumn2", "TestColumn2-1") };
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Decrease<TestEntity>(c => c.Test2);
-            String actualSql = cmd.GetSqlCommand().Trim();
+            String actualSql = cmd.GetCommandText().Trim();
             SqlParameter[] actualParameter = cmd.GetAllParameters();
 
             Assert.AreEqual(expectedSql, actualSql);

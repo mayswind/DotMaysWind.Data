@@ -50,8 +50,9 @@ namespace DotMaysWind.Data.Command
 
         #region 方法
         /// <summary>
-        /// 输出SQL语句
+        /// 输出数据库命令
         /// </summary>
+        /// <returns>数据库命令</returns>
         public override DbCommand ToDbCommand()
         {
             DbCommand dbCommand = this.CreateDbCommand();

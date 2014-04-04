@@ -151,7 +151,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="from">选择的从Sql语句</param>
         /// <param name="fromAliasesName">从Sql语句的别名</param>
         internal SelectCommand(AbstractDatabase database, SelectCommand from, String fromAliasesName)
-            : this(database, true, from.GetSqlCommand(fromAliasesName)) { }
+            : this(database, true, from.GetCommandText(fromAliasesName)) { }
 
         /// <summary>
         /// 初始化Sql选择语句类
@@ -199,6 +199,19 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="queryFields">要查询的字段名集合</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserID", "UserName");
+        /// 
+        /// //SELECT UserID, UserName FROM tbl_Users
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand Querys(params String[] queryFields)
         {
             if (queryFields != null)
@@ -231,6 +244,21 @@ namespace DotMaysWind.Data.Command
         /// <param name="queryField">要查询的字段名</param>
         /// <param name="aliasesName">字段名的别名</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Query("UserID")
+        ///     .Query("UserName")
+        ///     .Query("LastLoginTime", "LastTime");
+        /// 
+        /// //SELECT UserID, UserName, LastLoginTime AS LastTime FROM tbl_Users
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand Query(String queryField, String aliasesName)
         {
             this._queryFields.Add(SqlQueryField.InternalCreateFromColumn(this, queryField, aliasesName));
@@ -242,6 +270,20 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="queryField">要查询的字段名</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Query("UserID")
+        ///     .Query("UserName");
+        /// 
+        /// //SELECT UserID, UserName FROM tbl_Users
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand Query(String queryField)
         {
             this._queryFields.Add(SqlQueryField.InternalCreateFromColumn(this, queryField));
@@ -271,6 +313,19 @@ namespace DotMaysWind.Data.Command
         /// <param name="columnName">要查询的字段名</param>
         /// <param name="aliasesName">别名</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Query(SqlAggregateFunction.Max, "UserID", "MaxID");
+        /// 
+        /// //SELECT MAX(UserID) AS MaxID FROM tbl_Users
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand Query(SqlAggregateFunction function, String columnName, String aliasesName)
         {
             this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, function, columnName, aliasesName));
@@ -296,6 +351,19 @@ namespace DotMaysWind.Data.Command
         /// <param name="function">合计函数类型</param>
         /// <param name="columnName">要查询的字段名</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Query(SqlAggregateFunction.Max, "UserID");
+        /// 
+        /// //SELECT MAX(UserID) FROM tbl_Users
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand Query(SqlAggregateFunction function, String columnName)
         {
             this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, function, columnName));
@@ -319,6 +387,19 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="function">合计函数类型</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Query(SqlAggregateFunction.Count);
+        /// 
+        /// //SELECT COUNT(*) FROM tbl_Users
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand Query(SqlAggregateFunction function)
         {
             this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, function));
@@ -334,6 +415,21 @@ namespace DotMaysWind.Data.Command
         /// <param name="aliasesName">别名</param>
         /// <exception cref="ArgumentNullException">函数不能为空</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Query("UserID")
+        ///     .Query(db.Functions.Length("UserName"), "NameLength");
+        /// 
+        /// //SELECT UserID, LEN(UserName) FROM tbl_Users
+        /// //"LEN()" will be changed into "LENGTH()" in MySQL, Oracle, or SQLite.
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand Query(ISqlFunction function, String aliasesName)
         {
             if (function == null)
@@ -341,7 +437,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("function");
             }
 
-            this._queryFields.Add(SqlQueryField.InternalCreateFromFunction(this, function.GetSqlText(), aliasesName));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromFunction(this, function.GetCommandText(), aliasesName));
 
             if (function.HasParameters)
             {
@@ -356,6 +452,20 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="function">函数</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Query("UserID")
+        ///     .Query(db.Functions.Upper("UserName"));
+        /// 
+        /// //SELECT UserID, UPPER(UserName) FROM tbl_Users
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand Query(ISqlFunction function)
         {
             return this.Query(function, String.Empty);
@@ -377,7 +487,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("function");
             }
 
-            this._queryFields.Add(SqlQueryField.InternalCreateFromFunction(this, command.GetSqlCommand(true), aliasesName));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromFunction(this, command.GetCommandText(true), aliasesName));
 
             SqlParameter[] parameters = command.GetAllParameters();
             if (parameters != null)
@@ -393,8 +503,22 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 查询插入最后一条记录的ID并返回当前语句
         /// </summary>
-        /// <exception cref="DatabaseNotSupportException">Oracle数据库不支持获取最后一条记录的ID</exception>
+        /// <exception cref="CommandNotSupportedException">Oracle 数据库不支持获取最后插入记录的标识</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .QueryIdentity();
+        /// 
+        /// //SELECT @@IDENTITY FROM tbl_Users
+        /// //"@@IDENTITY" will be changed into "LAST_INSERT_ROWID()" in SQLite, and Oracle does not support this method.
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand QueryIdentity()
         {
             this._queryFields.Add(SqlQueryField.InternalCreateFromFunction(this, this._database.InternalGetIdentityFieldName()));
@@ -410,6 +534,20 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="columnNames">列名信息</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserID", "UserName")
+        ///     .OrderByAsc("CreateTime", "UserName");
+        /// 
+        /// //SELECT UserID, UserName FROM tbl_Users ORDER BY CreateTime, UserName
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand OrderByAsc(params String[] columnNames)
         {
             if (columnNames != null)
@@ -428,6 +566,20 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="columnNames">列名信息</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserID", "UserName")
+        ///     .OrderByDesc("CreateTime", "UserName");
+        /// 
+        /// //SELECT UserID, UserName FROM tbl_Users ORDER BY CreateTime DESC, UserName DESC
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand OrderByDesc(params String[] columnNames)
         {
             if (columnNames != null)
@@ -447,6 +599,20 @@ namespace DotMaysWind.Data.Command
         /// <param name="columnName">字段名</param>
         /// <param name="orderType">排序类型</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserID", "UserName")
+        ///     .OrderByAsc("UserName", SqlOrderType.Asc);
+        /// 
+        /// //SELECT UserID, UserName FROM tbl_Users ORDER BY UserName
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand OrderBy(String columnName, SqlOrderType orderType)
         {
             this._orders.Add(SqlOrder.Create(this, columnName, orderType));
@@ -459,6 +625,20 @@ namespace DotMaysWind.Data.Command
         /// <param name="columnName">字段名</param>
         /// <param name="isAscending">是否升序</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserID", "UserName")
+        ///     .OrderByAsc("UserName", true);
+        /// 
+        /// //SELECT UserID, UserName FROM tbl_Users ORDER BY UserName
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand OrderBy(String columnName, Boolean isAscending)
         {
             this._orders.Add(SqlOrder.Create(this, columnName, isAscending));
@@ -470,6 +650,20 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="columnName">字段名</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserID", "UserName")
+        ///     .OrderByAsc("UserName");
+        /// 
+        /// //SELECT UserID, UserName FROM tbl_Users ORDER BY UserName
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand OrderBy(String columnName)
         {
             this._orders.Add(SqlOrder.Create(this, columnName));
@@ -487,6 +681,20 @@ namespace DotMaysWind.Data.Command
         /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherTableField">另个表格主键</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserID", "UserName")
+        ///     .Join(SqlJoinType.InnerJoin, "UserID", "tbl_Contacts", "UserID");
+        /// 
+        /// //SELECT UserID, UserName FROM tbl_Users INNER JOIN tbl_Contacts ON tbl_Users.UserID = tbl_Contacts.UserID
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand Join(SqlJoinType joinType, String currentTableField, String anotherTableName, String anotherTableField)
         {
             this._joins.Add(new SqlJoinTableName(this, joinType, this._tableName, currentTableField, anotherTableName, anotherTableField));
@@ -500,6 +708,20 @@ namespace DotMaysWind.Data.Command
         /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherTableField">另个表格主键</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserID", "UserName")
+        ///     .InnerJoin("UserID", "tbl_Contacts", "UserID");
+        /// 
+        /// //SELECT UserID, UserName FROM tbl_Users INNER JOIN tbl_Contacts ON tbl_Users.UserID = tbl_Contacts.UserID
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand InnerJoin(String currentTableField, String anotherTableName, String anotherTableField)
         {
             this._joins.Add(new SqlJoinTableName(this, SqlJoinType.InnerJoin, this._tableName, currentTableField, anotherTableName, anotherTableField));
@@ -513,6 +735,20 @@ namespace DotMaysWind.Data.Command
         /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherTableField">另个表格主键</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserID", "UserName")
+        ///     .LeftJoin("UserID", "tbl_Contacts", "UserID");
+        /// 
+        /// //SELECT UserID, UserName FROM tbl_Users LEFT JOIN tbl_Contacts ON tbl_Users.UserID = tbl_Contacts.UserID
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand LeftJoin(String currentTableField, String anotherTableName, String anotherTableField)
         {
             this._joins.Add(new SqlJoinTableName(this, SqlJoinType.LeftJoin, this._tableName, currentTableField, anotherTableName, anotherTableField));
@@ -526,6 +762,20 @@ namespace DotMaysWind.Data.Command
         /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherTableField">另个表格主键</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserID", "UserName")
+        ///     .RightJoin("UserID", "tbl_Contacts", "UserID");
+        /// 
+        /// //SELECT UserID, UserName FROM tbl_Users RIGHT JOIN tbl_Contacts ON tbl_Users.UserID = tbl_Contacts.UserID
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand RightJoin(String currentTableField, String anotherTableName, String anotherTableField)
         {
             this._joins.Add(new SqlJoinTableName(this, SqlJoinType.RightJoin, this._tableName, currentTableField, anotherTableName, anotherTableField));
@@ -539,6 +789,20 @@ namespace DotMaysWind.Data.Command
         /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherTableField">另个表格主键</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserID", "UserName")
+        ///     .FullJoin("UserID", "tbl_Contacts", "UserID");
+        /// 
+        /// //SELECT UserID, UserName FROM tbl_Users FULL JOIN tbl_Contacts ON tbl_Users.UserID = tbl_Contacts.UserID
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand FullJoin(String currentTableField, String anotherTableName, String anotherTableField)
         {
             this._joins.Add(new SqlJoinTableName(this, SqlJoinType.FullJoin, this._tableName, currentTableField, anotherTableName, anotherTableField));
@@ -622,6 +886,21 @@ namespace DotMaysWind.Data.Command
         /// <param name="pageSize">选择记录数量</param>
         /// <exception cref="OverflowException">页面大小不能小于0</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserID", "UserName")
+        ///     .Top(1);
+        /// 
+        /// //SELECT TOP 1 UserID, UserName FROM tbl_Users
+        /// //"TOP" will be changed into "LIMIT" in MySQL or SQLite, or "ROWNUM" in Oracle.
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand Top(Int32 pageSize)
         {
             if (pageSize < 0)
@@ -681,6 +960,20 @@ namespace DotMaysWind.Data.Command
         /// 设置保证返回记录唯一并返回当前语句
         /// </summary>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserName")
+        ///     .Distinct();
+        /// 
+        /// //SELECT DISTINCT UserName FROM tbl_Users
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand Distinct()
         {
             this._useDistinct = true;
@@ -693,6 +986,21 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="groupBys">要分组的字段名集合</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Query("UserType")
+        ///     .Query(SqlAggregateFunction.Count, "UserID", "UserCount")
+        ///     .GroupBy("UserType");
+        /// 
+        /// //SELECT UserType, COUNT(UserID) AS UserCount FROM tbl_Users GROUP BY UserType
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand GroupBy(params String[] groupBys)
         {
             if (groupBys != null)
@@ -708,6 +1016,23 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="having">查询语句</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Query("UserType")
+        ///     .Query(SqlAggregateFunction.Count, "UserID", "UserCount")
+        ///     .GroupBy("UserType");
+        /// 
+        /// cmd.Having(SqlCondition.Create(cmd, SqlAggregateFunction.Count, "UserID", SqlOperator.GreaterThanOrEqual, 20));
+        /// 
+        /// //SELECT UserType, COUNT(UserID) AS UserCount FROM tbl_Users GROUP BY UserType HAVING COUNT(UserID) >= 20
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand Having(ISqlCondition having)
         {
             this._having = having;
@@ -720,6 +1045,22 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="having">查询语句</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Query("UserType")
+        ///     .Query(SqlAggregateFunction.Count, "UserID", "UserCount")
+        ///     .GroupBy("UserType")
+        ///     .Having(c => c.Create(SqlAggregateFunction.Count, "UserID", SqlOperator.GreaterThanOrEqual, 20));
+        /// 
+        /// //SELECT UserType, COUNT(UserID) AS UserCount FROM tbl_Users GROUP BY UserType HAVING COUNT(UserID) >= 20
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand Having(Func<SqlConditionBuilder, ISqlCondition> having)
         {
             this._where = having(this._conditionBuilder);
@@ -732,6 +1073,23 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="where">查询语句</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserID", "UserName");
+        /// 
+        /// cmd.Where(SqlCondition.Equal(cmd, "UserType", 0) & SqlCondition.LikeAll(cmd, "UserName", "admin"));
+        /// 
+        /// //SELECT UserID, UserName FROM tbl_Users WHERE UserType = @UserType AND UserName LIKE @UserName
+        /// //@UserType = 0
+        /// //@UserName = "%admin%"
+        /// 
+        /// DataRow row = cmd.ToDataRow();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand Where(ISqlCondition where)
         {
             this._where = where;
@@ -744,6 +1102,22 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="where">查询语句</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserID", "UserName")
+        ///     .Where(c => c.Equal("UserType", 0) & c.LikeAll("UserName", "admin"));
+        /// 
+        /// //SELECT UserID, UserName FROM tbl_Users WHERE UserType = @UserType AND UserName LIKE @UserName
+        /// //@UserType = 0
+        /// //@UserName = "%admin%"
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
         public SelectCommand Where(Func<SqlConditionBuilder, ISqlCondition> where)
         {
             this._where = where(this._conditionBuilder);
@@ -759,6 +1133,17 @@ namespace DotMaysWind.Data.Command
         /// 获取指定字段记录数
         /// </summary>
         /// <returns>指定字段记录数</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Int32 count = db.CreateSelectCommand("tbl_Users")
+        ///     .Count();
+        /// 
+        /// //SELECT COUNT(*) FROM tbl_Users
+        /// ]]>
+        /// </code>
+        /// </example>
         public Int32 Count()
         {
             this._queryFields.Clear();
@@ -792,6 +1177,17 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="columnName">字段名称</param>
         /// <returns>指定字段记录数</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Int32 count = db.CreateSelectCommand("tbl_Users")
+        ///     .Count("UserID");
+        /// 
+        /// //SELECT COUNT(UserID) FROM tbl_Users
+        /// ]]>
+        /// </code>
+        /// </example>
         public Int32 Count(String columnName)
         {
             this._queryFields.Clear();
@@ -829,6 +1225,17 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <typeparam name="T">返回结果的类型</typeparam>
         /// <returns>指定字段记录数</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Int32 count = db.CreateSelectCommand("tbl_Users")
+        ///     .Count<Int32>();
+        /// 
+        /// //SELECT COUNT(*) FROM tbl_Users
+        /// ]]>
+        /// </code>
+        /// </example>
         public T Count<T>()
         {
             this._queryFields.Clear();
@@ -865,6 +1272,17 @@ namespace DotMaysWind.Data.Command
         /// <typeparam name="T">返回结果的类型</typeparam>
         /// <param name="columnName">字段名称</param>
         /// <returns>指定字段记录数</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Int32 count = db.CreateSelectCommand("tbl_Users")
+        ///     .Count<Int32>("UserID");
+        /// 
+        /// //SELECT COUNT(UserID) FROM tbl_Users
+        /// ]]>
+        /// </code>
+        /// </example>
         public T Count<T>(String columnName)
         {
             this._queryFields.Clear();
@@ -905,6 +1323,17 @@ namespace DotMaysWind.Data.Command
         /// <typeparam name="T">返回结果的类型</typeparam>
         /// <param name="columnName">字段名称</param>
         /// <returns>指定字段最大值</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Int32 maxID = db.CreateSelectCommand("tbl_Users")
+        ///     .Max<Int32>("UserID");
+        /// 
+        /// //SELECT MAX(UserID) FROM tbl_Users
+        /// ]]>
+        /// </code>
+        /// </example>
         public T Max<T>(String columnName)
         {
             this._queryFields.Clear();
@@ -945,6 +1374,17 @@ namespace DotMaysWind.Data.Command
         /// <typeparam name="T">返回结果的类型</typeparam>
         /// <param name="columnName">字段名称</param>
         /// <returns>指定字段最小值</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Int32 minID = db.CreateSelectCommand("tbl_Users")
+        ///     .Min<Int32>("UserID");
+        /// 
+        /// //SELECT MIN(UserID) FROM tbl_Users
+        /// ]]>
+        /// </code>
+        /// </example>
         public T Min<T>(String columnName)
         {
             this._queryFields.Clear();
@@ -985,6 +1425,17 @@ namespace DotMaysWind.Data.Command
         /// <typeparam name="T">返回结果的类型</typeparam>
         /// <param name="columnName">字段名称</param>
         /// <returns>指定字段平均值</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Int32 avgID = db.CreateSelectCommand("tbl_Users")
+        ///     .Avg<Int32>("UserID");
+        /// 
+        /// //SELECT AVG(UserID) FROM tbl_Users
+        /// ]]>
+        /// </code>
+        /// </example>
         public T Avg<T>(String columnName)
         {
             this._queryFields.Clear();
@@ -1024,6 +1475,18 @@ namespace DotMaysWind.Data.Command
         /// 获取选择记录结果的第一条数据
         /// </summary>
         /// <returns>数据行</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// DataRow row = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserID", "UserName")
+        ///     .First();
+        /// 
+        /// //SELECT TOP 1 UserID, UserName FROM tbl_Users
+        /// ]]>
+        /// </code>
+        /// </example>
         public DataRow First()
         {
             this._pageSize = 1;
@@ -1059,6 +1522,18 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <typeparam name="T">返回结果的类型</typeparam>
         /// <returns>操作的结果（Select）</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Int32 maxID = db.CreateSelectCommand("tbl_Users")
+        ///     .Query(SqlAggregateFunction.Max, "UserID");
+        ///     .Result<Int32>();
+        /// 
+        /// //SELECT MAX(UserID) FROM tbl_Users
+        /// ]]>
+        /// </code>
+        /// </example>
         public T Result<T>()
         {
             return this._database.ExecuteScalar<T>(this);
@@ -1220,6 +1695,24 @@ namespace DotMaysWind.Data.Command
         /// 使用数据库读取器执行操作
         /// </summary>
         /// <param name="action">使用数据库读取器的操作</param>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users");
+        /// 
+        /// List<String> result = new List<String>();
+        /// 
+        /// cmd.UsingDataReader(r =>
+        /// {
+        ///     while (r.Read())
+        ///     {
+        ///         result.Add(r["UserName"] as String);
+        ///     }
+        /// });
+        /// ]]>
+        /// </code>
+        /// </example>
         public void UsingDataReader(Action<IDataReader> action)
         {
             this._database.UsingDataReader(this, action);
@@ -1231,6 +1724,26 @@ namespace DotMaysWind.Data.Command
         /// <typeparam name="T">返回类型</typeparam>
         /// <param name="function">使用数据库读取器的操作</param>
         /// <returns>返回的内容</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users");
+        /// 
+        /// List<String> result = cmd.UsingDataReader(r =>
+        /// {
+        ///     List<String> list = new List<String>();
+        /// 
+        ///     while (r.Read())
+        ///     {
+        ///         list.Add(r["UserName"] as String);
+        ///     }
+        /// 
+        ///     return list;
+        /// });
+        /// ]]>
+        /// </code>
+        /// </example>
         public T UsingDataReader<T>(Func<IDataReader, T> function)
         {
             return this._database.UsingDataReader(this, function);
@@ -1238,55 +1751,55 @@ namespace DotMaysWind.Data.Command
         #endregion
         #endregion
 
-        #region GetSqlCommand
+        #region GetCommandText
         /// <summary>
-        /// 输出SQL语句
+        /// 获取Sql语句内容
         /// </summary>
-        /// <returns>SQL语句</returns>
-        public override String GetSqlCommand()
+        /// <returns>Sql语句内容</returns>
+        public override String GetCommandText()
         {
-            return this.GetSqlCommand(false, String.Empty, false);
+            return this.GetCommandText(false, String.Empty, false);
         }
 
         /// <summary>
-        /// 输出SQL语句
+        /// 获取Sql语句内容
         /// </summary>
         /// <param name="containParentheses">是否包含括号</param>
-        /// <returns>SQL语句</returns>
-        public String GetSqlCommand(Boolean containParentheses)
+        /// <returns>Sql语句内容</returns>
+        public String GetCommandText(Boolean containParentheses)
         {
-            return this.GetSqlCommand(containParentheses, String.Empty, false);
+            return this.GetCommandText(containParentheses, String.Empty, false);
         }
 
         /// <summary>
-        /// 输出SQL语句
+        /// 获取Sql语句内容
         /// </summary>
         /// <param name="aliasesName">别名</param>
-        /// <returns>SQL语句</returns>
-        public String GetSqlCommand(String aliasesName)
+        /// <returns>Sql语句内容</returns>
+        public String GetCommandText(String aliasesName)
         {
-            return this.GetSqlCommand(true, aliasesName, false);
+            return this.GetCommandText(true, aliasesName, false);
         }
 
         /// <summary>
-        /// 输出SQL语句
+        /// 获取Sql语句内容
         /// </summary>
         /// <param name="aliasesName">别名</param>
         /// <param name="orderReverse">是否反转排序</param>
-        /// <returns>SQL语句</returns>
-        public String GetSqlCommand(String aliasesName, Boolean orderReverse)
+        /// <returns>Sql语句内容</returns>
+        public String GetCommandText(String aliasesName, Boolean orderReverse)
         {
-            return this.GetSqlCommand(true, aliasesName, orderReverse);
+            return this.GetCommandText(true, aliasesName, orderReverse);
         }
 
         /// <summary>
-        /// 输出SQL语句
+        /// 获取Sql语句内容
         /// </summary>
         /// <param name="containParentheses">是否包含括号</param>
         /// <param name="aliasesName">别名</param>
         /// <param name="orderReverse">是否反转排序</param>
-        /// <returns>SQL语句</returns>
-        private String GetSqlCommand(Boolean containParentheses, String aliasesName, Boolean orderReverse)
+        /// <returns>Sql语句内容</returns>
+        private String GetCommandText(Boolean containParentheses, String aliasesName, Boolean orderReverse)
         {
             Boolean hasAliasesName = !String.IsNullOrEmpty(aliasesName);
             String sql = this._database.InternalGetPagerSelectCommand(this, orderReverse);
@@ -1313,8 +1826,9 @@ namespace DotMaysWind.Data.Command
 
         #region ToDbCommand/GetAllParameters
         /// <summary>
-        /// 输出SQL语句
+        /// 输出数据库命令
         /// </summary>
+        /// <returns>数据库命令</returns>
         public override DbCommand ToDbCommand()
         {
             DbCommand dbCommand = this.CreateDbCommand();

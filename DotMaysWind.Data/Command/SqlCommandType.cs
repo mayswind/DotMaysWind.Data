@@ -3,7 +3,7 @@
 namespace DotMaysWind.Data.Command
 {
     /// <summary>
-    /// Sqk语句类型
+    /// Sql语句类型
     /// </summary>
     public enum SqlCommandType : byte
     {

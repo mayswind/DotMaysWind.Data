@@ -20,20 +20,21 @@ namespace DotMaysWind.Data.Command
         String TableName { get; }
 
         /// <summary>
-        /// 输出条件语句内容
+        /// 获取所有参数集合
         /// </summary>
-        /// <returns>条件语句内容</returns>
+        /// <returns>所有参数集合</returns>
         SqlParameter[] GetAllParameters();
 
         /// <summary>
-        /// 输出SQL语句
+        /// 获取Sql语句内容
         /// </summary>
-        /// <returns>SQL语句</returns>
-        String GetSqlCommand();
+        /// <returns>Sql语句内容</returns>
+        String GetCommandText();
 
         /// <summary>
-        /// 输出SQL语句
+        /// 输出数据库命令
         /// </summary>
+        /// <returns>数据库命令</returns>
         DbCommand ToDbCommand();
     }
 }

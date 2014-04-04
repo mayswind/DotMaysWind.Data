@@ -323,7 +323,7 @@ namespace DotMaysWind.Data.Command
                     this._stringBuilder.Append(')');
                 }
                 
-                this._stringBuilder.Append(' ').Append(joins[0].GetSqlClause());
+                this._stringBuilder.Append(' ').Append(joins[0].GetClauseText());
 
                 if (joins.Count > 1)
                 {
@@ -332,7 +332,7 @@ namespace DotMaysWind.Data.Command
                     for (Int32 i = 1; i < joins.Count; i++)
                     {
                         sb.Append(' ');
-                        sb.Append(joins[i].GetSqlClause());
+                        sb.Append(joins[i].GetClauseText());
                         sb.Insert(0, '(').Append(')');
                     }
                 }
@@ -365,7 +365,7 @@ namespace DotMaysWind.Data.Command
         {
             if (condition != null)
             {
-                this._stringBuilder.Append("WHERE ").Append(condition.GetSqlClause()).Append(' ');
+                this._stringBuilder.Append("WHERE ").Append(condition.GetClauseText()).Append(' ');
             }
 
             return this;
@@ -380,7 +380,7 @@ namespace DotMaysWind.Data.Command
         {
             if (condition != null)
             {
-                this._stringBuilder.Append("HAVING ").Append(condition.GetSqlClause()).Append(' ');
+                this._stringBuilder.Append("HAVING ").Append(condition.GetClauseText()).Append(' ');
             }
 
             return this;
@@ -504,11 +504,11 @@ namespace DotMaysWind.Data.Command
         }
         #endregion
 
-        #region 输出SQL语句结果
+        #region 获取Sql语句内容
         /// <summary>
-        /// 输出SQL语句结果
+        /// 获取Sql语句内容
         /// </summary>
-        /// <returns>SQL语句结果</returns>
+        /// <returns>Sql语句内容</returns>
         public override String ToString()
         {
             return this._stringBuilder.ToString();

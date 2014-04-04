@@ -8,7 +8,7 @@ using DotMaysWind.Data.Command.Pager;
 namespace DotMaysWind.Data
 {
     /// <summary>
-    /// SQL Server Compact Edition数据库
+    /// SQL Server Compact Edition 数据库类
     /// </summary>
     public class SqlServerCeDatabase : AbstractDatabase
     {

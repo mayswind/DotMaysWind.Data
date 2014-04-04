@@ -63,6 +63,22 @@ namespace DotMaysWind.Data.Command
         /// <param name="columnName">字段名</param>
         /// <param name="value">内容</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// UpdateCommand cmd = db.CreateUpdateCommand("tbl_Users")
+        ///     .Set("UserName", "admin")
+        ///     .Where(c => c.Equal("UserID", 1));
+        /// 
+        /// //UPDATE tbl_Users SET UserName = @UserName WHERE UserID = @UserID
+        /// //@UserName = "admin"
+        /// //@UserID = 1
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
         public UpdateCommand Set(String columnName, Object value)
         {
             this._parameters.Add(this.CreateSqlParameter(columnName, value));
@@ -76,6 +92,22 @@ namespace DotMaysWind.Data.Command
         /// <param name="dbType">数据类型</param>
         /// <param name="value">内容</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// UpdateCommand cmd = db.CreateUpdateCommand("tbl_Users")
+        ///     .Set("UserName", DbType.String, "admin");
+        ///     .Where(c => c.Equal("UserID", 1));
+        /// 
+        /// //UPDATE tbl_Users SET UserName = @UserName WHERE UserID = @UserID
+        /// //@UserName = "admin"
+        /// //@UserID = 1
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
         public UpdateCommand Set(String columnName, DbType dbType, Object value)
         {
             this._parameters.Add(this.CreateSqlParameter(columnName, dbType, value));
@@ -89,6 +121,22 @@ namespace DotMaysWind.Data.Command
         /// <param name="function">函数</param>
         /// <exception cref="ArgumentNullException">函数不能为空</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// UpdateCommand cmd = db.CreateUpdateCommand("tbl_Users")
+        ///     .Set("LastLoginTime", db.Functions.Now());
+        ///     .Where(c => c.Equal("UserID", 1));
+        /// 
+        /// //UPDATE tbl_Users SET LastLoginTime = GETDATE() WHERE UserID = @UserID
+        /// //@UserID = 1
+        /// //"GETDATE()" will be changed into "NOW()" in Access or MySQL, "SYSDATE" in Oracle, or "DATETIME('NOW')" in SQLite.
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
         public UpdateCommand Set(String columnName, ISqlFunction function)
         {
             if (function == null)
@@ -96,7 +144,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("function");
             }
 
-            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, function.GetSqlText()));
+            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, function.GetCommandText()));
 
             if (function.HasParameters)
             {
@@ -113,6 +161,28 @@ namespace DotMaysWind.Data.Command
         /// <param name="command">选择语句</param>
         /// <exception cref="ArgumentNullException">选择语句不能为空</exception>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand countCmd = db.CreateSelectCommand("tbl_Uploads")
+        ///     .Query(SqlAggregateFunction.Count)
+        ///     .Where(c => c.Equal("UserID", 1));
+        /// 
+        /// UpdateCommand cmd = db.CreateUpdateCommand("tbl_Users")
+        ///     .Set("UserName", "admin")
+        ///     .Set("UploadCount", countCmd)
+        ///     .Where(c => c.Equal("UserID", 1));
+        /// 
+        /// //UPDATE tbl_Users SET UserName = @UserName, UploadCount = (SELECT COUNT(*) FROM tbl_Uploads WHERE UserID = @UserID_Select) WHERE UserID = @UserID_Update
+        /// //@UserName = "admin"
+        /// //@UserID_Select = 1
+        /// //@UserID_Update = 1
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
         public UpdateCommand Set(String columnName, SelectCommand command)
         {
             if (command == null)
@@ -120,7 +190,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("command");
             }
 
-            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, command.GetSqlCommand()));
+            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, command.GetCommandText()));
 
             SqlParameter[] parameters = command.GetAllParameters();
 
@@ -137,6 +207,21 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="columnName">字段名</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// UpdateCommand cmd = db.CreateUpdateCommand("tbl_Users")
+        ///     .Increase("LoginTimes")
+        ///     .Where(c => c.Equal("UserID", 1));
+        /// 
+        /// //UPDATE tbl_Users SET LoginTimes = LoginTimes + 1 WHERE UserID = @UserID
+        /// //@UserID = 1
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
         public UpdateCommand Increase(String columnName)
         {
             this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, columnName + "+1"));
@@ -148,6 +233,21 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="columnName">字段名</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// UpdateCommand cmd = db.CreateUpdateCommand("tbl_Users")
+        ///     .Decrease("LoginTimes")
+        ///     .Where(c => c.Equal("UserID", 1));
+        /// 
+        /// //UPDATE tbl_Users SET LoginTimes = LoginTimes - 1 WHERE UserID = @UserID
+        /// //@UserID = 1
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
         public UpdateCommand Decrease(String columnName)
         {
             this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, columnName + "-1"));
@@ -159,6 +259,23 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="where">查询语句</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// UpdateCommand cmd = db.CreateUpdateCommand("tbl_Users")
+        ///     .Set("UserName", "admin");
+        /// 
+        /// cmd.Where(SqlCondition.Equal(cmd, "UserID", 1));
+        /// 
+        /// //UPDATE tbl_Users SET UserName = @UserName WHERE UserID = @UserID
+        /// //@UserName = "admin"
+        /// //@UserID = 1
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
         public UpdateCommand Where(ISqlCondition where)
         {
             this._where = where;
@@ -171,6 +288,22 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="where">查询语句</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// UpdateCommand cmd = db.CreateUpdateCommand("tbl_Users")
+        ///     .Set("UserName", "admin")
+        ///     .Where(c => c.Equal("UserID", 1));
+        /// 
+        /// //UPDATE tbl_Users SET UserName = @UserName WHERE UserID = @UserID
+        /// //@UserName = "admin"
+        /// //@UserID = 1
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
         public UpdateCommand Where(Func<SqlConditionBuilder, ISqlCondition> where)
         {
             this._where = where(this._conditionBuilder);
@@ -180,10 +313,10 @@ namespace DotMaysWind.Data.Command
         #endregion
 
         /// <summary>
-        /// 输出SQL语句
+        /// 获取Sql语句内容
         /// </summary>
-        /// <returns>SQL语句</returns>
-        public override String GetSqlCommand()
+        /// <returns>Sql语句内容</returns>
+        public override String GetCommandText()
         {
             SqlCommandBuilder sb = new SqlCommandBuilder(this._database);
 

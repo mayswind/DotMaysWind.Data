@@ -36,6 +36,20 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="where">查询语句</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// DeleteCommand cmd = db.CreateDeleteCommand("tbl_Users");
+        /// 
+        /// cmd.Where(SqlCondition.Equal(cmd, "UserID", 1));
+        /// 
+        /// //DELETE tbl_Users WHERE UserID = 1
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
         public DeleteCommand Where(ISqlCondition where)
         {
             this._where = where;
@@ -48,6 +62,19 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="where">查询语句</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// DeleteCommand cmd = db.CreateDeleteCommand("tbl_Users");
+        ///     .Where(c => c.Equal("UserID", 1)
+        /// 
+        /// //DELETE tbl_Users WHERE UserID = 1
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
         public DeleteCommand Where(Func<SqlConditionBuilder, ISqlCondition> where)
         {
             this._where = where(this._conditionBuilder);
@@ -56,10 +83,10 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
-        /// 输出SQL语句
+        /// 获取Sql语句内容
         /// </summary>
-        /// <returns>SQL语句</returns>
-        public override String GetSqlCommand()
+        /// <returns>Sql语句内容</returns>
+        public override String GetCommandText()
         {
             SqlCommandBuilder sb = new SqlCommandBuilder(this.Database);
             sb.AppendDeletePrefix().AppendTableName(this._tableName).AppendWhere(this._where);

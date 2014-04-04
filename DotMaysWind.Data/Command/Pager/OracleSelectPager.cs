@@ -46,7 +46,7 @@ namespace DotMaysWind.Data.Command.Pager
                 innerCommand.InternalQuerys(baseCommand.QueryFields.ToArray());
                 innerCommand.InternalQuerys(SqlQueryField.InternalCreateFromFunction(baseCommand, "ROWNUM", "RN"));
 
-                sb.AppendSelectFrom(innerCommand.GetSqlCommand(), true);
+                sb.AppendSelectFrom(innerCommand.GetCommandText(), true);
                 sb.AppendWhere(SqlCondition.InternalCreateAction(baseCommand, "RN", SqlOperator.GreaterThan, baseCommand.RecordStart.ToString()));
             }
             else//正常模式

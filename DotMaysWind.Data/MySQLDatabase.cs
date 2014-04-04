@@ -8,7 +8,7 @@ using DotMaysWind.Data.Command.Pager;
 namespace DotMaysWind.Data
 {
     /// <summary>
-    /// MySql数据库
+    /// MySql 数据库类
     /// </summary>
     public class MySQLDatabase : AbstractDatabase
     {

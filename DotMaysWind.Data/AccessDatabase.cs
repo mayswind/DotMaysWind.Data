@@ -8,7 +8,7 @@ using DotMaysWind.Data.Command.Pager;
 namespace DotMaysWind.Data
 {
     /// <summary>
-    /// Access数据库
+    /// Access 数据库类
     /// </summary>
     public class AccessDatabase : AbstractDatabase
     {

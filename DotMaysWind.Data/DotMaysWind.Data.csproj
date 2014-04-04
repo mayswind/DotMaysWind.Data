@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccessDatabase.cs" />
-    <Compile Include="CommandNotSupportException.cs" />
+    <Compile Include="CommandNotSupportedException.cs" />
     <Compile Include="Command\AbstractSqlCommand.cs" />
     <Compile Include="Command\AbstractSqlCommandWithWhere.cs" />
     <Compile Include="Command\Condition\AbstractSqlCondition.cs" />
@@ -106,7 +106,7 @@
     <Compile Include="AbstractDatabase.cs" />
     <Compile Include="DatabaseConnectionWrapper.cs" />
     <Compile Include="DatabaseFactory.cs" />
-    <Compile Include="DatabaseNotSupportException.cs" />
+    <Compile Include="DatabaseNotSupportedException.cs" />
     <Compile Include="DatabaseType.cs" />
     <Compile Include="DbConvert.cs" />
     <Compile Include="DbProviderFactoryType.cs" />

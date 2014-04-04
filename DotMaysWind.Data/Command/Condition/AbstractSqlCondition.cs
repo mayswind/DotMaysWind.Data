@@ -48,7 +48,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// 输出条件语句内容
         /// </summary>
         /// <returns>条件语句内容</returns>
-        public abstract String GetSqlClause();
+        public abstract String GetClauseText();
 
         /// <summary>
         /// 获取当前参数的哈希值
@@ -199,7 +199,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>当前对象的信息</returns>
         public override String ToString()
         {
-            return String.Format("{0}, {1}", base.ToString(), this.GetSqlClause());
+            return String.Format("{0}, {1}", base.ToString(), this.GetClauseText());
         }
         #endregion
     }

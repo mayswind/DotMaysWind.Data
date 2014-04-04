@@ -29,6 +29,7 @@ namespace DotMaysWind.Data.Command.Function
         /// </summary>
         /// <param name="condition">函数条件</param>
         /// <param name="contentTwo">内容2</param>
+        /// <returns>Sql判空函数</returns>
         public SqlInnerFunction IsNull(String condition, String contentTwo)
         {
             return new SqlInnerFunction(this._baseDatabase, SqlInnerFunctionType.IsNull, condition, contentTwo);

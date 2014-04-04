@@ -43,7 +43,8 @@ namespace DotMaysWind.Data.Command.Function
         /// 获取函数拼接后字符串
         /// </summary>
         /// <returns>函数拼接后字符串</returns>
-        public override String GetSqlText()
+        /// <exception cref="CommandNotSupportedException">指定函数不受当前数据库支持</exception>
+        public override String GetCommandText()
         {
             switch (this._functionType)
             {
@@ -70,7 +71,7 @@ namespace DotMaysWind.Data.Command.Function
                 case SqlInnerFunctionType.DatePart:
                     return this._baseDatabase.InternalGetDatePartFunction(this._parameters[0], this._parameters[1]);
                 default:
-                    throw new DatabaseNotSupportException();
+                    throw new CommandNotSupportedException("The database does not support this function.");
             }
         }
         #endregion

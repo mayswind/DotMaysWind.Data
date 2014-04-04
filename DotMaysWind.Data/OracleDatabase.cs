@@ -8,7 +8,7 @@ using DotMaysWind.Data.Command.Pager;
 namespace DotMaysWind.Data
 {
     /// <summary>
-    /// Oracle数据库
+    /// Oracle 数据库类
     /// </summary>
     public class OracleDatabase : AbstractDatabase
     {
@@ -61,11 +61,11 @@ namespace DotMaysWind.Data
         /// <summary>
         /// 获取最后一条记录需要查询的名称
         /// </summary>
-        /// <exception cref="DatabaseNotSupportException">Oracle不支持获取最后一条记录</exception>
+        /// <exception cref="CommandNotSupportedException">Oracle 数据库不支持获取最后插入记录的标识</exception>
         /// <returns>需要查询的名称</returns>
         internal override String InternalGetIdentityFieldName()
         {
-            throw new DatabaseNotSupportException("Oracle database does not support identity.");
+            throw new CommandNotSupportedException("Oracle database does not support identity querying.");
         }
 
         /// <summary>

@@ -48,6 +48,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 获取条件语句包含的参数集合
         /// </summary>
+        /// <returns>条件语句参数集合</returns>
         public override SqlParameter[] GetAllParameters()
         {
             return this._baseCondition.GetAllParameters();
@@ -57,12 +58,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// 输出条件语句
         /// </summary>
         /// <returns>条件语句</returns>
-        public override String GetSqlClause()
+        public override String GetClauseText()
         {
             StringBuilder sb = new StringBuilder();
 
             sb.Append("(NOT(");
-            sb.Append(this._baseCondition.GetSqlClause());
+            sb.Append(this._baseCondition.GetClauseText());
             sb.Append("))");
 
             return sb.ToString();

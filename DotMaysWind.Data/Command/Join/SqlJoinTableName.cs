@@ -41,10 +41,10 @@ namespace DotMaysWind.Data.Command.Join
 
         #region 方法
         /// <summary>
-        /// 输出连接语句
+        /// 获取连接语句内容
         /// </summary>
-        /// <returns>连接语句</returns>
-        public override String GetSqlClause()
+        /// <returns>连接语句内容</returns>
+        public override String GetClauseText()
         {
             StringBuilder sb = new StringBuilder();
 

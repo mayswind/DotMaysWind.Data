@@ -12,11 +12,29 @@ namespace DotMaysWind.Data.Orm
     {
         #region 扩展方法
         /// <summary>
-        /// 插入更新实体所有参数并返回当前语句
+        /// 更新指定实体所有参数并返回当前语句
         /// </summary>
-        /// <param name="cmd">插入语句</param>
+        /// <param name="cmd">更新语句</param>
         /// <param name="entity">实体</param>
         /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class UserDataProvider : DatabaseTable<User>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public Boolean UpdateEntity(User user)
+        ///     {
+        ///         return this.Update()
+        ///             .Set(user)
+        ///             .Where<User>(c => c.UserID == user.UserID)
+        ///             .Result() > 0;
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public static UpdateCommand Set(this UpdateCommand cmd, Object entity)
         {
             SqlParameter[] parameters = EntityHelper.InternalGetSqlParameters(cmd, entity);

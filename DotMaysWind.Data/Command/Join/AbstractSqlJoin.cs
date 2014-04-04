@@ -99,10 +99,10 @@ namespace DotMaysWind.Data.Command.Join
         }
 
         /// <summary>
-        /// 输出连接语句
+        /// 获取连接语句内容
         /// </summary>
-        /// <returns>连接语句</returns>
-        public abstract String GetSqlClause();
+        /// <returns>连接语句内容</returns>
+        public abstract String GetClauseText();
         #endregion
 
         #region 重载方法
@@ -112,7 +112,7 @@ namespace DotMaysWind.Data.Command.Join
         /// <returns>当前对象的信息</returns>
         public override String ToString()
         {
-            return String.Format("{0}, {1}", base.ToString(), this.GetSqlClause());
+            return String.Format("{0}, {1}", base.ToString(), this.GetClauseText());
         }
         #endregion
     }
