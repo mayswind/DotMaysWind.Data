@@ -92,7 +92,14 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>条件列表</returns>
         public static SqlNotCondition operator !(AbstractSqlCondition condition)
         {
-            return SqlCondition.Not(condition._baseCommand, condition);
+            if (condition == null)
+            {
+                return null;
+            }
+            else
+            {
+                return SqlCondition.Not(condition._baseCommand, condition);
+            }
         }
 
         /// <summary>
@@ -101,57 +108,34 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="condition1">条件1</param>
         /// <param name="condition2">条件2</param>
         /// <returns>条件列表</returns>
-        public static SqlConditionList operator &(AbstractSqlCondition condition1, AbstractSqlCondition condition2)
+        public static AbstractSqlCondition operator &(AbstractSqlCondition condition1, AbstractSqlCondition condition2)
         {
+            if (condition1 == null && condition2 == null)
+            {
+                return null;
+            }
+            else if (condition1 != null && condition2 == null)
+            {
+                return condition1;
+            }
+            else if (condition1 == null && condition2 != null)
+            {
+                return condition2;
+            }
+
             if (condition1.ConditionType == SqlConditionType.ConditionList)
             {
                 SqlConditionList list = condition1 as SqlConditionList;
+                list.Add(condition2);
 
-                return list & condition2;
+                return list;
             }
             else if (condition2.ConditionType == SqlConditionType.ConditionList)
             {
                 SqlConditionList list = condition2 as SqlConditionList;
+                list.Add(condition1);
 
-                return condition1 & list;
-            }
-            else
-            {
-                return condition1 & condition2;
-            }
-        }
-
-        /// <summary>
-        /// 两个Sql条件语句执行与操作
-        /// </summary>
-        /// <param name="condition1">条件1</param>
-        /// <param name="condition2">条件2</param>
-        /// <returns>条件列表</returns>
-        public static SqlConditionList operator &(SqlConditionList condition1, AbstractSqlCondition condition2)
-        {
-            if (condition1.ConcatType == SqlWhereConcatType.And)
-            {
-                condition1.Add(condition2);
-                return condition1;
-            }
-            else
-            {
-                return SqlCondition.And(condition1._baseCommand, condition1, condition2);
-            }
-        }
-
-        /// <summary>
-        /// 两个Sql条件语句执行与操作
-        /// </summary>
-        /// <param name="condition1">条件1</param>
-        /// <param name="condition2">条件2</param>
-        /// <returns>条件列表</returns>
-        public static SqlConditionList operator &(AbstractSqlCondition condition1, SqlConditionList condition2)
-        {
-            if (condition2.ConcatType == SqlWhereConcatType.And)
-            {
-                condition2.Add(condition2);
-                return condition2;
+                return list;
             }
             else
             {
@@ -165,57 +149,34 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="condition1">条件1</param>
         /// <param name="condition2">条件2</param>
         /// <returns>条件列表</returns>
-        public static SqlConditionList operator |(AbstractSqlCondition condition1, AbstractSqlCondition condition2)
+        public static AbstractSqlCondition operator |(AbstractSqlCondition condition1, AbstractSqlCondition condition2)
         {
+            if (condition1 == null && condition2 == null)
+            {
+                return null;
+            }
+            else if (condition1 != null && condition2 == null)
+            {
+                return condition1;
+            }
+            else if (condition1 == null && condition2 != null)
+            {
+                return condition2;
+            }
+
             if (condition1.ConditionType == SqlConditionType.ConditionList)
             {
                 SqlConditionList list = condition1 as SqlConditionList;
+                list.Add(condition2);
 
-                return list | condition2;
+                return list;
             }
             else if (condition2.ConditionType == SqlConditionType.ConditionList)
             {
                 SqlConditionList list = condition2 as SqlConditionList;
+                list.Add(condition1);
 
-                return condition1 | list;
-            }
-            else
-            {
-                return condition1 | condition2;
-            }
-        }
-
-        /// <summary>
-        /// 两个Sql条件语句执行或操作
-        /// </summary>
-        /// <param name="condition1">条件1</param>
-        /// <param name="condition2">条件2</param>
-        /// <returns>条件列表</returns>
-        public static SqlConditionList operator |(SqlConditionList condition1, AbstractSqlCondition condition2)
-        {
-            if (condition1.ConcatType == SqlWhereConcatType.Or)
-            {
-                condition1.Add(condition2);
-                return condition1;
-            }
-            else
-            {
-                return SqlCondition.Or(condition1._baseCommand, condition1, condition2);
-            }
-        }
-
-        /// <summary>
-        /// 两个Sql条件语句执行或操作
-        /// </summary>
-        /// <param name="condition1">条件1</param>
-        /// <param name="condition2">条件2</param>
-        /// <returns>条件列表</returns>
-        public static SqlConditionList operator |(AbstractSqlCondition condition1, SqlConditionList condition2)
-        {
-            if (condition2.ConcatType == SqlWhereConcatType.Or)
-            {
-                condition2.Add(condition2);
-                return condition2;
+                return list;
             }
             else
             {

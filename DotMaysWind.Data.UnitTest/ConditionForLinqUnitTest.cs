@@ -317,13 +317,13 @@ namespace DotMaysWind.Data.UnitTest
             SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
             SelectCommand actualCommand = new SelectCommand(fakeDb, "");
 
-            SqlConditionList expectedCondition = SqlCondition.GreaterThanOrEqual(expectedCommand, "TestColumn2", 123) & SqlCondition.LessThan(expectedCommand, "TestColumn2", 456);
-            SqlConditionList actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2 >= 123 && c.Test2 < 456) as SqlConditionList;
+            AbstractSqlCondition expectedCondition = SqlCondition.GreaterThanOrEqual(expectedCommand, "TestColumn2", 123) & SqlCondition.LessThan(expectedCommand, "TestColumn2", 456);
+            AbstractSqlCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2 >= 123 && c.Test2 < 456) as SqlConditionList;
 
             Assert.AreEqual(expectedCondition, actualCondition);
 
-            SqlConditionList expectedCondition2 = SqlCondition.GreaterThanOrEqual(expectedCommand, "TestColumn2", 123) | (SqlCondition.GreaterThan(expectedCommand, "TestColumn4", DateTime.Now) & SqlCondition.LessThan(expectedCommand, "TestColumn7", DateTime.Now.AddDays(7)));
-            SqlConditionList actualCondition2 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2 >= 123 || (c.Test4 > DateTime.Now && c.Test7 < DateTime.Now.AddDays(7))) as SqlConditionList;
+            AbstractSqlCondition expectedCondition2 = SqlCondition.GreaterThanOrEqual(expectedCommand, "TestColumn2", 123) | (SqlCondition.GreaterThan(expectedCommand, "TestColumn4", DateTime.Now) & SqlCondition.LessThan(expectedCommand, "TestColumn7", DateTime.Now.AddDays(7)));
+            AbstractSqlCondition actualCondition2 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2 >= 123 || (c.Test4 > DateTime.Now && c.Test7 < DateTime.Now.AddDays(7))) as SqlConditionList;
 
             Assert.AreEqual(expectedCondition2, actualCondition2);
         }
