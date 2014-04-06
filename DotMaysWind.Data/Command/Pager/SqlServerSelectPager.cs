@@ -46,7 +46,7 @@ namespace DotMaysWind.Data.Command.Pager
                 innerCommand.SqlHaving = baseCommand.SqlHaving;
 
                 sb.AppendSelectFrom(innerCommand.GetCommandText("T"), true);
-                sb.AppendWhere(SqlCondition.InternalCreateAction(baseCommand, "RN", SqlOperator.GreaterThan, baseCommand.RecordStart.ToString()));
+                sb.AppendWhere(SqlCondition.GreaterThanColumn(baseCommand, "RN", baseCommand.RecordStart.ToString()));
             }
             else//正常模式
             {

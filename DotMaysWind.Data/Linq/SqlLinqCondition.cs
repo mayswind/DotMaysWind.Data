@@ -243,7 +243,7 @@ namespace DotMaysWind.Data.Linq
 
             if (array != null)
             {
-                AbstractSqlCondition condition = SqlCondition.InternalCreateIn(sourceCommand, columnAttr.ColumnName, isNot, columnAttr.DbType.Value, array);
+                AbstractSqlCondition condition = SqlCondition.InternalIn(sourceCommand, columnAttr.ColumnName, isNot, columnAttr.DbType.Value, array);
 
                 return condition;
             }
@@ -252,7 +252,7 @@ namespace DotMaysWind.Data.Linq
 
             if (cmd != null)
             {
-                AbstractSqlCondition condition = SqlCondition.InternalCreateIn(sourceCommand, columnAttr.ColumnName, isNot, cmd);
+                AbstractSqlCondition condition = SqlCondition.InternalIn(sourceCommand, columnAttr.ColumnName, isNot, cmd);
 
                 return condition;
             }
