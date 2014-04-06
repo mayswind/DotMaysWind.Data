@@ -1698,6 +1698,33 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="dbType">数据类型</param>
+        /// <param name="func">操作方法</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlInsideParametersCondition In<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, Func<T[]> func)
+        {
+            return SqlCondition.InternalIn<T>(cmd, columnName, false, dbType, func());
+        }
+
+        /// <summary>
+        /// 创建新的Sql IN条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="func">操作方法</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlInsideParametersCondition In<T>(AbstractSqlCommand cmd, String columnName, Func<T[]> func)
+        {
+            return SqlCondition.InternalIn<T>(cmd, columnName, false, func());
+        }
+
+        /// <summary>
+        /// 创建新的Sql IN条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
         /// <param name="values">分隔符号分隔的数据集合</param>
         /// <param name="separator">分隔符号</param>
         /// <returns>Sql条件语句</returns>
@@ -1822,6 +1849,33 @@ namespace DotMaysWind.Data.Command.Condition
         public static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, params T[] values)
         {
             return SqlCondition.InternalIn<T>(cmd, columnName, true, values);
+        }
+
+        /// <summary>
+        /// 创建新的Sql NOT IN条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="func">操作方法</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, Func<T[]> func)
+        {
+            return SqlCondition.InternalIn<T>(cmd, columnName, true, dbType, func());
+        }
+
+        /// <summary>
+        /// 创建新的Sql NOT IN条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="func">操作方法</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, Func<T[]> func)
+        {
+            return SqlCondition.InternalIn<T>(cmd, columnName, true, func());
         }
 
         /// <summary>
