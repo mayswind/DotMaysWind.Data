@@ -719,7 +719,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public SqlBasicParameterCondition BetweenNullable(String columnName, Object valueOne, Object valueTwo)
         {
-            return SqlCondition.Between(this._baseCommand, columnName, valueOne, valueTwo);
+            return SqlCondition.BetweenNullable(this._baseCommand, columnName, valueOne, valueTwo);
         }
 
         /// <summary>
@@ -732,7 +732,34 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public SqlBasicParameterCondition BetweenNullable(String columnName, DbType dbType, Object valueOne, Object valueTwo)
         {
-            return SqlCondition.Between(this._baseCommand, columnName, dbType, valueOne, valueTwo);
+            return SqlCondition.BetweenNullable(this._baseCommand, columnName, dbType, valueOne, valueTwo);
+        }
+
+        /// <summary>
+        /// 创建判断是否在范围内的Sql条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="columnName">字段名</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
+        /// <returns>Sql条件语句</returns>
+        public SqlBasicParameterCondition BetweenNullable<T>(String columnName, T? valueOne, T? valueTwo) where T : struct
+        {
+            return SqlCondition.BetweenNullable<T>(this._baseCommand, columnName, valueOne, valueTwo);
+        }
+
+        /// <summary>
+        /// 创建判断是否在范围内的Sql条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
+        /// <returns>Sql条件语句</returns>
+        public SqlBasicParameterCondition BetweenNullable<T>(String columnName, DbType dbType, T? valueOne, T? valueTwo) where T : struct
+        {
+            return SqlCondition.BetweenNullable<T>(this._baseCommand, columnName, dbType, valueOne, valueTwo);
         }
 
         /// <summary>
@@ -744,7 +771,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public SqlBasicParameterCondition NotBetweenNullable(String columnName, Object valueOne, Object valueTwo)
         {
-            return SqlCondition.NotBetween(this._baseCommand, columnName, valueOne, valueTwo);
+            return SqlCondition.NotBetweenNullable(this._baseCommand, columnName, valueOne, valueTwo);
         }
 
         /// <summary>
@@ -757,7 +784,34 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public SqlBasicParameterCondition NotBetweenNullable(String columnName, DbType dbType, Object valueOne, Object valueTwo)
         {
-            return SqlCondition.NotBetween(this._baseCommand, columnName, dbType, valueOne, valueTwo);
+            return SqlCondition.NotBetweenNullable(this._baseCommand, columnName, dbType, valueOne, valueTwo);
+        }
+
+        /// <summary>
+        /// 创建判断是否不在范围内的Sql条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="columnName">字段名</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
+        /// <returns>Sql条件语句</returns>
+        public SqlBasicParameterCondition NotBetweenNullable<T>(String columnName, T? valueOne, T? valueTwo) where T : struct
+        {
+            return SqlCondition.NotBetweenNullable<T>(this._baseCommand, columnName, valueOne, valueTwo);
+        }
+
+        /// <summary>
+        /// 创建判断是否不在范围内的Sql条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
+        /// <returns>Sql条件语句</returns>
+        public SqlBasicParameterCondition NotBetweenNullable<T>(String columnName, DbType dbType, T? valueOne, T? valueTwo) where T : struct
+        {
+            return SqlCondition.NotBetweenNullable<T>(this._baseCommand, columnName, dbType, valueOne, valueTwo);
         }
         #endregion
         #endregion

@@ -962,6 +962,7 @@ namespace DotMaysWind.Data.Command.Condition
         #endregion
 
         #region BetweenNullable/NotBetweenNullable
+        #region Internal
         /// <summary>
         /// 创建判断是否在范围内的Sql条件语句
         /// </summary>
@@ -1024,6 +1025,69 @@ namespace DotMaysWind.Data.Command.Condition
         /// <summary>
         /// 创建判断是否在范围内的Sql条件语句
         /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="isNot">是否不在范围内</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalBetweenNullable<T>(AbstractSqlCommand cmd, String columnName, Boolean isNot, T? valueOne, T? valueTwo) where T : struct
+        {
+            if (valueOne.HasValue && valueTwo.HasValue)
+            {
+                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.NotBetween : SqlOperator.Between), valueOne, valueTwo);
+            }
+            else if (valueOne.HasValue && !valueTwo.HasValue)
+            {
+                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.LessThan : SqlOperator.GreaterThanOrEqual), valueOne);
+            }
+            else if (!valueOne.HasValue && valueTwo.HasValue)
+            {
+                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.GreaterThan : SqlOperator.LessThanOrEqual), valueTwo);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 创建判断是否在范围内的Sql条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="isNot">是否不在范围内</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalBetweenNullable<T>(AbstractSqlCommand cmd, String columnName, Boolean isNot, DbType dbType, T? valueOne, T? valueTwo) where T : struct
+        {
+            if (valueOne.HasValue && valueTwo.HasValue)
+            {
+                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.NotBetween : SqlOperator.Between), dbType, valueOne, valueTwo);
+            }
+            else if (valueOne.HasValue && !valueTwo.HasValue)
+            {
+                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.LessThan : SqlOperator.GreaterThanOrEqual), dbType, valueOne);
+            }
+            else if (!valueOne.HasValue && valueTwo.HasValue)
+            {
+                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.GreaterThan : SqlOperator.LessThanOrEqual), dbType, valueTwo);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        #endregion
+
+        #region BetweenNullable
+        /// <summary>
+        /// 创建判断是否在范围内的Sql条件语句
+        /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="valueOne">可空开始值</param>
@@ -1048,6 +1112,37 @@ namespace DotMaysWind.Data.Command.Condition
             return SqlCondition.InternalBetweenNullable(cmd, columnName, false, dbType, valueOne, valueTwo);
         }
 
+        /// <summary>
+        /// 创建判断是否在范围内的Sql条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition BetweenNullable<T>(AbstractSqlCommand cmd, String columnName, T? valueOne, T? valueTwo) where T : struct
+        {
+            return SqlCondition.InternalBetweenNullable<T>(cmd, columnName, false, valueOne, valueTwo);
+        }
+
+        /// <summary>
+        /// 创建判断是否在范围内的Sql条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition BetweenNullable<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, T? valueOne, T? valueTwo) where T : struct
+        {
+            return SqlCondition.InternalBetweenNullable<T>(cmd, columnName, false, dbType, valueOne, valueTwo);
+        }
+        #endregion
+
+        #region NotBetweenNullable
         /// <summary>
         /// 创建判断是否不在范围内的Sql条件语句
         /// </summary>
@@ -1074,6 +1169,36 @@ namespace DotMaysWind.Data.Command.Condition
         {
             return SqlCondition.InternalBetweenNullable(cmd, columnName, true, dbType, valueOne, valueTwo);
         }
+
+        /// <summary>
+        /// 创建判断是否不在范围内的Sql条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition NotBetweenNullable<T>(AbstractSqlCommand cmd, String columnName, T? valueOne, T? valueTwo) where T : struct
+        {
+            return SqlCondition.InternalBetweenNullable<T>(cmd, columnName, true, valueOne, valueTwo);
+        }
+
+        /// <summary>
+        /// 创建判断是否不在范围内的Sql条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition NotBetweenNullable<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, T? valueOne, T? valueTwo) where T : struct
+        {
+            return SqlCondition.InternalBetweenNullable<T>(cmd, columnName, true, dbType, valueOne, valueTwo);
+        }
+        #endregion
         #endregion
         #endregion
 
