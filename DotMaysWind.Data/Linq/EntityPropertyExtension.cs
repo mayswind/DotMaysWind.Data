@@ -226,7 +226,7 @@ namespace DotMaysWind.Data.Linq
         }
         #endregion
 
-        #region Between
+        #region NotBetween
         /// <summary>
         /// 判断属性所指字段是否不在指定范围内
         /// </summary>
@@ -264,6 +264,92 @@ namespace DotMaysWind.Data.Linq
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
         /// <returns>是否不在指定范围内</returns>
         public static Boolean NotBetween(this String key, String start, String end)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region BetweenNullable
+        /// <summary>
+        /// 判断属性所指字段是否在指定范围内
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="key">实体属性</param>
+        /// <param name="start">可空开始值</param>
+        /// <param name="end">可空结束值</param>
+        /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
+        /// <returns>是否在指定范围内</returns>
+        public static Boolean BetweenNullable<T>(this T key, T? start, T? end) where T : struct
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 判断属性所指字段是否在指定范围内
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="key">实体属性</param>
+        /// <param name="start">可空开始值</param>
+        /// <param name="end">可空结束值</param>
+        /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
+        /// <returns>是否在指定范围内</returns>
+        public static Boolean BetweenNullable<T>(this T? key, T? start, T? end) where T : struct
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 判断属性所指字段是否在指定范围内
+        /// </summary>
+        /// <param name="key">实体属性</param>
+        /// <param name="start">可空开始值</param>
+        /// <param name="end">可空结束值</param>
+        /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
+        /// <returns>是否在指定范围内</returns>
+        public static Boolean BetweenNullable(this String key, String start, String end)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region NotBetweenNullable
+        /// <summary>
+        /// 判断属性所指字段是否不在指定范围内
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="key">实体属性</param>
+        /// <param name="start">可空开始值</param>
+        /// <param name="end">可空结束值</param>
+        /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
+        /// <returns>是否不在指定范围内</returns>
+        public static Boolean NotBetweenNullable<T>(this T key, T? start, T? end) where T : struct
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 判断属性所指字段是否不在指定范围内
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="key">实体属性</param>
+        /// <param name="start">可空开始值</param>
+        /// <param name="end">可空结束值</param>
+        /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
+        /// <returns>是否不在指定范围内</returns>
+        public static Boolean NotBetweenNullable<T>(this T? key, T? start, T? end) where T : struct
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 判断属性所指字段是否不在指定范围内
+        /// </summary>
+        /// <param name="key">实体属性</param>
+        /// <param name="start">可空开始值</param>
+        /// <param name="end">可空结束值</param>
+        /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
+        /// <returns>是否不在指定范围内</returns>
+        public static Boolean NotBetweenNullable(this String key, String start, String end)
         {
             throw new NotImplementedException();
         }

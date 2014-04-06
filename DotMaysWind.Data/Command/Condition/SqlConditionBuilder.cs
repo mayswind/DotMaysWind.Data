@@ -642,8 +642,8 @@ namespace DotMaysWind.Data.Command.Condition
         /// 创建判断是否在范围内的Sql条件语句
         /// </summary>
         /// <param name="columnName">字段名</param>
-        /// <param name="valueOne">数据一</param>
-        /// <param name="valueTwo">数据二</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
         /// <returns>Sql条件语句</returns>
         public SqlBasicParameterCondition Between(String columnName, Object valueOne, Object valueTwo)
         {
@@ -655,8 +655,8 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="columnName">字段名</param>
         /// <param name="dbType">数据类型</param>
-        /// <param name="valueOne">数据一</param>
-        /// <param name="valueTwo">数据二</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
         /// <returns>Sql条件语句</returns>
         public SqlBasicParameterCondition Between(String columnName, DbType dbType, Object valueOne, Object valueTwo)
         {
@@ -667,8 +667,8 @@ namespace DotMaysWind.Data.Command.Condition
         /// 创建判断是否不在范围内的Sql条件语句
         /// </summary>
         /// <param name="columnName">字段名</param>
-        /// <param name="valueOne">数据一</param>
-        /// <param name="valueTwo">数据二</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
         /// <returns>Sql条件语句</returns>
         public SqlBasicParameterCondition NotBetween(String columnName, Object valueOne, Object valueTwo)
         {
@@ -680,10 +680,62 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="columnName">字段名</param>
         /// <param name="dbType">数据类型</param>
-        /// <param name="valueOne">数据一</param>
-        /// <param name="valueTwo">数据二</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
         /// <returns>Sql条件语句</returns>
         public SqlBasicParameterCondition NotBetween(String columnName, DbType dbType, Object valueOne, Object valueTwo)
+        {
+            return SqlCondition.NotBetween(this._baseCommand, columnName, dbType, valueOne, valueTwo);
+        }
+        #endregion
+
+        #region BetweenNullable/NotBetweenNullable
+        /// <summary>
+        /// 创建判断是否在范围内的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="valueOne">可空开始值</param>
+        /// <param name="valueTwo">可空结束值</param>
+        /// <returns>Sql条件语句</returns>
+        public SqlBasicParameterCondition BetweenNullable(String columnName, Object valueOne, Object valueTwo)
+        {
+            return SqlCondition.Between(this._baseCommand, columnName, valueOne, valueTwo);
+        }
+
+        /// <summary>
+        /// 创建判断是否在范围内的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="valueOne">可空开始值</param>
+        /// <param name="valueTwo">可空结束值</param>
+        /// <returns>Sql条件语句</returns>
+        public SqlBasicParameterCondition BetweenNullable(String columnName, DbType dbType, Object valueOne, Object valueTwo)
+        {
+            return SqlCondition.Between(this._baseCommand, columnName, dbType, valueOne, valueTwo);
+        }
+
+        /// <summary>
+        /// 创建判断是否不在范围内的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="valueOne">可空开始值</param>
+        /// <param name="valueTwo">可空结束值</param>
+        /// <returns>Sql条件语句</returns>
+        public SqlBasicParameterCondition NotBetweenNullable(String columnName, Object valueOne, Object valueTwo)
+        {
+            return SqlCondition.NotBetween(this._baseCommand, columnName, valueOne, valueTwo);
+        }
+
+        /// <summary>
+        /// 创建判断是否不在范围内的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="valueOne">可空开始值</param>
+        /// <param name="valueTwo">可空结束值</param>
+        /// <returns>Sql条件语句</returns>
+        public SqlBasicParameterCondition NotBetweenNullable(String columnName, DbType dbType, Object valueOne, Object valueTwo)
         {
             return SqlCondition.NotBetween(this._baseCommand, columnName, dbType, valueOne, valueTwo);
         }

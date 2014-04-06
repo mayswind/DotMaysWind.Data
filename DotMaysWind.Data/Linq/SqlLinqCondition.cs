@@ -159,9 +159,13 @@ namespace DotMaysWind.Data.Linq
                 case "NotLikeEndWith":
                     return ParseLikeCallExpression(sourceCommand, expr, "%{0}", true);
                 case "Between":
-                    return ParseBetweenCallExpression(sourceCommand, expr, false);
+                    return ParseBetweenCallExpression(sourceCommand, expr, false, false);
                 case "NotBetween":
-                    return ParseBetweenCallExpression(sourceCommand, expr, true);
+                    return ParseBetweenCallExpression(sourceCommand, expr, false, true);
+                case "BetweenNullable":
+                    return ParseBetweenCallExpression(sourceCommand, expr, true, false);
+                case "NotBetweenNullable":
+                    return ParseBetweenCallExpression(sourceCommand, expr, true, true);
                 case "In":
                     return ParseInCallExpression(sourceCommand, expr, false);
                 case "NotIn":
@@ -181,7 +185,7 @@ namespace DotMaysWind.Data.Linq
                 throw new NullAttributeException();
             }
 
-            AbstractSqlCondition condition = SqlCondition.InternalCreate(sourceCommand, columnAttr.ColumnName, (isNot ? SqlOperator.IsNotNull : SqlOperator.IsNull), columnAttr.DbType.Value, null);
+            AbstractSqlCondition condition = SqlCondition.InternalIsNull(sourceCommand, columnAttr.ColumnName, isNot);
 
             return condition;
         }
@@ -197,12 +201,12 @@ namespace DotMaysWind.Data.Linq
                 throw new NullAttributeException();
             }
 
-            AbstractSqlCondition condition = SqlCondition.InternalCreate(sourceCommand, columnAttr.ColumnName, (isNot ? SqlOperator.NotLike : SqlOperator.Like), columnAttr.DbType.Value, String.Format(format, value));
+            AbstractSqlCondition condition = SqlCondition.InternalLike(sourceCommand, columnAttr.ColumnName, isNot, columnAttr.DbType.Value, String.Format(format, value));
 
             return condition;
         }
 
-        private static AbstractSqlCondition ParseBetweenCallExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, Boolean isNot)
+        private static AbstractSqlCondition ParseBetweenCallExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, Boolean supportNullable, Boolean isNot)
         {
             MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Arguments[0]);
             DatabaseColumnAttribute columnAttr = ExpressionHelper.GetColumnAttributeWithDbType(sourceCommand, left);
@@ -214,9 +218,14 @@ namespace DotMaysWind.Data.Linq
                 throw new NullAttributeException();
             }
 
-            AbstractSqlCondition condition = SqlCondition.InternalCreate(sourceCommand, columnAttr.ColumnName, (isNot ? SqlOperator.NotBetween : SqlOperator.Between), columnAttr.DbType.Value, start, end);
-
-            return condition;
+            if (supportNullable)
+            {
+                return SqlCondition.InternalBetweenNullable(sourceCommand, columnAttr.ColumnName, isNot, columnAttr.DbType.Value, start, end);
+            }
+            else
+            {
+                return SqlCondition.InternalBetween(sourceCommand, columnAttr.ColumnName, isNot, columnAttr.DbType.Value, start, end);
+            }
         }
 
         private static AbstractSqlCondition ParseInCallExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, Boolean isNot)

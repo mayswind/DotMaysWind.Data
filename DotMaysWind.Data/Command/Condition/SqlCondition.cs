@@ -35,7 +35,7 @@ namespace DotMaysWind.Data.Command.Condition
         #endregion
 
         #region 基本参数条件
-        #region General
+        #region Internal
         /// <summary>
         /// 创建单参数新的Sql条件语句
         /// </summary>
@@ -224,10 +224,22 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
+        /// <param name="isNot">是否非空</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalIsNull(AbstractSqlCommand cmd, String columnName, Boolean isNot)
+        {
+            return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.IsNotNull : SqlOperator.IsNull));
+        }
+
+        /// <summary>
+        /// 创建判断是否为空的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition IsNull(AbstractSqlCommand cmd, String columnName)
         {
-            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.IsNull);
+            return SqlCondition.InternalIsNull(cmd, columnName, false);
         }
 
         /// <summary>
@@ -238,7 +250,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition IsNotNull(AbstractSqlCommand cmd, String columnName)
         {
-            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.IsNotNull);
+            return SqlCondition.InternalIsNull(cmd, columnName, true);
         }
         #endregion
 
@@ -549,6 +561,62 @@ namespace DotMaysWind.Data.Command.Condition
         #endregion
 
         #region Like/NotLike
+        #region Internal
+        /// <summary>
+        /// 创建判断是否相似的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="isNot">是否不相似</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalLike(AbstractSqlCommand cmd, String columnName, Boolean isNot, String value)
+        {
+            return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.NotLike : SqlOperator.Like), value);
+        }
+
+        /// <summary>
+        /// 创建判断是否相似的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="isNot">是否不相似</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalLike(AbstractSqlCommand cmd, String columnName, Boolean isNot, DbType dbType, Object value)
+        {
+            return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.NotLike : SqlOperator.Like), dbType, value);
+        }
+
+        /// <summary>
+        /// 创建判断是否相似的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="isNot">是否不相似</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalLikeColumn(AbstractSqlCommand cmd, String columnName, Boolean isNot, String columnNameTwo)
+        {
+            return SqlCondition.InternalCreateColumn(cmd, columnName, (isNot ? SqlOperator.NotLike : SqlOperator.Like), columnNameTwo);
+        }
+
+        /// <summary>
+        /// 创建判断是否相似的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="isNot">是否不相似</param>
+        /// <param name="tableNameTwo">数据表名二</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalLikeColumn(AbstractSqlCommand cmd, String columnName, Boolean isNot, String tableNameTwo, String columnNameTwo)
+        {
+            return SqlCondition.InternalCreateColumn(cmd, columnName, (isNot ? SqlOperator.NotLike : SqlOperator.Like), tableNameTwo, columnNameTwo);
+        }
+        #endregion
+
         #region General
         /// <summary>
         /// 创建判断是否相似的Sql条件语句
@@ -559,7 +627,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition Like(AbstractSqlCommand cmd, String columnName, String value)
         {
-            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.Like, value);
+            return SqlCondition.InternalLike(cmd, columnName, false, value);
         }
 
         /// <summary>
@@ -572,7 +640,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition Like(AbstractSqlCommand cmd, String columnName, DbType dbType, Object value)
         {
-            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.Like, dbType, value);
+            return SqlCondition.InternalLike(cmd, columnName, false, dbType, value);
         }
 
         /// <summary>
@@ -584,7 +652,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition LikeColumn(AbstractSqlCommand cmd, String columnName, String columnNameTwo)
         {
-            return SqlCondition.InternalCreateColumn(cmd, columnName, SqlOperator.Like, columnNameTwo);
+            return SqlCondition.InternalLikeColumn(cmd, columnName, false, columnNameTwo);
         }
 
         /// <summary>
@@ -597,7 +665,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition LikeColumn(AbstractSqlCommand cmd, String columnName, String tableNameTwo, String columnNameTwo)
         {
-            return SqlCondition.InternalCreateColumn(cmd, columnName, SqlOperator.Like, tableNameTwo, columnNameTwo);
+            return SqlCondition.InternalLikeColumn(cmd, columnName, false, tableNameTwo, columnNameTwo);
         }
 
         /// <summary>
@@ -609,7 +677,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition NotLike(AbstractSqlCommand cmd, String columnName, String value)
         {
-            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.NotLike, value);
+            return SqlCondition.InternalLike(cmd, columnName, true, value);
         }
 
         /// <summary>
@@ -622,7 +690,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition NotLike(AbstractSqlCommand cmd, String columnName, DbType dbType, Object value)
         {
-            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.NotLike, dbType, value);
+            return SqlCondition.InternalLike(cmd, columnName, true, dbType, value);
         }
 
         /// <summary>
@@ -634,7 +702,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition NotLikeColumn(AbstractSqlCommand cmd, String columnName, String columnNameTwo)
         {
-            return SqlCondition.InternalCreateColumn(cmd, columnName, SqlOperator.NotLike, columnNameTwo);
+            return SqlCondition.InternalLikeColumn(cmd, columnName, true, columnNameTwo);
         }
 
         /// <summary>
@@ -647,7 +715,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition NotLikeColumn(AbstractSqlCommand cmd, String columnName, String tableNameTwo, String columnNameTwo)
         {
-            return SqlCondition.InternalCreateColumn(cmd, columnName, SqlOperator.NotLike, tableNameTwo, columnNameTwo);
+            return SqlCondition.InternalLikeColumn(cmd, columnName, true, tableNameTwo, columnNameTwo);
         }
         #endregion
 
@@ -814,12 +882,41 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="valueOne">数据一</param>
-        /// <param name="valueTwo">数据二</param>
+        /// <param name="isNot">是否不在范围内</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalBetween(AbstractSqlCommand cmd, String columnName, Boolean isNot, Object valueOne, Object valueTwo)
+        {
+            return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.NotBetween : SqlOperator.Between), valueOne, valueTwo);
+        }
+
+        /// <summary>
+        /// 创建判断是否在范围内的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="isNot">是否不在范围内</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalBetween(AbstractSqlCommand cmd, String columnName, Boolean isNot, DbType dbType, Object valueOne, Object valueTwo)
+        {
+            return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.NotBetween : SqlOperator.Between), dbType, valueOne, valueTwo);
+        }
+
+        /// <summary>
+        /// 创建判断是否在范围内的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition Between(AbstractSqlCommand cmd, String columnName, Object valueOne, Object valueTwo)
         {
-            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.Between, valueOne, valueTwo);
+            return SqlCondition.InternalBetween(cmd, columnName, false, valueOne, valueTwo);
         }
 
         /// <summary>
@@ -828,12 +925,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="dbType">数据类型</param>
-        /// <param name="valueOne">数据一</param>
-        /// <param name="valueTwo">数据二</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition Between(AbstractSqlCommand cmd, String columnName, DbType dbType, Object valueOne, Object valueTwo)
         {
-            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.Between, dbType, valueOne, valueTwo);
+            return SqlCondition.InternalBetween(cmd, columnName, false, dbType, valueOne, valueTwo);
         }
 
         /// <summary>
@@ -841,12 +938,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="valueOne">数据一</param>
-        /// <param name="valueTwo">数据二</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition NotBetween(AbstractSqlCommand cmd, String columnName, Object valueOne, Object valueTwo)
         {
-            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.NotBetween, valueOne, valueTwo);
+            return SqlCondition.InternalBetween(cmd, columnName, true, valueOne, valueTwo);
         }
 
         /// <summary>
@@ -855,12 +952,127 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="dbType">数据类型</param>
-        /// <param name="valueOne">数据一</param>
-        /// <param name="valueTwo">数据二</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
         /// <returns>Sql条件语句</returns>
         public static SqlBasicParameterCondition NotBetween(AbstractSqlCommand cmd, String columnName, DbType dbType, Object valueOne, Object valueTwo)
         {
-            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.NotBetween, dbType, valueOne, valueTwo);
+            return SqlCondition.InternalBetween(cmd, columnName, true, dbType, valueOne, valueTwo);
+        }
+        #endregion
+
+        #region BetweenNullable/NotBetweenNullable
+        /// <summary>
+        /// 创建判断是否在范围内的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="isNot">是否不在范围内</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalBetweenNullable(AbstractSqlCommand cmd, String columnName, Boolean isNot, Object valueOne, Object valueTwo)
+        {
+            if (valueOne != null && valueTwo != null)
+            {
+                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.NotBetween : SqlOperator.Between), valueOne, valueTwo);
+            }
+            else if (valueOne != null && valueTwo == null)
+            {
+                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.LessThan : SqlOperator.GreaterThanOrEqual), valueOne);
+            }
+            else if (valueOne == null && valueTwo != null)
+            {
+                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.GreaterThan : SqlOperator.LessThanOrEqual), valueTwo);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 创建判断是否在范围内的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="isNot">是否不在范围内</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="valueOne">开始值</param>
+        /// <param name="valueTwo">结束值</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalBetweenNullable(AbstractSqlCommand cmd, String columnName, Boolean isNot, DbType dbType, Object valueOne, Object valueTwo)
+        {
+            if (valueOne != null && valueTwo != null)
+            {
+                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.NotBetween : SqlOperator.Between), dbType, valueOne, valueTwo);
+            }
+            else if (valueOne != null && valueTwo == null)
+            {
+                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.LessThan : SqlOperator.GreaterThanOrEqual), dbType, valueOne);
+            }
+            else if (valueOne == null && valueTwo != null)
+            {
+                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.GreaterThan : SqlOperator.LessThanOrEqual), dbType, valueTwo);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 创建判断是否在范围内的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="valueOne">可空开始值</param>
+        /// <param name="valueTwo">可空结束值</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition BetweenNullable(AbstractSqlCommand cmd, String columnName, Object valueOne, Object valueTwo)
+        {
+            return SqlCondition.InternalBetweenNullable(cmd, columnName, false, valueOne, valueTwo);
+        }
+
+        /// <summary>
+        /// 创建判断是否在范围内的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="valueOne">可空开始值</param>
+        /// <param name="valueTwo">可空结束值</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition BetweenNullable(AbstractSqlCommand cmd, String columnName, DbType dbType, Object valueOne, Object valueTwo)
+        {
+            return SqlCondition.InternalBetweenNullable(cmd, columnName, false, dbType, valueOne, valueTwo);
+        }
+
+        /// <summary>
+        /// 创建判断是否不在范围内的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="valueOne">可空开始值</param>
+        /// <param name="valueTwo">可空结束值</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition NotBetweenNullable(AbstractSqlCommand cmd, String columnName, Object valueOne, Object valueTwo)
+        {
+            return SqlCondition.InternalBetweenNullable(cmd, columnName, true, valueOne, valueTwo);
+        }
+
+        /// <summary>
+        /// 创建判断是否不在范围内的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="valueOne">可空开始值</param>
+        /// <param name="valueTwo">可空结束值</param>
+        /// <returns>Sql条件语句</returns>
+        public static SqlBasicParameterCondition NotBetweenNullable(AbstractSqlCommand cmd, String columnName, DbType dbType, Object valueOne, Object valueTwo)
+        {
+            return SqlCondition.InternalBetweenNullable(cmd, columnName, true, dbType, valueOne, valueTwo);
         }
         #endregion
         #endregion
