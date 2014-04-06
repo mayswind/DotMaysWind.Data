@@ -201,6 +201,19 @@ namespace DotMaysWind.Data.Orm
 
             return cmd;
         }
+
+        /// <summary>
+        /// 创建新的Sql选择语句类
+        /// </summary>
+        /// <param name="tableAliasesName">数据表别名</param>
+        /// <returns>Sql选择语句</returns>
+        protected override SelectCommand Select(String tableAliasesName)
+        {
+            SelectCommand cmd = base.Select();
+            cmd.SourceDatabaseTable = this;
+
+            return cmd;
+        }
         #endregion
 
         #region 保护方法

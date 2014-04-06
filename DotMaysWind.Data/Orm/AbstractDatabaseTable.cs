@@ -181,6 +181,16 @@ namespace DotMaysWind.Data.Orm
         {
             return this._baseDatabase.CreateSelectCommand(this.TableName);
         }
+
+        /// <summary>
+        /// 创建新的Sql选择语句类
+        /// </summary>
+        /// <param name="tableAliasesName">数据表别名</param>
+        /// <returns>Sql选择语句</returns>
+        protected virtual SelectCommand Select(String tableAliasesName)
+        {
+            return this._baseDatabase.CreateSelectCommand(this.TableName, tableAliasesName);
+        }
         #endregion
 
         #region LoadValue
