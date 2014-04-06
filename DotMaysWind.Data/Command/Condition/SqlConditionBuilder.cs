@@ -987,6 +987,31 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
+        /// 创建新的Sql IN参数条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        internal SqlInsideParametersCondition In<T>(String columnName, DbType dbType, params T[] values)
+        {
+            return SqlCondition.In<T>(this._baseCommand, columnName, dbType, values);
+        }
+
+        /// <summary>
+        /// 创建新的Sql IN条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="columnName">字段名</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        internal SqlInsideParametersCondition In<T>(String columnName, params T[] values)
+        {
+            return SqlCondition.In<T>(this._baseCommand, columnName, values);
+        }
+
+        /// <summary>
         /// 创建新的Sql IN条件语句
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
@@ -1082,6 +1107,31 @@ namespace DotMaysWind.Data.Command.Condition
         public SqlInsideParametersCondition NotIn(String columnName, DbType dbType, String values, Char separator)
         {
             return SqlCondition.NotIn(this._baseCommand, columnName, dbType, values, separator);
+        }
+
+        /// <summary>
+        /// 创建新的Sql NOT IN参数条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        internal SqlInsideParametersCondition NotIn<T>(String columnName, DbType dbType, params T[] values)
+        {
+            return SqlCondition.NotIn<T>(this._baseCommand, columnName, dbType, values);
+        }
+
+        /// <summary>
+        /// 创建新的Sql NOT IN条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="columnName">字段名</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        internal SqlInsideParametersCondition NotIn<T>(String columnName, params T[] values)
+        {
+            return SqlCondition.NotIn<T>(this._baseCommand, columnName, values);
         }
 
         /// <summary>

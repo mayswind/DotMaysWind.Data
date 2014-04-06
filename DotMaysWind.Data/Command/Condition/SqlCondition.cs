@@ -1480,10 +1480,61 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
+        /// 创建新的Sql IN参数条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="isNotIn">是否不在范围内</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlInsideParametersCondition InternalIn<T>(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DbType dbType, params T[] values)
+        {
+            List<SqlParameter> parameters = new List<SqlParameter>();
+
+            if (values != null)
+            {
+                for (Int32 i = 0; i < values.Length; i++)
+                {
+                    parameters.Add(cmd.CreateSqlParameter(columnName, dbType, values[i]));
+                }
+            }
+
+            return new SqlInsideParametersCondition(cmd, isNotIn, parameters.ToArray());
+        }
+
+        /// <summary>
         /// 创建新的Sql IN条件语句
         /// </summary>
-        /// <param name="cmd">Sql语句</param>
         /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="isNotIn">是否不在范围内</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlInsideParametersCondition InternalIn<T>(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, params T[] values)
+        {
+            List<SqlParameter> parameters = new List<SqlParameter>();
+
+            if (values != null)
+            {
+                DbType dbType = DbTypeHelper.InternalGetDbType(values[0]);
+
+                for (Int32 i = 0; i < values.Length; i++)
+                {
+                    parameters.Add(cmd.CreateSqlParameter(columnName, dbType, values[i]));
+                }
+            }
+
+            return new SqlInsideParametersCondition(cmd, isNotIn, parameters.ToArray());
+        }
+
+        /// <summary>
+        /// 创建新的Sql IN条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="isNotIn">是否不在范围内</param>
         /// <param name="dbType">数据类型</param>
@@ -1614,6 +1665,33 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
+        /// 创建新的Sql IN参数条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlInsideParametersCondition In<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, params T[] values)
+        {
+            return SqlCondition.InternalIn<T>(cmd, columnName, false, dbType, values);
+        }
+
+        /// <summary>
+        /// 创建新的Sql IN条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlInsideParametersCondition In<T>(AbstractSqlCommand cmd, String columnName, params T[] values)
+        {
+            return SqlCondition.InternalIn<T>(cmd, columnName, false, values);
+        }
+
+        /// <summary>
         /// 创建新的Sql IN条件语句
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
@@ -1717,6 +1795,33 @@ namespace DotMaysWind.Data.Command.Condition
         public static SqlInsideParametersCondition NotIn(AbstractSqlCommand cmd, String columnName, DbType dbType, String values, Char separator)
         {
             return SqlCondition.InternalIn(cmd, columnName, true, dbType, values, separator);
+        }
+
+        /// <summary>
+        /// 创建新的Sql NOT IN参数条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, params T[] values)
+        {
+            return SqlCondition.InternalIn<T>(cmd, columnName, true, dbType, values);
+        }
+
+        /// <summary>
+        /// 创建新的Sql NOT IN条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, params T[] values)
+        {
+            return SqlCondition.InternalIn<T>(cmd, columnName, true, values);
         }
 
         /// <summary>
