@@ -1673,7 +1673,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="dbType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlInsideParametersCondition In<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, params T[] values)
+        public static SqlInsideParametersCondition In<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, params T[] values)
         {
             return SqlCondition.InternalIn<T>(cmd, columnName, false, dbType, values);
         }
@@ -1686,7 +1686,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="columnName">字段名</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlInsideParametersCondition In<T>(AbstractSqlCommand cmd, String columnName, params T[] values)
+        public static SqlInsideParametersCondition In<T>(AbstractSqlCommand cmd, String columnName, params T[] values)
         {
             return SqlCondition.InternalIn<T>(cmd, columnName, false, values);
         }
@@ -1806,7 +1806,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="dbType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, params T[] values)
+        public static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, params T[] values)
         {
             return SqlCondition.InternalIn<T>(cmd, columnName, true, dbType, values);
         }
@@ -1819,7 +1819,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="columnName">字段名</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, params T[] values)
+        public static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, params T[] values)
         {
             return SqlCondition.InternalIn<T>(cmd, columnName, true, values);
         }
