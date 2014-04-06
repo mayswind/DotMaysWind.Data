@@ -65,5 +65,36 @@ namespace DotMaysWind.Data.UnitTest
             }
         }
         #endregion
+
+        #region Nullable
+        [TestMethod]
+        public void CreateNullableConditionTest()
+        {
+            AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
+
+            SelectCommand baseCommand = new SelectCommand(fakeDb, "");
+            AbstractSqlCondition baseCondition = SqlCondition.Equal(baseCommand, "TestColumn2", 1);
+
+            AbstractSqlCondition expectedCondition = baseCondition & null;
+            AbstractSqlCondition actualCondition = baseCondition;
+
+            Assert.AreEqual(expectedCondition, actualCondition);
+
+            AbstractSqlCondition expectedCondition2 = null & baseCondition;
+            AbstractSqlCondition actualCondition2 = baseCondition;
+
+            Assert.AreEqual(expectedCondition2, actualCondition2);
+
+            AbstractSqlCondition expectedCondition3 = baseCondition | null;
+            AbstractSqlCondition actualCondition3 = baseCondition;
+
+            Assert.AreEqual(expectedCondition3, actualCondition3);
+
+            AbstractSqlCondition expectedCondition4 = null | baseCondition;
+            AbstractSqlCondition actualCondition4 = baseCondition;
+
+            Assert.AreEqual(expectedCondition4, actualCondition4);
+        }
+        #endregion
     }
 }
