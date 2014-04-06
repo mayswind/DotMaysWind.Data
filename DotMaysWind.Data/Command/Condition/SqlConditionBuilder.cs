@@ -24,6 +24,26 @@ namespace DotMaysWind.Data.Command.Condition
         }
         #endregion
 
+        #region 常量
+        /// <summary>
+        /// 创建永远为真的Sql条件语句
+        /// </summary>
+        /// <returns>Sql条件语句</returns>
+        public SqlBasicParameterCondition True()
+        {
+            return SqlCondition.True(this._baseCommand);
+        }
+
+        /// <summary>
+        /// 创建永远为假的Sql条件语句
+        /// </summary>
+        /// <returns>Sql条件语句</returns>
+        public SqlBasicParameterCondition False()
+        {
+            return SqlCondition.False(this._baseCommand);
+        }
+        #endregion
+
         #region 基本参数条件
         #region SqlAggregateFunction
         /// <summary>
