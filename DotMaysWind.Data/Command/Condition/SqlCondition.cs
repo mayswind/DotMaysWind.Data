@@ -1480,7 +1480,7 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
-        /// 创建新的Sql IN参数条件语句
+        /// 创建新的Sql IN条件语句
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="cmd">Sql语句</param>
@@ -1665,7 +1665,7 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
-        /// 创建新的Sql IN参数条件语句
+        /// 创建新的Sql IN条件语句
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="cmd">Sql语句</param>
@@ -1798,7 +1798,7 @@ namespace DotMaysWind.Data.Command.Condition
         }
 
         /// <summary>
-        /// 创建新的Sql NOT IN参数条件语句
+        /// 创建新的Sql NOT IN条件语句
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="cmd">Sql语句</param>
