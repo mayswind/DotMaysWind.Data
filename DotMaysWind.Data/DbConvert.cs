@@ -9,6 +9,16 @@ namespace DotMaysWind.Data
     public static class DbConvert
     {
         /// <summary>
+        /// 返回给定的DataTable是否为null
+        /// </summary>
+        /// <param name="dt">要判断的DataTable</param>
+        /// <returns>给定的DataTable是否为null</returns>
+        public static Boolean IsDataTableNull(DataTable dt)
+        {
+            return ((dt == null) || (dt.Rows == null));
+        }
+
+        /// <summary>
         /// 返回给定的DataTable是否为null或为空
         /// </summary>
         /// <param name="dt">要判断的DataTable</param>

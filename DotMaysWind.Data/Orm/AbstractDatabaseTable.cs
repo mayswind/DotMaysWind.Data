@@ -973,7 +973,7 @@ namespace DotMaysWind.Data.Orm
         {
             List<T> list = null;
 
-            if (!DbConvert.IsDataTableNullOrEmpty(table))
+            if (!DbConvert.IsDataTableNull(table))
             {
                 list = new List<T>();
 
