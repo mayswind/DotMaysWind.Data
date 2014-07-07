@@ -287,43 +287,27 @@ namespace DotMaysWind.Data.Command
         internal SqlCommandBuilder AppendSelectFromAndJoins(String from, Boolean isFromSql, List<ISqlJoin> joins)
         {
             Boolean hasJoins = (joins != null && joins.Count > 0);
-            Boolean hasParentheses = (from.Length > 0 && from[0] == '(');
+            Boolean hasParentheses = (from.Length > 0 && from.TrimStart()[0] == '(');
 
             this._stringBuilder.Append("FROM ");
 
-            if (!hasJoins)
+            StringBuilder sb = new StringBuilder();
+
+            if (isFromSql && !hasParentheses)
             {
-                if (isFromSql && !hasParentheses)
-                {
-                    this._stringBuilder.Append('(');
-                }
-
-                this._stringBuilder.Append(from);
-
-                if (isFromSql && !hasParentheses)
-                {
-                    this._stringBuilder.Append(')');
-                }
-
-                this._stringBuilder.Append(' ');
+                sb.Append('(');
             }
-            else
+
+            sb.Append(from);
+
+            if (isFromSql && !hasParentheses)
             {
-                StringBuilder sb = new StringBuilder();
+                sb.Append(')');
+            }
 
-                if (isFromSql && !hasParentheses)
-                {
-                    this._stringBuilder.Append('(');
-                }
-
-                sb.Append(from);
-
-                if (isFromSql && !hasParentheses)
-                {
-                    this._stringBuilder.Append(')');
-                }
-                
-                this._stringBuilder.Append(' ').Append(joins[0].GetClauseText());
+            if (hasJoins)
+            {
+                sb.Append(' ').Append(joins[0].GetClauseText());
 
                 if (joins.Count > 1)
                 {
@@ -336,9 +320,9 @@ namespace DotMaysWind.Data.Command
                         sb.Insert(0, '(').Append(')');
                     }
                 }
-
-                this._stringBuilder.Append(sb.ToString()).Append(' ');
             }
+
+            this._stringBuilder.Append(sb.ToString()).Append(' ');
 
             return this;
         }
