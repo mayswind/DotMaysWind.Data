@@ -291,6 +291,131 @@ namespace DotMaysWind.Data.Command
         }
         #endregion
 
+        #region QueryTableFieldWithCondition
+        /// <summary>
+        /// 查询指定字段名并返回当前语句
+        /// </summary>
+        /// <param name="condition">查询条件（当满足条件时查询该指定字段名）</param>
+        /// <param name="queryFields">要查询的字段名集合</param>
+        /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Boolean getPassword = true;
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserID", "UserName")
+        ///     .Querys((() => { return getPassword; }), "Password");
+        /// 
+        /// //SELECT UserID, UserName FROM tbl_Users
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
+        public SelectCommand Querys(Func<Boolean> condition, params String[] queryFields)
+        {
+            if (condition())
+            {
+                return this.Querys(queryFields);
+            }
+            else
+            {
+                return this;
+            }
+        }
+
+        /// <summary>
+        /// 查询指定字段名并返回当前语句
+        /// </summary>
+        /// <param name="condition">查询条件（当满足条件时查询该指定字段名）</param>
+        /// <param name="tableName">表格名称</param>
+        /// <param name="queryField">要查询的字段名</param>
+        /// <param name="aliasesName">字段名的别名</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand Query(Func<Boolean> condition, String tableName, String queryField, String aliasesName)
+        {
+            if (condition())
+            {
+                return this.Query(tableName, queryField, aliasesName);
+            }
+            else
+            {
+                return this;
+            }
+        }
+
+        /// <summary>
+        /// 查询指定字段名并返回当前语句
+        /// </summary>
+        /// <param name="condition">查询条件（当满足条件时查询该指定字段名）</param>
+        /// <param name="queryField">要查询的字段名</param>
+        /// <param name="aliasesName">字段名的别名</param>
+        /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Boolean getPassword = true;
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Query("UserID")
+        ///     .Query("UserName")
+        ///     .Query("LastLoginTime", "LastTime")
+        ///     .Query((() => { return getPassword; }), "Password", "UserPass");
+        /// 
+        /// //SELECT UserID, UserName, LastLoginTime AS LastTime FROM tbl_Users
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
+        public SelectCommand Query(Func<Boolean> condition, String queryField, String aliasesName)
+        {
+            if (condition())
+            {
+                return this.Query(queryField, aliasesName);
+            }
+            else
+            {
+                return this;
+            }
+        }
+
+        /// <summary>
+        /// 查询指定字段名并返回当前语句
+        /// </summary>
+        /// <param name="condition">查询条件（当满足条件时查询该指定字段名）</param>
+        /// <param name="queryField">要查询的字段名</param>
+        /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Boolean getPassword = true;
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Query("UserID")
+        ///     .Query("UserName")
+        ///     .Query((() => { return getPassword; }), "Password");
+        /// 
+        /// //SELECT UserID, UserName FROM tbl_Users
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
+        public SelectCommand Query(Func<Boolean> condition, String queryField)
+        {
+            if (condition())
+            {
+                return this.Query(queryField);
+            }
+            else
+            {
+                return this;
+            }
+        }
+        #endregion
+
         #region QueryAggregateFunction
         /// <summary>
         /// 查询指定合计函数并返回当前语句
