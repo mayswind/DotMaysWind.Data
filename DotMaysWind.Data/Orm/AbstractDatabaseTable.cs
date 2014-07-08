@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 
 using DotMaysWind.Data.Command;
+using DotMaysWind.Data.Command.Function;
 
 namespace DotMaysWind.Data.Orm
 {
@@ -126,6 +127,14 @@ namespace DotMaysWind.Data.Orm
         protected IDatabase Database
         {
             get { return this._baseDatabase; }
+        }
+
+        /// <summary>
+        /// 获取Sql数据库支持的函数
+        /// </summary>
+        public SqlFunctions Functions
+        {
+            get { return this._baseDatabase.Functions; }
         }
         #endregion
 
