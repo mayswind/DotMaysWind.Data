@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 
 using DotMaysWind.Data.Command;
 
@@ -145,7 +146,7 @@ namespace DotMaysWind.Data.Orm
         }
         #endregion
 
-        #region CreateCommand
+        #region CreateSqlCommand
         /// <summary>
         /// 创建新的Sql插入语句类
         /// </summary>
@@ -190,6 +191,48 @@ namespace DotMaysWind.Data.Orm
         protected virtual SelectCommand Select(String tableAliasesName)
         {
             return this._baseDatabase.CreateSelectCommand(this.TableName, tableAliasesName);
+        }
+        #endregion
+
+        #region UsingConnection/Transaction
+        /// <summary>
+        /// 使用持续数据库连接执行操作
+        /// </summary>
+        /// <param name="action">使用持续连接的操作</param>
+        public void UsingConnection(Action<DbConnection> action)
+        {
+            this._baseDatabase.UsingConnection(action);
+        }
+
+        /// <summary>
+        /// 使用持续数据库连接执行操作
+        /// </summary>
+        /// <typeparam name="TResult">返回类型</typeparam>
+        /// <param name="function">使用持续连接的操作</param>
+        /// <returns>内部返回内容</returns>
+        public TResult UsingConnection<TResult>(Func<DbConnection, TResult> function)
+        {
+            return this._baseDatabase.UsingConnection<TResult>(function);
+        }
+
+        /// <summary>
+        /// 使用数据库事务执行操作
+        /// </summary>
+        /// <param name="action">使用事务的操作</param>
+        public void UsingTransaction(Action<DbTransaction> action)
+        {
+            this._baseDatabase.UsingTransaction(action);
+        }
+
+        /// <summary>
+        /// 使用数据库事务执行操作
+        /// </summary>
+        /// <typeparam name="TResult">返回类型</typeparam>
+        /// <param name="function">使用事务的操作</param>
+        /// <returns>内部返回内容</returns>
+        public TResult UsingTransaction<TResult>(Func<DbTransaction, TResult> function)
+        {
+            return this._baseDatabase.UsingTransaction<TResult>(function);
         }
         #endregion
 
