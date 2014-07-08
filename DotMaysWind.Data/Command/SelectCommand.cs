@@ -13,9 +13,14 @@ namespace DotMaysWind.Data.Command
     /// </summary>
     public class SelectCommand : AbstractSqlCommandWithWhere
     {
+        #region 常量
+        private const Int32 RecordCountEmpty = -1;
+        #endregion
+
         #region 字段
         private Boolean _isFromSql;
 
+        private Int32 _recordCount;
         private Int32 _pageSize;
         private Int32 _recordStart;
         private Boolean _useDistinct;
@@ -168,6 +173,7 @@ namespace DotMaysWind.Data.Command
             this._orders = new List<SqlOrder>();
             this._joins = new List<ISqlJoin>();
 
+            this._recordCount = SelectCommand.RecordCountEmpty;
             this._pageSize = 0;
             this._recordStart = 0;
             this._joinIndex = 0;
@@ -1033,6 +1039,7 @@ namespace DotMaysWind.Data.Command
                 throw new OverflowException("Pagesize cannot be less than zero!");
             }
 
+            this._recordCount = SelectCommand.RecordCountEmpty;
             this._pageSize = pageSize;
             this._recordStart = 0;
 
@@ -1053,6 +1060,7 @@ namespace DotMaysWind.Data.Command
                 throw new OverflowException("Pagesize cannot be less than zero!");
             }
 
+            this._recordCount = SelectCommand.RecordCountEmpty;
             this._pageSize = pageSize;
             this._recordStart = recordStart;
 
@@ -1073,8 +1081,32 @@ namespace DotMaysWind.Data.Command
                 throw new OverflowException("Pagesize cannot be less than zero!");
             }
 
+            this._recordCount = SelectCommand.RecordCountEmpty;
             this._pageSize = pageSize;
             this._recordStart = (pageIndex <= 1 ? 0 : pageIndex - 1) * pageSize;
+
+            return this;
+        }
+
+        /// <summary>
+        /// 设置分页设置并返回当前语句
+        /// </summary>
+        /// <param name="pageSize">页面大小</param>
+        /// <param name="pageIndex">页面索引（从1开始计算）</param>
+        /// <param name="recordCount">记录数量</param>
+        /// <exception cref="OverflowException">记录数量和页面大小不能小于0</exception>
+        /// <remarks>Access、SQL Server Ce等需要计算记录总数才能分页的使用此方法效率更高</remarks>
+        /// <returns>当前语句</returns>
+        public SelectCommand Paged(Int32 pageSize, Int32 pageIndex, Int32 recordCount)
+        {
+            this.Paged(pageSize, pageIndex);
+
+            if (recordCount < 0)
+            {
+                throw new OverflowException("Record count cannot be less than zero!");
+            }
+
+            this._recordCount = recordCount;
 
             return this;
         }
@@ -1927,7 +1959,9 @@ namespace DotMaysWind.Data.Command
         private String GetCommandText(Boolean containParentheses, String aliasesName, Boolean orderReverse)
         {
             Boolean hasAliasesName = !String.IsNullOrEmpty(aliasesName);
-            String sql = this._database.InternalGetPagerSelectCommand(this, orderReverse);
+            String sql = (this._recordCount == SelectCommand.RecordCountEmpty ?
+                this._database.InternalGetPagerSelectCommand(this, orderReverse) :
+                this._database.InternalGetPagerSelectCommand(this, this._recordCount, orderReverse));
 
             if (containParentheses || hasAliasesName)
             {

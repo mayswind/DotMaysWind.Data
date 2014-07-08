@@ -56,6 +56,18 @@ namespace DotMaysWind.Data
             DbCommand dbCommand = this.CreateDbCommand(cntCommand, parameters);
             Int32 recordCount = this.ExecuteScalar<Int32>(dbCommand);
 
+            return this.InternalGetPagerSelectCommand(sourceCommand, recordCount, orderReverse);
+        }
+
+        /// <summary>
+        /// 获取分页后的选择语句
+        /// </summary>
+        /// <param name="sourceCommand">源选择语句</param>
+        /// <param name="recordCount">记录数量</param>
+        /// <param name="orderReverse">是否反转</param>
+        /// <returns>分页后的选择语句</returns>
+        internal override String InternalGetPagerSelectCommand(SelectCommand sourceCommand, Int32 recordCount, Boolean orderReverse)
+        {
             if (sourceCommand.RecordStart < recordCount)
             {
                 return AccessSelectPager.InternalGetPagerCommand(sourceCommand, recordCount, orderReverse);

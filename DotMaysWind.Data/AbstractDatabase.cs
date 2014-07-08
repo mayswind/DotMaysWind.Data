@@ -1304,6 +1304,18 @@ namespace DotMaysWind.Data
 
         #region 虚拟方法
         /// <summary>
+        /// 获取分页后的选择语句
+        /// </summary>
+        /// <param name="sourceCommand">源选择语句</param>
+        /// <param name="recordCount">记录数量</param>
+        /// <param name="orderReverse">是否反转</param>
+        /// <returns>分页后的选择语句</returns>
+        internal virtual String InternalGetPagerSelectCommand(SelectCommand sourceCommand, Int32 recordCount, Boolean orderReverse)
+        {
+            return this.InternalGetPagerSelectCommand(sourceCommand, orderReverse);
+        }
+
+        /// <summary>
         /// 获取最后一条记录需要查询的名称
         /// </summary>
         /// <returns>需要查询的名称</returns>
