@@ -47,13 +47,20 @@ namespace DotMaysWind.Data.Helper
         internal static DatabaseType InternalGetDatabaseType(DbProviderFactory dbProvider, String connectionString)
         {
             String providerName = dbProvider.GetType().ToString().ToLowerInvariant();
+            DatabaseType dbType = DatabaseType.Unknown;
 
             foreach (KeyValuePair<String, DatabaseType> pair in _typeDict)
             {
                 if (providerName.IndexOf(pair.Key) >= 0)
                 {
-                    return pair.Value;
+                    dbType = pair.Value;
+                    break;
                 }
+            }
+
+            if (dbType != DatabaseType.Unknown)
+            {
+                return dbType;
             }
 
             #region Access
