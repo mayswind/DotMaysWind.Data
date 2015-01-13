@@ -208,7 +208,7 @@ namespace DotMaysWind.Data.Orm
         /// 使用持续数据库连接执行操作
         /// </summary>
         /// <param name="action">使用持续连接的操作</param>
-        public void UsingConnection(Action<DbConnection> action)
+        protected void UsingConnection(Action<DbConnection> action)
         {
             this._baseDatabase.UsingConnection(action);
         }
@@ -219,7 +219,7 @@ namespace DotMaysWind.Data.Orm
         /// <typeparam name="TResult">返回类型</typeparam>
         /// <param name="function">使用持续连接的操作</param>
         /// <returns>内部返回内容</returns>
-        public TResult UsingConnection<TResult>(Func<DbConnection, TResult> function)
+        protected TResult UsingConnection<TResult>(Func<DbConnection, TResult> function)
         {
             return this._baseDatabase.UsingConnection<TResult>(function);
         }
@@ -228,7 +228,7 @@ namespace DotMaysWind.Data.Orm
         /// 使用数据库事务执行操作
         /// </summary>
         /// <param name="action">使用事务的操作</param>
-        public void UsingTransaction(Action<DbTransaction> action)
+        protected void UsingTransaction(Action<DbTransaction> action)
         {
             this._baseDatabase.UsingTransaction(action);
         }
@@ -239,7 +239,7 @@ namespace DotMaysWind.Data.Orm
         /// <typeparam name="TResult">返回类型</typeparam>
         /// <param name="function">使用事务的操作</param>
         /// <returns>内部返回内容</returns>
-        public TResult UsingTransaction<TResult>(Func<DbTransaction, TResult> function)
+        protected TResult UsingTransaction<TResult>(Func<DbTransaction, TResult> function)
         {
             return this._baseDatabase.UsingTransaction<TResult>(function);
         }
@@ -252,7 +252,7 @@ namespace DotMaysWind.Data.Orm
         /// <param name="command">指定Sql语句</param>
         /// <param name="transaction">数据库事务</param>
         /// <param name="action">使用数据库读取器的操作</param>
-        public void UsingDataReader(ISqlCommand command, DbTransaction transaction, Action<IDataReader> action)
+        protected void UsingDataReader(ISqlCommand command, DbTransaction transaction, Action<IDataReader> action)
         {
             this._baseDatabase.UsingDataReader(command, transaction, action);
         }
@@ -265,7 +265,7 @@ namespace DotMaysWind.Data.Orm
         /// <param name="transaction">数据库事务</param>
         /// <param name="function">使用数据库读取器的操作</param>
         /// <returns>返回的内容</returns>
-        public TResult UsingDataReader<TResult>(ISqlCommand command, DbTransaction transaction, Func<IDataReader, TResult> function)
+        protected TResult UsingDataReader<TResult>(ISqlCommand command, DbTransaction transaction, Func<IDataReader, TResult> function)
         {
             return this._baseDatabase.UsingDataReader<TResult>(command, transaction, function);
         }
@@ -276,7 +276,7 @@ namespace DotMaysWind.Data.Orm
         /// <param name="command">指定Sql语句</param>
         /// <param name="connection">数据库连接</param>
         /// <param name="action">使用数据库读取器的操作</param>
-        public void UsingDataReader(ISqlCommand command, DbConnection connection, Action<IDataReader> action)
+        protected void UsingDataReader(ISqlCommand command, DbConnection connection, Action<IDataReader> action)
         {
             this._baseDatabase.UsingDataReader(command, connection, action);
         }
@@ -289,7 +289,7 @@ namespace DotMaysWind.Data.Orm
         /// <param name="connection">数据库连接</param>
         /// <param name="function">使用数据库读取器的操作</param>
         /// <returns>返回的内容</returns>
-        public TResult UsingDataReader<TResult>(ISqlCommand command, DbConnection connection, Func<IDataReader, TResult> function)
+        protected TResult UsingDataReader<TResult>(ISqlCommand command, DbConnection connection, Func<IDataReader, TResult> function)
         {
             return this._baseDatabase.UsingDataReader<TResult>(command, connection, function);
         }
@@ -299,7 +299,7 @@ namespace DotMaysWind.Data.Orm
         /// </summary>
         /// <param name="command">指定Sql语句</param>
         /// <param name="action">使用数据库读取器的操作</param>
-        public void UsingDataReader(ISqlCommand command, Action<IDataReader> action)
+        protected void UsingDataReader(ISqlCommand command, Action<IDataReader> action)
         {
             this._baseDatabase.UsingDataReader(command, action);
         }
@@ -311,7 +311,7 @@ namespace DotMaysWind.Data.Orm
         /// <param name="command">指定Sql语句</param>
         /// <param name="function">使用数据库读取器的操作</param>
         /// <returns>返回的内容</returns>
-        public TResult UsingDataReader<TResult>(ISqlCommand command, Func<IDataReader, TResult> function)
+        protected TResult UsingDataReader<TResult>(ISqlCommand command, Func<IDataReader, TResult> function)
         {
             return this._baseDatabase.UsingDataReader<TResult>(command, function);
         }
