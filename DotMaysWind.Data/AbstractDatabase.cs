@@ -1055,7 +1055,18 @@ namespace DotMaysWind.Data
         /// <returns>受影响的行数</returns>
         public Int32 ExecuteNonQuery(params ISqlCommand[] commands)
         {
-            if (commands == null || commands.Length <= 0)
+            IEnumerable<ISqlCommand> collection = commands;
+            return this.ExecuteNonQuery(collection);
+        }
+
+        /// <summary>
+        /// 返回执行多个指定Sql语句后影响的行数
+        /// </summary>
+        /// <param name="commands">指定Sql语句组</param>
+        /// <returns>受影响的行数</returns>
+        public Int32 ExecuteNonQuery(IEnumerable<ISqlCommand> commands)
+        {
+            if (commands == null)
             {
                 return 0;
             }
@@ -1064,25 +1075,15 @@ namespace DotMaysWind.Data
             {
                 Int32 count = 0;
 
-                for (Int32 i = 0; i < commands.Length; i++)
+                foreach (ISqlCommand command in commands)
                 {
-                    count += this.ExecuteNonQuery(commands[i], transaction);
+                    count += this.ExecuteNonQuery(command, transaction);
                 }
 
                 return count;
             });
 
             return result;
-        }
-
-        /// <summary>
-        /// 返回执行多个指定Sql语句后影响的行数
-        /// </summary>
-        /// <param name="commands">指定Sql语句组</param>
-        /// <returns>受影响的行数</returns>
-        public Int32 ExecuteNonQuery(List<ISqlCommand> commands)
-        {
-            return this.ExecuteNonQuery(commands.ToArray());
         }
         #endregion
 

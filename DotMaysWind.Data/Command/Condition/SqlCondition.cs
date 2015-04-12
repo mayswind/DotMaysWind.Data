@@ -1981,15 +1981,15 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="concatType">连接类型</param>
         /// <param name="conditions">条件语句集合</param>
         /// <returns>Sql条件语句集合</returns>
-        internal static SqlConditionList InternalCreateList(AbstractSqlCommand cmd, SqlWhereConcatType concatType, params ISqlCondition[] conditions)
+        internal static SqlConditionList InternalCreateList(AbstractSqlCommand cmd, SqlWhereConcatType concatType, IEnumerable<ISqlCondition> conditions)
         {
             SqlConditionList list = new SqlConditionList(cmd, concatType);
 
             if (conditions != null)
             {
-                for (Int32 i = 0; i < conditions.Length; i++)
+                foreach (ISqlCondition condition in conditions)
                 {
-                    list.Add(conditions[i]);
+                    list.Add(condition);
                 }
             }
             
@@ -2015,9 +2015,9 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="cmd">Sql语句</param>
         /// <param name="conditions">条件语句集合</param>
         /// <returns>Sql条件语句集合</returns>
-        public static SqlConditionList And(AbstractSqlCommand cmd, List<ISqlCondition> conditions)
+        public static SqlConditionList And(AbstractSqlCommand cmd, IEnumerable<ISqlCondition> conditions)
         {
-            return SqlCondition.InternalCreateList(cmd, SqlWhereConcatType.And, conditions.ToArray());
+            return SqlCondition.InternalCreateList(cmd, SqlWhereConcatType.And, conditions);
         }
         #endregion
 
@@ -2039,9 +2039,9 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="cmd">Sql语句</param>
         /// <param name="conditions">条件语句集合</param>
         /// <returns>Sql条件语句集合</returns>
-        public static SqlConditionList Or(AbstractSqlCommand cmd, List<ISqlCondition> conditions)
+        public static SqlConditionList Or(AbstractSqlCommand cmd, IEnumerable<ISqlCondition> conditions)
         {
-            return SqlCondition.InternalCreateList(cmd, SqlWhereConcatType.Or, conditions.ToArray());
+            return SqlCondition.InternalCreateList(cmd, SqlWhereConcatType.Or, conditions);
         }
         #endregion
 

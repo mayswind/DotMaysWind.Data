@@ -1259,9 +1259,9 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="conditions">条件语句集合</param>
         /// <returns>Sql条件语句集合</returns>
-        public SqlConditionList And(List<ISqlCondition> conditions)
+        public SqlConditionList And(IEnumerable<ISqlCondition> conditions)
         {
-            return SqlCondition.And(this._baseCommand, conditions.ToArray());
+            return SqlCondition.And(this._baseCommand, conditions);
         }
         #endregion
 
@@ -1281,9 +1281,9 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="conditions">条件语句集合</param>
         /// <returns>Sql条件语句集合</returns>
-        public SqlConditionList Or(List<ISqlCondition> conditions)
+        public SqlConditionList Or(IEnumerable<ISqlCondition> conditions)
         {
-            return SqlCondition.Or(this._baseCommand, conditions.ToArray());
+            return SqlCondition.Or(this._baseCommand, conditions);
         }
         #endregion
 
