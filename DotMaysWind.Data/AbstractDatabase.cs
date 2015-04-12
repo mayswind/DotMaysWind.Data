@@ -332,8 +332,6 @@ namespace DotMaysWind.Data
                 connection = transaction.Connection;
 
                 result = function(transaction);
-
-                transaction.Commit();
             }
             catch
             {
