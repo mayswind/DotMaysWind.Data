@@ -1017,9 +1017,34 @@ namespace DotMaysWind.Data.Command.Condition
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="columnName">字段名</param>
         /// <param name="dbType">数据类型</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        public SqlInsideParametersCondition In<T>(String columnName, DbType dbType, IEnumerable<T> values)
+        {
+            return SqlCondition.In<T>(this._baseCommand, columnName, dbType, values);
+        }
+
+        /// <summary>
+        /// 创建新的Sql IN条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="columnName">字段名</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        public SqlInsideParametersCondition In<T>(String columnName, IEnumerable<T> values)
+        {
+            return SqlCondition.In<T>(this._baseCommand, columnName, values);
+        }
+
+        /// <summary>
+        /// 创建新的Sql IN条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
         /// <param name="func">操作方法</param>
         /// <returns>Sql条件语句</returns>
-        public SqlInsideParametersCondition In<T>(String columnName, DbType dbType, Func<T[]> func)
+        public SqlInsideParametersCondition In<T>(String columnName, DbType dbType, Func<IEnumerable<T>> func)
         {
             return SqlCondition.In<T>(this._baseCommand, columnName, dbType, func);
         }
@@ -1031,7 +1056,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="columnName">字段名</param>
         /// <param name="func">操作方法</param>
         /// <returns>Sql条件语句</returns>
-        public SqlInsideParametersCondition In<T>(String columnName, Func<T[]> func)
+        public SqlInsideParametersCondition In<T>(String columnName, Func<IEnumerable<T>> func)
         {
             return SqlCondition.In<T>(this._baseCommand, columnName, func);
         }
@@ -1165,9 +1190,34 @@ namespace DotMaysWind.Data.Command.Condition
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="columnName">字段名</param>
         /// <param name="dbType">数据类型</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        public SqlInsideParametersCondition NotIn<T>(String columnName, DbType dbType, IEnumerable<T> values)
+        {
+            return SqlCondition.NotIn<T>(this._baseCommand, columnName, dbType, values);
+        }
+
+        /// <summary>
+        /// 创建新的Sql NOT IN条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="columnName">字段名</param>
+        /// <param name="values">数据集合</param>
+        /// <returns>Sql条件语句</returns>
+        public SqlInsideParametersCondition NotIn<T>(String columnName, IEnumerable<T> values)
+        {
+            return SqlCondition.NotIn<T>(this._baseCommand, columnName, values);
+        }
+
+        /// <summary>
+        /// 创建新的Sql NOT IN条件语句
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
         /// <param name="func">操作方法</param>
         /// <returns>Sql条件语句</returns>
-        public SqlInsideParametersCondition NotIn<T>(String columnName, DbType dbType, Func<T[]> func)
+        public SqlInsideParametersCondition NotIn<T>(String columnName, DbType dbType, Func<IEnumerable<T>> func)
         {
             return SqlCondition.NotIn<T>(this._baseCommand, columnName, dbType, func);
         }
@@ -1179,7 +1229,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="columnName">字段名</param>
         /// <param name="func">操作方法</param>
         /// <returns>Sql条件语句</returns>
-        public SqlInsideParametersCondition NotIn<T>(String columnName, Func<T[]> func)
+        public SqlInsideParametersCondition NotIn<T>(String columnName, Func<IEnumerable<T>> func)
         {
             return SqlCondition.NotIn<T>(this._baseCommand, columnName, func);
         }
