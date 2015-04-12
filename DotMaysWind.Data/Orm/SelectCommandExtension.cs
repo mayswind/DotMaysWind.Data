@@ -221,5 +221,100 @@ namespace DotMaysWind.Data.Orm
 
             return table.GetEntities(cmd.ToDataTable(transaction));
         }
+
+
+
+        /// <summary>
+        /// 获取实体字典
+        /// </summary>
+        /// <typeparam name="TKey">字典键类型</typeparam>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="cmd">选择语句</param>
+        /// <param name="table">数据库表格</param>
+        /// <param name="keyColumnName">键列名称</param>
+        /// <exception cref="ArgumentNullException">选择语句或数据库表格不能为空</exception>
+        /// <returns>数据实体字典</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class UserDataProvider : AbstractDatabaseTable<User>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public Dictionary<String, User> GetAllEntities()
+        ///     {
+        ///         return this.Select()
+        ///             .ToEntityDictionary<String, User>(this, "UserName");
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
+        public static Dictionary<TKey, T> ToEntityDictionary<TKey, T>(this SelectCommand cmd, AbstractDatabaseTable<T> table, String keyColumnName) where T : class
+        {
+            if (cmd == null)
+            {
+                throw new ArgumentNullException("cmd");
+            }
+
+            if (table == null)
+            {
+                throw new ArgumentNullException("table");
+            }
+
+            return table.GetEntitiesDictionary<TKey>(cmd.ToDataTable(), keyColumnName);
+        }
+
+        /// <summary>
+        /// 获取实体字典
+        /// </summary>
+        /// <typeparam name="TKey">字典键类型</typeparam>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="cmd">选择语句</param>
+        /// <param name="table">数据库表格</param>
+        /// <param name="keyColumnName">键列名称</param>
+        /// <param name="connection">数据库连接</param>
+        /// <exception cref="ArgumentNullException">选择语句或数据库表格不能为空</exception>
+        /// <returns>数据实体字典</returns>
+        public static Dictionary<TKey, T> ToEntityDictionary<TKey, T>(this SelectCommand cmd, AbstractDatabaseTable<T> table, String keyColumnName, DbConnection connection) where T : class
+        {
+            if (cmd == null)
+            {
+                throw new ArgumentNullException("cmd");
+            }
+
+            if (table == null)
+            {
+                throw new ArgumentNullException("table");
+            }
+
+            return table.GetEntitiesDictionary<TKey>(cmd.ToDataTable(connection), keyColumnName);
+        }
+
+        /// <summary>
+        /// 获取实体字典
+        /// </summary>
+        /// <typeparam name="TKey">字典键类型</typeparam>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="cmd">选择语句</param>
+        /// <param name="table">数据库表格</param>
+        /// <param name="keyColumnName">键列名称</param>
+        /// <param name="transaction">数据库事务</param>
+        /// <exception cref="ArgumentNullException">选择语句或数据库表格不能为空</exception>
+        /// <returns>数据实体字典</returns>
+        public static Dictionary<TKey, T> ToEntityDictionary<TKey, T>(this SelectCommand cmd, AbstractDatabaseTable<T> table, String keyColumnName, DbTransaction transaction) where T : class
+        {
+            if (cmd == null)
+            {
+                throw new ArgumentNullException("cmd");
+            }
+
+            if (table == null)
+            {
+                throw new ArgumentNullException("table");
+            }
+
+            return table.GetEntitiesDictionary<TKey>(cmd.ToDataTable(transaction), keyColumnName);
+        }
     }
 }

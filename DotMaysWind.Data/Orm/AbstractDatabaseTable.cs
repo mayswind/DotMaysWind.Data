@@ -5,6 +5,7 @@ using System.Data.Common;
 
 using DotMaysWind.Data.Command;
 using DotMaysWind.Data.Command.Function;
+using DotMaysWind.Data.Helper;
 
 namespace DotMaysWind.Data.Orm
 {
@@ -682,6 +683,29 @@ namespace DotMaysWind.Data.Orm
                 return default(TValue);
             }
         }
+
+        /// <summary>
+        /// 读取指定类型数据
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="columns">列集合</param>
+        /// <param name="columnName">列名称</param>
+        /// <typeparam name="TValue">指定类型</typeparam>
+        /// <returns>指定类型数据</returns>
+        protected TValue LoadValue<TValue>(DataRow row, DataColumnCollection columns, String columnName)
+        {
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
+            {
+                Object value = row[columnName];
+                DbType dbType = DbTypeHelper.InternalGetDbType(value);
+
+                return (TValue)DbConvert.ToValue(value, dbType);
+            }
+            else
+            {
+                return default(TValue);
+            }
+        }
         #endregion
 
         #region 可空
@@ -1110,6 +1134,32 @@ namespace DotMaysWind.Data.Orm
             }
 
             return list;
+        }
+
+        /// <summary>
+        /// 获取实体列表
+        /// </summary>
+        /// <param name="table">数据表</param>
+        /// <param name="keyColumnName">键列名称</param>
+        /// <returns>实体列表</returns>
+        protected internal Dictionary<TKey, T> GetEntitiesDictionary<TKey>(DataTable table, String keyColumnName)
+        {
+            Dictionary<TKey, T> dict = null;
+
+            if (!DbConvert.IsDataTableNull(table))
+            {
+                dict = new Dictionary<TKey, T>();
+
+                for (Int32 i = 0; i < table.Rows.Count; i++)
+                {
+                    TKey key = this.LoadValue<TKey>(table.Rows[i], table.Columns, keyColumnName);
+                    T entity = this.GetEntity(table.Rows[i]);
+
+                    dict[key] = entity;
+                }
+            }
+
+            return dict;
         }
         #endregion
 
