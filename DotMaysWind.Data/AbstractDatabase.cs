@@ -1078,6 +1078,8 @@ namespace DotMaysWind.Data
                     count += this.ExecuteNonQuery(command, transaction);
                 }
 
+                transaction.Commit();
+
                 return count;
             });
 
