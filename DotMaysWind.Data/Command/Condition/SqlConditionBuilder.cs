@@ -934,7 +934,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="dbType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public SqlInsideParametersCondition In(String columnName, DbType dbType, params Object[] values)
+        public SqlInsideParametersCondition In(String columnName, DbType dbType, IEnumerable<Object> values)
         {
             return SqlCondition.In(this._baseCommand, columnName, dbType, values);
         }
@@ -945,7 +945,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="columnName">字段名</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public SqlInsideParametersCondition In(String columnName, params Object[] values)
+        public SqlInsideParametersCondition In(String columnName, IEnumerable<Object> values)
         {
             return SqlCondition.In(this._baseCommand, columnName, values);
         }
@@ -994,9 +994,9 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="dbType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public SqlInsideParametersCondition In<T>(String columnName, DbType dbType, params T[] values)
+        public SqlInsideParametersCondition InThese<T>(String columnName, DbType dbType, params T[] values)
         {
-            return SqlCondition.In<T>(this._baseCommand, columnName, dbType, values);
+            return SqlCondition.InThese<T>(this._baseCommand, columnName, dbType, values);
         }
 
         /// <summary>
@@ -1006,9 +1006,9 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="columnName">字段名</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public SqlInsideParametersCondition In<T>(String columnName, params T[] values)
+        public SqlInsideParametersCondition InThese<T>(String columnName, params T[] values)
         {
-            return SqlCondition.In<T>(this._baseCommand, columnName, values);
+            return SqlCondition.InThese<T>(this._baseCommand, columnName, values);
         }
 
         /// <summary>
@@ -1082,7 +1082,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="dbType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public SqlInsideParametersCondition NotIn(String columnName, DbType dbType, params Object[] values)
+        public SqlInsideParametersCondition NotIn(String columnName, DbType dbType, IEnumerable<Object> values)
         {
             return SqlCondition.NotIn(this._baseCommand, columnName, dbType, values);
         }
@@ -1093,7 +1093,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="columnName">字段名</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public SqlInsideParametersCondition NotIn(String columnName, params Object[] values)
+        public SqlInsideParametersCondition NotIn(String columnName, IEnumerable<Object> values)
         {
             return SqlCondition.NotIn(this._baseCommand, columnName, values);
         }
@@ -1142,9 +1142,9 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="dbType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public SqlInsideParametersCondition NotIn<T>(String columnName, DbType dbType, params T[] values)
+        public SqlInsideParametersCondition NotInThese<T>(String columnName, DbType dbType, params T[] values)
         {
-            return SqlCondition.NotIn<T>(this._baseCommand, columnName, dbType, values);
+            return SqlCondition.NotInThese<T>(this._baseCommand, columnName, dbType, values);
         }
 
         /// <summary>
@@ -1154,9 +1154,9 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="columnName">字段名</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public SqlInsideParametersCondition NotIn<T>(String columnName, params T[] values)
+        public SqlInsideParametersCondition NotInThese<T>(String columnName, params T[] values)
         {
-            return SqlCondition.NotIn<T>(this._baseCommand, columnName, values);
+            return SqlCondition.NotInThese<T>(this._baseCommand, columnName, values);
         }
 
         /// <summary>

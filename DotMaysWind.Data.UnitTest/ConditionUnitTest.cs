@@ -21,7 +21,7 @@ namespace DotMaysWind.Data.UnitTest
             SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
             SelectCommand actualCommand = new SelectCommand(fakeDb, "");
 
-            SqlInsideParametersCondition expectedCondition = SqlCondition.In(expectedCommand, "TestColumn2", 1, 2, 3, 4, 5);
+            SqlInsideParametersCondition expectedCondition = SqlCondition.InThese(expectedCommand, "TestColumn2", 1, 2, 3, 4, 5);
             SqlInsideParametersCondition actualCondition = SqlCondition.InInt32(actualCommand, "TestColumn2", "1, 2, 3, 4, 5", ',');
 
             Assert.AreEqual(expectedCondition, actualCondition);
@@ -34,7 +34,7 @@ namespace DotMaysWind.Data.UnitTest
             SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
             SelectCommand actualCommand = new SelectCommand(fakeDb, "");
 
-            SqlInsideParametersCondition expectedCondition = SqlCondition.NotIn(expectedCommand, "TestColumn2", 1, 2, 3, 4, 5);
+            SqlInsideParametersCondition expectedCondition = SqlCondition.NotInThese(expectedCommand, "TestColumn2", 1, 2, 3, 4, 5);
             SqlInsideParametersCondition actualCondition = SqlCondition.NotInInt32(actualCommand, "TestColumn2", "1, 2, 3, 4, 5", ',');
 
             Assert.AreEqual(expectedCondition, actualCondition);

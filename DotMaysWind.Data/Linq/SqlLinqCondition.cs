@@ -166,6 +166,10 @@ namespace DotMaysWind.Data.Linq
                     return ParseBetweenCallExpression(sourceCommand, expr, true, false);
                 case "NotBetweenNullable":
                     return ParseBetweenCallExpression(sourceCommand, expr, true, true);
+                case "InThese":
+                    return ParseInTheseCallExpression(sourceCommand, expr, false);
+                case "NotInThese":
+                    return ParseInTheseCallExpression(sourceCommand, expr, true);
                 case "In":
                     return ParseInCallExpression(sourceCommand, expr, false);
                 case "NotIn":
@@ -228,7 +232,7 @@ namespace DotMaysWind.Data.Linq
             }
         }
 
-        private static AbstractSqlCondition ParseInCallExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, Boolean isNot)
+        private static AbstractSqlCondition ParseInTheseCallExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, Boolean isNot)
         {
             MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Arguments[0]);
             DatabaseColumnAttribute columnAttr = ExpressionHelper.GetColumnAttributeWithDbType(sourceCommand, left);
@@ -246,6 +250,20 @@ namespace DotMaysWind.Data.Linq
                 AbstractSqlCondition condition = SqlCondition.InternalIn(sourceCommand, columnAttr.ColumnName, isNot, columnAttr.DbType.Value, array);
 
                 return condition;
+            }
+
+            throw new LinqNotSupportedException("Not supported this method!");
+        }
+
+        private static AbstractSqlCondition ParseInCallExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, Boolean isNot)
+        {
+            MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Arguments[0]);
+            DatabaseColumnAttribute columnAttr = ExpressionHelper.GetColumnAttributeWithDbType(sourceCommand, left);
+            Object value = ExpressionHelper.GetExpressionValue(expr.Arguments[1]);
+
+            if (columnAttr == null)
+            {
+                throw new NullAttributeException();
             }
 
             SelectCommand cmd = value as SelectCommand;

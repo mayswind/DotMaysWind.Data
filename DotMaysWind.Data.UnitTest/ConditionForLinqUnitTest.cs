@@ -127,23 +127,23 @@ namespace DotMaysWind.Data.UnitTest
             SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
             SelectCommand actualCommand = new SelectCommand(fakeDb, "");
 
-            SqlInsideParametersCondition expectedCondition = SqlCondition.In(expectedCommand, "TestColumn1", "1");
-            SqlInsideParametersCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.In("1")) as SqlInsideParametersCondition;
+            SqlInsideParametersCondition expectedCondition = SqlCondition.InThese(expectedCommand, "TestColumn1", "1");
+            SqlInsideParametersCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.InThese("1")) as SqlInsideParametersCondition;
 
             Assert.AreEqual(expectedCondition, actualCondition);
 
-            SqlInsideParametersCondition expectedCondition2 = SqlCondition.In(expectedCommand, "TestColumn1", "1", "2", "3", "4", "5");
-            SqlInsideParametersCondition actualCondition2 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.In("1", "2", "3", "4", "5")) as SqlInsideParametersCondition;
+            SqlInsideParametersCondition expectedCondition2 = SqlCondition.InThese(expectedCommand, "TestColumn1", "1", "2", "3", "4", "5");
+            SqlInsideParametersCondition actualCondition2 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.InThese("1", "2", "3", "4", "5")) as SqlInsideParametersCondition;
 
             Assert.AreEqual(expectedCondition2, actualCondition2);
 
-            SqlInsideParametersCondition expectedCondition3 = SqlCondition.In(expectedCommand, "TestColumn2", 1, 2, 3, 4, 5);
-            SqlInsideParametersCondition actualCondition3 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2.In(1, 2, 3, 4, 5)) as SqlInsideParametersCondition;
+            SqlInsideParametersCondition expectedCondition3 = SqlCondition.InThese(expectedCommand, "TestColumn2", 1, 2, 3, 4, 5);
+            SqlInsideParametersCondition actualCondition3 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2.InThese(1, 2, 3, 4, 5)) as SqlInsideParametersCondition;
 
             Assert.AreEqual(expectedCondition3, actualCondition3);
 
-            SqlInsideParametersCondition expectedCondition4 = SqlCondition.In(expectedCommand, "TestColumn5", 1, 2, 3, 4, 5);
-            SqlInsideParametersCondition actualCondition4 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test5.In(1, 2, 3, 4, 5)) as SqlInsideParametersCondition;
+            SqlInsideParametersCondition expectedCondition4 = SqlCondition.InThese(expectedCommand, "TestColumn5", 1, 2, 3, 4, 5);
+            SqlInsideParametersCondition actualCondition4 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test5.InThese(1, 2, 3, 4, 5)) as SqlInsideParametersCondition;
 
             Assert.AreEqual(expectedCondition4, actualCondition4);
 
@@ -168,23 +168,23 @@ namespace DotMaysWind.Data.UnitTest
             SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
             SelectCommand actualCommand = new SelectCommand(fakeDb, "");
 
-            SqlInsideParametersCondition expectedCondition = SqlCondition.NotIn(expectedCommand, "TestColumn1", "1");
-            SqlInsideParametersCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.NotIn("1")) as SqlInsideParametersCondition;
+            SqlInsideParametersCondition expectedCondition = SqlCondition.NotInThese(expectedCommand, "TestColumn1", "1");
+            SqlInsideParametersCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.NotInThese("1")) as SqlInsideParametersCondition;
 
             Assert.AreEqual(expectedCondition, actualCondition);
 
-            SqlInsideParametersCondition expectedCondition2 = SqlCondition.NotIn(expectedCommand, "TestColumn1", "1", "2", "3", "4", "5");
-            SqlInsideParametersCondition actualCondition2 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.NotIn("1", "2", "3", "4", "5")) as SqlInsideParametersCondition;
+            SqlInsideParametersCondition expectedCondition2 = SqlCondition.NotInThese(expectedCommand, "TestColumn1", "1", "2", "3", "4", "5");
+            SqlInsideParametersCondition actualCondition2 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.NotInThese("1", "2", "3", "4", "5")) as SqlInsideParametersCondition;
 
             Assert.AreEqual(expectedCondition2, actualCondition2);
 
-            SqlInsideParametersCondition expectedCondition3 = SqlCondition.NotIn(expectedCommand, "TestColumn2", 1, 2, 3, 4, 5);
-            SqlInsideParametersCondition actualCondition3 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2.NotIn(1, 2, 3, 4, 5)) as SqlInsideParametersCondition;
+            SqlInsideParametersCondition expectedCondition3 = SqlCondition.NotInThese(expectedCommand, "TestColumn2", 1, 2, 3, 4, 5);
+            SqlInsideParametersCondition actualCondition3 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2.NotInThese(1, 2, 3, 4, 5)) as SqlInsideParametersCondition;
 
             Assert.AreEqual(expectedCondition3, actualCondition3);
 
-            SqlInsideParametersCondition expectedCondition4 = SqlCondition.NotIn(expectedCommand, "TestColumn5", 1, 2, 3, 4, 5);
-            SqlInsideParametersCondition actualCondition4 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test5.NotIn(1, 2, 3, 4, 5)) as SqlInsideParametersCondition;
+            SqlInsideParametersCondition expectedCondition4 = SqlCondition.NotInThese(expectedCommand, "TestColumn5", 1, 2, 3, 4, 5);
+            SqlInsideParametersCondition actualCondition4 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test5.NotInThese(1, 2, 3, 4, 5)) as SqlInsideParametersCondition;
 
             Assert.AreEqual(expectedCondition4, actualCondition4);
 

@@ -364,7 +364,7 @@ namespace DotMaysWind.Data.Linq
         /// <param name="values">指定内容集合</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
         /// <returns>是否包含指定内容</returns>
-        public static Boolean In<T>(this T key, params T[] values) where T : struct
+        public static Boolean InThese<T>(this T key, params T[] values) where T : struct
         {
             throw new NotImplementedException();
         }
@@ -377,7 +377,7 @@ namespace DotMaysWind.Data.Linq
         /// <param name="values">指定内容集合</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
         /// <returns>是否包含指定内容</returns>
-        public static Boolean In<T>(this T? key, params T[] values) where T : struct
+        public static Boolean InThese<T>(this T? key, params T[] values) where T : struct
         {
             throw new NotImplementedException();
         }
@@ -389,7 +389,7 @@ namespace DotMaysWind.Data.Linq
         /// <param name="values">指定内容集合</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
         /// <returns>是否包含指定内容</returns>
-        public static Boolean In(this String key, params String[] values)
+        public static Boolean InThese(this String key, params String[] values)
         {
             throw new NotImplementedException();
         }
@@ -442,7 +442,7 @@ namespace DotMaysWind.Data.Linq
         /// <param name="values">指定内容集合</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
         /// <returns>是否不包含指定内容</returns>
-        public static Boolean NotIn<T>(this T key, params T[] values) where T : struct
+        public static Boolean NotInThese<T>(this T key, params T[] values) where T : struct
         {
             throw new NotImplementedException();
         }
@@ -455,7 +455,7 @@ namespace DotMaysWind.Data.Linq
         /// <param name="values">指定内容集合</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
         /// <returns>是否不包含指定内容</returns>
-        public static Boolean NotIn<T>(this T? key, params T[] values) where T : struct
+        public static Boolean NotInThese<T>(this T? key, params T[] values) where T : struct
         {
             throw new NotImplementedException();
         }
@@ -467,7 +467,7 @@ namespace DotMaysWind.Data.Linq
         /// <param name="values">指定内容集合</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
         /// <returns>是否不包含指定内容</returns>
-        public static Boolean NotIn(this String key, params String[] values)
+        public static Boolean NotInThese(this String key, params String[] values)
         {
             throw new NotImplementedException();
         }

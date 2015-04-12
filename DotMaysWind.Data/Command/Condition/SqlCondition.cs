@@ -1358,15 +1358,15 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="dbType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlInsideParametersCondition InternalIn(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DbType dbType, params Object[] values)
+        internal static SqlInsideParametersCondition InternalIn(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DbType dbType, IEnumerable<Object> values)
         {
             List<SqlParameter> parameters = new List<SqlParameter>();
 
             if (values != null)
             {
-                for (Int32 i = 0; i < values.Length; i++)
+                foreach (Object value in values)
                 {
-                    parameters.Add(cmd.CreateSqlParameter(columnName, dbType, values[i]));
+                    parameters.Add(cmd.CreateSqlParameter(columnName, dbType, value));
                 }
             }
 
@@ -1381,17 +1381,22 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="isNotIn">是否不在范围内</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlInsideParametersCondition InternalIn(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, params Object[] values)
+        internal static SqlInsideParametersCondition InternalIn(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, IEnumerable<Object> values)
         {
             List<SqlParameter> parameters = new List<SqlParameter>();
 
             if (values != null)
             {
-                DbType dbType = DbTypeHelper.InternalGetDbType(values[0]);
+                DbType? dbType = null;
 
-                for (Int32 i = 0; i < values.Length; i++)
+                foreach (Object value in values)
                 {
-                    parameters.Add(cmd.CreateSqlParameter(columnName, dbType, values[i]));
+                    if (!dbType.HasValue)
+                    {
+                        dbType = DbTypeHelper.InternalGetDbType(value);
+                    }
+
+                    parameters.Add(cmd.CreateSqlParameter(columnName, dbType.Value, value));
                 }
             }
 
@@ -1489,7 +1494,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="dbType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlInsideParametersCondition InternalIn<T>(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DbType dbType, params T[] values)
+        internal static SqlInsideParametersCondition InternalInThese<T>(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DbType dbType, params T[] values)
         {
             List<SqlParameter> parameters = new List<SqlParameter>();
 
@@ -1513,7 +1518,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="isNotIn">是否不在范围内</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlInsideParametersCondition InternalIn<T>(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, params T[] values)
+        internal static SqlInsideParametersCondition InternalInThese<T>(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, params T[] values)
         {
             List<SqlParameter> parameters = new List<SqlParameter>();
 
@@ -1619,7 +1624,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="dbType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition In(AbstractSqlCommand cmd, String columnName, DbType dbType, params Object[] values)
+        public static SqlInsideParametersCondition In(AbstractSqlCommand cmd, String columnName, DbType dbType, IEnumerable<Object> values)
         {
             return SqlCondition.InternalIn(cmd, columnName, false, dbType, values);
         }
@@ -1631,7 +1636,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="columnName">字段名</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition In(AbstractSqlCommand cmd, String columnName, params Object[] values)
+        public static SqlInsideParametersCondition In(AbstractSqlCommand cmd, String columnName, IEnumerable<Object> values)
         {
             return SqlCondition.InternalIn(cmd, columnName, false, values);
         }
@@ -1684,9 +1689,9 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="dbType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition In<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, params T[] values)
+        public static SqlInsideParametersCondition InThese<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, params T[] values)
         {
-            return SqlCondition.InternalIn<T>(cmd, columnName, false, dbType, values);
+            return SqlCondition.InternalInThese<T>(cmd, columnName, false, dbType, values);
         }
 
         /// <summary>
@@ -1697,9 +1702,9 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="columnName">字段名</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition In<T>(AbstractSqlCommand cmd, String columnName, params T[] values)
+        public static SqlInsideParametersCondition InThese<T>(AbstractSqlCommand cmd, String columnName, params T[] values)
         {
-            return SqlCondition.InternalIn<T>(cmd, columnName, false, values);
+            return SqlCondition.InternalInThese<T>(cmd, columnName, false, values);
         }
 
         /// <summary>
@@ -1713,7 +1718,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlInsideParametersCondition In<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, Func<T[]> func)
         {
-            return SqlCondition.InternalIn<T>(cmd, columnName, false, dbType, func());
+            return SqlCondition.InternalInThese<T>(cmd, columnName, false, dbType, func());
         }
 
         /// <summary>
@@ -1726,7 +1731,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlInsideParametersCondition In<T>(AbstractSqlCommand cmd, String columnName, Func<T[]> func)
         {
-            return SqlCondition.InternalIn<T>(cmd, columnName, false, func());
+            return SqlCondition.InternalInThese<T>(cmd, columnName, false, func());
         }
 
         /// <summary>
@@ -1779,7 +1784,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="dbType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition NotIn(AbstractSqlCommand cmd, String columnName, DbType dbType, params Object[] values)
+        public static SqlInsideParametersCondition NotIn(AbstractSqlCommand cmd, String columnName, DbType dbType, IEnumerable<Object> values)
         {
             return SqlCondition.InternalIn(cmd, columnName, true, dbType, values);
         }
@@ -1791,7 +1796,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="columnName">字段名</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition NotIn(AbstractSqlCommand cmd, String columnName, params Object[] values)
+        public static SqlInsideParametersCondition NotIn(AbstractSqlCommand cmd, String columnName, IEnumerable<Object> values)
         {
             return SqlCondition.InternalIn(cmd, columnName, true, values);
         }
@@ -1844,9 +1849,9 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="dbType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, params T[] values)
+        public static SqlInsideParametersCondition NotInThese<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, params T[] values)
         {
-            return SqlCondition.InternalIn<T>(cmd, columnName, true, dbType, values);
+            return SqlCondition.InternalInThese<T>(cmd, columnName, true, dbType, values);
         }
 
         /// <summary>
@@ -1857,9 +1862,9 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="columnName">字段名</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, params T[] values)
+        public static SqlInsideParametersCondition NotInThese<T>(AbstractSqlCommand cmd, String columnName, params T[] values)
         {
-            return SqlCondition.InternalIn<T>(cmd, columnName, true, values);
+            return SqlCondition.InternalInThese<T>(cmd, columnName, true, values);
         }
 
         /// <summary>
@@ -1873,7 +1878,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, Func<T[]> func)
         {
-            return SqlCondition.InternalIn<T>(cmd, columnName, true, dbType, func());
+            return SqlCondition.InternalInThese<T>(cmd, columnName, true, dbType, func());
         }
 
         /// <summary>
@@ -1886,7 +1891,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         public static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, Func<T[]> func)
         {
-            return SqlCondition.InternalIn<T>(cmd, columnName, true, func());
+            return SqlCondition.InternalInThese<T>(cmd, columnName, true, func());
         }
 
         /// <summary>
