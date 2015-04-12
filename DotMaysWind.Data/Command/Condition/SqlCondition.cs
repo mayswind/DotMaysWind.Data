@@ -1552,6 +1552,11 @@ namespace DotMaysWind.Data.Command.Condition
 
                 for (Int32 i = 0; i < valuesArray.Length; i++)
                 {
+                    if (String.IsNullOrEmpty(valuesArray[i]))
+                    {
+                        continue;
+                    }
+
                     Object value = Convert.ChangeType(valuesArray[i].Trim(), t);
                     parameters.Add(cmd.CreateSqlParameter(columnName, dbType, value));
                 }
@@ -1579,7 +1584,13 @@ namespace DotMaysWind.Data.Command.Condition
 
                 for (Int32 i = 0; i < valuesArray.Length; i++)
                 {
-                    parameters.Add(cmd.CreateSqlParameter(columnName, DbType.Int32, Convert.ToInt32(valuesArray[i].Trim())));
+                    if (String.IsNullOrEmpty(valuesArray[i]))
+                    {
+                        continue;
+                    }
+
+                    Int32 value = Convert.ToInt32(valuesArray[i].Trim());
+                    parameters.Add(cmd.CreateSqlParameter(columnName, DbType.Int32, value));
                 }
             }
 
