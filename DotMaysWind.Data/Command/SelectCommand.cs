@@ -775,31 +775,6 @@ namespace DotMaysWind.Data.Command
             this._orders.Add(SqlOrder.Create(this, columnName, isAscending));
             return this;
         }
-
-        /// <summary>
-        /// 按指定列升序并返回当前语句
-        /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <returns>当前语句</returns>
-        /// <example>
-        /// <code lang="C#">
-        /// <![CDATA[
-        /// IDatabase db = DatabaseFactory.CreateDatabase();
-        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
-        ///     .Querys("UserID", "UserName")
-        ///     .OrderByAsc("UserName");
-        /// 
-        /// //SELECT UserID, UserName FROM tbl_Users ORDER BY UserName
-        /// 
-        /// DataTable table = cmd.ToDataTable();
-        /// ]]>
-        /// </code>
-        /// </example>
-        public SelectCommand OrderBy(String columnName)
-        {
-            this._orders.Add(SqlOrder.Create(this, columnName));
-            return this;
-        }
         #endregion
 
         #region Join
