@@ -39,13 +39,13 @@ namespace DotMaysWind.Data.Command
         #endregion
 
         #region 方法
-        #region Add
+        #region Set
         /// <summary>
         /// 插入指定参数组并返回当前语句
         /// </summary>
         /// <param name="insertParams">要插入的参数组</param>
         /// <returns>当前语句</returns>
-        public InsertCommand Add(params SqlParameter[] insertParams)
+        public InsertCommand Set(params SqlParameter[] insertParams)
         {
             if (insertParams != null)
             {
@@ -66,8 +66,8 @@ namespace DotMaysWind.Data.Command
         /// <![CDATA[
         /// IDatabase db = DatabaseFactory.CreateDatabase();
         /// InsertCommand cmd = db.CreateInsertCommand("tbl_Users")
-        ///     .Add("UserID", 1)
-        ///     .Add("UserName", "admin");
+        ///     .Set("UserID", 1)
+        ///     .Set("UserName", "admin");
         /// 
         /// //INSERT INTO tbl_Users (UserID, UserName) VALUES (@UserID, @UserName)
         /// //@UserID = 1
@@ -77,7 +77,7 @@ namespace DotMaysWind.Data.Command
         /// ]]>
         /// </code>
         /// </example>
-        public InsertCommand Add(String columnName, Object value)
+        public InsertCommand Set(String columnName, Object value)
         {
             this._parameters.Add(this.CreateSqlParameter(columnName, value));
             return this;
@@ -95,8 +95,8 @@ namespace DotMaysWind.Data.Command
         /// <![CDATA[
         /// IDatabase db = DatabaseFactory.CreateDatabase();
         /// InsertCommand cmd = db.CreateInsertCommand("tbl_Users")
-        ///     .Add("UserID", DbType.Int32, 1)
-        ///     .Add("UserName", DbType.String, "admin");
+        ///     .Set("UserID", DbType.Int32, 1)
+        ///     .Set("UserName", DbType.String, "admin");
         /// 
         /// //INSERT INTO tbl_Users (UserID, UserName) VALUES (@UserID, @UserName)
         /// //@UserID = 1
@@ -106,7 +106,7 @@ namespace DotMaysWind.Data.Command
         /// ]]>
         /// </code>
         /// </example>
-        public InsertCommand Add(String columnName, DbType dbType, Object value)
+        public InsertCommand Set(String columnName, DbType dbType, Object value)
         {
             this._parameters.Add(this.CreateSqlParameter(columnName, dbType, value));
             return this;
@@ -124,9 +124,9 @@ namespace DotMaysWind.Data.Command
         /// <![CDATA[
         /// IDatabase db = DatabaseFactory.CreateDatabase();
         /// InsertCommand cmd = db.CreateInsertCommand("tbl_Users")
-        ///     .Add("UserID", 1)
-        ///     .Add("UserName", "admin")
-        ///     .Add("CreateTime", db.Functions.Now());
+        ///     .Set("UserID", 1)
+        ///     .Set("UserName", "admin")
+        ///     .Set("CreateTime", db.Functions.Now());
         /// 
         /// //INSERT INTO tbl_Users (UserID, UserName, CreateTime) VALUES (@UserID, @UserName, GETDATE())
         /// //@UserID = 1
@@ -137,7 +137,7 @@ namespace DotMaysWind.Data.Command
         /// ]]>
         /// </code>
         /// </example>
-        public InsertCommand Add(String columnName, ISqlFunction function)
+        public InsertCommand Set(String columnName, ISqlFunction function)
         {
             if (function == null)
             {
@@ -170,9 +170,9 @@ namespace DotMaysWind.Data.Command
         ///     .Where(c => c.Equal("UserID", 1));
         /// 
         /// InsertCommand cmd = db.CreateInsertCommand("tbl_Users")
-        ///     .Add("UserID", 1)
-        ///     .Add("UserName", "admin")
-        ///     .Add("UploadCount", countCmd);
+        ///     .Set("UserID", 1)
+        ///     .Set("UserName", "admin")
+        ///     .Set("UploadCount", countCmd);
         /// 
         /// //INSERT INTO tbl_Users (UserID, UserName, UploadCount) VALUES (@UserID_Insert, @UserName, (SELECT COUNT(*) FROM tbl_Uploads WHERE UserID = @UserID_Select))
         /// //@UserID_Insert = 1
@@ -183,7 +183,7 @@ namespace DotMaysWind.Data.Command
         /// ]]>
         /// </code>
         /// </example>
-        public InsertCommand Add(String columnName, SelectCommand command)
+        public InsertCommand Set(String columnName, SelectCommand command)
         {
             if (command == null)
             {

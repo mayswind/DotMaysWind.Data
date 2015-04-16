@@ -47,21 +47,21 @@ namespace DotMaysWind.Data.PerformanceTest
         internal static void DatabaseNormalCreateInsertCommand()
         {
             InsertCommand command = DbHelper.FakeDb.CreateInsertCommand(_provider.TableName)
-                .Add("TestColumn1", _entity.Test1)
-                .Add("TestColumn2", _entity.Test2)
-                .Add("TestColumn3", _entity.Test3)
-                .Add("TestColumn4", _entity.Test4)
-                .Add("TestColumn5", _entity.Test5)
-                .Add("TestColumn6", _entity.Test6)
-                .Add("TestColumn7", _entity.Test7)
-                .Add("TestColumn8", DbType.Int16, _entity.Test8);
+                .Set("TestColumn1", _entity.Test1)
+                .Set("TestColumn2", _entity.Test2)
+                .Set("TestColumn3", _entity.Test3)
+                .Set("TestColumn4", _entity.Test4)
+                .Set("TestColumn5", _entity.Test5)
+                .Set("TestColumn6", _entity.Test6)
+                .Set("TestColumn7", _entity.Test7)
+                .Set("TestColumn8", DbType.Int16, _entity.Test8);
 
             DbCommand dbCommand = command.ToDbCommand();
         }
 
         internal static void DatabaseEntityCreateInsertCommand()
         {
-            DbCommand dbCommand = DbHelper.FakeDb.CreateInsertCommand(_provider.TableName).Add(_entity).ToDbCommand();
+            DbCommand dbCommand = DbHelper.FakeDb.CreateInsertCommand(_provider.TableName).Set(_entity).ToDbCommand();
         }
 
         internal static void ProviderEntityCreateInsertCommand()
@@ -72,14 +72,14 @@ namespace DotMaysWind.Data.PerformanceTest
         internal static void DatabaseLinqCreateInsertCommand()
         {
             InsertCommand command = DbHelper.FakeDb.CreateInsertCommand(_provider.TableName)
-                .Add<TestEntity>(c => c.Test1, _entity.Test1)
-                .Add<TestEntity>(c => c.Test2, _entity.Test2)
-                .Add<TestEntity>(c => c.Test3, _entity.Test3)
-                .Add<TestEntity>(c => c.Test4, _entity.Test4)
-                .Add<TestEntity>(c => c.Test5, _entity.Test5)
-                .Add<TestEntity>(c => c.Test6, _entity.Test6)
-                .Add<TestEntity>(c => c.Test7, _entity.Test7)
-                .Add<TestEntity>(c => c.Test8, _entity.Test8);
+                .Set<TestEntity>(c => c.Test1, _entity.Test1)
+                .Set<TestEntity>(c => c.Test2, _entity.Test2)
+                .Set<TestEntity>(c => c.Test3, _entity.Test3)
+                .Set<TestEntity>(c => c.Test4, _entity.Test4)
+                .Set<TestEntity>(c => c.Test5, _entity.Test5)
+                .Set<TestEntity>(c => c.Test6, _entity.Test6)
+                .Set<TestEntity>(c => c.Test7, _entity.Test7)
+                .Set<TestEntity>(c => c.Test8, _entity.Test8);
 
             DbCommand dbCommand = command.ToDbCommand();
         }

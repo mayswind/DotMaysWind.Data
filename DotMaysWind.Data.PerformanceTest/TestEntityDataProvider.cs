@@ -28,7 +28,7 @@ namespace DotMaysWind.Data.PerformanceTest
 
         public DbCommand InsertTestByEntity(TestEntity entity)
         {
-            InsertCommand command = this.Insert().Add(entity);
+            InsertCommand command = this.Insert().Set(entity);
 
             return command.ToDbCommand();
         }
@@ -36,14 +36,14 @@ namespace DotMaysWind.Data.PerformanceTest
         public DbCommand InsertTestByLinq(TestEntity entity)
         {
             InsertCommand command = this.Insert()
-                .Add<TestEntity>(c => c.Test1, entity.Test1)
-                .Add<TestEntity>(c => c.Test2, entity.Test2)
-                .Add<TestEntity>(c => c.Test3, entity.Test3)
-                .Add<TestEntity>(c => c.Test4, entity.Test4)
-                .Add<TestEntity>(c => c.Test5, entity.Test5)
-                .Add<TestEntity>(c => c.Test6, entity.Test6)
-                .Add<TestEntity>(c => c.Test7, entity.Test7)
-                .Add<TestEntity>(c => c.Test8, entity.Test8);
+                .Set<TestEntity>(c => c.Test1, entity.Test1)
+                .Set<TestEntity>(c => c.Test2, entity.Test2)
+                .Set<TestEntity>(c => c.Test3, entity.Test3)
+                .Set<TestEntity>(c => c.Test4, entity.Test4)
+                .Set<TestEntity>(c => c.Test5, entity.Test5)
+                .Set<TestEntity>(c => c.Test6, entity.Test6)
+                .Set<TestEntity>(c => c.Test7, entity.Test7)
+                .Set<TestEntity>(c => c.Test8, entity.Test8);
 
             return command.ToDbCommand();
         }

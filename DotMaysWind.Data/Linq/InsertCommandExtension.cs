@@ -32,8 +32,8 @@ namespace DotMaysWind.Data.Linq
         ///     public Boolean InsertEntity(User user)
         ///     {
         ///         return this.Insert()
-        ///             .Add<User>(c => c.UserID, user.UserID)
-        ///             .Add<User>(c => c.UserName, user.UserName)
+        ///             .Set<User>(c => c.UserID, user.UserID)
+        ///             .Set<User>(c => c.UserName, user.UserName)
         ///             .Result() > 0;
         ///         
         ///         //INSERT INTO tbl_Users (UserName, UserID) VALUES (@UserName, @UserID)
@@ -44,7 +44,7 @@ namespace DotMaysWind.Data.Linq
         /// ]]>
         /// </code>
         /// </example>
-        public static InsertCommand Add<T>(this InsertCommand cmd, Expression<Func<T, Object>> expr, Object value)
+        public static InsertCommand Set<T>(this InsertCommand cmd, Expression<Func<T, Object>> expr, Object value)
         {
             MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Body);
 
@@ -60,7 +60,7 @@ namespace DotMaysWind.Data.Linq
                 throw new NullAttributeException();
             }
 
-            return cmd.Add(attr.ColumnName, attr.DbType.Value, value);
+            return cmd.Set(attr.ColumnName, attr.DbType.Value, value);
         }
     }
 }

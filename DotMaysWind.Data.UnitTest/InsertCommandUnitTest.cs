@@ -36,7 +36,7 @@ namespace DotMaysWind.Data.UnitTest
                 SqlParameter.InternalCreate(fakeDb, "TestColumn8", 7, DbType.Int16, entity.Test8)
             };
 
-            InsertCommand cmd = fakeDb.CreateInsertCommand(provider.TableName).Add(entity);
+            InsertCommand cmd = fakeDb.CreateInsertCommand(provider.TableName).Set(entity);
             String actualSql = cmd.GetCommandText().Trim();
             SqlParameter[] actualParameter = cmd.GetAllParameters();
 
@@ -70,14 +70,14 @@ namespace DotMaysWind.Data.UnitTest
             };
 
             InsertCommand cmd = fakeDb.CreateInsertCommand(provider.TableName)
-                .Add<TestEntity>(c => c.Test1, entity.Test1)
-                .Add<TestEntity>(c => c.Test2, entity.Test2)
-                .Add<TestEntity>(c => c.Test3, entity.Test3)
-                .Add<TestEntity>(c => c.Test4, entity.Test4)
-                .Add<TestEntity>(c => c.Test5, entity.Test5)
-                .Add<TestEntity>(c => c.Test6, entity.Test6)
-                .Add<TestEntity>(c => c.Test7, entity.Test7)
-                .Add<TestEntity>(c => c.Test8, entity.Test8);
+                .Set<TestEntity>(c => c.Test1, entity.Test1)
+                .Set<TestEntity>(c => c.Test2, entity.Test2)
+                .Set<TestEntity>(c => c.Test3, entity.Test3)
+                .Set<TestEntity>(c => c.Test4, entity.Test4)
+                .Set<TestEntity>(c => c.Test5, entity.Test5)
+                .Set<TestEntity>(c => c.Test6, entity.Test6)
+                .Set<TestEntity>(c => c.Test7, entity.Test7)
+                .Set<TestEntity>(c => c.Test8, entity.Test8);
 
             String actualSql = cmd.GetCommandText().Trim();
             SqlParameter[] actualParameter = cmd.GetAllParameters();

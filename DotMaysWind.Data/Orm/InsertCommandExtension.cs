@@ -27,20 +27,20 @@ namespace DotMaysWind.Data.Orm
         ///     public Boolean InsertEntity(User user)
         ///     {
         ///         return this.Insert()
-        ///             .Add(user)
+        ///             .Set(user)
         ///             .Result() > 0;
         ///     }
         /// }
         /// ]]>
         /// </code>
         /// </example>
-        public static InsertCommand Add(this InsertCommand cmd, Object entity)
+        public static InsertCommand Set(this InsertCommand cmd, Object entity)
         {
             SqlParameter[] parameters = EntityHelper.InternalGetSqlParameters(cmd, entity);
 
             if (parameters != null)
             {
-                cmd.Add(parameters);
+                cmd.Set(parameters);
             }
 
             return cmd;
