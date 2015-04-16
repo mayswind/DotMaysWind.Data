@@ -203,6 +203,172 @@ namespace DotMaysWind.Data.Command
         }
         #endregion
 
+        #region SetWithCondition
+        /// <summary>
+        /// 插入指定参数并返回当前语句
+        /// </summary>
+        /// <param name="condition">插入条件（当满足条件时插入该指定字段）</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="value">内容</param>
+        /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Boolean insertPhoto = true;
+        /// 
+        /// InsertCommand cmd = db.CreateInsertCommand("tbl_Users")
+        ///     .Set("UserID", 1)
+        ///     .Set("UserName", "admin");
+        ///     .Set((() => { return insertPhoto; }), "PhotoUrl", "url");
+        /// 
+        /// //INSERT INTO tbl_Users (UserID, UserName, PhotoUrl) VALUES (@UserID, @UserName, @PhotoUrl)
+        /// //@UserID = 1
+        /// //@UserName = "admin"
+        /// //@PhotoUrl = "url"
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
+        public InsertCommand Set(Func<Boolean> condition, String columnName, Object value)
+        {
+            if (condition())
+            {
+                return this.Set(columnName, value);
+            }
+            else
+            {
+                return this;
+            }
+        }
+
+        /// <summary>
+        /// 插入指定参数并返回当前语句
+        /// </summary>
+        /// <param name="condition">插入条件（当满足条件时插入该指定字段）</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">内容</param>
+        /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Boolean insertPhoto = true;
+        /// 
+        /// InsertCommand cmd = db.CreateInsertCommand("tbl_Users")
+        ///     .Set("UserID", DbType.Int32, 1)
+        ///     .Set("UserName", DbType.String, "admin");
+        ///     .Set((() => { return insertPhoto; }), "PhotoUrl", DbType.String, "url");
+        /// 
+        /// //INSERT INTO tbl_Users (UserID, UserName, PhotoUrl) VALUES (@UserID, @UserName, @PhotoUrl)
+        /// //@UserID = 1
+        /// //@UserName = "admin"
+        /// //@PhotoUrl = "url"
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
+        public InsertCommand Set(Func<Boolean> condition, String columnName, DbType dbType, Object value)
+        {
+            if (condition())
+            {
+                return this.Set(columnName, dbType, value);
+            }
+            else
+            {
+                return this;
+            }
+        }
+
+        /// <summary>
+        /// 插入指定参数并返回当前语句
+        /// </summary>
+        /// <param name="condition">插入条件（当满足条件时插入该指定字段）</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="function">函数</param>
+        /// <exception cref="ArgumentNullException">函数不能为空</exception>
+        /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Boolean insertTime = true;
+        /// 
+        /// InsertCommand cmd = db.CreateInsertCommand("tbl_Users")
+        ///     .Set("UserID", 1)
+        ///     .Set("UserName", "admin")
+        ///     .Set((() => { return insertTime; }), "CreateTime", db.Functions.Now());
+        /// 
+        /// //INSERT INTO tbl_Users (UserID, UserName, CreateTime) VALUES (@UserID, @UserName, GETDATE())
+        /// //@UserID = 1
+        /// //@UserName = "admin"
+        /// //"GETDATE()" will be changed into "NOW()" in Access or MySQL, "SYSDATE" in Oracle, or "DATETIME('NOW')" in SQLite.
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
+        public InsertCommand Set(Func<Boolean> condition, String columnName, ISqlFunction function)
+        {
+            if (condition())
+            {
+                return this.Set(columnName, function);
+            }
+            else
+            {
+                return this;
+            }
+        }
+
+        /// <summary>
+        /// 插入指定参数并返回当前语句
+        /// </summary>
+        /// <param name="condition">插入条件（当满足条件时插入该指定字段）</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="command">选择语句</param>
+        /// <exception cref="ArgumentNullException">选择语句不能为空</exception>
+        /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Boolean insertCount = true;
+        /// 
+        /// SelectCommand countCmd = db.CreateSelectCommand("tbl_Uploads")
+        ///     .Query(SqlAggregateFunction.Count)
+        ///     .Where(c => c.Equal("UserID", 1));
+        /// 
+        /// InsertCommand cmd = db.CreateInsertCommand("tbl_Users")
+        ///     .Set("UserID", 1)
+        ///     .Set("UserName", "admin")
+        ///     .Set((() => { return insertCount; }), "UploadCount", countCmd);
+        /// 
+        /// //INSERT INTO tbl_Users (UserID, UserName, UploadCount) VALUES (@UserID_Insert, @UserName, (SELECT COUNT(*) FROM tbl_Uploads WHERE UserID = @UserID_Select))
+        /// //@UserID_Insert = 1
+        /// //@UserName = "admin"
+        /// //@UserID_Select = 1
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
+        public InsertCommand Set(Func<Boolean> condition, String columnName, SelectCommand command)
+        {
+            if (condition())
+            {
+                return this.Set(columnName, command);
+            }
+            else
+            {
+                return this;
+            }
+        }
+        #endregion
+
+        #region GetCommandText
         /// <summary>
         /// 获取Sql语句内容
         /// </summary>
@@ -219,6 +385,7 @@ namespace DotMaysWind.Data.Command
 
             return sb.ToString();
         }
+        #endregion
         #endregion
     }
 }

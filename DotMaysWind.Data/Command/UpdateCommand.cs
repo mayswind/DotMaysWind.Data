@@ -201,7 +201,172 @@ namespace DotMaysWind.Data.Command
 
             return this;
         }
+        #endregion
 
+        #region SetWithCondition
+        /// <summary>
+        /// 更新指定参数并返回当前语句
+        /// </summary>
+        /// <param name="condition">更新条件（当满足条件时更新该指定字段）</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="value">内容</param>
+        /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Boolean updatePassword = true;
+        /// 
+        /// UpdateCommand cmd = db.CreateUpdateCommand("tbl_Users")
+        ///     .Set("UserName", "admin");
+        ///     .Set((() => { return updatePassword; }), "Password", "newpassword");
+        ///     .Where(c => c.Equal("UserID", 1));
+        /// 
+        /// //UPDATE tbl_Users SET UserName = @UserName, Password = @Password WHERE UserID = @UserID
+        /// //@UserName = "admin"
+        /// //@Password = "newpassword"
+        /// //@UserID = 1
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
+        public UpdateCommand Set(Func<Boolean> condition, String columnName, Object value)
+        {
+            if (condition())
+            {
+                return this.Set(columnName, value);
+            }
+            else
+            {
+                return this;
+            }
+        }
+
+        /// <summary>
+        /// 更新指定参数并返回当前语句
+        /// </summary>
+        /// <param name="condition">更新条件（当满足条件时更新该指定字段）</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="dbType">数据类型</param>
+        /// <param name="value">内容</param>
+        /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Boolean updatePassword = true;
+        /// 
+        /// UpdateCommand cmd = db.CreateUpdateCommand("tbl_Users")
+        ///     .Set("UserName", DbType.String, "admin");
+        ///     .Set((() => { return updatePassword; }), "Password", DbType.String, "newpassword");
+        ///     .Where(c => c.Equal("UserID", 1));
+        /// 
+        /// //UPDATE tbl_Users SET UserName = @UserName, Password = @Password WHERE UserID = @UserID
+        /// //@UserName = "admin"
+        /// //@Password = "newpassword"
+        /// //@UserID = 1
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
+        public UpdateCommand Set(Func<Boolean> condition, String columnName, DbType dbType, Object value)
+        {
+            if (condition())
+            {
+                return this.Set(columnName, dbType, value);
+            }
+            else
+            {
+                return this;
+            }
+        }
+
+        /// <summary>
+        /// 更新指定参数并返回当前语句
+        /// </summary>
+        /// <param name="condition">更新条件（当满足条件时更新该指定字段）</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="function">函数</param>
+        /// <exception cref="ArgumentNullException">函数不能为空</exception>
+        /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Boolean updateTime = true;
+        /// 
+        /// UpdateCommand cmd = db.CreateUpdateCommand("tbl_Users")
+        ///     .Set((() => { return updateTime; }), "LastLoginTime", db.Functions.Now());
+        ///     .Where(c => c.Equal("UserID", 1));
+        /// 
+        /// //UPDATE tbl_Users SET LastLoginTime = GETDATE() WHERE UserID = @UserID
+        /// //@UserID = 1
+        /// //"GETDATE()" will be changed into "NOW()" in Access or MySQL, "SYSDATE" in Oracle, or "DATETIME('NOW')" in SQLite.
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
+        public UpdateCommand Set(Func<Boolean> condition, String columnName, ISqlFunction function)
+        {
+            if (condition())
+            {
+                return this.Set(columnName, function);
+            }
+            else
+            {
+                return this;
+            }
+        }
+
+        /// <summary>
+        /// 更新指定参数并返回当前语句
+        /// </summary>
+        /// <param name="condition">更新条件（当满足条件时更新该指定字段）</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="command">选择语句</param>
+        /// <exception cref="ArgumentNullException">选择语句不能为空</exception>
+        /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// Boolean updateCount = true;
+        /// 
+        /// SelectCommand countCmd = db.CreateSelectCommand("tbl_Uploads")
+        ///     .Query(SqlAggregateFunction.Count)
+        ///     .Where(c => c.Equal("UserID", 1));
+        /// 
+        /// UpdateCommand cmd = db.CreateUpdateCommand("tbl_Users")
+        ///     .Set("UserName", "admin")
+        ///     .Set((() => { return updateCount; }), "UploadCount", countCmd)
+        ///     .Where(c => c.Equal("UserID", 1));
+        /// 
+        /// //UPDATE tbl_Users SET UserName = @UserName, UploadCount = (SELECT COUNT(*) FROM tbl_Uploads WHERE UserID = @UserID_Select) WHERE UserID = @UserID_Update
+        /// //@UserName = "admin"
+        /// //@UserID_Select = 1
+        /// //@UserID_Update = 1
+        /// 
+        /// Boolean success = cmd.Result() > 0;
+        /// ]]>
+        /// </code>
+        /// </example>
+        public UpdateCommand Set(Func<Boolean> condition, String columnName, SelectCommand command)
+        {
+            if (condition())
+            {
+                return this.Set(columnName, command);
+            }
+            else
+            {
+                return this;
+            }
+        }
+        #endregion
+
+        #region Increase/Decrease
         /// <summary>
         /// 指定字段名自增并返回当前语句
         /// </summary>
@@ -253,7 +418,9 @@ namespace DotMaysWind.Data.Command
             this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, columnName + "-1"));
             return this;
         }
+        #endregion
 
+        #region Where
         /// <summary>
         /// 设置指定查询的语句并返回当前语句
         /// </summary>
@@ -312,6 +479,7 @@ namespace DotMaysWind.Data.Command
         }
         #endregion
 
+        #region GetCommandText
         /// <summary>
         /// 获取Sql语句内容
         /// </summary>
@@ -331,6 +499,7 @@ namespace DotMaysWind.Data.Command
 
             return sb.ToString();
         }
+        #endregion
         #endregion
     }
 }
