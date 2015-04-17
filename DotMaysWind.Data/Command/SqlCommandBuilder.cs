@@ -156,6 +156,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="dbParams">参数组列表</param>
         /// <returns>当前SQL语句创建类</returns>
+        /// <remarks>用于Insert设置字段名集</remarks>
         internal SqlCommandBuilder AppendAllColumnNames(List<DataParameter> dbParams)
         {
             if (dbParams != null && dbParams.Count > 0)
@@ -179,6 +180,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="dbParams">参数组列表</param>
         /// <returns>当前SQL语句创建类</returns>
+        /// <remarks>用于Insert设置字段名集</remarks>
         internal SqlCommandBuilder AppendAllColumnNamesWithParentheses(List<DataParameter> dbParams)
         {
             if (dbParams != null && dbParams.Count > 0)
@@ -196,6 +198,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="dbParams">参数组列表</param>
         /// <returns>当前SQL语句创建类</returns>
+        /// <remarks>用于Insert设置结果集</remarks>
         internal SqlCommandBuilder AppendAllParameterNames(List<DataParameter> dbParams)
         {
             if (dbParams != null && dbParams.Count > 0)
@@ -205,7 +208,15 @@ namespace DotMaysWind.Data.Command
                 for (Int32 i = 0; i < dbParams.Count; i++)
                 {
                     if (i > 0) names.Append(",");
-                    names.Append(dbParams[i].ParameterName);
+
+                    if (dbParams[i].IsUseParameter)
+                    {
+                        names.Append(dbParams[i].ParameterName);
+                    }
+                    else
+                    {
+                        names.Append("( ").Append(dbParams[i].Value.ToString()).Append(") ");
+                    }
                 }
 
                 this._stringBuilder.Append(names.ToString()).Append(' ');
@@ -219,6 +230,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="dbParams">参数组列表</param>
         /// <returns>当前SQL语句创建类</returns>
+        /// <remarks>用于Insert设置结果集</remarks>
         internal SqlCommandBuilder AppendAllParameterNamesWithParentheses(List<DataParameter> dbParams)
         {
             if (dbParams != null && dbParams.Count > 0)
@@ -236,6 +248,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="dbParams">参数组列表</param>
         /// <returns>当前SQL语句创建类</returns>
+        /// <remarks>用于Update设置字段</remarks>
         internal SqlCommandBuilder AppendAllParameterEquations(List<DataParameter> dbParams)
         {
             if (dbParams != null && dbParams.Count > 0)
@@ -254,7 +267,7 @@ namespace DotMaysWind.Data.Command
                     }
                     else
                     {
-                        names.Append(dbParams[i].Value.ToString());
+                        names.Append("( ").Append(dbParams[i].Value.ToString()).Append(") ");
                     }
                 }
 
