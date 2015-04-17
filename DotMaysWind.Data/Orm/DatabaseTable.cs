@@ -220,11 +220,10 @@ namespace DotMaysWind.Data.Orm
         /// <summary>
         /// 获取实体
         /// </summary>
-        /// <param name="row">数据行</param>
-        /// <param name="columns">列集合</param>
-        /// <param name="args">创建实体时的额外参数</param>
+        /// <param name="sender">方法请求来源</param>
+        /// <param name="args">相关参数</param>
         /// <returns>数据表实体</returns>
-        protected override T CreateEntity(DataRow row, DataColumnCollection columns, Object args)
+        protected override T CreateEntity(Object sender, EntityCreatingArgs args)
         {
             T entity = new T();
             PropertyInfo[] props = this._entityType.GetProperties();
@@ -240,11 +239,11 @@ namespace DotMaysWind.Data.Orm
 
                     if (EntityHelper.InternalIsNullableType(prop.PropertyType))
                     {
-                        value = this.LoadNullableValue(row, columns, attr.ColumnName, dbType);
+                        value = this.LoadNullableValue(args.Row, args.Columns, attr.ColumnName, dbType);
                     }
                     else
                     {
-                        value = this.LoadValue(row, columns, attr.ColumnName, dbType);
+                        value = this.LoadValue(args.Row, args.Columns, attr.ColumnName, dbType);
                     }
 
                     prop.SetValue(entity, value, null);

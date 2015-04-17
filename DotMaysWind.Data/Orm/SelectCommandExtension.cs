@@ -52,7 +52,7 @@ namespace DotMaysWind.Data.Orm
 
             cmd.Top(1);
 
-            return table.GetEntity(cmd.ToDataTable(), args);
+            return table.GetEntityInternal(cmd, cmd.ToDataTable(), args);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace DotMaysWind.Data.Orm
 
             cmd.Top(1);
 
-            return table.GetEntity(cmd.ToDataTable(connection), args);
+            return table.GetEntityInternal(cmd, cmd.ToDataTable(connection), args);
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace DotMaysWind.Data.Orm
 
             cmd.Top(1);
 
-            return table.GetEntity(cmd.ToDataTable(transaction), args);
+            return table.GetEntityInternal(cmd, cmd.ToDataTable(transaction), args);
         }
 
         /// <summary>
@@ -266,7 +266,7 @@ namespace DotMaysWind.Data.Orm
                 throw new ArgumentNullException("table");
             }
 
-            return table.GetEntities(cmd.ToDataTable(), args);
+            return table.GetEntityListInternal(cmd, cmd.ToDataTable(), args);
         }
 
         /// <summary>
@@ -320,7 +320,7 @@ namespace DotMaysWind.Data.Orm
                 throw new ArgumentNullException("table");
             }
 
-            return table.GetEntities(cmd.ToDataTable(connection), args);
+            return table.GetEntityListInternal(cmd, cmd.ToDataTable(connection), args);
         }
 
         /// <summary>
@@ -359,7 +359,7 @@ namespace DotMaysWind.Data.Orm
                 throw new ArgumentNullException("table");
             }
 
-            return table.GetEntities(cmd.ToDataTable(transaction), args);
+            return table.GetEntityListInternal(cmd, cmd.ToDataTable(transaction), args);
         }
 
         /// <summary>
@@ -417,7 +417,7 @@ namespace DotMaysWind.Data.Orm
                 throw new ArgumentNullException("table");
             }
 
-            return table.GetEntitiesDictionary<TKey>(cmd.ToDataTable(), keyColumnName, args);
+            return table.GetEntityDictionaryInternal<TKey>(cmd, cmd.ToDataTable(), keyColumnName, args);
         }
 
         /// <summary>
@@ -475,7 +475,7 @@ namespace DotMaysWind.Data.Orm
                 throw new ArgumentNullException("table");
             }
 
-            return table.GetEntitiesDictionary<TKey>(cmd.ToDataTable(connection), keyColumnName, args);
+            return table.GetEntityDictionaryInternal<TKey>(cmd, cmd.ToDataTable(connection), keyColumnName, args);
         }
 
         /// <summary>
@@ -518,7 +518,7 @@ namespace DotMaysWind.Data.Orm
                 throw new ArgumentNullException("table");
             }
 
-            return table.GetEntitiesDictionary<TKey>(cmd.ToDataTable(transaction), keyColumnName, args);
+            return table.GetEntityDictionaryInternal<TKey>(cmd, cmd.ToDataTable(transaction), keyColumnName, args);
         }
 
         /// <summary>
