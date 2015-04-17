@@ -239,11 +239,11 @@ namespace DotMaysWind.Data.Orm
 
                     if (EntityHelper.InternalIsNullableType(prop.PropertyType))
                     {
-                        value = this.LoadNullableValue(args.Row, args.Columns, attr.ColumnName, dbType);
+                        value = this.LoadNullableValue(args, attr.ColumnName, dbType);
                     }
                     else
                     {
-                        value = this.LoadValue(args.Row, args.Columns, attr.ColumnName, dbType);
+                        value = this.LoadValue(args, attr.ColumnName, dbType);
                     }
 
                     prop.SetValue(entity, value, null);
