@@ -107,6 +107,24 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="action">待执行的语句</param>
         /// <returns>当前集合</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class ProductDataProvider : AbstractDatabaseTable<Product>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public Boolean AddEntity(Product product)
+        ///     {
+        ///         return this.CreateCollection()
+        ///             .Delete(d => d.Where(c => c.Equal(PRODUCTID, product.ID)))
+        ///             .Insert(i => i.Set(PRODUCTID, product.ID).Set(PRODUCTNAME, product.Name))
+        ///             .Result();
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public CommandCollection Insert(Action<InsertCommand> action)
         {
             InsertCommand command = this._database.CreateInsertCommand(this.TableName);
@@ -135,6 +153,24 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="action">待执行的语句</param>
         /// <returns>当前集合</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class ProductDataProvider : AbstractDatabaseTable<Product>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public Boolean AddEntity(Product product)
+        ///     {
+        ///         return this.CreateCollection()
+        ///             .Delete(d => d.Where(c => c.Equal(PRODUCTID, product.ID)))
+        ///             .Insert(i => i.Set(PRODUCTID, product.ID).Set(PRODUCTNAME, product.Name))
+        ///             .Result();
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public CommandCollection Delete(Action<DeleteCommand> action)
         {
             DeleteCommand command = this._database.CreateDeleteCommand(this.TableName);
@@ -189,11 +225,11 @@ namespace DotMaysWind.Data.Command
         ///     public Boolean AddEntities(Int32 itemType, List<Int32> productIds)
         ///     {
         ///         return this.CreateCollection()
-        ///             .AddSome<Int32>(productIds, (col, item) =>
+        ///             .AddSome<Int32>(productIds, (me, item) =>
         ///             {
-        ///                 col.AddInsert()
+        ///                 me.AddInsert()
         ///                     .Set(PRODUCTID, item.Object)
-        ///                     .Set(PRODUCTTYPE, itemType)
+        ///                     .Set(PRODUCTTYPE, itemType);
         ///             })
         ///             .Result();
         ///     }
@@ -225,6 +261,27 @@ namespace DotMaysWind.Data.Command
         /// 创建新的Sql删除语句类
         /// </summary>
         /// <returns>Sql删除语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class ProductItemDataProvider : AbstractDatabaseTable<ProductItem>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public Boolean DeleteEntities(List<Int32> productIds)
+        ///     {
+        ///         return this.CreateCollection()
+        ///             .AddSome<Int32>(productIds, (me, item) =>
+        ///             {
+        ///                 me.AddDelete()
+        ///                     .Where(c => c.Equal(PRODUCTID, item.Object));
+        ///             })
+        ///             .Result();
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public DeleteCommand AddDelete()
         {
             DeleteCommand command = this._database.CreateDeleteCommand(this.TableName);
