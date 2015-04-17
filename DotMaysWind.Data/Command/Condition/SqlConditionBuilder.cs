@@ -12,6 +12,16 @@ namespace DotMaysWind.Data.Command.Condition
         private AbstractSqlCommand _baseCommand;
         #endregion
 
+        #region 属性
+        /// <summary>
+        /// 获取当前的语句
+        /// </summary>
+        public AbstractSqlCommand Command
+        {
+            get { return this._baseCommand; }
+        }
+        #endregion
+
         #region 构造方法
         /// <summary>
         /// 初始化新的Sql语句条件类
