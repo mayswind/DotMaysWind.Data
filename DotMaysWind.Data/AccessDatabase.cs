@@ -51,7 +51,7 @@ namespace DotMaysWind.Data
             }
 
             String cntCommand = AccessSelectPager.InternalGetCountCommand(sourceCommand);
-            SqlParameter[] parameters = sourceCommand.GetAllParameters();
+            DataParameter[] parameters = sourceCommand.GetAllParameters();
 
             DbCommand dbCommand = this.CreateDbCommand(cntCommand, parameters);
             Int32 recordCount = this.ExecuteScalar<Int32>(dbCommand);

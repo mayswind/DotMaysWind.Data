@@ -23,7 +23,7 @@ namespace DotMaysWind.Data.Command
         /// 获取所有参数集合
         /// </summary>
         /// <returns>所有参数集合</returns>
-        SqlParameter[] GetAllParameters();
+        DataParameter[] GetAllParameters();
 
         /// <summary>
         /// 获取Sql语句内容

@@ -23,7 +23,7 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 获取或设置要更新的参数组
         /// </summary>
-        public List<SqlParameter> UpdateParameters
+        public List<DataParameter> UpdateParameters
         {
             get { return this._parameters; }
             set { this._parameters = value; }
@@ -47,7 +47,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="updateParams">要更新的参数组</param>
         /// <returns>当前语句</returns>
-        public UpdateCommand Set(params SqlParameter[] updateParams)
+        public UpdateCommand Set(params DataParameter[] updateParams)
         {
             if (updateParams != null)
             {
@@ -192,7 +192,7 @@ namespace DotMaysWind.Data.Command
 
             this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, command.GetCommandText()));
 
-            SqlParameter[] parameters = command.GetAllParameters();
+            DataParameter[] parameters = command.GetAllParameters();
 
             if (parameters != null)
             {

@@ -42,7 +42,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// 获取条件语句参数集合
         /// </summary>
         /// <returns>条件语句参数集合</returns>
-        public abstract SqlParameter[] GetAllParameters();
+        public abstract DataParameter[] GetAllParameters();
 
         /// <summary>
         /// 输出条件语句内容

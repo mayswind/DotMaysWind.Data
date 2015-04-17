@@ -1339,7 +1339,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="parameters">参数集合</param>
         /// <exception cref="ArgumentNullException">参数集合不能为空</exception>
         /// <returns>Sql条件语句</returns>
-        internal static SqlInsideParametersCondition InternalIn(AbstractSqlCommand cmd, Boolean isNotIn, params SqlParameter[] parameters)
+        internal static SqlInsideParametersCondition InternalIn(AbstractSqlCommand cmd, Boolean isNotIn, params DataParameter[] parameters)
         {
             if (parameters == null)
             {
@@ -1360,7 +1360,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         internal static SqlInsideParametersCondition InternalIn(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DbType dbType, IEnumerable<Object> values)
         {
-            List<SqlParameter> parameters = new List<SqlParameter>();
+            List<DataParameter> parameters = new List<DataParameter>();
 
             if (values != null)
             {
@@ -1383,7 +1383,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         internal static SqlInsideParametersCondition InternalIn(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, IEnumerable<Object> values)
         {
-            List<SqlParameter> parameters = new List<SqlParameter>();
+            List<DataParameter> parameters = new List<DataParameter>();
 
             if (values != null)
             {
@@ -1414,7 +1414,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         internal static SqlInsideParametersCondition InternalIn(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DbType dbType, Array values)
         {
-            List<SqlParameter> parameters = new List<SqlParameter>();
+            List<DataParameter> parameters = new List<DataParameter>();
 
             if (values != null)
             {
@@ -1437,7 +1437,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         internal static SqlInsideParametersCondition InternalIn(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, Array values)
         {
-            List<SqlParameter> parameters = new List<SqlParameter>();
+            List<DataParameter> parameters = new List<DataParameter>();
 
             if (values != null)
             {
@@ -1469,7 +1469,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         internal static SqlInsideParametersCondition InternalIn(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DbType dbType, String values, Char separator)
         {
-            List<SqlParameter> parameters = new List<SqlParameter>();
+            List<DataParameter> parameters = new List<DataParameter>();
 
             if (!String.IsNullOrEmpty(values))
             {
@@ -1496,7 +1496,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         internal static SqlInsideParametersCondition InternalIn<T>(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DbType dbType, IEnumerable<T> values)
         {
-            List<SqlParameter> parameters = new List<SqlParameter>();
+            List<DataParameter> parameters = new List<DataParameter>();
 
             if (values != null)
             {
@@ -1520,7 +1520,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         internal static SqlInsideParametersCondition InternalIn<T>(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, IEnumerable<T> values)
         {
-            List<SqlParameter> parameters = new List<SqlParameter>();
+            List<DataParameter> parameters = new List<DataParameter>();
 
             if (values != null)
             {
@@ -1553,7 +1553,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         internal static SqlInsideParametersCondition InternalIn<T>(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DbType dbType, String values, Char separator) where T : IConvertible
         {
-            List<SqlParameter> parameters = new List<SqlParameter>();
+            List<DataParameter> parameters = new List<DataParameter>();
 
             if (!String.IsNullOrEmpty(values))
             {
@@ -1586,7 +1586,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         internal static SqlInsideParametersCondition InternalInInt32(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, String values, Char separator)
         {
-            List<SqlParameter> parameters = new List<SqlParameter>();
+            List<DataParameter> parameters = new List<DataParameter>();
 
             if (!String.IsNullOrEmpty(values))
             {
@@ -1616,7 +1616,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="parameters">参数集合</param>
         /// <exception cref="ArgumentNullException">参数集合不能为空</exception>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition In(AbstractSqlCommand cmd, params SqlParameter[] parameters)
+        public static SqlInsideParametersCondition In(AbstractSqlCommand cmd, params DataParameter[] parameters)
         {
             return SqlCondition.InternalIn(cmd, false, parameters);
         }
@@ -1803,7 +1803,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="parameters">参数集合</param>
         /// <exception cref="ArgumentNullException">参数集合不能为空</exception>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition NotIn(AbstractSqlCommand cmd, params SqlParameter[] parameters)
+        public static SqlInsideParametersCondition NotIn(AbstractSqlCommand cmd, params DataParameter[] parameters)
         {
             return SqlCondition.InternalIn(cmd, true, parameters);
         }

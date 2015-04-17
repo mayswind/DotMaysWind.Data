@@ -64,7 +64,7 @@ namespace DotMaysWind.Data.Command.Function
         /// 获取查询函数参数集合
         /// </summary>
         /// <returns>查询函数参数集合</returns>
-        public SqlParameter[] GetAllParameters()
+        public DataParameter[] GetAllParameters()
         {
             return null;
         }

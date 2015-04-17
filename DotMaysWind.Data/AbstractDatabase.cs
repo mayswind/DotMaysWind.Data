@@ -86,7 +86,7 @@ namespace DotMaysWind.Data
         /// </summary>
         /// <param name="param">Sql语句参数</param>
         /// <returns>数据库参数</returns>
-        public DbParameter CreateDbParameter(SqlParameter param)
+        public DbParameter CreateDbParameter(DataParameter param)
         {
             DbParameter dbParameter = this.CreateDbParameter();
 
@@ -114,7 +114,7 @@ namespace DotMaysWind.Data
         /// <param name="commandText">Sql语句内容</param>
         /// <param name="parameters">参数集合</param>
         /// <returns>数据库命令</returns>
-        public DbCommand CreateDbCommand(String commandText, params SqlParameter[] parameters)
+        public DbCommand CreateDbCommand(String commandText, params DataParameter[] parameters)
         {
             DbCommand dbCommand = this.CreateDbCommand();
             dbCommand.CommandType = CommandType.Text;
@@ -139,7 +139,7 @@ namespace DotMaysWind.Data
         /// </summary>
         /// <param name="dbCommand">数据库命令</param>
         /// <param name="extraParameters">额外参数组</param>
-        public void AddParameterToDbCommand(DbCommand dbCommand, params SqlParameter[] extraParameters)
+        public void AddParameterToDbCommand(DbCommand dbCommand, params DataParameter[] extraParameters)
         {
             if (extraParameters != null)
             {

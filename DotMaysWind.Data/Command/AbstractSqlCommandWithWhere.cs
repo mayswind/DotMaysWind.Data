@@ -56,7 +56,7 @@ namespace DotMaysWind.Data.Command
         public override DbCommand ToDbCommand()
         {
             DbCommand dbCommand = this.CreateDbCommand();
-            SqlParameter[] extraParameters = (this._where == null ? null : this._where.GetAllParameters());
+            DataParameter[] extraParameters = (this._where == null ? null : this._where.GetAllParameters());
 
             if (extraParameters != null)
             {
@@ -70,12 +70,12 @@ namespace DotMaysWind.Data.Command
         /// 获取所有参数集合
         /// </summary>
         /// <returns>所有参数集合</returns>
-        public override SqlParameter[] GetAllParameters()
+        public override DataParameter[] GetAllParameters()
         {
-            List<SqlParameter> result = new List<SqlParameter>();
+            List<DataParameter> result = new List<DataParameter>();
             result.AddRange(this._parameters);
 
-            SqlParameter[] whereParameters = (this._where == null ? null : this._where.GetAllParameters());
+            DataParameter[] whereParameters = (this._where == null ? null : this._where.GetAllParameters());
             if (whereParameters != null)
             {
                 result.AddRange(whereParameters);

@@ -126,7 +126,7 @@
     <Compile Include="Orm\SelectCommandExtension.cs" />
     <Compile Include="Orm\UpdateCommandExtension.cs" />
     <Compile Include="SQLiteDatabase.cs" />
-    <Compile Include="SqlParameter.cs" />
+    <Compile Include="DataParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Command\SqlCommandBuilder.cs" />
     <Compile Include="SqlServerCeDatabase.cs" />

@@ -12,7 +12,7 @@ namespace DotMaysWind.Data
     /// <summary>
     /// Sql语句参数类
     /// </summary>
-    public class SqlParameter
+    public class DataParameter
     {
         #region 字段
         private BaseSqlParameter _parameter;
@@ -69,7 +69,7 @@ namespace DotMaysWind.Data
         /// <param name="columnName">字段名</param>
         /// <param name="parameterIndex">参数索引</param>
         /// <param name="value">赋值内容</param>
-        private SqlParameter(AbstractDatabase database, String columnName, Int32 parameterIndex, Object value)
+        private DataParameter(AbstractDatabase database, String columnName, Int32 parameterIndex, Object value)
         {
             this._parameter = new BaseSqlParameter();
             this._parameter.SourceColumn = columnName;
@@ -98,7 +98,7 @@ namespace DotMaysWind.Data
         /// <param name="database">数据库</param>
         /// <param name="columnName">字段名</param>
         /// <param name="action">赋值操作</param>
-        private SqlParameter(AbstractDatabase database, String columnName, String action)
+        private DataParameter(AbstractDatabase database, String columnName, String action)
         {
             this._parameter = new BaseSqlParameter();
             this._parameter.SourceColumn = columnName;
@@ -118,9 +118,9 @@ namespace DotMaysWind.Data
         /// <param name="parameterIndex">参数索引</param>
         /// <param name="value">赋值内容</param>
         /// <returns>Sql语句参数类</returns>
-        internal static SqlParameter InternalCreate(AbstractDatabase database, String columnName, Int32 parameterIndex, Object value)
+        internal static DataParameter InternalCreate(AbstractDatabase database, String columnName, Int32 parameterIndex, Object value)
         {
-            SqlParameter param = new SqlParameter(database, columnName, parameterIndex, value);
+            DataParameter param = new DataParameter(database, columnName, parameterIndex, value);
             param._parameter.DbType = DbTypeHelper.InternalGetDbType(value);
 
             return param;
@@ -135,9 +135,9 @@ namespace DotMaysWind.Data
         /// <param name="sqlDbType">字段类型</param>
         /// <param name="value">赋值内容</param>
         /// <returns>Sql语句参数类</returns>
-        internal static SqlParameter InternalCreate(AbstractDatabase database, String columnName, Int32 parameterIndex, SqlDbType sqlDbType, Object value)
+        internal static DataParameter InternalCreate(AbstractDatabase database, String columnName, Int32 parameterIndex, SqlDbType sqlDbType, Object value)
         {
-            SqlParameter param = new SqlParameter(database, columnName, parameterIndex, value);
+            DataParameter param = new DataParameter(database, columnName, parameterIndex, value);
             param._parameter.SqlDbType = sqlDbType;
 
             return param;
@@ -152,9 +152,9 @@ namespace DotMaysWind.Data
         /// <param name="dbType">字段类型</param>
         /// <param name="value">赋值内容</param>
         /// <returns>Sql语句参数类</returns>
-        internal static SqlParameter InternalCreate(AbstractDatabase database, String columnName, Int32 parameterIndex, DbType dbType, Object value)
+        internal static DataParameter InternalCreate(AbstractDatabase database, String columnName, Int32 parameterIndex, DbType dbType, Object value)
         {
-            SqlParameter param = new SqlParameter(database, columnName, parameterIndex, value);
+            DataParameter param = new DataParameter(database, columnName, parameterIndex, value);
             param._parameter.DbType = dbType;
 
             return param;
@@ -169,9 +169,9 @@ namespace DotMaysWind.Data
         /// <param name="columnName">字段名</param>
         /// <param name="action">赋值操作</param>
         /// <returns>Sql语句参数类</returns>
-        internal static SqlParameter InternalCreateCustomAction(AbstractDatabase database, String columnName, String action)
+        internal static DataParameter InternalCreateCustomAction(AbstractDatabase database, String columnName, String action)
         {
-            return new SqlParameter(database, columnName, action);
+            return new DataParameter(database, columnName, action);
         }
         #endregion
         #endregion
@@ -198,7 +198,7 @@ namespace DotMaysWind.Data
                 return false;
             }
 
-            SqlParameter param = obj as SqlParameter;
+            DataParameter param = obj as DataParameter;
 
             if (param == null)
             {
@@ -239,7 +239,7 @@ namespace DotMaysWind.Data
         /// <param name="obj">待比较的Sql语句参数</param>
         /// <param name="obj2">待比较的第二个Sql语句参数</param>
         /// <returns>两个Sql语句参数是否相同</returns>
-        public static Boolean operator ==(SqlParameter obj, SqlParameter obj2)
+        public static Boolean operator ==(DataParameter obj, DataParameter obj2)
         {
             return Object.Equals(obj, obj2);
         }
@@ -250,7 +250,7 @@ namespace DotMaysWind.Data
         /// <param name="obj">待比较的Sql语句参数</param>
         /// <param name="obj2">待比较的第二个Sql语句参数</param>
         /// <returns>两个Sql语句参数是否不同</returns>
-        public static Boolean operator !=(SqlParameter obj, SqlParameter obj2)
+        public static Boolean operator !=(DataParameter obj, DataParameter obj2)
         {
             return !Object.Equals(obj, obj2);
         }

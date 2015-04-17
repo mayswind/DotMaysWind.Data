@@ -23,21 +23,21 @@ namespace DotMaysWind.Data.UnitTest
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
             String expectedSql = "UPDATE TestTable SET TestColumn1=@PN_IDX_0,TestColumn2=@PN_IDX_1,TestColumn3=@PN_IDX_2,TestColumn4=@PN_IDX_3,TestColumn5=@PN_IDX_4,TestColumn6=@PN_IDX_5,TestColumn7=@PN_IDX_6,TestColumn8=@PN_IDX_7";
-            SqlParameter[] expectedParameter = new SqlParameter[8]
+            DataParameter[] expectedParameter = new DataParameter[8]
             {
-                SqlParameter.InternalCreate(fakeDb, "TestColumn1", 0, entity.Test1),
-                SqlParameter.InternalCreate(fakeDb, "TestColumn2", 1, entity.Test2),
-                SqlParameter.InternalCreate(fakeDb, "TestColumn3", 2, entity.Test3),
-                SqlParameter.InternalCreate(fakeDb, "TestColumn4", 3, entity.Test4),
-                SqlParameter.InternalCreate(fakeDb, "TestColumn5", 4, DbType.Int32, entity.Test5),
-                SqlParameter.InternalCreate(fakeDb, "TestColumn6", 5, DbType.Double, entity.Test6),
-                SqlParameter.InternalCreate(fakeDb, "TestColumn7", 6, DbType.DateTime, entity.Test7),
-                SqlParameter.InternalCreate(fakeDb, "TestColumn8", 7, DbType.Int16, entity.Test8)
+                DataParameter.InternalCreate(fakeDb, "TestColumn1", 0, entity.Test1),
+                DataParameter.InternalCreate(fakeDb, "TestColumn2", 1, entity.Test2),
+                DataParameter.InternalCreate(fakeDb, "TestColumn3", 2, entity.Test3),
+                DataParameter.InternalCreate(fakeDb, "TestColumn4", 3, entity.Test4),
+                DataParameter.InternalCreate(fakeDb, "TestColumn5", 4, DbType.Int32, entity.Test5),
+                DataParameter.InternalCreate(fakeDb, "TestColumn6", 5, DbType.Double, entity.Test6),
+                DataParameter.InternalCreate(fakeDb, "TestColumn7", 6, DbType.DateTime, entity.Test7),
+                DataParameter.InternalCreate(fakeDb, "TestColumn8", 7, DbType.Int16, entity.Test8)
             };
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Set(entity);
             String actualSql = cmd.GetCommandText().Trim();
-            SqlParameter[] actualParameter = cmd.GetAllParameters();
+            DataParameter[] actualParameter = cmd.GetAllParameters();
 
             Assert.AreEqual(expectedSql, actualSql);
 
@@ -55,16 +55,16 @@ namespace DotMaysWind.Data.UnitTest
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
             String expectedSql = "UPDATE TestTable SET TestColumn1=@PN_IDX_0,TestColumn2=@PN_IDX_1,TestColumn3=@PN_IDX_2,TestColumn4=@PN_IDX_3,TestColumn5=@PN_IDX_4,TestColumn6=@PN_IDX_5,TestColumn7=@PN_IDX_6,TestColumn8=@PN_IDX_7";
-            SqlParameter[] expectedParameter = new SqlParameter[8]
+            DataParameter[] expectedParameter = new DataParameter[8]
             {
-                SqlParameter.InternalCreate(fakeDb, "TestColumn1", 0, entity.Test1),
-                SqlParameter.InternalCreate(fakeDb, "TestColumn2", 1, entity.Test2),
-                SqlParameter.InternalCreate(fakeDb, "TestColumn3", 2, entity.Test3),
-                SqlParameter.InternalCreate(fakeDb, "TestColumn4", 3, entity.Test4),
-                SqlParameter.InternalCreate(fakeDb, "TestColumn5", 4, DbType.Int32, entity.Test5),
-                SqlParameter.InternalCreate(fakeDb, "TestColumn6", 5, DbType.Double, entity.Test6),
-                SqlParameter.InternalCreate(fakeDb, "TestColumn7", 6, DbType.DateTime, entity.Test7),
-                SqlParameter.InternalCreate(fakeDb, "TestColumn8", 7, DbType.Int16, entity.Test8)
+                DataParameter.InternalCreate(fakeDb, "TestColumn1", 0, entity.Test1),
+                DataParameter.InternalCreate(fakeDb, "TestColumn2", 1, entity.Test2),
+                DataParameter.InternalCreate(fakeDb, "TestColumn3", 2, entity.Test3),
+                DataParameter.InternalCreate(fakeDb, "TestColumn4", 3, entity.Test4),
+                DataParameter.InternalCreate(fakeDb, "TestColumn5", 4, DbType.Int32, entity.Test5),
+                DataParameter.InternalCreate(fakeDb, "TestColumn6", 5, DbType.Double, entity.Test6),
+                DataParameter.InternalCreate(fakeDb, "TestColumn7", 6, DbType.DateTime, entity.Test7),
+                DataParameter.InternalCreate(fakeDb, "TestColumn8", 7, DbType.Int16, entity.Test8)
             };
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName)
@@ -78,7 +78,7 @@ namespace DotMaysWind.Data.UnitTest
                 .Set<TestEntity>(c => c.Test8, entity.Test8);
 
             String actualSql = cmd.GetCommandText().Trim();
-            SqlParameter[] actualParameter = cmd.GetAllParameters();
+            DataParameter[] actualParameter = cmd.GetAllParameters();
 
             Assert.AreEqual(expectedSql, actualSql);
 
@@ -96,11 +96,11 @@ namespace DotMaysWind.Data.UnitTest
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
             String expectedSql = "UPDATE TestTable SET TestColumn2=TestColumn2+1";
-            SqlParameter[] expectedParameter = new SqlParameter[1] { SqlParameter.InternalCreateCustomAction(fakeDb, "TestColumn2", "TestColumn2+1") };
+            DataParameter[] expectedParameter = new DataParameter[1] { DataParameter.InternalCreateCustomAction(fakeDb, "TestColumn2", "TestColumn2+1") };
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Increase<TestEntity>(c => c.Test2);
             String actualSql = cmd.GetCommandText().Trim();
-            SqlParameter[] actualParameter = cmd.GetAllParameters();
+            DataParameter[] actualParameter = cmd.GetAllParameters();
 
             Assert.AreEqual(expectedSql, actualSql);
         }
@@ -113,11 +113,11 @@ namespace DotMaysWind.Data.UnitTest
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
             String expectedSql = "UPDATE TestTable SET TestColumn2=TestColumn2-1";
-            SqlParameter[] expectedParameter = new SqlParameter[1] { SqlParameter.InternalCreateCustomAction(fakeDb, "TestColumn2", "TestColumn2-1") };
+            DataParameter[] expectedParameter = new DataParameter[1] { DataParameter.InternalCreateCustomAction(fakeDb, "TestColumn2", "TestColumn2-1") };
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Decrease<TestEntity>(c => c.Test2);
             String actualSql = cmd.GetCommandText().Trim();
-            SqlParameter[] actualParameter = cmd.GetAllParameters();
+            DataParameter[] actualParameter = cmd.GetAllParameters();
 
             Assert.AreEqual(expectedSql, actualSql);
         }

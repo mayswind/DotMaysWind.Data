@@ -54,8 +54,8 @@ namespace DotMaysWind.Data.UnitTest
             String expectedConditionClause = "(NOT((TestColumn2 = @PN_IDX_0)))";
             String actualConditionClause = actualCondition.GetClauseText();
 
-            SqlParameter[] expectedParameters = baseCondition.GetAllParameters();
-            SqlParameter[] actualParameters = baseCondition.GetAllParameters();
+            DataParameter[] expectedParameters = baseCondition.GetAllParameters();
+            DataParameter[] actualParameters = baseCondition.GetAllParameters();
 
             Assert.AreEqual(expectedConditionClause, actualConditionClause);
 

@@ -49,7 +49,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// 获取条件语句包含的参数集合
         /// </summary>
         /// <returns>条件语句参数集合</returns>
-        public override SqlParameter[] GetAllParameters()
+        public override DataParameter[] GetAllParameters()
         {
             return this._baseCondition.GetAllParameters();
         }

@@ -16,7 +16,7 @@ namespace DotMaysWind.Data.Command
         /// 获取查询函数参数集合
         /// </summary>
         /// <returns>查询函数参数集合</returns>
-        SqlParameter[] GetAllParameters();
+        DataParameter[] GetAllParameters();
 
         /// <summary>
         /// 获取函数拼接后字符串

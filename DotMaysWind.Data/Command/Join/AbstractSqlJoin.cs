@@ -93,7 +93,7 @@ namespace DotMaysWind.Data.Command.Join
         /// 获取所有参数集合
         /// </summary>
         /// <returns>所有参数集合</returns>
-        public virtual SqlParameter[] GetAllParameters()
+        public virtual DataParameter[] GetAllParameters()
         {
             return null;
         }

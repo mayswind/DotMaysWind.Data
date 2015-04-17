@@ -37,7 +37,7 @@ namespace DotMaysWind.Data.Orm
         /// </example>
         public static UpdateCommand Set(this UpdateCommand cmd, Object entity)
         {
-            SqlParameter[] parameters = EntityHelper.InternalGetSqlParameters(cmd, entity);
+            DataParameter[] parameters = EntityHelper.InternalGetSqlParameters(cmd, entity);
 
             if (parameters != null)
             {

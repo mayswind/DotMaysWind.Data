@@ -118,9 +118,9 @@ namespace DotMaysWind.Data.Orm.Helper
         /// <param name="cmd">Sql语句</param>
         /// <param name="entity">实体类</param>
         /// <returns>Sql语句参数集合</returns>
-        internal static SqlParameter[] InternalGetSqlParameters(AbstractSqlCommand cmd, Object entity)
+        internal static DataParameter[] InternalGetSqlParameters(AbstractSqlCommand cmd, Object entity)
         {
-            List<SqlParameter> parameters = new List<SqlParameter>();
+            List<DataParameter> parameters = new List<DataParameter>();
 
             if (entity == null)
             {
@@ -153,7 +153,7 @@ namespace DotMaysWind.Data.Orm.Helper
                         dbType = DbTypeHelper.InternalGetDbType(prop.PropertyType);
                     }
 
-                    SqlParameter parameter = cmd.CreateSqlParameter(attr.ColumnName, dbType.Value, prop.GetValue(entity, null));
+                    DataParameter parameter = cmd.CreateSqlParameter(attr.ColumnName, dbType.Value, prop.GetValue(entity, null));
                     parameters.Add(parameter);
                 }
             }

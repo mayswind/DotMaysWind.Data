@@ -21,7 +21,7 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 获取或设置要插入的参数组
         /// </summary>
-        public List<SqlParameter> InsertParameters
+        public List<DataParameter> InsertParameters
         {
             get { return this._parameters; }
             set { this._parameters = value; }
@@ -45,7 +45,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="insertParams">要插入的参数组</param>
         /// <returns>当前语句</returns>
-        public InsertCommand Set(params SqlParameter[] insertParams)
+        public InsertCommand Set(params DataParameter[] insertParams)
         {
             if (insertParams != null)
             {
@@ -192,7 +192,7 @@ namespace DotMaysWind.Data.Command
 
             this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, command.GetCommandText()));
 
-            SqlParameter[] parameters = command.GetAllParameters();
+            DataParameter[] parameters = command.GetAllParameters();
 
             if (parameters != null)
             {

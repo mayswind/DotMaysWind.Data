@@ -922,7 +922,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="parameters">参数集合</param>
         /// <exception cref="ArgumentNullException">参数集合不能为空</exception>
         /// <returns>Sql条件语句</returns>
-        public SqlInsideParametersCondition In(params SqlParameter[] parameters)
+        public SqlInsideParametersCondition In(params DataParameter[] parameters)
         {
             return SqlCondition.In(this._baseCommand, parameters);
         }
@@ -1095,7 +1095,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="parameters">参数集合</param>
         /// <exception cref="ArgumentNullException">参数集合不能为空</exception>
         /// <returns>Sql条件语句</returns>
-        public SqlInsideParametersCondition NotIn(params SqlParameter[] parameters)
+        public SqlInsideParametersCondition NotIn(params DataParameter[] parameters)
         {
             return SqlCondition.NotIn(this._baseCommand, parameters);
         }

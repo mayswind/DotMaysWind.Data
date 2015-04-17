@@ -620,7 +620,7 @@ namespace DotMaysWind.Data.Command
 
             this._queryFields.Add(SqlQueryField.InternalCreateFromFunction(this, command.GetCommandText(true), aliasesName));
 
-            SqlParameter[] parameters = command.GetAllParameters();
+            DataParameter[] parameters = command.GetAllParameters();
             if (parameters != null)
             {
                 this._parameters.AddRange(parameters);
@@ -1969,20 +1969,20 @@ namespace DotMaysWind.Data.Command
 
             for (Int32 i = 0; i < this._joins.Count; i++)
             {
-                SqlParameter[] joinParameters = (this._joins[i] == null ? null : this._joins[i].GetAllParameters());
+                DataParameter[] joinParameters = (this._joins[i] == null ? null : this._joins[i].GetAllParameters());
                 if (joinParameters != null)
                 {
                     this._database.AddParameterToDbCommand(dbCommand, joinParameters);
                 }
             }
 
-            SqlParameter[] whereParameters = (this._where == null ? null : this._where.GetAllParameters());
+            DataParameter[] whereParameters = (this._where == null ? null : this._where.GetAllParameters());
             if (whereParameters != null)
             {
                 this._database.AddParameterToDbCommand(dbCommand, whereParameters);
             }
 
-            SqlParameter[] havingParameters = (this._having == null ? null : this._having.GetAllParameters());
+            DataParameter[] havingParameters = (this._having == null ? null : this._having.GetAllParameters());
             if (havingParameters != null)
             {
                 this._database.AddParameterToDbCommand(dbCommand, havingParameters);
@@ -1995,27 +1995,27 @@ namespace DotMaysWind.Data.Command
         /// 获取所有参数集合
         /// </summary>
         /// <returns>所有参数集合</returns>
-        public override SqlParameter[] GetAllParameters()
+        public override DataParameter[] GetAllParameters()
         {
-            List<SqlParameter> result = new List<SqlParameter>();
+            List<DataParameter> result = new List<DataParameter>();
             result.AddRange(this._parameters);
 
             for (Int32 i = 0; i < this._joins.Count; i++)
             {
-                SqlParameter[] joinParameters = (this._joins[i] == null ? null : this._joins[i].GetAllParameters());
+                DataParameter[] joinParameters = (this._joins[i] == null ? null : this._joins[i].GetAllParameters());
                 if (joinParameters != null)
                 {
                     result.AddRange(joinParameters);
                 }
             }
 
-            SqlParameter[] whereParameters = (this._where == null ? null : this._where.GetAllParameters());
+            DataParameter[] whereParameters = (this._where == null ? null : this._where.GetAllParameters());
             if (whereParameters != null)
             {
                 result.AddRange(whereParameters);
             }
 
-            SqlParameter[] havingParameters = (this._having == null ? null : this._having.GetAllParameters());
+            DataParameter[] havingParameters = (this._having == null ? null : this._having.GetAllParameters());
             if (havingParameters != null)
             {
                 result.AddRange(havingParameters);

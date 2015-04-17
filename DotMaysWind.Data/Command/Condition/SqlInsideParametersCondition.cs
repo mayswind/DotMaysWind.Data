@@ -11,7 +11,7 @@ namespace DotMaysWind.Data.Command.Condition
     {
         #region 字段
         private Boolean _isNotIn;
-        private List<SqlParameter> _parameters;
+        private List<DataParameter> _parameters;
         #endregion
 
         #region 属性
@@ -47,11 +47,11 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="baseCommand">源Sql语句</param>
         /// <param name="isNotIn">是否不在范围内</param>
         /// <param name="parameters">参数集合</param>
-        internal SqlInsideParametersCondition(AbstractSqlCommand baseCommand, Boolean isNotIn, params SqlParameter[] parameters)
+        internal SqlInsideParametersCondition(AbstractSqlCommand baseCommand, Boolean isNotIn, params DataParameter[] parameters)
             : base(baseCommand)
         {
             this._isNotIn = isNotIn;
-            this._parameters = new List<SqlParameter>();
+            this._parameters = new List<DataParameter>();
 
             if (parameters != null)
             {
@@ -65,7 +65,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// 获取条件语句包含的参数集合
         /// </summary>
         /// <returns>条件语句参数集合</returns>
-        public override SqlParameter[] GetAllParameters()
+        public override DataParameter[] GetAllParameters()
         {
             if (this._parameters == null)
             {

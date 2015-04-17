@@ -156,7 +156,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="dbParams">参数组列表</param>
         /// <returns>当前SQL语句创建类</returns>
-        internal SqlCommandBuilder AppendAllColumnNames(List<SqlParameter> dbParams)
+        internal SqlCommandBuilder AppendAllColumnNames(List<DataParameter> dbParams)
         {
             if (dbParams != null && dbParams.Count > 0)
             {
@@ -179,7 +179,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="dbParams">参数组列表</param>
         /// <returns>当前SQL语句创建类</returns>
-        internal SqlCommandBuilder AppendAllColumnNamesWithParentheses(List<SqlParameter> dbParams)
+        internal SqlCommandBuilder AppendAllColumnNamesWithParentheses(List<DataParameter> dbParams)
         {
             if (dbParams != null && dbParams.Count > 0)
             {
@@ -196,7 +196,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="dbParams">参数组列表</param>
         /// <returns>当前SQL语句创建类</returns>
-        internal SqlCommandBuilder AppendAllParameterNames(List<SqlParameter> dbParams)
+        internal SqlCommandBuilder AppendAllParameterNames(List<DataParameter> dbParams)
         {
             if (dbParams != null && dbParams.Count > 0)
             {
@@ -219,7 +219,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="dbParams">参数组列表</param>
         /// <returns>当前SQL语句创建类</returns>
-        internal SqlCommandBuilder AppendAllParameterNamesWithParentheses(List<SqlParameter> dbParams)
+        internal SqlCommandBuilder AppendAllParameterNamesWithParentheses(List<DataParameter> dbParams)
         {
             if (dbParams != null && dbParams.Count > 0)
             {
@@ -236,7 +236,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="dbParams">参数组列表</param>
         /// <returns>当前SQL语句创建类</returns>
-        internal SqlCommandBuilder AppendAllParameterEquations(List<SqlParameter> dbParams)
+        internal SqlCommandBuilder AppendAllParameterEquations(List<DataParameter> dbParams)
         {
             if (dbParams != null && dbParams.Count > 0)
             {

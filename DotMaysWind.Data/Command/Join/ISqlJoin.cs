@@ -36,7 +36,7 @@ namespace DotMaysWind.Data.Command.Join
         /// 获取连接语句参集合
         /// </summary>
         /// <returns>连接语句参集合</returns>
-        SqlParameter[] GetAllParameters();
+        DataParameter[] GetAllParameters();
 
         /// <summary>
         /// 获取连接语句内容

@@ -8,8 +8,8 @@ namespace DotMaysWind.Data.Command.Condition
     public sealed class SqlBasicParameterCondition : AbstractSqlCondition
     {
         #region 字段
-        private SqlParameter _parameterOne;
-        private SqlParameter _parameterTwo;
+        private DataParameter _parameterOne;
+        private DataParameter _parameterTwo;
         private SqlOperator _operator;
         #endregion
 
@@ -46,7 +46,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="baseCommand">源Sql语句</param>
         /// <param name="parameter">参数</param>
         /// <param name="op">条件运算符</param>
-        internal SqlBasicParameterCondition(AbstractSqlCommand baseCommand, SqlParameter parameter, SqlOperator op)
+        internal SqlBasicParameterCondition(AbstractSqlCommand baseCommand, DataParameter parameter, SqlOperator op)
             : base(baseCommand)
         {
             this._parameterOne = parameter;
@@ -61,7 +61,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="parameterOne">参数一</param>
         /// <param name="parameterTwo">参数二</param>
         /// <param name="op">条件运算符</param>
-        internal SqlBasicParameterCondition(AbstractSqlCommand baseCommand, SqlParameter parameterOne, SqlParameter parameterTwo, SqlOperator op)
+        internal SqlBasicParameterCondition(AbstractSqlCommand baseCommand, DataParameter parameterOne, DataParameter parameterTwo, SqlOperator op)
             : base(baseCommand)
         {
             this._parameterOne = parameterOne;
@@ -75,17 +75,17 @@ namespace DotMaysWind.Data.Command.Condition
         /// 获取条件语句包含的参数集合
         /// </summary>
         /// <returns>条件语句参数集合</returns>
-        public override SqlParameter[] GetAllParameters()
+        public override DataParameter[] GetAllParameters()
         {
             Int32 paramCount = ((Byte)this._operator) / 100;
 
             if (paramCount == 1)
             {
-                return new SqlParameter[] { this._parameterOne };
+                return new DataParameter[] { this._parameterOne };
             }
             else if (paramCount == 2)
             {
-                return new SqlParameter[] { this._parameterOne, this._parameterTwo };
+                return new DataParameter[] { this._parameterOne, this._parameterTwo };
             }
             else
             {

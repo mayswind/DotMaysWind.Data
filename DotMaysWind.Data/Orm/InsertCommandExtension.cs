@@ -36,7 +36,7 @@ namespace DotMaysWind.Data.Orm
         /// </example>
         public static InsertCommand Set(this InsertCommand cmd, Object entity)
         {
-            SqlParameter[] parameters = EntityHelper.InternalGetSqlParameters(cmd, entity);
+            DataParameter[] parameters = EntityHelper.InternalGetSqlParameters(cmd, entity);
 
             if (parameters != null)
             {

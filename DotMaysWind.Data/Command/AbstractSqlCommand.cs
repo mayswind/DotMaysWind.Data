@@ -26,7 +26,7 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 基础参数组
         /// </summary>
-        protected List<SqlParameter> _parameters;
+        protected List<DataParameter> _parameters;
 
         /// <summary>
         /// 基础参数组索引
@@ -103,7 +103,7 @@ namespace DotMaysWind.Data.Command
 
             this._database = database;
             this._tableName = tableName;
-            this._parameters = new List<SqlParameter>();
+            this._parameters = new List<DataParameter>();
             this._parameterIndex = 0;
         }
         #endregion
@@ -115,9 +115,9 @@ namespace DotMaysWind.Data.Command
         /// <param name="columnName">字段名</param>
         /// <param name="value">赋值内容</param>
         /// <returns>Sql语句参数类</returns>
-        public SqlParameter CreateSqlParameter(String columnName, Object value)
+        public DataParameter CreateSqlParameter(String columnName, Object value)
         {
-            return SqlParameter.InternalCreate(this._database, columnName, this.ParameterIndex, value);
+            return DataParameter.InternalCreate(this._database, columnName, this.ParameterIndex, value);
         }
 
         /// <summary>
@@ -127,9 +127,9 @@ namespace DotMaysWind.Data.Command
         /// <param name="dbType">字段类型</param>
         /// <param name="value">赋值内容</param>
         /// <returns>Sql语句参数类</returns>
-        public SqlParameter CreateSqlParameter(String columnName, DbType dbType, Object value)
+        public DataParameter CreateSqlParameter(String columnName, DbType dbType, Object value)
         {
-            return SqlParameter.InternalCreate(this._database, columnName, this.ParameterIndex, dbType, value);
+            return DataParameter.InternalCreate(this._database, columnName, this.ParameterIndex, dbType, value);
         }
 
         /// <summary>
@@ -138,9 +138,9 @@ namespace DotMaysWind.Data.Command
         /// <param name="columnName">字段名</param>
         /// <param name="action">赋值操作</param>
         /// <returns>Sql语句参数类</returns>
-        public SqlParameter CreateSqlParameterCustomAction(String columnName, String action)
+        public DataParameter CreateSqlParameterCustomAction(String columnName, String action)
         {
-            return SqlParameter.InternalCreateCustomAction(this._database, columnName, action);
+            return DataParameter.InternalCreateCustomAction(this._database, columnName, action);
         }
         #endregion
 
@@ -160,7 +160,7 @@ namespace DotMaysWind.Data.Command
         /// 获取所有参数集合
         /// </summary>
         /// <returns>所有参数集合</returns>
-        public virtual SqlParameter[] GetAllParameters()
+        public virtual DataParameter[] GetAllParameters()
         {
             return this._parameters.ToArray();
         }

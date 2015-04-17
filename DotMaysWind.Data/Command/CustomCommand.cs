@@ -53,7 +53,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="parameters">要增加的参数组</param>
         /// <returns>当前语句</returns>
-        public CustomCommand AddParameters(params SqlParameter[] parameters)
+        public CustomCommand AddParameters(params DataParameter[] parameters)
         {
             if (parameters != null)
             {
