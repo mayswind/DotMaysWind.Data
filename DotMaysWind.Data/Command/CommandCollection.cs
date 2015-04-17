@@ -23,7 +23,7 @@ namespace DotMaysWind.Data.Command
             /// <summary>
             /// 获取当前条目所指对象
             /// </summary>
-            public T Object
+            public T Value
             {
                 get { return this._obj; }
             }
