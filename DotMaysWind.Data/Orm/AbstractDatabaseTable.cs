@@ -117,8 +117,9 @@ namespace DotMaysWind.Data.Orm
         /// </summary>
         /// <param name="row">数据行</param>
         /// <param name="columns">列集合</param>
+        /// <param name="args">创建实体时的额外参数</param>
         /// <returns>数据表实体</returns>
-        protected abstract T CreateEntity(DataRow row, DataColumnCollection columns);
+        protected abstract T CreateEntity(DataRow row, DataColumnCollection columns, Object args);
         #endregion
 
         #region 属性
@@ -1080,12 +1081,43 @@ namespace DotMaysWind.Data.Orm
         /// 获取实体
         /// </summary>
         /// <param name="table">数据表</param>
+        /// <param name="args">创建实体时的额外参数</param>
         /// <returns>数据表实体</returns>
-        protected internal T GetEntity(DataTable table)
+        protected internal T GetEntity(DataTable table, Object args)
         {
             if (!DbConvert.IsDataTableNullOrEmpty(table))
             {
-                return this.GetEntity(table.Rows[0]);
+                return this.GetEntity(table.Rows[0], args);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 获取实体
+        /// </summary>
+        /// <param name="table">数据表</param>
+        /// <returns>数据表实体</returns>
+        protected internal T GetEntity(DataTable table)
+        {
+            return this.GetEntity(table, null);
+        }
+
+        /// <summary>
+        /// 获取实体
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="args">创建实体时的额外参数</param>
+        /// <returns>数据表实体</returns>
+        protected internal T GetEntity(DataRow row, Object args)
+        {
+            if (row != null)
+            {
+                T entity = this.CreateEntity(row, row.Table.Columns, args);
+
+                return entity;
             }
             else
             {
@@ -1100,24 +1132,16 @@ namespace DotMaysWind.Data.Orm
         /// <returns>数据表实体</returns>
         protected internal T GetEntity(DataRow row)
         {
-            if (row != null)
-            {
-                T entity = this.CreateEntity(row, row.Table.Columns);
-
-                return entity;
-            }
-            else
-            {
-                return null;
-            }
+            return this.GetEntity(row, null);
         }
 
         /// <summary>
         /// 获取实体列表
         /// </summary>
         /// <param name="table">数据表</param>
+        /// <param name="args">创建实体时的额外参数</param>
         /// <returns>实体列表</returns>
-        protected internal List<T> GetEntities(DataTable table)
+        protected internal List<T> GetEntities(DataTable table, Object args)
         {
             List<T> list = null;
 
@@ -1127,7 +1151,7 @@ namespace DotMaysWind.Data.Orm
 
                 for (Int32 i = 0; i < table.Rows.Count; i++)
                 {
-                    T entity = this.GetEntity(table.Rows[i]);
+                    T entity = this.GetEntity(table.Rows[i], args);
 
                     list.Add(entity);
                 }
@@ -1140,9 +1164,20 @@ namespace DotMaysWind.Data.Orm
         /// 获取实体列表
         /// </summary>
         /// <param name="table">数据表</param>
-        /// <param name="keyColumnName">键列名称</param>
         /// <returns>实体列表</returns>
-        protected internal Dictionary<TKey, T> GetEntitiesDictionary<TKey>(DataTable table, String keyColumnName)
+        protected internal List<T> GetEntities(DataTable table)
+        {
+            return this.GetEntities(table, null);
+        }
+
+        /// <summary>
+        /// 获取实体列表
+        /// </summary>
+        /// <param name="table">数据表</param>
+        /// <param name="keyColumnName">键列名称</param>
+        /// <param name="args">创建实体时的额外参数</param>
+        /// <returns>实体列表</returns>
+        protected internal Dictionary<TKey, T> GetEntitiesDictionary<TKey>(DataTable table, String keyColumnName, Object args)
         {
             Dictionary<TKey, T> dict = null;
 
@@ -1153,13 +1188,24 @@ namespace DotMaysWind.Data.Orm
                 for (Int32 i = 0; i < table.Rows.Count; i++)
                 {
                     TKey key = this.LoadValue<TKey>(table.Rows[i], table.Columns, keyColumnName);
-                    T entity = this.GetEntity(table.Rows[i]);
+                    T entity = this.GetEntity(table.Rows[i], args);
 
                     dict[key] = entity;
                 }
             }
 
             return dict;
+        }
+
+        /// <summary>
+        /// 获取实体列表
+        /// </summary>
+        /// <param name="table">数据表</param>
+        /// <param name="keyColumnName">键列名称</param>
+        /// <returns>实体列表</returns>
+        protected internal Dictionary<TKey, T> GetEntitiesDictionary<TKey>(DataTable table, String keyColumnName)
+        {
+            return this.GetEntitiesDictionary<TKey>(table, keyColumnName, null);
         }
         #endregion
 

@@ -222,8 +222,9 @@ namespace DotMaysWind.Data.Orm
         /// </summary>
         /// <param name="row">数据行</param>
         /// <param name="columns">列集合</param>
+        /// <param name="args">创建实体时的额外参数</param>
         /// <returns>数据表实体</returns>
-        protected override T CreateEntity(DataRow row, DataColumnCollection columns)
+        protected override T CreateEntity(DataRow row, DataColumnCollection columns, Object args)
         {
             T entity = new T();
             PropertyInfo[] props = this._entityType.GetProperties();
