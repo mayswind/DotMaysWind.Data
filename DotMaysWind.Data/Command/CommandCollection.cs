@@ -179,6 +179,28 @@ namespace DotMaysWind.Data.Command
         /// 创建新的Sql插入语句类
         /// </summary>
         /// <returns>Sql插入语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class ProductItemDataProvider : AbstractDatabaseTable<ProductItem>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public Boolean AddEntities(Int32 itemType, List<Int32> productIds)
+        ///     {
+        ///         return this.CreateCollection()
+        ///             .AddSome<Int32>(productIds, (col, item) =>
+        ///             {
+        ///                 col.AddInsert()
+        ///                     .Set(PRODUCTID, item.Object)
+        ///                     .Set(PRODUCTTYPE, itemType)
+        ///             })
+        ///             .Result();
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public InsertCommand AddInsert()
         {
             InsertCommand command = this._database.CreateInsertCommand(this.TableName);
