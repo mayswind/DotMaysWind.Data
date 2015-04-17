@@ -206,9 +206,9 @@ namespace DotMaysWind.Data.Orm
         /// 创建新的Sql语句集合
         /// </summary>
         /// <returns>Sql语句集合</returns>
-        protected virtual CommandCollection CreateCollection()
+        protected virtual CommandCollection Sequence()
         {
-            return this._baseDatabase.CreateCommandCollection(this.TableName);
+            return this._baseDatabase.CreateCommandSequence(this.TableName);
         }
         #endregion
 

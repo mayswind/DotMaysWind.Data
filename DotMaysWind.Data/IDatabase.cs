@@ -119,7 +119,7 @@ namespace DotMaysWind.Data
         /// </summary>
         /// <param name="tableName">数据表名称</param>
         /// <returns>Sql语句集合</returns>
-        CommandCollection CreateCommandCollection(String tableName);
+        CommandCollection CreateCommandSequence(String tableName);
         #endregion
 
         #region UsingConnection/Transaction

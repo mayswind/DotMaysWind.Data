@@ -251,7 +251,7 @@ namespace DotMaysWind.Data
         /// </summary>
         /// <param name="tableName">数据表名称</param>
         /// <returns>Sql语句集合</returns>
-        public CommandCollection CreateCommandCollection(String tableName)
+        public CommandCollection CreateCommandSequence(String tableName)
         {
             return new CommandCollection(this, tableName);
         }
