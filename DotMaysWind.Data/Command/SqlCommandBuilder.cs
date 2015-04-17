@@ -96,9 +96,10 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 添加所有数据字段名并返回当前SQL语句创建类
         /// </summary>
+        /// <param name="isDistinct">是否选择语句唯一</param>
         /// <param name="queryFields">数据字段名</param>
         /// <returns>当前SQL语句创建类</returns>
-        internal SqlCommandBuilder AppendAllColumnNames(List<SqlQueryField> queryFields)
+        internal SqlCommandBuilder AppendAllColumnNames(Boolean isDistinct, List<SqlQueryField> queryFields)
         {
             if (queryFields != null && queryFields.Count > 0)
             {
@@ -120,6 +121,12 @@ namespace DotMaysWind.Data.Command
                         if (queryField.UseFunction)
                         {
                             names.Append('(');
+
+                            //COUNT函数当使用Distinct时需要构造为 COUNT(DISTINCT [ColumnName])
+                            if (isDistinct && String.Equals(queryField.Function.ToUpperInvariant(), SqlAggregateFunction.Count.ToString().ToUpperInvariant()))
+                            {
+                                names.Append("DISTINCT ");
+                            }
                         }
 
                         if (!String.IsNullOrEmpty(queryField.TableName))

@@ -17,8 +17,8 @@ namespace DotMaysWind.Data.Command.Pager
         {
             SqlCommandBuilder sb = new SqlCommandBuilder(baseCommand.Database);
             sb.AppendSelectPrefix();
-            
-            sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.QueryFields);
+
+            sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
             sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.SqlJoins);
 
             sb.AppendWhere(baseCommand.SqlWhere);

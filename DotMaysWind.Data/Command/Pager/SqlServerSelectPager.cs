@@ -31,7 +31,7 @@ namespace DotMaysWind.Data.Command.Pager
                     WHERE RN > 20
                 */
 
-                sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.QueryFields);
+                sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
 
                 SqlCommandBuilder innerBuilder = new SqlCommandBuilder(baseCommand.Database);
                 innerBuilder.AppendSelectOrderBys(baseCommand.SqlOrders, false);
@@ -55,7 +55,7 @@ namespace DotMaysWind.Data.Command.Pager
                     sb.AppendSelectTop(baseCommand.PageSize);
                 }
 
-                sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.QueryFields);
+                sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
                 sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.SqlJoins);
 
                 sb.AppendWhere(baseCommand.SqlWhere);

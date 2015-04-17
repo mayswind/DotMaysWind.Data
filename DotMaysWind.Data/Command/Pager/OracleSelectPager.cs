@@ -19,7 +19,7 @@ namespace DotMaysWind.Data.Command.Pager
         {
             SqlCommandBuilder sb = new SqlCommandBuilder(baseCommand.Database);
             sb.AppendSelectPrefix();
-            sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.QueryFields);
+            sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
 
             if (baseCommand.PageSize > 0 && baseCommand.RecordStart > 0)//分页模式
             {

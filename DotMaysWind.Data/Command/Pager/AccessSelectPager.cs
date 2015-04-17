@@ -29,7 +29,7 @@ namespace DotMaysWind.Data.Command.Pager
 
                 if (realPageIndex >= realPageCount)//最后一页
                 {
-                    sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.QueryFields);
+                    sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
 
                     SelectCommand innerCommand = new SelectCommand(baseCommand.Database, baseCommand.TableName);
                     innerCommand.QueryFields = baseCommand.QueryFields;
@@ -59,7 +59,7 @@ namespace DotMaysWind.Data.Command.Pager
                         ORDER BY ID ASC
                     */
 
-                    sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.QueryFields);
+                    sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
 
                     SelectCommand innestCommand = new SelectCommand(baseCommand.Database, baseCommand.TableName);
                     innestCommand.QueryFields = baseCommand.QueryFields;
@@ -81,7 +81,7 @@ namespace DotMaysWind.Data.Command.Pager
                 else//后1/2部分页
                 {
                     sb.AppendSelectTop(baseCommand.PageSize);
-                    sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.QueryFields);
+                    sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
 
                     SelectCommand innerCommand = new SelectCommand(baseCommand.Database, baseCommand.TableName);
                     innerCommand.QueryFields = baseCommand.QueryFields;
@@ -103,7 +103,7 @@ namespace DotMaysWind.Data.Command.Pager
                     sb.AppendSelectTop(baseCommand.PageSize);
                 }
 
-                sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.QueryFields);
+                sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
                 sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.SqlJoins);
 
                 sb.AppendWhere(baseCommand.SqlWhere);
@@ -126,7 +126,7 @@ namespace DotMaysWind.Data.Command.Pager
             SqlCommandBuilder sb = new SqlCommandBuilder(baseCommand.Database);
 
             sb.AppendSelectPrefix();
-            sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.QueryFields);
+            sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
             sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.SqlJoins);
 
             if (baseCommand.SqlWhere != null)
@@ -158,7 +158,7 @@ namespace DotMaysWind.Data.Command.Pager
             queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(baseCommand, SqlAggregateFunction.Count));
 
             sb.AppendSelectPrefix();
-            sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(queryFields);
+            sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, queryFields);
             sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.SqlJoins);
 
             sb.AppendWhere(baseCommand.SqlWhere);
