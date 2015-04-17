@@ -54,8 +54,8 @@ namespace DotMaysWind.Data.Orm
     ///     public Boolean InsertEntity(User user)
     ///     {
     ///         return this.Insert()
-    ///             .Add(UserIDColumn, user.UserID)
-    ///             .Add(UserNameColumn, user.UserName)
+    ///             .Set(UserIDColumn, user.UserID)
+    ///             .Set(UserNameColumn, user.UserName)
     ///             .Result() > 0;
     ///     }
     /// 
