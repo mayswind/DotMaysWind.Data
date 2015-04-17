@@ -120,6 +120,7 @@
     <Compile Include="Orm\DatabaseColumnAttribute.cs" />
     <Compile Include="Orm\DatabaseTable.cs" />
     <Compile Include="Orm\DatabaseTableAttribute.cs" />
+    <Compile Include="Orm\EntityCreatingArgs.cs" />
     <Compile Include="Orm\Helper\EntityHelper.cs" />
     <Compile Include="Orm\IDatabaseTable.cs" />
     <Compile Include="Orm\IDatabaseTableWithMapping.cs" />
