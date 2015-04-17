@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 
 using DotMaysWind.Data.Orm;
@@ -115,7 +114,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="columnName">字段名</param>
         /// <param name="value">赋值内容</param>
         /// <returns>Sql语句参数类</returns>
-        public DataParameter CreateSqlParameter(String columnName, Object value)
+        public DataParameter CreateDataParameter(String columnName, Object value)
         {
             return DataParameter.InternalCreate(this._database, columnName, this.ParameterIndex, value);
         }
@@ -124,12 +123,12 @@ namespace DotMaysWind.Data.Command
         /// 创建新的Sql语句参数类
         /// </summary>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">字段类型</param>
+        /// <param name="dataType">字段类型</param>
         /// <param name="value">赋值内容</param>
         /// <returns>Sql语句参数类</returns>
-        public DataParameter CreateSqlParameter(String columnName, DbType dbType, Object value)
+        public DataParameter CreateDataParameter(String columnName, DataType dataType, Object value)
         {
-            return DataParameter.InternalCreate(this._database, columnName, this.ParameterIndex, dbType, value);
+            return DataParameter.InternalCreate(this._database, columnName, this.ParameterIndex, dataType, value);
         }
 
         /// <summary>
@@ -138,7 +137,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="columnName">字段名</param>
         /// <param name="action">赋值操作</param>
         /// <returns>Sql语句参数类</returns>
-        public DataParameter CreateSqlParameterCustomAction(String columnName, String action)
+        public DataParameter CreateDataParameterCustomAction(String columnName, String action)
         {
             return DataParameter.InternalCreateCustomAction(this._database, columnName, action);
         }

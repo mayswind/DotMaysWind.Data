@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 
 using DotMaysWind.Data.Command.Condition;
 
@@ -81,7 +80,7 @@ namespace DotMaysWind.Data.Command
         /// </example>
         public UpdateCommand Set(String columnName, Object value)
         {
-            this._parameters.Add(this.CreateSqlParameter(columnName, value));
+            this._parameters.Add(this.CreateDataParameter(columnName, value));
             return this;
         }
 
@@ -89,7 +88,7 @@ namespace DotMaysWind.Data.Command
         /// 更新指定参数并返回当前语句
         /// </summary>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">内容</param>
         /// <returns>当前语句</returns>
         /// <example>
@@ -97,7 +96,7 @@ namespace DotMaysWind.Data.Command
         /// <![CDATA[
         /// IDatabase db = DatabaseFactory.CreateDatabase();
         /// UpdateCommand cmd = db.CreateUpdateCommand("tbl_Users")
-        ///     .Set("UserName", DbType.String, "admin");
+        ///     .Set("UserName", DataType.String, "admin");
         ///     .Where(c => c.Equal("UserID", 1));
         /// 
         /// //UPDATE tbl_Users SET UserName = @UserName WHERE UserID = @UserID
@@ -108,9 +107,9 @@ namespace DotMaysWind.Data.Command
         /// ]]>
         /// </code>
         /// </example>
-        public UpdateCommand Set(String columnName, DbType dbType, Object value)
+        public UpdateCommand Set(String columnName, DataType dataType, Object value)
         {
-            this._parameters.Add(this.CreateSqlParameter(columnName, dbType, value));
+            this._parameters.Add(this.CreateDataParameter(columnName, dataType, value));
             return this;
         }
 
@@ -144,7 +143,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("function");
             }
 
-            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, function.GetCommandText()));
+            this._parameters.Add(this.CreateDataParameterCustomAction(columnName, function.GetCommandText()));
 
             if (function.HasParameters)
             {
@@ -190,7 +189,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("command");
             }
 
-            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, command.GetCommandText()));
+            this._parameters.Add(this.CreateDataParameterCustomAction(columnName, command.GetCommandText()));
 
             DataParameter[] parameters = command.GetAllParameters();
 
@@ -248,7 +247,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="condition">更新条件（当满足条件时更新该指定字段）</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">内容</param>
         /// <returns>当前语句</returns>
         /// <example>
@@ -258,8 +257,8 @@ namespace DotMaysWind.Data.Command
         /// Boolean updatePassword = true;
         /// 
         /// UpdateCommand cmd = db.CreateUpdateCommand("tbl_Users")
-        ///     .Set("UserName", DbType.String, "admin");
-        ///     .Set((() => { return updatePassword; }), "Password", DbType.String, "newpassword");
+        ///     .Set("UserName", DataType.String, "admin");
+        ///     .Set((() => { return updatePassword; }), "Password", DataType.String, "newpassword");
         ///     .Where(c => c.Equal("UserID", 1));
         /// 
         /// //UPDATE tbl_Users SET UserName = @UserName, Password = @Password WHERE UserID = @UserID
@@ -271,11 +270,11 @@ namespace DotMaysWind.Data.Command
         /// ]]>
         /// </code>
         /// </example>
-        public UpdateCommand Set(Func<Boolean> condition, String columnName, DbType dbType, Object value)
+        public UpdateCommand Set(Func<Boolean> condition, String columnName, DataType dataType, Object value)
         {
             if (condition())
             {
-                return this.Set(columnName, dbType, value);
+                return this.Set(columnName, dataType, value);
             }
             else
             {
@@ -389,7 +388,7 @@ namespace DotMaysWind.Data.Command
         /// </example>
         public UpdateCommand Increase(String columnName)
         {
-            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, columnName + "+1"));
+            this._parameters.Add(this.CreateDataParameterCustomAction(columnName, columnName + "+1"));
             return this;
         }
 
@@ -415,7 +414,7 @@ namespace DotMaysWind.Data.Command
         /// </example>
         public UpdateCommand Decrease(String columnName)
         {
-            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, columnName + "-1"));
+            this._parameters.Add(this.CreateDataParameterCustomAction(columnName, columnName + "-1"));
             return this;
         }
         #endregion

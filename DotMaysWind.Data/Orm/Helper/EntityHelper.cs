@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Reflection;
 
 using DotMaysWind.Data.Command;
@@ -133,7 +132,7 @@ namespace DotMaysWind.Data.Orm.Helper
             foreach (PropertyInfo prop in props)
             {
                 DatabaseColumnAttribute attr = null;
-                DbType? dbType = null;
+                DataType? dataType = null;
                 Object[] objs = prop.GetCustomAttributes(TypeOfDatabaseColumnAttribute, true);
 
                 foreach (Object obj in objs)
@@ -146,14 +145,14 @@ namespace DotMaysWind.Data.Orm.Helper
 
                 if (attr != null)
                 {
-                    dbType = attr.DbType;
+                    dataType = attr.DataType;
 
-                    if (!dbType.HasValue)
+                    if (!dataType.HasValue)
                     {
-                        dbType = DbTypeHelper.InternalGetDbType(prop.PropertyType);
+                        dataType = DataTypeHelper.InternalGetDataType(prop.PropertyType);
                     }
 
-                    DataParameter parameter = cmd.CreateSqlParameter(attr.ColumnName, dbType.Value, prop.GetValue(entity, null));
+                    DataParameter parameter = cmd.CreateDataParameter(attr.ColumnName, dataType.Value, prop.GetValue(entity, null));
                     parameters.Add(parameter);
                 }
             }

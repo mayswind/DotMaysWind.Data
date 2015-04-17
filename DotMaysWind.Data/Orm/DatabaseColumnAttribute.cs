@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 
 namespace DotMaysWind.Data.Orm
 {
@@ -18,7 +17,7 @@ namespace DotMaysWind.Data.Orm
     ///     [DatabaseColumn("UserName")]
     ///     public String UserName { get; set; }
     ///     
-    ///     [DatabaseColumn("UserType", DbType.Byte)]
+    ///     [DatabaseColumn("UserType", DataType.Byte)]
     ///     public Int32 UserType { get; set; }
     ///     
     ///     [DatabaseColumn("CreateTime")]
@@ -32,7 +31,7 @@ namespace DotMaysWind.Data.Orm
     {
         #region 字段
         private String _columnName;
-        private DbType? _dbType;
+        private DataType? _dataType;
         #endregion
 
         #region 属性
@@ -47,10 +46,10 @@ namespace DotMaysWind.Data.Orm
         /// <summary>
         /// 获取或设置数据列数据类型
         /// </summary>
-        public DbType? DbType
+        public DataType? DataType
         {
-            get { return this._dbType; }
-            set { this._dbType = value; }
+            get { return this._dataType; }
+            set { this._dataType = value; }
         }
         #endregion
 
@@ -68,11 +67,11 @@ namespace DotMaysWind.Data.Orm
         /// 初始化数据库列特性
         /// </summary>
         /// <param name="columnName">数据库列名</param>
-        /// <param name="dbType">数据类型</param>
-        public DatabaseColumnAttribute(String columnName, DbType dbType)
+        /// <param name="dataType">数据类型</param>
+        public DatabaseColumnAttribute(String columnName, DataType dataType)
         {
             this._columnName = columnName;
-            this._dbType = dbType;
+            this._dataType = dataType;
         }
         #endregion
     }

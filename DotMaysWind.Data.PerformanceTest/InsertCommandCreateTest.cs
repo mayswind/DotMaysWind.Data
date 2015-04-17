@@ -3,7 +3,6 @@ using System.Data;
 using System.Data.Common;
 
 using DotMaysWind.Data.Command;
-using DotMaysWind.Data.Command.Condition;
 using DotMaysWind.Data.Linq;
 using DotMaysWind.Data.Orm;
 
@@ -54,7 +53,7 @@ namespace DotMaysWind.Data.PerformanceTest
                 .Set("TestColumn5", _entity.Test5)
                 .Set("TestColumn6", _entity.Test6)
                 .Set("TestColumn7", _entity.Test7)
-                .Set("TestColumn8", DbType.Int16, _entity.Test8);
+                .Set("TestColumn8", DataType.Int16, _entity.Test8);
 
             DbCommand dbCommand = command.ToDbCommand();
         }

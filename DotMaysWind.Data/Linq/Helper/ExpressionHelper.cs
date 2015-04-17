@@ -54,13 +54,13 @@ namespace DotMaysWind.Data.Linq.Helper
         /// <param name="sourceCommand">来源Sql语句</param>
         /// <param name="expr">表达式</param>
         /// <returns>表达式所指的列特性</returns>
-        internal static DatabaseColumnAttribute GetColumnAttributeWithDbType(AbstractSqlCommand sourceCommand, MemberExpression expr)
+        internal static DatabaseColumnAttribute GetColumnAttributeWithDataType(AbstractSqlCommand sourceCommand, MemberExpression expr)
         {
             DatabaseColumnAttribute attr = ExpressionHelper.GetColumnAttribute(sourceCommand, expr);
 
-            if (attr != null && !attr.DbType.HasValue)
+            if (attr != null && !attr.DataType.HasValue)
             {
-                attr.DbType = DbTypeHelper.InternalGetDbType(expr.Type);
+                attr.DataType = DataTypeHelper.InternalGetDataType(expr.Type);
             }
 
             return attr;

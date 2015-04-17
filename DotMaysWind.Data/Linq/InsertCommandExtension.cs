@@ -53,14 +53,14 @@ namespace DotMaysWind.Data.Linq
                 throw new ExpressionInvalidException();
             }
 
-            DatabaseColumnAttribute attr = ExpressionHelper.GetColumnAttributeWithDbType(cmd, left);
+            DatabaseColumnAttribute attr = ExpressionHelper.GetColumnAttributeWithDataType(cmd, left);
 
             if (attr == null)
             {
                 throw new NullAttributeException();
             }
 
-            return cmd.Set(attr.ColumnName, attr.DbType.Value, value);
+            return cmd.Set(attr.ColumnName, attr.DataType.Value, value);
         }
     }
 }

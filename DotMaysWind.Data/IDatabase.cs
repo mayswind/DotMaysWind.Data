@@ -364,32 +364,32 @@ namespace DotMaysWind.Data
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="command">指定Sql语句</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="transaction">数据库事务</param>
         /// <exception cref="ArgumentNullException">Sql语句不能为空</exception>
         /// <returns>返回的结果</returns>
-        T ExecuteScalar<T>(ISqlCommand command, DbType dbType, DbTransaction transaction);
+        T ExecuteScalar<T>(ISqlCommand command, DataType dataType, DbTransaction transaction);
 
         /// <summary>
         /// 返回执行指定Sql语句后返回的结果
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="command">指定Sql语句</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="connection">数据库连接</param>
         /// <exception cref="ArgumentNullException">Sql语句不能为空</exception>
         /// <returns>返回的结果</returns>
-        T ExecuteScalar<T>(ISqlCommand command, DbType dbType, DbConnection connection);
+        T ExecuteScalar<T>(ISqlCommand command, DataType dataType, DbConnection connection);
 
         /// <summary>
         /// 返回执行指定Sql语句后返回的结果
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="command">指定Sql语句</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <exception cref="ArgumentNullException">Sql语句不能为空</exception>
         /// <returns>返回的结果</returns>
-        T ExecuteScalar<T>(ISqlCommand command, DbType dbType);
+        T ExecuteScalar<T>(ISqlCommand command, DataType dataType);
 
         /// <summary>
         /// 返回执行指定Sql语句后返回的结果

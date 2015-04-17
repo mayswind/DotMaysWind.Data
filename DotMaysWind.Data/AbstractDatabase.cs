@@ -90,13 +90,7 @@ namespace DotMaysWind.Data
         {
             DbParameter dbParameter = this.CreateDbParameter();
 
-            dbParameter.SourceColumn = param.ColumnName;
-            dbParameter.ParameterName = param.ParameterName;
-            dbParameter.DbType = param.DbType;
-            dbParameter.Value = param.Value;
-            dbParameter.SourceVersion = DataRowVersion.Default;
-
-            return dbParameter;
+            return param.InternalCopyToDbParameter(dbParameter);
         }
 
         /// <summary>
@@ -574,11 +568,11 @@ namespace DotMaysWind.Data
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="dbCommand">数据库命令</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="connection">数据库连接</param>
         /// <param name="transaction">数据库事务</param>
         /// <returns>返回的结果</returns>
-        public T ExecuteScalar<T>(DbCommand dbCommand, DbType dbType, DbConnection connection, DbTransaction transaction)
+        public T ExecuteScalar<T>(DbCommand dbCommand, DataType dataType, DbConnection connection, DbTransaction transaction)
         {
             if (dbCommand == null)
             {
@@ -587,7 +581,7 @@ namespace DotMaysWind.Data
 
             Object obj = this.ExecuteScalar(dbCommand, connection, transaction);
 
-            return (Convert.IsDBNull(obj) ? default(T) : (T)DbConvert.ToValue(obj, dbType));
+            return (Convert.IsDBNull(obj) ? default(T) : (T)DbConvert.ToValue(obj, dataType));
         }
 
         /// <summary>
@@ -600,9 +594,9 @@ namespace DotMaysWind.Data
         /// <returns>返回的结果</returns>
         public T ExecuteScalar<T>(DbCommand dbCommand, DbConnection connection, DbTransaction transaction)
         {
-            DbType dbType = DbTypeHelper.InternalGetDbType(typeof(T));
+            DataType dataType = DataTypeHelper.InternalGetDataType(typeof(T));
 
-            return this.ExecuteScalar<T>(dbCommand, dbType, connection, transaction);
+            return this.ExecuteScalar<T>(dbCommand, dataType, connection, transaction);
         }
 
         /// <summary>
@@ -759,11 +753,11 @@ namespace DotMaysWind.Data
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="dbCommand">数据库命令</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <returns>返回的结果</returns>
-        public T ExecuteScalar<T>(DbCommand dbCommand, DbType dbType)
+        public T ExecuteScalar<T>(DbCommand dbCommand, DataType dataType)
         {
-            return this.ExecuteScalar<T>(dbCommand, dbType, null, null);
+            return this.ExecuteScalar<T>(dbCommand, dataType, null, null);
         }
 
         /// <summary>
@@ -884,11 +878,11 @@ namespace DotMaysWind.Data
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="command">指定Sql语句</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="transaction">数据库事务</param>
         /// <exception cref="ArgumentNullException">Sql语句不能为空</exception>
         /// <returns>返回的结果</returns>
-        public T ExecuteScalar<T>(ISqlCommand command, DbType dbType, DbTransaction transaction)
+        public T ExecuteScalar<T>(ISqlCommand command, DataType dataType, DbTransaction transaction)
         {
             if (command == null)
             {
@@ -896,7 +890,7 @@ namespace DotMaysWind.Data
             }
 
             DbCommand dbCommand = command.ToDbCommand();
-            return this.ExecuteScalar<T>(dbCommand, dbType, null, transaction);
+            return this.ExecuteScalar<T>(dbCommand, dataType, null, transaction);
         }
 
         /// <summary>
@@ -904,11 +898,11 @@ namespace DotMaysWind.Data
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="command">指定Sql语句</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="connection">数据库连接</param>
         /// <exception cref="ArgumentNullException">Sql语句不能为空</exception>
         /// <returns>返回的结果</returns>
-        public T ExecuteScalar<T>(ISqlCommand command, DbType dbType, DbConnection connection)
+        public T ExecuteScalar<T>(ISqlCommand command, DataType dataType, DbConnection connection)
         {
             if (command == null)
             {
@@ -916,7 +910,7 @@ namespace DotMaysWind.Data
             }
 
             DbCommand dbCommand = command.ToDbCommand();
-            return this.ExecuteScalar<T>(dbCommand, dbType, connection, null);
+            return this.ExecuteScalar<T>(dbCommand, dataType, connection, null);
         }
 
         /// <summary>
@@ -924,10 +918,10 @@ namespace DotMaysWind.Data
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="command">指定Sql语句</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <exception cref="ArgumentNullException">Sql语句不能为空</exception>
         /// <returns>返回的结果</returns>
-        public T ExecuteScalar<T>(ISqlCommand command, DbType dbType)
+        public T ExecuteScalar<T>(ISqlCommand command, DataType dataType)
         {
             if (command == null)
             {
@@ -935,7 +929,7 @@ namespace DotMaysWind.Data
             }
 
             DbCommand dbCommand = command.ToDbCommand();
-            return this.ExecuteScalar<T>(dbCommand, dbType);
+            return this.ExecuteScalar<T>(dbCommand, dataType);
         }
 
         /// <summary>

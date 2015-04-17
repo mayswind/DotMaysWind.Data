@@ -17,7 +17,6 @@ Orm支持两种风格：
 
     using System;
     using System.Collections.Generic;
-    using System.Data;
 
     using DotMaysWind.Data;
     using DotMaysWind.Data.Orm;
@@ -41,12 +40,12 @@ Orm支持两种风格：
             get { return "tbl_Users"; }
         }
 
-        protected override User CreateEntity(DataRow row, DataColumnCollection columns)
+        protected override User CreateEntity(Object sender, EntityCreatingArgs args)
         {
             User entity = new User();
 
-            entity.UserID = this.LoadInt32(row, columns, UserIDColumn);
-            entity.UserName = this.LoadString(row, columns, UserNameColumn);
+            entity.UserID = this.LoadInt32(args, UserIDColumn);
+            entity.UserName = this.LoadString(args, UserNameColumn);
 
             return entity;
         }

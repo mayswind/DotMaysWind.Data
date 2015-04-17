@@ -94,7 +94,7 @@ namespace DotMaysWind.Data.Linq
         {
             MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Left);
             String entityName = left.Expression.ToString();
-            DatabaseColumnAttribute columnAttr = ExpressionHelper.GetColumnAttributeWithDbType(sourceCommand, left);
+            DatabaseColumnAttribute columnAttr = ExpressionHelper.GetColumnAttributeWithDataType(sourceCommand, left);
 
             if (columnAttr == null)
             {
@@ -124,7 +124,7 @@ namespace DotMaysWind.Data.Linq
                 op = (op == SqlOperator.Equal ? SqlOperator.IsNull : SqlOperator.IsNotNull);
             }
 
-            condition = SqlCondition.InternalCreate(sourceCommand, columnAttr.ColumnName, op, columnAttr.DbType.Value, value);
+            condition = SqlCondition.InternalCreate(sourceCommand, columnAttr.ColumnName, op, columnAttr.DataType.Value, value);
 
             return condition;
         }
@@ -182,7 +182,7 @@ namespace DotMaysWind.Data.Linq
         private static AbstractSqlCondition ParseNullExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, Boolean isNot)
         {
             MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Arguments[0]);
-            DatabaseColumnAttribute columnAttr = ExpressionHelper.GetColumnAttributeWithDbType(sourceCommand, left);
+            DatabaseColumnAttribute columnAttr = ExpressionHelper.GetColumnAttributeWithDataType(sourceCommand, left);
 
             if (columnAttr == null)
             {
@@ -197,7 +197,7 @@ namespace DotMaysWind.Data.Linq
         private static AbstractSqlCondition ParseLikeCallExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, String format, Boolean isNot)
         {
             MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Arguments[0]);
-            DatabaseColumnAttribute columnAttr = ExpressionHelper.GetColumnAttributeWithDbType(sourceCommand, left);
+            DatabaseColumnAttribute columnAttr = ExpressionHelper.GetColumnAttributeWithDataType(sourceCommand, left);
             String value = ExpressionHelper.GetExpressionValue(expr.Arguments[1]) as String;
 
             if (columnAttr == null)
@@ -205,7 +205,7 @@ namespace DotMaysWind.Data.Linq
                 throw new NullAttributeException();
             }
 
-            AbstractSqlCondition condition = SqlCondition.InternalLike(sourceCommand, columnAttr.ColumnName, isNot, columnAttr.DbType.Value, String.Format(format, value));
+            AbstractSqlCondition condition = SqlCondition.InternalLike(sourceCommand, columnAttr.ColumnName, isNot, columnAttr.DataType.Value, String.Format(format, value));
 
             return condition;
         }
@@ -213,7 +213,7 @@ namespace DotMaysWind.Data.Linq
         private static AbstractSqlCondition ParseBetweenCallExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, Boolean supportNullable, Boolean isNot)
         {
             MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Arguments[0]);
-            DatabaseColumnAttribute columnAttr = ExpressionHelper.GetColumnAttributeWithDbType(sourceCommand, left);
+            DatabaseColumnAttribute columnAttr = ExpressionHelper.GetColumnAttributeWithDataType(sourceCommand, left);
             Object start = ExpressionHelper.GetExpressionValue(expr.Arguments[1]) as Object;
             Object end = ExpressionHelper.GetExpressionValue(expr.Arguments[2]) as Object;
 
@@ -224,18 +224,18 @@ namespace DotMaysWind.Data.Linq
 
             if (supportNullable)
             {
-                return SqlCondition.InternalBetweenNullable(sourceCommand, columnAttr.ColumnName, isNot, columnAttr.DbType.Value, start, end);
+                return SqlCondition.InternalBetweenNullable(sourceCommand, columnAttr.ColumnName, isNot, columnAttr.DataType.Value, start, end);
             }
             else
             {
-                return SqlCondition.InternalBetween(sourceCommand, columnAttr.ColumnName, isNot, columnAttr.DbType.Value, start, end);
+                return SqlCondition.InternalBetween(sourceCommand, columnAttr.ColumnName, isNot, columnAttr.DataType.Value, start, end);
             }
         }
 
         private static AbstractSqlCondition ParseInTheseCallExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, Boolean isNot)
         {
             MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Arguments[0]);
-            DatabaseColumnAttribute columnAttr = ExpressionHelper.GetColumnAttributeWithDbType(sourceCommand, left);
+            DatabaseColumnAttribute columnAttr = ExpressionHelper.GetColumnAttributeWithDataType(sourceCommand, left);
             Object value = ExpressionHelper.GetExpressionValue(expr.Arguments[1]);
 
             if (columnAttr == null)
@@ -247,7 +247,7 @@ namespace DotMaysWind.Data.Linq
 
             if (array != null)
             {
-                AbstractSqlCondition condition = SqlCondition.InternalIn(sourceCommand, columnAttr.ColumnName, isNot, columnAttr.DbType.Value, array);
+                AbstractSqlCondition condition = SqlCondition.InternalIn(sourceCommand, columnAttr.ColumnName, isNot, columnAttr.DataType.Value, array);
 
                 return condition;
             }
@@ -258,7 +258,7 @@ namespace DotMaysWind.Data.Linq
         private static AbstractSqlCondition ParseInCallExpression(AbstractSqlCommand sourceCommand, MethodCallExpression expr, Boolean isNot)
         {
             MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Arguments[0]);
-            DatabaseColumnAttribute columnAttr = ExpressionHelper.GetColumnAttributeWithDbType(sourceCommand, left);
+            DatabaseColumnAttribute columnAttr = ExpressionHelper.GetColumnAttributeWithDataType(sourceCommand, left);
             Object value = ExpressionHelper.GetExpressionValue(expr.Arguments[1]);
 
             if (columnAttr == null)

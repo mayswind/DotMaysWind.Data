@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -29,10 +28,10 @@ namespace DotMaysWind.Data.UnitTest
                 DataParameter.InternalCreate(fakeDb, "TestColumn2", 1, entity.Test2),
                 DataParameter.InternalCreate(fakeDb, "TestColumn3", 2, entity.Test3),
                 DataParameter.InternalCreate(fakeDb, "TestColumn4", 3, entity.Test4),
-                DataParameter.InternalCreate(fakeDb, "TestColumn5", 4, DbType.Int32, entity.Test5),
-                DataParameter.InternalCreate(fakeDb, "TestColumn6", 5, DbType.Double, entity.Test6),
-                DataParameter.InternalCreate(fakeDb, "TestColumn7", 6, DbType.DateTime, entity.Test7),
-                DataParameter.InternalCreate(fakeDb, "TestColumn8", 7, DbType.Int16, entity.Test8)
+                DataParameter.InternalCreate(fakeDb, "TestColumn5", 4, DataType.Int32, entity.Test5),
+                DataParameter.InternalCreate(fakeDb, "TestColumn6", 5, DataType.Double, entity.Test6),
+                DataParameter.InternalCreate(fakeDb, "TestColumn7", 6, DataType.DateTime, entity.Test7),
+                DataParameter.InternalCreate(fakeDb, "TestColumn8", 7, DataType.Int16, entity.Test8)
             };
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Set(entity);
@@ -61,10 +60,10 @@ namespace DotMaysWind.Data.UnitTest
                 DataParameter.InternalCreate(fakeDb, "TestColumn2", 1, entity.Test2),
                 DataParameter.InternalCreate(fakeDb, "TestColumn3", 2, entity.Test3),
                 DataParameter.InternalCreate(fakeDb, "TestColumn4", 3, entity.Test4),
-                DataParameter.InternalCreate(fakeDb, "TestColumn5", 4, DbType.Int32, entity.Test5),
-                DataParameter.InternalCreate(fakeDb, "TestColumn6", 5, DbType.Double, entity.Test6),
-                DataParameter.InternalCreate(fakeDb, "TestColumn7", 6, DbType.DateTime, entity.Test7),
-                DataParameter.InternalCreate(fakeDb, "TestColumn8", 7, DbType.Int16, entity.Test8)
+                DataParameter.InternalCreate(fakeDb, "TestColumn5", 4, DataType.Int32, entity.Test5),
+                DataParameter.InternalCreate(fakeDb, "TestColumn6", 5, DataType.Double, entity.Test6),
+                DataParameter.InternalCreate(fakeDb, "TestColumn7", 6, DataType.DateTime, entity.Test7),
+                DataParameter.InternalCreate(fakeDb, "TestColumn8", 7, DataType.Int16, entity.Test8)
             };
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName)

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 
 namespace DotMaysWind.Data.Command
 {
@@ -79,7 +78,7 @@ namespace DotMaysWind.Data.Command
         /// </example>
         public InsertCommand Set(String columnName, Object value)
         {
-            this._parameters.Add(this.CreateSqlParameter(columnName, value));
+            this._parameters.Add(this.CreateDataParameter(columnName, value));
             return this;
         }
 
@@ -87,7 +86,7 @@ namespace DotMaysWind.Data.Command
         /// 插入指定参数并返回当前语句
         /// </summary>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">内容</param>
         /// <returns>当前语句</returns>
         /// <example>
@@ -95,8 +94,8 @@ namespace DotMaysWind.Data.Command
         /// <![CDATA[
         /// IDatabase db = DatabaseFactory.CreateDatabase();
         /// InsertCommand cmd = db.CreateInsertCommand("tbl_Users")
-        ///     .Set("UserID", DbType.Int32, 1)
-        ///     .Set("UserName", DbType.String, "admin");
+        ///     .Set("UserID", DataType.Int32, 1)
+        ///     .Set("UserName", DataType.String, "admin");
         /// 
         /// //INSERT INTO tbl_Users (UserID, UserName) VALUES (@UserID, @UserName)
         /// //@UserID = 1
@@ -106,9 +105,9 @@ namespace DotMaysWind.Data.Command
         /// ]]>
         /// </code>
         /// </example>
-        public InsertCommand Set(String columnName, DbType dbType, Object value)
+        public InsertCommand Set(String columnName, DataType dataType, Object value)
         {
-            this._parameters.Add(this.CreateSqlParameter(columnName, dbType, value));
+            this._parameters.Add(this.CreateDataParameter(columnName, dataType, value));
             return this;
         }
 
@@ -144,7 +143,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("function");
             }
 
-            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, function.GetCommandText()));
+            this._parameters.Add(this.CreateDataParameterCustomAction(columnName, function.GetCommandText()));
 
             if (function.HasParameters)
             {
@@ -190,7 +189,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("command");
             }
 
-            this._parameters.Add(this.CreateSqlParameterCustomAction(columnName, command.GetCommandText()));
+            this._parameters.Add(this.CreateDataParameterCustomAction(columnName, command.GetCommandText()));
 
             DataParameter[] parameters = command.GetAllParameters();
 
@@ -248,7 +247,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="condition">插入条件（当满足条件时插入该指定字段）</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">内容</param>
         /// <returns>当前语句</returns>
         /// <example>
@@ -258,9 +257,9 @@ namespace DotMaysWind.Data.Command
         /// Boolean insertPhoto = true;
         /// 
         /// InsertCommand cmd = db.CreateInsertCommand("tbl_Users")
-        ///     .Set("UserID", DbType.Int32, 1)
-        ///     .Set("UserName", DbType.String, "admin");
-        ///     .Set((() => { return insertPhoto; }), "PhotoUrl", DbType.String, "url");
+        ///     .Set("UserID", DataType.Int32, 1)
+        ///     .Set("UserName", DataType.String, "admin");
+        ///     .Set((() => { return insertPhoto; }), "PhotoUrl", DataType.String, "url");
         /// 
         /// //INSERT INTO tbl_Users (UserID, UserName, PhotoUrl) VALUES (@UserID, @UserName, @PhotoUrl)
         /// //@UserID = 1
@@ -271,11 +270,11 @@ namespace DotMaysWind.Data.Command
         /// ]]>
         /// </code>
         /// </example>
-        public InsertCommand Set(Func<Boolean> condition, String columnName, DbType dbType, Object value)
+        public InsertCommand Set(Func<Boolean> condition, String columnName, DataType dataType, Object value)
         {
             if (condition())
             {
-                return this.Set(columnName, dbType, value);
+                return this.Set(columnName, dataType, value);
             }
             else
             {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Reflection;
 
 using DotMaysWind.Data.Command;
@@ -234,16 +233,16 @@ namespace DotMaysWind.Data.Orm
 
                 if (this._mapping.TryGetValue(prop.Name, out attr) && attr != null)
                 {
-                    DbType dbType = (attr.DbType.HasValue ? attr.DbType.Value : DbTypeHelper.InternalGetDbType(prop.PropertyType));
+                    DataType dataType = (attr.DataType.HasValue ? attr.DataType.Value : DataTypeHelper.InternalGetDataType(prop.PropertyType));
                     Object value;
 
                     if (EntityHelper.InternalIsNullableType(prop.PropertyType))
                     {
-                        value = this.LoadNullableValue(args, attr.ColumnName, dbType);
+                        value = this.LoadNullableValue(args, attr.ColumnName, dataType);
                     }
                     else
                     {
-                        value = this.LoadValue(args, attr.ColumnName, dbType);
+                        value = this.LoadValue(args, attr.ColumnName, dataType);
                     }
 
                     prop.SetValue(entity, value, null);

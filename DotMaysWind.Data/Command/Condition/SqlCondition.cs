@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 
-using DotMaysWind.Data.Command.Function;
 using DotMaysWind.Data.Helper;
 
 namespace DotMaysWind.Data.Command.Condition
@@ -45,7 +43,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         internal static SqlBasicParameterCondition InternalCreate(AbstractSqlCommand cmd, String columnName, SqlOperator op)
         {
-            return new SqlBasicParameterCondition(cmd, cmd.CreateSqlParameter(columnName, null), op);
+            return new SqlBasicParameterCondition(cmd, cmd.CreateDataParameter(columnName, null), op);
         }
 
         /// <summary>
@@ -58,7 +56,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         internal static SqlBasicParameterCondition InternalCreate(AbstractSqlCommand cmd, String columnName, SqlOperator op, Object value)
         {
-            return new SqlBasicParameterCondition(cmd, cmd.CreateSqlParameter(columnName, value), op);
+            return new SqlBasicParameterCondition(cmd, cmd.CreateDataParameter(columnName, value), op);
         }
 
         /// <summary>
@@ -67,12 +65,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="op">条件运算符</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlBasicParameterCondition InternalCreate(AbstractSqlCommand cmd, String columnName, SqlOperator op, DbType dbType, Object value)
+        internal static SqlBasicParameterCondition InternalCreate(AbstractSqlCommand cmd, String columnName, SqlOperator op, DataType dataType, Object value)
         {
-            return new SqlBasicParameterCondition(cmd, cmd.CreateSqlParameter(columnName, dbType, value), op);
+            return new SqlBasicParameterCondition(cmd, cmd.CreateDataParameter(columnName, dataType, value), op);
         }
 
         /// <summary>
@@ -86,7 +84,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         internal static SqlBasicParameterCondition InternalCreate(AbstractSqlCommand cmd, String columnName, SqlOperator op, Object valueOne, Object valueTwo)
         {
-            return new SqlBasicParameterCondition(cmd, cmd.CreateSqlParameter(columnName, valueOne), cmd.CreateSqlParameter(columnName, valueTwo), op);
+            return new SqlBasicParameterCondition(cmd, cmd.CreateDataParameter(columnName, valueOne), cmd.CreateDataParameter(columnName, valueTwo), op);
         }
 
         /// <summary>
@@ -95,13 +93,13 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="op">条件运算符</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="valueOne">数据一</param>
         /// <param name="valueTwo">数据二</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlBasicParameterCondition InternalCreate(AbstractSqlCommand cmd, String columnName, SqlOperator op, DbType dbType, Object valueOne, Object valueTwo)
+        internal static SqlBasicParameterCondition InternalCreate(AbstractSqlCommand cmd, String columnName, SqlOperator op, DataType dataType, Object valueOne, Object valueTwo)
         {
-            return new SqlBasicParameterCondition(cmd, cmd.CreateSqlParameter(columnName, dbType, valueOne), cmd.CreateSqlParameter(columnName, dbType, valueTwo), op);
+            return new SqlBasicParameterCondition(cmd, cmd.CreateDataParameter(columnName, dataType, valueOne), cmd.CreateDataParameter(columnName, dataType, valueTwo), op);
         }
 
         /// <summary>
@@ -114,7 +112,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         internal static SqlBasicParameterCondition InternalCreateAction(AbstractSqlCommand cmd, String columnName, SqlOperator op, String action)
         {
-            return new SqlBasicParameterCondition(cmd, cmd.CreateSqlParameterCustomAction(columnName, action), op);
+            return new SqlBasicParameterCondition(cmd, cmd.CreateDataParameterCustomAction(columnName, action), op);
         }
 
         /// <summary>
@@ -128,7 +126,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         internal static SqlBasicParameterCondition InternalCreateColumn(AbstractSqlCommand cmd, String columnName, SqlOperator op, String tableNameTwo, String columnNameTwo)
         {
-            return new SqlBasicParameterCondition(cmd, cmd.CreateSqlParameterCustomAction(columnName, GetFieldName(tableNameTwo, columnNameTwo)), op);
+            return new SqlBasicParameterCondition(cmd, cmd.CreateDataParameterCustomAction(columnName, GetFieldName(tableNameTwo, columnNameTwo)), op);
         }
 
         /// <summary>
@@ -141,7 +139,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>Sql条件语句</returns>
         internal static SqlBasicParameterCondition InternalCreateColumn(AbstractSqlCommand cmd, String columnName, SqlOperator op, String columnNameTwo)
         {
-            return new SqlBasicParameterCondition(cmd, cmd.CreateSqlParameterCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)), op);
+            return new SqlBasicParameterCondition(cmd, cmd.CreateDataParameterCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)), op);
         }
         #endregion
 
@@ -167,12 +165,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="function">合计函数类型</param>
         /// <param name="columnName">要查询的字段名</param>
         /// <param name="op">条件运算符</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition Create(AbstractSqlCommand cmd, SqlAggregateFunction function, String columnName, SqlOperator op, DbType dbType, Object value)
+        public static SqlBasicParameterCondition Create(AbstractSqlCommand cmd, SqlAggregateFunction function, String columnName, SqlOperator op, DataType dataType, Object value)
         {
-            return SqlCondition.InternalCreate(cmd, String.Format("{0}({1})", function.ToString().ToUpperInvariant(), columnName), op, dbType, value);
+            return SqlCondition.InternalCreate(cmd, String.Format("{0}({1})", function.ToString().ToUpperInvariant(), columnName), op, dataType, value);
         }
 
         /// <summary>
@@ -209,12 +207,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="cmd">Sql语句</param>
         /// <param name="function">Sql函数</param>
         /// <param name="op">条件运算符</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition Create(AbstractSqlCommand cmd, ISqlFunction function, SqlOperator op, DbType dbType, Object value)
+        public static SqlBasicParameterCondition Create(AbstractSqlCommand cmd, ISqlFunction function, SqlOperator op, DataType dataType, Object value)
         {
-            return SqlCondition.InternalCreate(cmd, function.GetCommandText(), op, dbType, value);
+            return SqlCondition.InternalCreate(cmd, function.GetCommandText(), op, dataType, value);
         }
         #endregion
 
@@ -272,12 +270,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition Equal(AbstractSqlCommand cmd, String columnName, DbType dbType, Object value)
+        public static SqlBasicParameterCondition Equal(AbstractSqlCommand cmd, String columnName, DataType dataType, Object value)
         {
-            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.Equal, dbType, value);
+            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.Equal, dataType, value);
         }
 
         /// <summary>
@@ -322,12 +320,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition NotEqual(AbstractSqlCommand cmd, String columnName, DbType dbType, Object value)
+        public static SqlBasicParameterCondition NotEqual(AbstractSqlCommand cmd, String columnName, DataType dataType, Object value)
         {
-            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.NotEqual, dbType, value);
+            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.NotEqual, dataType, value);
         }
 
         /// <summary>
@@ -374,12 +372,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition GreaterThan(AbstractSqlCommand cmd, String columnName, DbType dbType, Object value)
+        public static SqlBasicParameterCondition GreaterThan(AbstractSqlCommand cmd, String columnName, DataType dataType, Object value)
         {
-            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.GreaterThan, dbType, value);
+            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.GreaterThan, dataType, value);
         }
 
         /// <summary>
@@ -424,12 +422,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition LessThan(AbstractSqlCommand cmd, String columnName, DbType dbType, Object value)
+        public static SqlBasicParameterCondition LessThan(AbstractSqlCommand cmd, String columnName, DataType dataType, Object value)
         {
-            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.LessThan, dbType, value);
+            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.LessThan, dataType, value);
         }
 
         /// <summary>
@@ -476,12 +474,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition GreaterThanOrEqual(AbstractSqlCommand cmd, String columnName, DbType dbType, Object value)
+        public static SqlBasicParameterCondition GreaterThanOrEqual(AbstractSqlCommand cmd, String columnName, DataType dataType, Object value)
         {
-            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.GreaterThanOrEqual, dbType, value);
+            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.GreaterThanOrEqual, dataType, value);
         }
 
         /// <summary>
@@ -526,12 +524,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition LessThanOrEqual(AbstractSqlCommand cmd, String columnName, DbType dbType, Object value)
+        public static SqlBasicParameterCondition LessThanOrEqual(AbstractSqlCommand cmd, String columnName, DataType dataType, Object value)
         {
-            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.LessThanOrEqual, dbType, value);
+            return SqlCondition.InternalCreate(cmd, columnName, SqlOperator.LessThanOrEqual, dataType, value);
         }
 
         /// <summary>
@@ -581,12 +579,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="isNot">是否不相似</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlBasicParameterCondition InternalLike(AbstractSqlCommand cmd, String columnName, Boolean isNot, DbType dbType, Object value)
+        internal static SqlBasicParameterCondition InternalLike(AbstractSqlCommand cmd, String columnName, Boolean isNot, DataType dataType, Object value)
         {
-            return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.NotLike : SqlOperator.Like), dbType, value);
+            return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.NotLike : SqlOperator.Like), dataType, value);
         }
 
         /// <summary>
@@ -635,12 +633,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition Like(AbstractSqlCommand cmd, String columnName, DbType dbType, Object value)
+        public static SqlBasicParameterCondition Like(AbstractSqlCommand cmd, String columnName, DataType dataType, Object value)
         {
-            return SqlCondition.InternalLike(cmd, columnName, false, dbType, value);
+            return SqlCondition.InternalLike(cmd, columnName, false, dataType, value);
         }
 
         /// <summary>
@@ -685,12 +683,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition NotLike(AbstractSqlCommand cmd, String columnName, DbType dbType, Object value)
+        public static SqlBasicParameterCondition NotLike(AbstractSqlCommand cmd, String columnName, DataType dataType, Object value)
         {
-            return SqlCondition.InternalLike(cmd, columnName, true, dbType, value);
+            return SqlCondition.InternalLike(cmd, columnName, true, dataType, value);
         }
 
         /// <summary>
@@ -737,12 +735,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition LikeAll(AbstractSqlCommand cmd, String columnName, DbType dbType, Object value)
+        public static SqlBasicParameterCondition LikeAll(AbstractSqlCommand cmd, String columnName, DataType dataType, Object value)
         {
-            return SqlCondition.Like(cmd, columnName, dbType, "%" + value + "%");
+            return SqlCondition.Like(cmd, columnName, dataType, "%" + value + "%");
         }
 
         /// <summary>
@@ -762,12 +760,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition NotLikeAll(AbstractSqlCommand cmd, String columnName, DbType dbType, Object value)
+        public static SqlBasicParameterCondition NotLikeAll(AbstractSqlCommand cmd, String columnName, DataType dataType, Object value)
         {
-            return SqlCondition.NotLike(cmd, columnName, dbType, "%" + value + "%");
+            return SqlCondition.NotLike(cmd, columnName, dataType, "%" + value + "%");
         }
         #endregion
 
@@ -789,12 +787,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition LikeStartWith(AbstractSqlCommand cmd, String columnName, DbType dbType, Object value)
+        public static SqlBasicParameterCondition LikeStartWith(AbstractSqlCommand cmd, String columnName, DataType dataType, Object value)
         {
-            return SqlCondition.Like(cmd, columnName, dbType, value + "%");
+            return SqlCondition.Like(cmd, columnName, dataType, value + "%");
         }
 
         /// <summary>
@@ -814,12 +812,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition NotLikeStartWith(AbstractSqlCommand cmd, String columnName, DbType dbType, Object value)
+        public static SqlBasicParameterCondition NotLikeStartWith(AbstractSqlCommand cmd, String columnName, DataType dataType, Object value)
         {
-            return SqlCondition.NotLike(cmd, columnName, dbType, value + "%");
+            return SqlCondition.NotLike(cmd, columnName, dataType, value + "%");
         }
         #endregion
 
@@ -841,12 +839,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition LikeEndWith(AbstractSqlCommand cmd, String columnName, DbType dbType, Object value)
+        public static SqlBasicParameterCondition LikeEndWith(AbstractSqlCommand cmd, String columnName, DataType dataType, Object value)
         {
-            return SqlCondition.Like(cmd, columnName, dbType, "%" + value);
+            return SqlCondition.Like(cmd, columnName, dataType, "%" + value);
         }
 
         /// <summary>
@@ -866,12 +864,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="value">数据</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition NotLikeEndWith(AbstractSqlCommand cmd, String columnName, DbType dbType, Object value)
+        public static SqlBasicParameterCondition NotLikeEndWith(AbstractSqlCommand cmd, String columnName, DataType dataType, Object value)
         {
-            return SqlCondition.NotLike(cmd, columnName, dbType, "%" + value);
+            return SqlCondition.NotLike(cmd, columnName, dataType, "%" + value);
         }
         #endregion
         #endregion
@@ -897,13 +895,13 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="isNot">是否不在范围内</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="valueOne">开始值</param>
         /// <param name="valueTwo">结束值</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlBasicParameterCondition InternalBetween(AbstractSqlCommand cmd, String columnName, Boolean isNot, DbType dbType, Object valueOne, Object valueTwo)
+        internal static SqlBasicParameterCondition InternalBetween(AbstractSqlCommand cmd, String columnName, Boolean isNot, DataType dataType, Object valueOne, Object valueTwo)
         {
-            return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.NotBetween : SqlOperator.Between), dbType, valueOne, valueTwo);
+            return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.NotBetween : SqlOperator.Between), dataType, valueOne, valueTwo);
         }
 
         /// <summary>
@@ -924,13 +922,13 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="valueOne">开始值</param>
         /// <param name="valueTwo">结束值</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition Between(AbstractSqlCommand cmd, String columnName, DbType dbType, Object valueOne, Object valueTwo)
+        public static SqlBasicParameterCondition Between(AbstractSqlCommand cmd, String columnName, DataType dataType, Object valueOne, Object valueTwo)
         {
-            return SqlCondition.InternalBetween(cmd, columnName, false, dbType, valueOne, valueTwo);
+            return SqlCondition.InternalBetween(cmd, columnName, false, dataType, valueOne, valueTwo);
         }
 
         /// <summary>
@@ -951,13 +949,13 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="valueOne">开始值</param>
         /// <param name="valueTwo">结束值</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition NotBetween(AbstractSqlCommand cmd, String columnName, DbType dbType, Object valueOne, Object valueTwo)
+        public static SqlBasicParameterCondition NotBetween(AbstractSqlCommand cmd, String columnName, DataType dataType, Object valueOne, Object valueTwo)
         {
-            return SqlCondition.InternalBetween(cmd, columnName, true, dbType, valueOne, valueTwo);
+            return SqlCondition.InternalBetween(cmd, columnName, true, dataType, valueOne, valueTwo);
         }
         #endregion
 
@@ -998,23 +996,23 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="isNot">是否不在范围内</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="valueOne">开始值</param>
         /// <param name="valueTwo">结束值</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlBasicParameterCondition InternalBetweenNullable(AbstractSqlCommand cmd, String columnName, Boolean isNot, DbType dbType, Object valueOne, Object valueTwo)
+        internal static SqlBasicParameterCondition InternalBetweenNullable(AbstractSqlCommand cmd, String columnName, Boolean isNot, DataType dataType, Object valueOne, Object valueTwo)
         {
             if (valueOne != null && valueTwo != null)
             {
-                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.NotBetween : SqlOperator.Between), dbType, valueOne, valueTwo);
+                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.NotBetween : SqlOperator.Between), dataType, valueOne, valueTwo);
             }
             else if (valueOne != null && valueTwo == null)
             {
-                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.LessThan : SqlOperator.GreaterThanOrEqual), dbType, valueOne);
+                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.LessThan : SqlOperator.GreaterThanOrEqual), dataType, valueOne);
             }
             else if (valueOne == null && valueTwo != null)
             {
-                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.GreaterThan : SqlOperator.LessThanOrEqual), dbType, valueTwo);
+                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.GreaterThan : SqlOperator.LessThanOrEqual), dataType, valueTwo);
             }
             else
             {
@@ -1059,23 +1057,23 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="isNot">是否不在范围内</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="valueOne">开始值</param>
         /// <param name="valueTwo">结束值</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlBasicParameterCondition InternalBetweenNullable<T>(AbstractSqlCommand cmd, String columnName, Boolean isNot, DbType dbType, T? valueOne, T? valueTwo) where T : struct
+        internal static SqlBasicParameterCondition InternalBetweenNullable<T>(AbstractSqlCommand cmd, String columnName, Boolean isNot, DataType dataType, T? valueOne, T? valueTwo) where T : struct
         {
             if (valueOne.HasValue && valueTwo.HasValue)
             {
-                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.NotBetween : SqlOperator.Between), dbType, valueOne, valueTwo);
+                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.NotBetween : SqlOperator.Between), dataType, valueOne, valueTwo);
             }
             else if (valueOne.HasValue && !valueTwo.HasValue)
             {
-                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.LessThan : SqlOperator.GreaterThanOrEqual), dbType, valueOne);
+                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.LessThan : SqlOperator.GreaterThanOrEqual), dataType, valueOne);
             }
             else if (!valueOne.HasValue && valueTwo.HasValue)
             {
-                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.GreaterThan : SqlOperator.LessThanOrEqual), dbType, valueTwo);
+                return SqlCondition.InternalCreate(cmd, columnName, (isNot ? SqlOperator.GreaterThan : SqlOperator.LessThanOrEqual), dataType, valueTwo);
             }
             else
             {
@@ -1103,13 +1101,13 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="valueOne">可空开始值</param>
         /// <param name="valueTwo">可空结束值</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition BetweenNullable(AbstractSqlCommand cmd, String columnName, DbType dbType, Object valueOne, Object valueTwo)
+        public static SqlBasicParameterCondition BetweenNullable(AbstractSqlCommand cmd, String columnName, DataType dataType, Object valueOne, Object valueTwo)
         {
-            return SqlCondition.InternalBetweenNullable(cmd, columnName, false, dbType, valueOne, valueTwo);
+            return SqlCondition.InternalBetweenNullable(cmd, columnName, false, dataType, valueOne, valueTwo);
         }
 
         /// <summary>
@@ -1132,13 +1130,13 @@ namespace DotMaysWind.Data.Command.Condition
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="valueOne">开始值</param>
         /// <param name="valueTwo">结束值</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition BetweenNullable<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, T? valueOne, T? valueTwo) where T : struct
+        public static SqlBasicParameterCondition BetweenNullable<T>(AbstractSqlCommand cmd, String columnName, DataType dataType, T? valueOne, T? valueTwo) where T : struct
         {
-            return SqlCondition.InternalBetweenNullable<T>(cmd, columnName, false, dbType, valueOne, valueTwo);
+            return SqlCondition.InternalBetweenNullable<T>(cmd, columnName, false, dataType, valueOne, valueTwo);
         }
         #endregion
 
@@ -1161,13 +1159,13 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="valueOne">可空开始值</param>
         /// <param name="valueTwo">可空结束值</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition NotBetweenNullable(AbstractSqlCommand cmd, String columnName, DbType dbType, Object valueOne, Object valueTwo)
+        public static SqlBasicParameterCondition NotBetweenNullable(AbstractSqlCommand cmd, String columnName, DataType dataType, Object valueOne, Object valueTwo)
         {
-            return SqlCondition.InternalBetweenNullable(cmd, columnName, true, dbType, valueOne, valueTwo);
+            return SqlCondition.InternalBetweenNullable(cmd, columnName, true, dataType, valueOne, valueTwo);
         }
 
         /// <summary>
@@ -1190,13 +1188,13 @@ namespace DotMaysWind.Data.Command.Condition
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="valueOne">开始值</param>
         /// <param name="valueTwo">结束值</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlBasicParameterCondition NotBetweenNullable<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, T? valueOne, T? valueTwo) where T : struct
+        public static SqlBasicParameterCondition NotBetweenNullable<T>(AbstractSqlCommand cmd, String columnName, DataType dataType, T? valueOne, T? valueTwo) where T : struct
         {
-            return SqlCondition.InternalBetweenNullable<T>(cmd, columnName, true, dbType, valueOne, valueTwo);
+            return SqlCondition.InternalBetweenNullable<T>(cmd, columnName, true, dataType, valueOne, valueTwo);
         }
         #endregion
         #endregion
@@ -1355,10 +1353,10 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="isNotIn">是否不在范围内</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlInsideParametersCondition InternalIn(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DbType dbType, IEnumerable<Object> values)
+        internal static SqlInsideParametersCondition InternalIn(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DataType dataType, IEnumerable<Object> values)
         {
             List<DataParameter> parameters = new List<DataParameter>();
 
@@ -1366,7 +1364,7 @@ namespace DotMaysWind.Data.Command.Condition
             {
                 foreach (Object value in values)
                 {
-                    parameters.Add(cmd.CreateSqlParameter(columnName, dbType, value));
+                    parameters.Add(cmd.CreateDataParameter(columnName, dataType, value));
                 }
             }
 
@@ -1387,16 +1385,16 @@ namespace DotMaysWind.Data.Command.Condition
 
             if (values != null)
             {
-                DbType? dbType = null;
+                DataType? dataType = null;
 
                 foreach (Object value in values)
                 {
-                    if (!dbType.HasValue)
+                    if (!dataType.HasValue)
                     {
-                        dbType = DbTypeHelper.InternalGetDbType(value);
+                        dataType = DataTypeHelper.InternalGetDataType(value);
                     }
 
-                    parameters.Add(cmd.CreateSqlParameter(columnName, dbType.Value, value));
+                    parameters.Add(cmd.CreateDataParameter(columnName, dataType.Value, value));
                 }
             }
 
@@ -1409,10 +1407,10 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="isNotIn">是否不在范围内</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlInsideParametersCondition InternalIn(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DbType dbType, Array values)
+        internal static SqlInsideParametersCondition InternalIn(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DataType dataType, Array values)
         {
             List<DataParameter> parameters = new List<DataParameter>();
 
@@ -1420,7 +1418,7 @@ namespace DotMaysWind.Data.Command.Condition
             {
                 foreach (Object obj in values)
                 {
-                    parameters.Add(cmd.CreateSqlParameter(columnName, dbType, obj));
+                    parameters.Add(cmd.CreateDataParameter(columnName, dataType, obj));
                 }
             }
 
@@ -1441,16 +1439,16 @@ namespace DotMaysWind.Data.Command.Condition
 
             if (values != null)
             {
-                DbType? dbType = null;
+                DataType? dataType = null;
 
                 foreach (Object obj in values)
                 {
-                    if (!dbType.HasValue)
+                    if (!dataType.HasValue)
                     {
-                        dbType = DbTypeHelper.InternalGetDbType(obj);
+                        dataType = DataTypeHelper.InternalGetDataType(obj);
                     }
 
-                    parameters.Add(cmd.CreateSqlParameter(columnName, dbType.Value, obj));
+                    parameters.Add(cmd.CreateDataParameter(columnName, dataType.Value, obj));
                 }
             }
 
@@ -1463,11 +1461,11 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="isNotIn">是否不在范围内</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="values">分隔符号分隔的数据集合</param>
         /// <param name="separator">分隔符号</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlInsideParametersCondition InternalIn(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DbType dbType, String values, Char separator)
+        internal static SqlInsideParametersCondition InternalIn(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DataType dataType, String values, Char separator)
         {
             List<DataParameter> parameters = new List<DataParameter>();
 
@@ -1477,7 +1475,7 @@ namespace DotMaysWind.Data.Command.Condition
 
                 for (Int32 i = 0; i < valuesArray.Length; i++)
                 {
-                    parameters.Add(cmd.CreateSqlParameter(columnName, dbType, valuesArray[i].Trim()));
+                    parameters.Add(cmd.CreateDataParameter(columnName, dataType, valuesArray[i].Trim()));
                 }
             }
 
@@ -1491,10 +1489,10 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="isNotIn">是否不在范围内</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlInsideParametersCondition InternalIn<T>(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DbType dbType, IEnumerable<T> values)
+        internal static SqlInsideParametersCondition InternalIn<T>(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DataType dataType, IEnumerable<T> values)
         {
             List<DataParameter> parameters = new List<DataParameter>();
 
@@ -1502,7 +1500,7 @@ namespace DotMaysWind.Data.Command.Condition
             {
                 foreach (T value in values)
                 {
-                    parameters.Add(cmd.CreateSqlParameter(columnName, dbType, value));
+                    parameters.Add(cmd.CreateDataParameter(columnName, dataType, value));
                 }
             }
 
@@ -1524,16 +1522,16 @@ namespace DotMaysWind.Data.Command.Condition
 
             if (values != null)
             {
-                DbType? dbType = null;
+                DataType? dataType = null;
 
                 foreach (T value in values)
                 {
-                    if (!dbType.HasValue)
+                    if (!dataType.HasValue)
                     {
-                        dbType = DbTypeHelper.InternalGetDbType(value);
+                        dataType = DataTypeHelper.InternalGetDataType(value);
                     }
 
-                    parameters.Add(cmd.CreateSqlParameter(columnName, dbType.Value, value));
+                    parameters.Add(cmd.CreateDataParameter(columnName, dataType.Value, value));
                 }
             }
 
@@ -1547,11 +1545,11 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="isNotIn">是否不在范围内</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="values">分隔符号分隔的数据集合</param>
         /// <param name="separator">分隔符号</param>
         /// <returns>Sql条件语句</returns>
-        internal static SqlInsideParametersCondition InternalIn<T>(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DbType dbType, String values, Char separator) where T : IConvertible
+        internal static SqlInsideParametersCondition InternalIn<T>(AbstractSqlCommand cmd, String columnName, Boolean isNotIn, DataType dataType, String values, Char separator) where T : IConvertible
         {
             List<DataParameter> parameters = new List<DataParameter>();
 
@@ -1568,7 +1566,7 @@ namespace DotMaysWind.Data.Command.Condition
                     }
 
                     Object value = Convert.ChangeType(valuesArray[i].Trim(), t);
-                    parameters.Add(cmd.CreateSqlParameter(columnName, dbType, value));
+                    parameters.Add(cmd.CreateDataParameter(columnName, dataType, value));
                 }
             }
 
@@ -1600,7 +1598,7 @@ namespace DotMaysWind.Data.Command.Condition
                     }
 
                     Int32 value = Convert.ToInt32(valuesArray[i].Trim());
-                    parameters.Add(cmd.CreateSqlParameter(columnName, DbType.Int32, value));
+                    parameters.Add(cmd.CreateDataParameter(columnName, DataType.Int32, value));
                 }
             }
 
@@ -1626,12 +1624,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition In(AbstractSqlCommand cmd, String columnName, DbType dbType, IEnumerable<Object> values)
+        public static SqlInsideParametersCondition In(AbstractSqlCommand cmd, String columnName, DataType dataType, IEnumerable<Object> values)
         {
-            return SqlCondition.InternalIn(cmd, columnName, false, dbType, values);
+            return SqlCondition.InternalIn(cmd, columnName, false, dataType, values);
         }
 
         /// <summary>
@@ -1651,12 +1649,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition In(AbstractSqlCommand cmd, String columnName, DbType dbType, Array values)
+        public static SqlInsideParametersCondition In(AbstractSqlCommand cmd, String columnName, DataType dataType, Array values)
         {
-            return SqlCondition.InternalIn(cmd, columnName, false, dbType, values);
+            return SqlCondition.InternalIn(cmd, columnName, false, dataType, values);
         }
 
         /// <summary>
@@ -1676,13 +1674,13 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="values">分隔符号分隔的数据集合</param>
         /// <param name="separator">分隔符号</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition In(AbstractSqlCommand cmd, String columnName, DbType dbType, String values, Char separator)
+        public static SqlInsideParametersCondition In(AbstractSqlCommand cmd, String columnName, DataType dataType, String values, Char separator)
         {
-            return SqlCondition.InternalIn(cmd, columnName, false, dbType, values, separator);
+            return SqlCondition.InternalIn(cmd, columnName, false, dataType, values, separator);
         }
 
         /// <summary>
@@ -1691,12 +1689,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition InThese<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, params T[] values)
+        public static SqlInsideParametersCondition InThese<T>(AbstractSqlCommand cmd, String columnName, DataType dataType, params T[] values)
         {
-            return SqlCondition.InternalIn<T>(cmd, columnName, false, dbType, values);
+            return SqlCondition.InternalIn<T>(cmd, columnName, false, dataType, values);
         }
 
         /// <summary>
@@ -1718,12 +1716,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition In<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, IEnumerable<T> values)
+        public static SqlInsideParametersCondition In<T>(AbstractSqlCommand cmd, String columnName, DataType dataType, IEnumerable<T> values)
         {
-            return SqlCondition.InternalIn<T>(cmd, columnName, false, dbType, values);
+            return SqlCondition.InternalIn<T>(cmd, columnName, false, dataType, values);
         }
 
         /// <summary>
@@ -1745,12 +1743,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="func">操作方法</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition In<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, Func<IEnumerable<T>> func)
+        public static SqlInsideParametersCondition In<T>(AbstractSqlCommand cmd, String columnName, DataType dataType, Func<IEnumerable<T>> func)
         {
-            return SqlCondition.InternalIn<T>(cmd, columnName, false, dbType, func());
+            return SqlCondition.InternalIn<T>(cmd, columnName, false, dataType, func());
         }
 
         /// <summary>
@@ -1772,13 +1770,13 @@ namespace DotMaysWind.Data.Command.Condition
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="values">分隔符号分隔的数据集合</param>
         /// <param name="separator">分隔符号</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition In<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, String values, Char separator) where T : IConvertible
+        public static SqlInsideParametersCondition In<T>(AbstractSqlCommand cmd, String columnName, DataType dataType, String values, Char separator) where T : IConvertible
         {
-            return SqlCondition.InternalIn<T>(cmd, columnName, false, dbType, values, separator);
+            return SqlCondition.InternalIn<T>(cmd, columnName, false, dataType, values, separator);
         }
 
         /// <summary>
@@ -1813,12 +1811,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition NotIn(AbstractSqlCommand cmd, String columnName, DbType dbType, IEnumerable<Object> values)
+        public static SqlInsideParametersCondition NotIn(AbstractSqlCommand cmd, String columnName, DataType dataType, IEnumerable<Object> values)
         {
-            return SqlCondition.InternalIn(cmd, columnName, true, dbType, values);
+            return SqlCondition.InternalIn(cmd, columnName, true, dataType, values);
         }
 
         /// <summary>
@@ -1838,12 +1836,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition NotIn(AbstractSqlCommand cmd, String columnName, DbType dbType, Array values)
+        public static SqlInsideParametersCondition NotIn(AbstractSqlCommand cmd, String columnName, DataType dataType, Array values)
         {
-            return SqlCondition.InternalIn(cmd, columnName, true, dbType, values);
+            return SqlCondition.InternalIn(cmd, columnName, true, dataType, values);
         }
 
         /// <summary>
@@ -1863,13 +1861,13 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="values">分隔符号分隔的数据集合</param>
         /// <param name="separator">分隔符号</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition NotIn(AbstractSqlCommand cmd, String columnName, DbType dbType, String values, Char separator)
+        public static SqlInsideParametersCondition NotIn(AbstractSqlCommand cmd, String columnName, DataType dataType, String values, Char separator)
         {
-            return SqlCondition.InternalIn(cmd, columnName, true, dbType, values, separator);
+            return SqlCondition.InternalIn(cmd, columnName, true, dataType, values, separator);
         }
 
         /// <summary>
@@ -1878,12 +1876,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition NotInThese<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, params T[] values)
+        public static SqlInsideParametersCondition NotInThese<T>(AbstractSqlCommand cmd, String columnName, DataType dataType, params T[] values)
         {
-            return SqlCondition.InternalIn<T>(cmd, columnName, true, dbType, values);
+            return SqlCondition.InternalIn<T>(cmd, columnName, true, dataType, values);
         }
 
         /// <summary>
@@ -1905,12 +1903,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="values">数据集合</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, IEnumerable<T> values)
+        public static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, DataType dataType, IEnumerable<T> values)
         {
-            return SqlCondition.InternalIn<T>(cmd, columnName, true, dbType, values);
+            return SqlCondition.InternalIn<T>(cmd, columnName, true, dataType, values);
         }
 
         /// <summary>
@@ -1932,12 +1930,12 @@ namespace DotMaysWind.Data.Command.Condition
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="func">操作方法</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, Func<IEnumerable<T>> func)
+        public static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, DataType dataType, Func<IEnumerable<T>> func)
         {
-            return SqlCondition.InternalIn<T>(cmd, columnName, true, dbType, func());
+            return SqlCondition.InternalIn<T>(cmd, columnName, true, dataType, func());
         }
 
         /// <summary>
@@ -1959,13 +1957,13 @@ namespace DotMaysWind.Data.Command.Condition
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="cmd">Sql语句</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="values">分隔符号分隔的数据集合</param>
         /// <param name="separator">分隔符号</param>
         /// <returns>Sql条件语句</returns>
-        public static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, DbType dbType, String values, Char separator) where T : IConvertible
+        public static SqlInsideParametersCondition NotIn<T>(AbstractSqlCommand cmd, String columnName, DataType dataType, String values, Char separator) where T : IConvertible
         {
-            return SqlCondition.InternalIn<T>(cmd, columnName, true, dbType, values, separator);
+            return SqlCondition.InternalIn<T>(cmd, columnName, true, dataType, values, separator);
         }
 
         /// <summary>

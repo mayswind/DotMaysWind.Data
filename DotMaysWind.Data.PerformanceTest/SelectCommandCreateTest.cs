@@ -3,7 +3,6 @@ using System.Data;
 using System.Data.Common;
 
 using DotMaysWind.Data.Command;
-using DotMaysWind.Data.Command.Condition;
 using DotMaysWind.Data.Linq;
 
 namespace DotMaysWind.Data.PerformanceTest

@@ -631,17 +631,17 @@ namespace DotMaysWind.Data.Orm
         /// </summary>
         /// <param name="args">对象创建参数</param>
         /// <param name="columnName">列名称</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <returns>指定类型数据</returns>
-        protected Object LoadValue(EntityCreatingArgs args, String columnName, DbType dbType)
+        protected Object LoadValue(EntityCreatingArgs args, String columnName, DataType dataType)
         {
             if (args.Columns.Contains(columnName) && !Convert.IsDBNull(args.Row[columnName]))
             {
-                return DbConvert.ToValue(args.Row[columnName], dbType);
+                return DbConvert.ToValue(args.Row[columnName], dataType);
             }
             else
             {
-                return DbConvert.GetDefaultValue(dbType);
+                return DbConvert.GetDefaultValue(dataType);
             }
         }
 
@@ -650,14 +650,14 @@ namespace DotMaysWind.Data.Orm
         /// </summary>
         /// <param name="args">对象创建参数</param>
         /// <param name="columnName">列名称</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <typeparam name="TValue">指定类型</typeparam>
         /// <returns>指定类型数据</returns>
-        protected TValue LoadValue<TValue>(EntityCreatingArgs args, String columnName, DbType dbType)
+        protected TValue LoadValue<TValue>(EntityCreatingArgs args, String columnName, DataType dataType)
         {
             if (args.Columns.Contains(columnName) && !Convert.IsDBNull(args.Row[columnName]))
             {
-                return (TValue)DbConvert.ToValue(args.Row[columnName], dbType);
+                return (TValue)DbConvert.ToValue(args.Row[columnName], dataType);
             }
             else
             {
@@ -677,9 +677,9 @@ namespace DotMaysWind.Data.Orm
             if (args.Columns.Contains(columnName) && !Convert.IsDBNull(args.Row[columnName]))
             {
                 Object value = args.Row[columnName];
-                DbType dbType = DbTypeHelper.InternalGetDbType(value);
+                DataType dataType = DataTypeHelper.InternalGetDataType(value);
 
-                return (TValue)DbConvert.ToValue(value, dbType);
+                return (TValue)DbConvert.ToValue(value, dataType);
             }
             else
             {
@@ -1000,13 +1000,13 @@ namespace DotMaysWind.Data.Orm
         /// </summary>
         /// <param name="args">对象创建参数</param>
         /// <param name="columnName">列名称</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <returns>指定类型数据</returns>
-        protected Object LoadNullableValue(EntityCreatingArgs args, String columnName, DbType dbType)
+        protected Object LoadNullableValue(EntityCreatingArgs args, String columnName, DataType dataType)
         {
             if (args.Columns.Contains(columnName) && !Convert.IsDBNull(args.Row[columnName]))
             {
-                return DbConvert.ToValue(args.Row[columnName], dbType);
+                return DbConvert.ToValue(args.Row[columnName], dataType);
             }
             else
             {
@@ -1019,14 +1019,14 @@ namespace DotMaysWind.Data.Orm
         /// </summary>
         /// <param name="args">对象创建参数</param>
         /// <param name="columnName">列名称</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <typeparam name="TValue">指定类型</typeparam>
         /// <returns>指定类型数据</returns>
-        protected Nullable<TValue> LoadNullableValue<TValue>(EntityCreatingArgs args, String columnName, DbType dbType) where TValue : struct
+        protected Nullable<TValue> LoadNullableValue<TValue>(EntityCreatingArgs args, String columnName, DataType dataType) where TValue : struct
         {
             if (args.Columns.Contains(columnName) && !Convert.IsDBNull(args.Row[columnName]))
             {
-                return (TValue)DbConvert.ToValue(args.Row[columnName], dbType);
+                return (TValue)DbConvert.ToValue(args.Row[columnName], dataType);
             }
             else
             {
@@ -1044,11 +1044,11 @@ namespace DotMaysWind.Data.Orm
         /// <param name="table">数据表</param>
         /// <param name="extraArg">创建实体时的额外参数</param>
         /// <returns>数据表实体</returns>
-        internal T GetEntityInternal(Object sender, DataTable table, Object extraArg)
+        internal T InternalGetEntity(Object sender, DataTable table, Object extraArg)
         {
             if (!DbConvert.IsDataTableNullOrEmpty(table))
             {
-                return this.GetEntityInternal(sender, table.Rows[0], extraArg);
+                return this.InternalGetEntity(sender, table.Rows[0], extraArg);
             }
             else
             {
@@ -1063,7 +1063,7 @@ namespace DotMaysWind.Data.Orm
         /// <param name="row">数据行</param>
         /// <param name="extraArg">创建实体时的额外参数</param>
         /// <returns>数据表实体</returns>
-        internal T GetEntityInternal(Object sender, DataRow row, Object extraArg)
+        internal T InternalGetEntity(Object sender, DataRow row, Object extraArg)
         {
             if (row != null)
             {
@@ -1084,7 +1084,7 @@ namespace DotMaysWind.Data.Orm
         /// <param name="table">数据表</param>
         /// <param name="extraArg">创建实体时的额外参数</param>
         /// <returns>实体列表</returns>
-        internal List<T> GetEntityListInternal(Object sender, DataTable table, Object extraArg)
+        internal List<T> InternalGetEntityList(Object sender, DataTable table, Object extraArg)
         {
             List<T> list = null;
 
@@ -1094,7 +1094,7 @@ namespace DotMaysWind.Data.Orm
 
                 for (Int32 i = 0; i < table.Rows.Count; i++)
                 {
-                    T entity = this.GetEntityInternal(sender, table.Rows[i], extraArg);
+                    T entity = this.InternalGetEntity(sender, table.Rows[i], extraArg);
 
                     list.Add(entity);
                 }
@@ -1111,7 +1111,7 @@ namespace DotMaysWind.Data.Orm
         /// <param name="keyColumnName">键列名称</param>
         /// <param name="extraArg">创建实体时的额外参数</param>
         /// <returns>实体列表</returns>
-        internal Dictionary<TKey, T> GetEntityDictionaryInternal<TKey>(Object sender, DataTable table, String keyColumnName, Object extraArg)
+        internal Dictionary<TKey, T> InternalGetEntityDictionary<TKey>(Object sender, DataTable table, String keyColumnName, Object extraArg)
         {
             Dictionary<TKey, T> dict = null;
 
@@ -1123,7 +1123,7 @@ namespace DotMaysWind.Data.Orm
                 {
                     EntityCreatingArgs args = new EntityCreatingArgs(table.Rows[i], table.Columns, extraArg);
                     TKey key = this.LoadValue<TKey>(args, keyColumnName);
-                    T entity = this.GetEntityInternal(sender, table.Rows[i], args);
+                    T entity = this.InternalGetEntity(sender, table.Rows[i], args);
 
                     dict[key] = entity;
                 }

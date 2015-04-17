@@ -325,56 +325,56 @@ namespace DotMaysWind.Data
         /// 将数据库字段按数据类型转换
         /// </summary>
         /// <param name="obj">原始数据库字段</param>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <returns>转换后的内容</returns>
-        public static Object ToValue(Object obj, DbType dbType)
+        public static Object ToValue(Object obj, DataType dataType)
         {
-            switch (dbType)
+            switch (dataType)
             {
-                case DbType.Binary:
+                case DataType.Binary:
                     return (Byte[])obj;
-                case DbType.Boolean:
+                case DataType.Boolean:
                     return DbConvert.ToBoolean(obj);
-                case DbType.Byte:
+                case DataType.Byte:
                     return DbConvert.ToByte(obj);
-                case DbType.SByte:
+                case DataType.SByte:
                     return DbConvert.ToSByte(obj);
-                case DbType.Int16:
+                case DataType.Int16:
                     return DbConvert.ToInt16(obj);
-                case DbType.Int32:
+                case DataType.Int32:
                     return DbConvert.ToInt32(obj);
-                case DbType.Int64:
+                case DataType.Int64:
                     return DbConvert.ToInt64(obj);
-                case DbType.UInt16:
+                case DataType.UInt16:
                     return DbConvert.ToUInt16(obj);
-                case DbType.UInt32:
+                case DataType.UInt32:
                     return DbConvert.ToUInt32(obj);
-                case DbType.UInt64:
+                case DataType.UInt64:
                     return DbConvert.ToUInt64(obj);
-                case DbType.Single:
+                case DataType.Single:
                     return DbConvert.ToSingle(obj);
-                case DbType.Double:
+                case DataType.Double:
                     return DbConvert.ToDouble(obj);
-                case DbType.Currency:
-                case DbType.Decimal:
-                case DbType.VarNumeric:
+                case DataType.Currency:
+                case DataType.Decimal:
+                case DataType.VarNumeric:
                     return DbConvert.ToDecimal(obj);
-                case DbType.Object:
+                case DataType.Object:
                     return obj;
-                case DbType.Date:
-                case DbType.DateTime:
-                case DbType.DateTime2:
-                case DbType.Time:
+                case DataType.Date:
+                case DataType.DateTime:
+                case DataType.DateTime2:
+                case DataType.Time:
                     return DbConvert.ToDateTime(obj);
-                case DbType.DateTimeOffset:
+                case DataType.DateTimeOffset:
                     return DbConvert.ToDateTimeOffset(obj);
-                case DbType.Guid:
+                case DataType.Guid:
                     return DbConvert.ToGuid(obj);
-                case DbType.AnsiString:
-                case DbType.AnsiStringFixedLength:
-                case DbType.String:
-                case DbType.StringFixedLength:
-                case DbType.Xml:
+                case DataType.AnsiString:
+                case DataType.AnsiStringFixedLength:
+                case DataType.String:
+                case DataType.StringFixedLength:
+                case DataType.Xml:
                     return DbConvert.ToString(obj);
                 default:
                     return obj;
@@ -384,56 +384,56 @@ namespace DotMaysWind.Data
         /// <summary>
         /// 获取指定数据类型的默认值
         /// </summary>
-        /// <param name="dbType">数据类型</param>
+        /// <param name="dataType">数据类型</param>
         /// <returns>指定数据类型的默认值</returns>
-        public static Object GetDefaultValue(DbType dbType)
+        public static Object GetDefaultValue(DataType dataType)
         {
-            switch (dbType)
+            switch (dataType)
             {
-                case DbType.Binary:
+                case DataType.Binary:
                     return default(Byte[]);
-                case DbType.Boolean:
+                case DataType.Boolean:
                     return default(Boolean);
-                case DbType.Byte:
+                case DataType.Byte:
                     return default(Byte);
-                case DbType.SByte:
+                case DataType.SByte:
                     return default(SByte);
-                case DbType.Int16:
+                case DataType.Int16:
                     return default(Int16);
-                case DbType.Int32:
+                case DataType.Int32:
                     return default(Int32);
-                case DbType.Int64:
+                case DataType.Int64:
                     return default(Int64);
-                case DbType.UInt16:
+                case DataType.UInt16:
                     return default(UInt16);
-                case DbType.UInt32:
+                case DataType.UInt32:
                     return default(UInt32);
-                case DbType.UInt64:
+                case DataType.UInt64:
                     return default(UInt64);
-                case DbType.Single:
+                case DataType.Single:
                     return default(Single);
-                case DbType.Double:
+                case DataType.Double:
                     return default(Double);
-                case DbType.Currency:
-                case DbType.Decimal:
-                case DbType.VarNumeric:
+                case DataType.Currency:
+                case DataType.Decimal:
+                case DataType.VarNumeric:
                     return default(Decimal);
-                case DbType.Object:
+                case DataType.Object:
                     return default(Object);
-                case DbType.Date:
-                case DbType.DateTime:
-                case DbType.DateTime2:
-                case DbType.Time:
+                case DataType.Date:
+                case DataType.DateTime:
+                case DataType.DateTime2:
+                case DataType.Time:
                     return default(DateTime);
-                case DbType.DateTimeOffset:
+                case DataType.DateTimeOffset:
                     return default(DateTimeOffset);
-                case DbType.Guid:
+                case DataType.Guid:
                     return default(Guid);
-                case DbType.AnsiString:
-                case DbType.AnsiStringFixedLength:
-                case DbType.String:
-                case DbType.StringFixedLength:
-                case DbType.Xml:
+                case DataType.AnsiString:
+                case DataType.AnsiStringFixedLength:
+                case DataType.String:
+                case DataType.StringFixedLength:
+                case DataType.Xml:
                     return default(String);
                 default:
                     return default(Object);

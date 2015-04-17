@@ -99,11 +99,12 @@
     <Compile Include="DatabaseFactory.cs" />
     <Compile Include="DatabaseNotSupportedException.cs" />
     <Compile Include="DatabaseType.cs" />
+    <Compile Include="DataType.cs" />
     <Compile Include="DbConvert.cs" />
     <Compile Include="DbProviderFactoryType.cs" />
     <Compile Include="Helper\DatabaseTypeHelper.cs" />
     <Compile Include="Helper\DataSetHelper.cs" />
-    <Compile Include="Helper\DbTypeHelper.cs" />
+    <Compile Include="Helper\DataTypeHelper.cs" />
     <Compile Include="IDatabase.cs" />
     <Compile Include="Linq\DeleteCommandExtension.cs" />
     <Compile Include="Linq\EntityPropertyExtension.cs" />

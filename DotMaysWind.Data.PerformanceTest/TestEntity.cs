@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 
 using DotMaysWind.Data.Orm;
 
@@ -29,7 +28,7 @@ namespace DotMaysWind.Data.PerformanceTest
         [DatabaseColumnAttribute("TestColumn7")]
         public DateTime? Test7 { get; set; }
 
-        [DatabaseColumnAttribute("TestColumn8", DbType.Int16)]
+        [DatabaseColumnAttribute("TestColumn8", DataType.Int16)]
         public Int32 Test8 { get; set; }
     }
 }
