@@ -173,11 +173,11 @@ namespace DotMaysWind.Data.Command
         ///     
         ///     public Boolean AddEntities(Int32 itemType, List<Int32> productIds)
         ///     {
-        ///         return this.CreateCollection()
-        ///             .AddSome<Int32>(productIds, (me, item) =>
+        ///         return this.Sequence()
+        ///             .AddSome<Int32>(productIds, (it, item) =>
         ///             {
-        ///                 me.Insert()
-        ///                     .Set(PRODUCTID, item.Object)
+        ///                 it.Insert()
+        ///                     .Set(PRODUCTID, item.Value)
         ///                     .Set(PRODUCTTYPE, itemType);
         ///             })
         ///             .Result();
@@ -208,7 +208,7 @@ namespace DotMaysWind.Data.Command
         ///     
         ///     public Boolean AddEntity(Product product)
         ///     {
-        ///         return this.CreateCollection()
+        ///         return this.Sequence()
         ///             .Delete(d => d.Where(c => c.Equal(PRODUCTID, product.ID)))
         ///             .Insert(i => i.Set(PRODUCTID, product.ID).Set(PRODUCTNAME, product.Name))
         ///             .Result();
@@ -249,6 +249,28 @@ namespace DotMaysWind.Data.Command
         /// 添加新的Sql更新语句类
         /// </summary>
         /// <returns>Sql更新语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class ProductItemDataProvider : AbstractDatabaseTable<ProductItem>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public Boolean DeleteEntities(Int32 oldType, Int32 newType, List<Int32> productIds)
+        ///     {
+        ///         return this.Sequence()
+        ///             .AddSome<Int32>(productIds, (it, item) =>
+        ///             {
+        ///                 it.Update()
+        ///                     .Set(PRODUCTTYPE, newType)
+        ///                     .Where(c => c.Equal(PRODUCTID, item.Value) & c.Equal(PRODUCTTYPE, oldType));
+        ///             })
+        ///             .Result();
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public UpdateCommand Update()
         {
             UpdateCommand command = this._database.CreateUpdateCommand(this.TableName);
@@ -303,11 +325,11 @@ namespace DotMaysWind.Data.Command
         ///     
         ///     public Boolean DeleteEntities(List<Int32> productIds)
         ///     {
-        ///         return this.CreateCollection()
-        ///             .AddSome<Int32>(productIds, (me, item) =>
+        ///         return this.Sequence()
+        ///             .AddSome<Int32>(productIds, (it, item) =>
         ///             {
-        ///                 me.Delete()
-        ///                     .Where(c => c.Equal(PRODUCTID, item.Object));
+        ///                 it.Delete()
+        ///                     .Where(c => c.Equal(PRODUCTID, item.Value));
         ///             })
         ///             .Result();
         ///     }
@@ -337,7 +359,7 @@ namespace DotMaysWind.Data.Command
         ///     
         ///     public Boolean AddEntity(Product product)
         ///     {
-        ///         return this.CreateCollection()
+        ///         return this.Sequence()
         ///             .Delete(d => d.Where(c => c.Equal(PRODUCTID, product.ID)))
         ///             .Insert(i => i.Set(PRODUCTID, product.ID).Set(PRODUCTNAME, product.Name))
         ///             .Result();
