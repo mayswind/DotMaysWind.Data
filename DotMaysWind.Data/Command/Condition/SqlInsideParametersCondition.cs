@@ -7,7 +7,7 @@ namespace DotMaysWind.Data.Command.Condition
     /// <summary>
     /// Sql IN参数条件语句类
     /// </summary>
-    public class SqlInsideParametersCondition : AbstractSqlCondition
+    public sealed class SqlInsideParametersCondition : AbstractSqlCondition
     {
         #region 字段
         private Boolean _isNotIn;

@@ -6,7 +6,7 @@ namespace DotMaysWind.Data.Command.Condition
     /// <summary>
     /// Sql简单条件语句类
     /// </summary>
-    public class SqlBasicCommandCondition : AbstractSqlCondition
+    public sealed class SqlBasicCommandCondition : AbstractSqlCondition
     {
         #region 字段
         private String _columnName;

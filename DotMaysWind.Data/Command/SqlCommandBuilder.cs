@@ -10,7 +10,7 @@ namespace DotMaysWind.Data.Command
     /// <summary>
     /// SQL语句创建类
     /// </summary>
-    internal class SqlCommandBuilder
+    internal sealed class SqlCommandBuilder
     {
         #region 字段
         private StringBuilder _stringBuilder;

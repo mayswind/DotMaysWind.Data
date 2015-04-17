@@ -8,7 +8,7 @@ namespace DotMaysWind.Data.Command
     /// <summary>
     /// Sql删除语句类
     /// </summary>
-    public class DeleteCommand : AbstractSqlCommandWithWhere
+    public sealed class DeleteCommand : AbstractSqlCommandWithWhere
     {
         #region 属性
         /// <summary>

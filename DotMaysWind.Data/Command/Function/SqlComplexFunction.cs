@@ -7,7 +7,7 @@ namespace DotMaysWind.Data.Command.Function
     /// <summary>
     /// Sql复杂函数类
     /// </summary>
-    public class SqlComplexFunction : ISqlFunction
+    public sealed class SqlComplexFunction : ISqlFunction
     {
         #region 字段
         private AbstractSqlBasicFunction _basicFunc;

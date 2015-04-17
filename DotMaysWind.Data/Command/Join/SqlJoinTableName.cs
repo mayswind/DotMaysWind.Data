@@ -6,7 +6,7 @@ namespace DotMaysWind.Data.Command.Join
     /// <summary>
     /// Sql连接表名语句类
     /// </summary>
-    public class SqlJoinTableName : AbstractSqlJoin
+    public sealed class SqlJoinTableName : AbstractSqlJoin
     {
         #region 字段
         private String _anotherTableName;

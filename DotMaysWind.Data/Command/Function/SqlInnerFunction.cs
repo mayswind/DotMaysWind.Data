@@ -6,7 +6,7 @@ namespace DotMaysWind.Data.Command.Function
     /// <summary>
     /// Sql内置函数类
     /// </summary>
-    public class SqlInnerFunction : AbstractSqlBasicFunction
+    public sealed class SqlInnerFunction : AbstractSqlBasicFunction
     {
         #region 字段
         private SqlInnerFunctionType _functionType;

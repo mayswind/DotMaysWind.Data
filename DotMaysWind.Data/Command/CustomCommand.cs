@@ -5,7 +5,7 @@ namespace DotMaysWind.Data.Command
     /// <summary>
     /// Sql自定义语句类
     /// </summary>
-    public class CustomCommand : AbstractSqlCommand
+    public sealed class CustomCommand : AbstractSqlCommand
     {
         #region 字段
         private SqlCommandType _commandType;

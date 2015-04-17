@@ -5,7 +5,7 @@ namespace DotMaysWind.Data.Command.Condition
     /// <summary>
     /// Sql简单条件语句类
     /// </summary>
-    public class SqlBasicParameterCondition : AbstractSqlCondition
+    public sealed class SqlBasicParameterCondition : AbstractSqlCondition
     {
         #region 字段
         private SqlParameter _parameterOne;

@@ -9,7 +9,7 @@ namespace DotMaysWind.Data.Command
     /// <summary>
     /// Sql更新语句类
     /// </summary>
-    public class UpdateCommand : AbstractSqlCommandWithWhere
+    public sealed class UpdateCommand : AbstractSqlCommandWithWhere
     {
         #region 属性
         /// <summary>

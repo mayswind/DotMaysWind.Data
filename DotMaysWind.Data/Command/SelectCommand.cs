@@ -11,7 +11,7 @@ namespace DotMaysWind.Data.Command
     /// <summary>
     /// Sql选择语句类
     /// </summary>
-    public class SelectCommand : AbstractSqlCommandWithWhere
+    public sealed class SelectCommand : AbstractSqlCommandWithWhere
     {
         #region 常量
         private const Int32 RecordCountEmpty = -1;

@@ -7,7 +7,7 @@ namespace DotMaysWind.Data.Command.Condition
     /// <summary>
     /// Sql条件语句生成类
     /// </summary>
-    public class SqlConditionBuilder
+    public sealed class SqlConditionBuilder
     {
         #region 字段
         private AbstractSqlCommand _baseCommand;

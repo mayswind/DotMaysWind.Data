@@ -7,7 +7,7 @@ namespace DotMaysWind.Data.Command
     /// <summary>
     /// Sql插入语句类
     /// </summary>
-    public class InsertCommand : AbstractSqlCommand
+    public sealed class InsertCommand : AbstractSqlCommand
     {
         #region 属性
         /// <summary>
