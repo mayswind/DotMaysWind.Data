@@ -105,6 +105,40 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 创建新的Sql插入语句类
         /// </summary>
+        /// <returns>Sql插入语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class ProductItemDataProvider : AbstractDatabaseTable<ProductItem>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public Boolean AddEntities(Int32 itemType, List<Int32> productIds)
+        ///     {
+        ///         return this.CreateCollection()
+        ///             .AddSome<Int32>(productIds, (me, item) =>
+        ///             {
+        ///                 me.Insert()
+        ///                     .Set(PRODUCTID, item.Object)
+        ///                     .Set(PRODUCTTYPE, itemType);
+        ///             })
+        ///             .Result();
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
+        public InsertCommand Insert()
+        {
+            InsertCommand command = this._database.CreateInsertCommand(this.TableName);
+            this._list.Add(command);
+
+            return command;
+        }
+
+        /// <summary>
+        /// 创建新的Sql插入语句类
+        /// </summary>
         /// <param name="action">待执行的语句</param>
         /// <returns>当前集合</returns>
         /// <example>
@@ -137,6 +171,18 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 创建新的Sql更新语句类
         /// </summary>
+        /// <returns>Sql更新语句</returns>
+        public UpdateCommand Update()
+        {
+            UpdateCommand command = this._database.CreateUpdateCommand(this.TableName);
+            this._list.Add(command);
+
+            return command;
+        }
+
+        /// <summary>
+        /// 创建新的Sql更新语句类
+        /// </summary>
         /// <param name="action">待执行的语句</param>
         /// <returns>当前集合</returns>
         public CommandCollection Update(Action<UpdateCommand> action)
@@ -146,6 +192,39 @@ namespace DotMaysWind.Data.Command
             action(command);
 
             return this;
+        }
+
+        /// <summary>
+        /// 创建新的Sql删除语句类
+        /// </summary>
+        /// <returns>Sql删除语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class ProductItemDataProvider : AbstractDatabaseTable<ProductItem>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public Boolean DeleteEntities(List<Int32> productIds)
+        ///     {
+        ///         return this.CreateCollection()
+        ///             .AddSome<Int32>(productIds, (me, item) =>
+        ///             {
+        ///                 me.Delete()
+        ///                     .Where(c => c.Equal(PRODUCTID, item.Object));
+        ///             })
+        ///             .Result();
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
+        public DeleteCommand Delete()
+        {
+            DeleteCommand command = this._database.CreateDeleteCommand(this.TableName);
+            this._list.Add(command);
+
+            return command;
         }
 
         /// <summary>
@@ -183,6 +262,18 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 创建新的Sql选择语句类
         /// </summary>
+        /// <returns>Sql选择语句</returns>
+        public SelectCommand Select()
+        {
+            SelectCommand command = this._database.CreateSelectCommand(this.TableName);
+            this._list.Add(command);
+
+            return command;
+        }
+
+        /// <summary>
+        /// 创建新的Sql选择语句类
+        /// </summary>
         /// <param name="action">待执行的语句</param>
         /// <returns>当前集合</returns>
         public CommandCollection Select(Action<SelectCommand> action)
@@ -192,6 +283,19 @@ namespace DotMaysWind.Data.Command
             action(command);
 
             return this;
+        }
+
+        /// <summary>
+        /// 创建新的Sql选择语句类
+        /// </summary>
+        /// <param name="tableAliasesName">数据表别名</param>
+        /// <returns>Sql选择语句</returns>
+        public SelectCommand Select(String tableAliasesName)
+        {
+            SelectCommand command = this._database.CreateSelectCommand(this.TableName, tableAliasesName);
+            this._list.Add(command);
+
+            return command;
         }
 
         /// <summary>
@@ -207,112 +311,6 @@ namespace DotMaysWind.Data.Command
             action(command);
 
             return this;
-        }
-        #endregion
-
-        #region AddSqlCommand
-        /// <summary>
-        /// 创建新的Sql插入语句类
-        /// </summary>
-        /// <returns>Sql插入语句</returns>
-        /// <example>
-        /// <code lang="C#">
-        /// <![CDATA[
-        /// public class ProductItemDataProvider : AbstractDatabaseTable<ProductItem>
-        /// {
-        ///     //other necessary code
-        ///     
-        ///     public Boolean AddEntities(Int32 itemType, List<Int32> productIds)
-        ///     {
-        ///         return this.CreateCollection()
-        ///             .AddSome<Int32>(productIds, (me, item) =>
-        ///             {
-        ///                 me.AddInsert()
-        ///                     .Set(PRODUCTID, item.Object)
-        ///                     .Set(PRODUCTTYPE, itemType);
-        ///             })
-        ///             .Result();
-        ///     }
-        /// }
-        /// ]]>
-        /// </code>
-        /// </example>
-        public InsertCommand AddInsert()
-        {
-            InsertCommand command = this._database.CreateInsertCommand(this.TableName);
-            this._list.Add(command);
-
-            return command;
-        }
-
-        /// <summary>
-        /// 创建新的Sql更新语句类
-        /// </summary>
-        /// <returns>Sql更新语句</returns>
-        public UpdateCommand AddUpdate()
-        {
-            UpdateCommand command = this._database.CreateUpdateCommand(this.TableName);
-            this._list.Add(command);
-
-            return command;
-        }
-
-        /// <summary>
-        /// 创建新的Sql删除语句类
-        /// </summary>
-        /// <returns>Sql删除语句</returns>
-        /// <example>
-        /// <code lang="C#">
-        /// <![CDATA[
-        /// public class ProductItemDataProvider : AbstractDatabaseTable<ProductItem>
-        /// {
-        ///     //other necessary code
-        ///     
-        ///     public Boolean DeleteEntities(List<Int32> productIds)
-        ///     {
-        ///         return this.CreateCollection()
-        ///             .AddSome<Int32>(productIds, (me, item) =>
-        ///             {
-        ///                 me.AddDelete()
-        ///                     .Where(c => c.Equal(PRODUCTID, item.Object));
-        ///             })
-        ///             .Result();
-        ///     }
-        /// }
-        /// ]]>
-        /// </code>
-        /// </example>
-        public DeleteCommand AddDelete()
-        {
-            DeleteCommand command = this._database.CreateDeleteCommand(this.TableName);
-            this._list.Add(command);
-
-            return command;
-        }
-
-        /// <summary>
-        /// 创建新的Sql选择语句类
-        /// </summary>
-        /// <returns>Sql选择语句</returns>
-        public SelectCommand AddSelect()
-        {
-            SelectCommand command = this._database.CreateSelectCommand(this.TableName);
-            this._list.Add(command);
-
-            return command;
-        }
-
-        /// <summary>
-        /// 创建新的Sql选择语句类
-        /// </summary>
-        /// <param name="tableAliasesName">数据表别名</param>
-        /// <returns>Sql选择语句</returns>
-        public SelectCommand AddSelect(String tableAliasesName)
-        {
-            SelectCommand command = this._database.CreateSelectCommand(this.TableName, tableAliasesName);
-            this._list.Add(command);
-
-            return command;
         }
         #endregion
 
