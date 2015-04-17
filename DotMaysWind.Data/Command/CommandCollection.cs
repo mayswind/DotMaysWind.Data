@@ -101,9 +101,67 @@ namespace DotMaysWind.Data.Command
         #endregion
 
         #region 方法
+        #region Add / AddRange
+        /// <summary>
+        /// 添加指定Sql语句
+        /// </summary>
+        /// <param name="command">待添加的语句</param>
+        /// <returns>当前集合</returns>
+        public CommandCollection Add(ISqlCommand command)
+        {
+            this._list.Add(command);
+
+            return this;
+        }
+
+        /// <summary>
+        /// 当满足指定条件时添加指定Sql语句
+        /// </summary>
+        /// <param name="condition">指定条件</param>
+        /// <param name="command">待添加的语句</param>
+        /// <returns>当前集合</returns>
+        public CommandCollection Add(Func<Boolean> condition, ISqlCommand command)
+        {
+            if (condition())
+            {
+                this._list.Add(command);
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// 添加指定Sql语句集合
+        /// </summary>
+        /// <param name="commands">待添加的语句集合</param>
+        /// <returns>当前集合</returns>
+        public CommandCollection AddRange(IEnumerable<ISqlCommand> commands)
+        {
+            this._list.AddRange(commands);
+
+            return this;
+        }
+
+        /// <summary>
+        /// 当满足指定条件时添加指定Sql语句集合
+        /// </summary>
+        /// <param name="condition">指定条件</param>
+        /// <param name="commands">待添加的语句集合</param>
+        /// <returns>当前集合</returns>
+        public CommandCollection AddRange(Func<Boolean> condition, IEnumerable<ISqlCommand> commands)
+        {
+            if (condition())
+            {
+                this._list.AddRange(commands);
+            }
+
+            return this;
+        }
+        #endregion
+
         #region CreateSqlCommand
         /// <summary>
-        /// 创建新的Sql插入语句类
+        /// 添加新的Sql插入语句类
         /// </summary>
         /// <returns>Sql插入语句</returns>
         /// <example>
@@ -137,7 +195,7 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
-        /// 创建新的Sql插入语句类
+        /// 添加新的Sql插入语句类
         /// </summary>
         /// <param name="action">待执行的语句</param>
         /// <returns>当前集合</returns>
@@ -169,7 +227,26 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
-        /// 创建新的Sql更新语句类
+        /// 当满足指定条件时添加指定Sql插入语句类
+        /// </summary>
+        /// <param name="condition">指定条件</param>
+        /// <param name="action">待执行的语句</param>
+        /// <returns>当前集合</returns>
+        public CommandCollection Insert(Func<Boolean> condition, Action<InsertCommand> action)
+        {
+            if (condition())
+            {
+                InsertCommand command = this._database.CreateInsertCommand(this.TableName);
+                this._list.Add(command);
+
+                action(command);
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// 添加新的Sql更新语句类
         /// </summary>
         /// <returns>Sql更新语句</returns>
         public UpdateCommand Update()
@@ -181,7 +258,7 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
-        /// 创建新的Sql更新语句类
+        /// 添加新的Sql更新语句类
         /// </summary>
         /// <param name="action">待执行的语句</param>
         /// <returns>当前集合</returns>
@@ -195,7 +272,26 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
-        /// 创建新的Sql删除语句类
+        /// 当满足指定条件时添加指定Sql更新语句类
+        /// </summary>
+        /// <param name="condition">指定条件</param>
+        /// <param name="action">待执行的语句</param>
+        /// <returns>当前集合</returns>
+        public CommandCollection Update(Func<Boolean> condition, Action<UpdateCommand> action)
+        {
+            if (condition())
+            {
+                UpdateCommand command = this._database.CreateUpdateCommand(this.TableName);
+                this._list.Add(command);
+
+                action(command);
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// 添加新的Sql删除语句类
         /// </summary>
         /// <returns>Sql删除语句</returns>
         /// <example>
@@ -228,7 +324,7 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
-        /// 创建新的Sql删除语句类
+        /// 添加新的Sql删除语句类
         /// </summary>
         /// <param name="action">待执行的语句</param>
         /// <returns>当前集合</returns>
@@ -260,7 +356,26 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
-        /// 创建新的Sql选择语句类
+        /// 当满足指定条件时添加指定Sql删除语句类
+        /// </summary>
+        /// <param name="condition">指定条件</param>
+        /// <param name="action">待执行的语句</param>
+        /// <returns>当前集合</returns>
+        public CommandCollection Delete(Func<Boolean> condition, Action<DeleteCommand> action)
+        {
+            if (condition())
+            {
+                DeleteCommand command = this._database.CreateDeleteCommand(this.TableName);
+                this._list.Add(command);
+
+                action(command);
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// 添加新的Sql选择语句类
         /// </summary>
         /// <returns>Sql选择语句</returns>
         public SelectCommand Select()
@@ -272,7 +387,7 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
-        /// 创建新的Sql选择语句类
+        /// 添加新的Sql选择语句类
         /// </summary>
         /// <param name="action">待执行的语句</param>
         /// <returns>当前集合</returns>
@@ -286,7 +401,26 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
-        /// 创建新的Sql选择语句类
+        /// 当满足指定条件时添加指定Sql选择语句类
+        /// </summary>
+        /// <param name="condition">指定条件</param>
+        /// <param name="action">待执行的语句</param>
+        /// <returns>当前集合</returns>
+        public CommandCollection Select(Func<Boolean> condition, Action<SelectCommand> action)
+        {
+            if (condition())
+            {
+                SelectCommand command = this._database.CreateSelectCommand(this.TableName);
+                this._list.Add(command);
+
+                action(command);
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// 添加新的Sql选择语句类
         /// </summary>
         /// <param name="tableAliasesName">数据表别名</param>
         /// <returns>Sql选择语句</returns>
@@ -299,16 +433,36 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
-        /// 创建新的Sql选择语句类
+        /// 添加新的Sql选择语句类
         /// </summary>
-        /// <param name="action">待执行的语句</param>
         /// <param name="tableAliasesName">数据表别名</param>
+        /// <param name="action">待执行的语句</param>
         /// <returns>当前集合</returns>
         public CommandCollection Select(String tableAliasesName, Action<SelectCommand> action)
         {
             SelectCommand command = this._database.CreateSelectCommand(this.TableName, tableAliasesName);
             this._list.Add(command);
             action(command);
+
+            return this;
+        }
+
+        /// <summary>
+        /// 当满足指定条件时添加指定Sql选择语句类
+        /// </summary>
+        /// <param name="tableAliasesName">数据表别名</param>
+        /// <param name="condition">指定条件</param>
+        /// <param name="action">待执行的语句</param>
+        /// <returns>当前集合</returns>
+        public CommandCollection Select(String tableAliasesName, Func<Boolean> condition, Action<SelectCommand> action)
+        {
+            if (condition())
+            {
+                SelectCommand command = this._database.CreateSelectCommand(this.TableName, tableAliasesName);
+                this._list.Add(command);
+
+                action(command);
+            }
 
             return this;
         }
