@@ -38,6 +38,31 @@ namespace DotMaysWind.Data.Command
         #endregion
 
         #region 方法
+        #region Then
+        /// <summary>
+        /// 执行自定义代码而不中断当前语句链
+        /// </summary>
+        /// <param name="action">待执行的方法</param>
+        /// <returns>当前语句</returns>
+        public InsertCommand Then(Action<InsertCommand> action)
+        {
+            action(this);
+
+            return this;
+        }
+
+        /// <summary>
+        /// 执行自定义代码而不中断当前语句链
+        /// </summary>
+        /// <param name="func">待执行的方法</param>
+        /// <typeparam name="T">返回结果类型</typeparam>
+        /// <returns>自定义返回结果</returns>
+        public T Then<T>(Func<InsertCommand, T> func)
+        {
+            return func(this);
+        }
+        #endregion
+
         #region Set
         /// <summary>
         /// 插入指定参数组并返回当前语句
