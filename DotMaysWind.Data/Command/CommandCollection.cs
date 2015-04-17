@@ -9,6 +9,48 @@ namespace DotMaysWind.Data.Command
     /// </summary>
     public sealed class CommandCollection : IEnumerable<ISqlCommand>
     {
+        /// <summary>
+        /// 对象条目
+        /// </summary>
+        public sealed class ObjectItem<T>
+        {
+            #region 字段
+            private T _obj;
+            private Int32 _index;
+            #endregion
+
+            #region 属性
+            /// <summary>
+            /// 获取当前条目所指对象
+            /// </summary>
+            public T Object
+            {
+                get { return this._obj; }
+            }
+
+            /// <summary>
+            /// 获取当前条目的索引序号
+            /// </summary>
+            public Int32 Index
+            {
+                get { return this._index; }
+            }
+            #endregion
+
+            #region 构造方法
+            /// <summary>
+            /// 初始化新的对象条目
+            /// </summary>
+            /// <param name="obj">当前条目所指对象</param>
+            /// <param name="index">当前条目的索引序号</param>
+            internal ObjectItem(T obj, Int32 index)
+            {
+                this._obj = obj;
+                this._index = index;
+            }
+            #endregion
+        }
+
         #region 字段
         /// <summary>
         /// 基础集合
@@ -139,11 +181,13 @@ namespace DotMaysWind.Data.Command
         /// <param name="collection">待遍历的集合</param>
         /// <param name="action">待执行的语句</param>
         /// <returns>当前集合</returns>
-        public CommandCollection AddSome<T>(IEnumerable<T> collection, Action<CommandCollection, T> action)
+        public CommandCollection AddSome<T>(IEnumerable<T> collection, Action<CommandCollection, ObjectItem<T>> action)
         {
+            Int32 idx = 0;
+
             foreach (T obj in collection)
             {
-                action(this, obj);
+                action(this, new ObjectItem<T>(obj, idx++));
             }
 
             return this;
