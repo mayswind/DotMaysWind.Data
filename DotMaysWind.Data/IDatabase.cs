@@ -113,6 +113,13 @@ namespace DotMaysWind.Data
         /// <param name="commandString">语句内容</param>
         /// <returns>Sql自定义语句</returns>
         CustomCommand CreateCustomCommand(SqlCommandType commandType, String commandString);
+
+        /// <summary>
+        /// 创建新的Sql语句集合
+        /// </summary>
+        /// <param name="tableName">数据表名称</param>
+        /// <returns>Sql语句集合</returns>
+        CommandCollection CreateCommandCollection(String tableName);
         #endregion
 
         #region UsingConnection/Transaction

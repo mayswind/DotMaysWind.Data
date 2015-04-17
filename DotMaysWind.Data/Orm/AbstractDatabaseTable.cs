@@ -201,6 +201,15 @@ namespace DotMaysWind.Data.Orm
         {
             return this._baseDatabase.CreateSelectCommand(this.TableName, tableAliasesName);
         }
+
+        /// <summary>
+        /// 创建新的Sql语句集合
+        /// </summary>
+        /// <returns>Sql语句集合</returns>
+        protected virtual CommandCollection CreateCollection()
+        {
+            return this._baseDatabase.CreateCommandCollection(this.TableName);
+        }
         #endregion
 
         #region UsingConnection/Transaction

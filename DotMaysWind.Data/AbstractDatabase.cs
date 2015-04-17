@@ -245,6 +245,16 @@ namespace DotMaysWind.Data
         {
             return new CustomCommand(this, commandType, commandString);
         }
+
+        /// <summary>
+        /// 创建新的Sql语句集合
+        /// </summary>
+        /// <param name="tableName">数据表名称</param>
+        /// <returns>Sql语句集合</returns>
+        public CommandCollection CreateCommandCollection(String tableName)
+        {
+            return new CommandCollection(this, tableName);
+        }
         #endregion
 
         #region UsingConnection/Transaction

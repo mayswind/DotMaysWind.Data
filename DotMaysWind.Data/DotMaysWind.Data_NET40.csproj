@@ -51,6 +51,7 @@
     <Compile Include="CommandNotSupportedException.cs" />
     <Compile Include="Command\AbstractSqlCommand.cs" />
     <Compile Include="Command\AbstractSqlCommandWithWhere.cs" />
+    <Compile Include="Command\CommandCollection.cs" />
     <Compile Include="Command\Condition\AbstractSqlCondition.cs" />
     <Compile Include="Command\Condition\SqlBasicCommandCondition.cs" />
     <Compile Include="Command\Condition\SqlConditionBuilder.cs" />
