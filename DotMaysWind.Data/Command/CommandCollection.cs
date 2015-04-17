@@ -174,7 +174,70 @@ namespace DotMaysWind.Data.Command
         }
         #endregion
 
-        #region AddSome
+        #region AddSqlCommand
+        /// <summary>
+        /// 创建新的Sql插入语句类
+        /// </summary>
+        /// <returns>Sql插入语句</returns>
+        public InsertCommand AddInsert()
+        {
+            InsertCommand command = this._database.CreateInsertCommand(this.TableName);
+            this._list.Add(command);
+
+            return command;
+        }
+
+        /// <summary>
+        /// 创建新的Sql更新语句类
+        /// </summary>
+        /// <returns>Sql更新语句</returns>
+        public UpdateCommand AddUpdate()
+        {
+            UpdateCommand command = this._database.CreateUpdateCommand(this.TableName);
+            this._list.Add(command);
+
+            return command;
+        }
+
+        /// <summary>
+        /// 创建新的Sql删除语句类
+        /// </summary>
+        /// <returns>Sql删除语句</returns>
+        public DeleteCommand AddDelete()
+        {
+            DeleteCommand command = this._database.CreateDeleteCommand(this.TableName);
+            this._list.Add(command);
+
+            return command;
+        }
+
+        /// <summary>
+        /// 创建新的Sql选择语句类
+        /// </summary>
+        /// <returns>Sql选择语句</returns>
+        public SelectCommand AddSelect()
+        {
+            SelectCommand command = this._database.CreateSelectCommand(this.TableName);
+            this._list.Add(command);
+
+            return command;
+        }
+
+        /// <summary>
+        /// 创建新的Sql选择语句类
+        /// </summary>
+        /// <param name="tableAliasesName">数据表别名</param>
+        /// <returns>Sql选择语句</returns>
+        public SelectCommand AddSelect(String tableAliasesName)
+        {
+            SelectCommand command = this._database.CreateSelectCommand(this.TableName, tableAliasesName);
+            this._list.Add(command);
+
+            return command;
+        }
+        #endregion
+
+        #region AddSomeSqlCommands
         /// <summary>
         /// 根据指定集合执行指定次数
         /// </summary>
