@@ -36,13 +36,13 @@ namespace DotMaysWind.Data.Command.Pager
                 SelectCommand innestCommand = new SelectCommand(baseCommand.Database, baseCommand.TableName);
                 innestCommand.QueryFields = baseCommand.QueryFields;
                 innestCommand.SqlJoins = baseCommand.SqlJoins;
-                innestCommand.SqlWhere = baseCommand.SqlWhere;
+                innestCommand.WhereCondition = baseCommand.WhereCondition;
                 innestCommand.GroupByColumns = baseCommand.GroupByColumns;
                 innestCommand.SqlHaving = baseCommand.SqlHaving;
                 innestCommand.SqlOrders = baseCommand.SqlOrders;
 
                 SelectCommand innerCommand = new SelectCommand(baseCommand.Database, innestCommand, "");
-                innerCommand.SqlWhere = SqlCondition.LessThanOrEqualColumn(innerCommand, "ROWNUM", (baseCommand.RecordStart + baseCommand.PageSize).ToString());
+                innerCommand.WhereCondition = SqlCondition.LessThanOrEqualColumn(innerCommand, "ROWNUM", (baseCommand.RecordStart + baseCommand.PageSize).ToString());
                 innerCommand.InternalQuerys(baseCommand.QueryFields.ToArray());
                 innerCommand.InternalQuerys(SqlQueryField.InternalCreateFromFunction(baseCommand, "ROWNUM", "RN"));
 
@@ -53,7 +53,7 @@ namespace DotMaysWind.Data.Command.Pager
             {
                 sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.SqlJoins);
 
-                ISqlCondition where = baseCommand.SqlWhere;
+                ISqlCondition where = baseCommand.WhereCondition;
 
                 if (baseCommand.PageSize > 0)
                 {

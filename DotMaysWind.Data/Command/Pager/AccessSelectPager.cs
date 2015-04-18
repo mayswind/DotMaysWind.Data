@@ -35,7 +35,7 @@ namespace DotMaysWind.Data.Command.Pager
                     innerCommand.QueryFields = baseCommand.QueryFields;
                     innerCommand.PageSize = recordCount - baseCommand.RecordStart;
                     innerCommand.SqlJoins = baseCommand.SqlJoins;
-                    innerCommand.SqlWhere = baseCommand.SqlWhere;
+                    innerCommand.WhereCondition = baseCommand.WhereCondition;
                     innerCommand.GroupByColumns = baseCommand.GroupByColumns;
                     innerCommand.SqlHaving = baseCommand.SqlHaving;
                     innerCommand.SqlOrders = baseCommand.SqlOrders;
@@ -65,7 +65,7 @@ namespace DotMaysWind.Data.Command.Pager
                     innestCommand.QueryFields = baseCommand.QueryFields;
                     innestCommand.PageSize = baseCommand.RecordStart + baseCommand.PageSize;
                     innestCommand.SqlJoins = baseCommand.SqlJoins;
-                    innestCommand.SqlWhere = baseCommand.SqlWhere;
+                    innestCommand.WhereCondition = baseCommand.WhereCondition;
                     innestCommand.GroupByColumns = baseCommand.GroupByColumns;
                     innestCommand.SqlHaving = baseCommand.SqlHaving;
                     innestCommand.SqlOrders = baseCommand.SqlOrders;
@@ -87,7 +87,7 @@ namespace DotMaysWind.Data.Command.Pager
                     innerCommand.QueryFields = baseCommand.QueryFields;
                     innerCommand.PageSize = recordCount - baseCommand.RecordStart;
                     innerCommand.SqlJoins = baseCommand.SqlJoins;
-                    innerCommand.SqlWhere = baseCommand.SqlWhere;
+                    innerCommand.WhereCondition = baseCommand.WhereCondition;
                     innerCommand.GroupByColumns = baseCommand.GroupByColumns;
                     innerCommand.SqlHaving = baseCommand.SqlHaving;
                     innerCommand.SqlOrders = baseCommand.SqlOrders;
@@ -106,7 +106,7 @@ namespace DotMaysWind.Data.Command.Pager
                 sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
                 sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.SqlJoins);
 
-                sb.AppendWhere(baseCommand.SqlWhere);
+                sb.AppendWhere(baseCommand.WhereCondition);
                 sb.AppendSelectGroupBys(baseCommand.GroupByColumns);
                 sb.AppendHaving(baseCommand.SqlHaving);
                 sb.AppendSelectOrderBys(baseCommand.SqlOrders, orderReverse);
@@ -129,9 +129,9 @@ namespace DotMaysWind.Data.Command.Pager
             sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
             sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.SqlJoins);
 
-            if (baseCommand.SqlWhere != null)
+            if (baseCommand.WhereCondition != null)
             {
-                sb.AppendWhere(SqlCondition.And(baseCommand, SqlCondition.False(baseCommand), baseCommand.SqlWhere));
+                sb.AppendWhere(SqlCondition.And(baseCommand, SqlCondition.False(baseCommand), baseCommand.WhereCondition));
             }
             else
             {
@@ -161,7 +161,7 @@ namespace DotMaysWind.Data.Command.Pager
             sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, queryFields);
             sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.SqlJoins);
 
-            sb.AppendWhere(baseCommand.SqlWhere);
+            sb.AppendWhere(baseCommand.WhereCondition);
             sb.AppendSelectGroupBys(baseCommand.GroupByColumns);
             sb.AppendHaving(baseCommand.SqlHaving);
 

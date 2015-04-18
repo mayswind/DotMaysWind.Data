@@ -26,12 +26,12 @@ namespace DotMaysWind.Data.Command
 
         #region 属性
         /// <summary>
-        /// 获取或设置查询语句
+        /// 获取查询语句
         /// </summary>
-        public ISqlCondition SqlWhere
+        public ISqlCondition WhereCondition
         {
             get { return this._where; }
-            set { this._where = value; }
+            internal set { this._where = value; }
         }
         #endregion
 

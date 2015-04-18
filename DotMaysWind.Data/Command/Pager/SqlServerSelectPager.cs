@@ -41,7 +41,7 @@ namespace DotMaysWind.Data.Command.Pager
                 innerCommand.InternalQuerys(SqlQueryField.InternalCreateFromFunction(baseCommand, "ROW_NUMBER() OVER( " + innerBuilder.ToString() + ")", "RN"));
                 innerCommand.PageSize = baseCommand.RecordStart + baseCommand.PageSize;
                 innerCommand.SqlJoins = baseCommand.SqlJoins;
-                innerCommand.SqlWhere = baseCommand.SqlWhere;
+                innerCommand.WhereCondition = baseCommand.WhereCondition;
                 innerCommand.GroupByColumns = baseCommand.GroupByColumns;
                 innerCommand.SqlHaving = baseCommand.SqlHaving;
 
@@ -58,7 +58,7 @@ namespace DotMaysWind.Data.Command.Pager
                 sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
                 sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.SqlJoins);
 
-                sb.AppendWhere(baseCommand.SqlWhere);
+                sb.AppendWhere(baseCommand.WhereCondition);
                 sb.AppendSelectGroupBys(baseCommand.GroupByColumns);
                 sb.AppendHaving(baseCommand.SqlHaving);
                 sb.AppendSelectOrderBys(baseCommand.SqlOrders, orderReverse);
