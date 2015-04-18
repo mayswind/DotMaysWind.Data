@@ -70,39 +70,51 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
-        /// 获取或设置是否保证记录唯一
+        /// 获取是否保证记录唯一
         /// </summary>
         public Boolean UseDistinct
         {
             get { return this._useDistinct; }
-            set { this._useDistinct = value; }
         }
 
         /// <summary>
-        /// 获取或设置查询字段名列表
+        /// 获取查询字段名列表
         /// </summary>
-        public List<SqlQueryField> QueryFields
+        public SqlQueryField[] QueryFields
         {
-            get { return this._queryFields; }
-            set { this._queryFields = value; }
+            get { return this._queryFields.ToArray(); }
         }
 
         /// <summary>
-        /// 获取或设置分组字段名列表
+        /// 获取分组字段名列表
         /// </summary>
-        public List<String> GroupByColumns
+        public String[] GroupByColumns
         {
-            get { return this._groupbys; }
-            set { this._groupbys = value; }
+            get { return this._groupbys.ToArray(); }
         }
 
         /// <summary>
-        /// 获取或设置查询排序条件列表
+        /// 获取查询排序条件列表
         /// </summary>
-        public List<SqlOrder> SqlOrders
+        public SqlOrder[] Orders
         {
-            get { return this._orders; }
-            set { this._orders = value; }
+            get { return this._orders.ToArray(); }
+        }
+
+        /// <summary>
+        /// 获取连接语句列表
+        /// </summary>
+        public ISqlJoin[] Joins
+        {
+            get { return this._joins.ToArray(); }
+        }
+
+        /// <summary>
+        /// 获取Having语句
+        /// </summary>
+        public ISqlCondition HavingCondition
+        {
+            get { return this._having; }
         }
 
         /// <summary>
@@ -119,24 +131,6 @@ namespace DotMaysWind.Data.Command
 
                 return this._joinIndex++;
             }
-        }
-
-        /// <summary>
-        /// 获取或设置连接语句列表
-        /// </summary>
-        public List<ISqlJoin> SqlJoins
-        {
-            get { return this._joins; }
-            set { this._joins = value; }
-        }
-
-        /// <summary>
-        /// 获取或设置Having语句
-        /// </summary>
-        public ISqlCondition SqlHaving
-        {
-            get { return this._having; }
-            set { this._having = value; }
         }
         #endregion
 
@@ -2049,6 +2043,97 @@ namespace DotMaysWind.Data.Command
             return result.ToArray();
         }
         #endregion
+        #endregion
+
+        #region 内部方法
+        /// <summary>
+        /// 设置查询字段名列表
+        /// </summary>
+        /// <param name="command">另一个语句</param>
+        internal void InternalSetQueryFieldList(SelectCommand command)
+        {
+            this._queryFields = command._queryFields;
+        }
+        /// <summary>
+        /// 设置查询字段名列表
+        /// </summary>
+        /// <returns>查询字段名列表</returns>
+        internal List<SqlQueryField> InternalGetQueryFieldList()
+        {
+            return this._queryFields;
+        }
+
+        /// <summary>
+        /// 设置分组字段名列表
+        /// </summary>
+        /// <param name="command">另一个语句</param>
+        internal void InternalSetGroupByColumnList(SelectCommand command)
+        {
+            this._groupbys = command._groupbys;
+        }
+
+        /// <summary>
+        /// 设置分组字段名列表
+        /// </summary>
+        /// <returns>分组字段名列表</returns>
+        internal List<String> InternalGetGroupByColumnList()
+        {
+            return this._groupbys;
+        }
+
+        /// <summary>
+        /// 设置查询排序条件列表
+        /// </summary>
+        /// <param name="command">另一个语句</param>
+        internal void InternalSetOrderList(SelectCommand command)
+        {
+            this._orders = command._orders;
+        }
+
+        /// <summary>
+        /// 设置查询排序条件列表
+        /// </summary>
+        /// <returns>查询排序条件列表</returns>
+        internal List<SqlOrder> InternalGetOrderList()
+        {
+            return this._orders;
+        }
+
+        /// <summary>
+        /// 设置连接语句列表
+        /// </summary>
+        /// <param name="command">另一个语句</param>
+        internal void InternalSetJoinList(SelectCommand command)
+        {
+            this._joins = command._joins;
+        }
+
+        /// <summary>
+        /// 设置连接语句列表
+        /// </summary>
+        /// <returns>连接语句列表</returns>
+        internal List<ISqlJoin> InternalGetJoinList()
+        {
+            return this._joins;
+        }
+
+        /// <summary>
+        /// 设置Having语句
+        /// </summary>
+        /// <param name="command">另一个语句</param>
+        internal void InternalSetHavingCondition(SelectCommand command)
+        {
+            this._having = command._having;
+        }
+
+        /// <summary>
+        /// 获取Having语句
+        /// </summary>
+        /// <returns>Having语句</returns>
+        internal ISqlCondition InternalGetHavingCondition()
+        {
+            return this._having;
+        }
         #endregion
     }
 }

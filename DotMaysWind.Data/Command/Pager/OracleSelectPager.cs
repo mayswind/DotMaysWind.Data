@@ -19,7 +19,7 @@ namespace DotMaysWind.Data.Command.Pager
         {
             SqlCommandBuilder sb = new SqlCommandBuilder(baseCommand.Database);
             sb.AppendSelectPrefix();
-            sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
+            sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.InternalGetQueryFieldList());
 
             if (baseCommand.PageSize > 0 && baseCommand.RecordStart > 0)//分页模式
             {
@@ -34,16 +34,16 @@ namespace DotMaysWind.Data.Command.Pager
                 */
 
                 SelectCommand innestCommand = new SelectCommand(baseCommand.Database, baseCommand.TableName);
-                innestCommand.QueryFields = baseCommand.QueryFields;
-                innestCommand.SqlJoins = baseCommand.SqlJoins;
-                innestCommand.WhereCondition = baseCommand.WhereCondition;
-                innestCommand.GroupByColumns = baseCommand.GroupByColumns;
-                innestCommand.SqlHaving = baseCommand.SqlHaving;
-                innestCommand.SqlOrders = baseCommand.SqlOrders;
+                innestCommand.InternalSetQueryFieldList(baseCommand);
+                innestCommand.InternalSetJoinList(baseCommand);
+                innestCommand.InternalSetWhereCondition(baseCommand);
+                innestCommand.InternalSetGroupByColumnList(baseCommand);
+                innestCommand.InternalSetHavingCondition(baseCommand);
+                innestCommand.InternalSetOrderList(baseCommand);
 
                 SelectCommand innerCommand = new SelectCommand(baseCommand.Database, innestCommand, "");
-                innerCommand.WhereCondition = SqlCondition.LessThanOrEqualColumn(innerCommand, "ROWNUM", (baseCommand.RecordStart + baseCommand.PageSize).ToString());
-                innerCommand.InternalQuerys(baseCommand.QueryFields.ToArray());
+                innerCommand.InternalSetWhereCondition(SqlCondition.LessThanOrEqualColumn(innerCommand, "ROWNUM", (baseCommand.RecordStart + baseCommand.PageSize).ToString()));
+                innerCommand.InternalQuerys(baseCommand.QueryFields);
                 innerCommand.InternalQuerys(SqlQueryField.InternalCreateFromFunction(baseCommand, "ROWNUM", "RN"));
 
                 sb.AppendSelectFrom(innerCommand.GetCommandText(), true);
@@ -51,7 +51,7 @@ namespace DotMaysWind.Data.Command.Pager
             }
             else//正常模式
             {
-                sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.SqlJoins);
+                sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.InternalGetJoinList());
 
                 ISqlCondition where = baseCommand.WhereCondition;
 
@@ -61,9 +61,9 @@ namespace DotMaysWind.Data.Command.Pager
                 }
 
                 sb.AppendWhere(where);
-                sb.AppendSelectGroupBys(baseCommand.GroupByColumns);
-                sb.AppendHaving(baseCommand.SqlHaving);
-                sb.AppendSelectOrderBys(baseCommand.SqlOrders, orderReverse);
+                sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByColumnList());
+                sb.AppendHaving(baseCommand.InternalGetHavingCondition());
+                sb.AppendSelectOrderBys(baseCommand.InternalGetOrderList(), orderReverse);
             }
 
             return sb.ToString();

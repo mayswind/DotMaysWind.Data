@@ -29,19 +29,19 @@ namespace DotMaysWind.Data.Command.Pager
 
                 if (realPageIndex >= realPageCount)//最后一页
                 {
-                    sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
+                    sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.InternalGetQueryFieldList());
 
                     SelectCommand innerCommand = new SelectCommand(baseCommand.Database, baseCommand.TableName);
-                    innerCommand.QueryFields = baseCommand.QueryFields;
                     innerCommand.PageSize = recordCount - baseCommand.RecordStart;
-                    innerCommand.SqlJoins = baseCommand.SqlJoins;
-                    innerCommand.WhereCondition = baseCommand.WhereCondition;
-                    innerCommand.GroupByColumns = baseCommand.GroupByColumns;
-                    innerCommand.SqlHaving = baseCommand.SqlHaving;
-                    innerCommand.SqlOrders = baseCommand.SqlOrders;
+                    innerCommand.InternalSetQueryFieldList(baseCommand);
+                    innerCommand.InternalSetJoinList(baseCommand);
+                    innerCommand.InternalSetWhereCondition(baseCommand);
+                    innerCommand.InternalSetGroupByColumnList(baseCommand);
+                    innerCommand.InternalSetHavingCondition(baseCommand);
+                    innerCommand.InternalSetOrderList(baseCommand);
 
                     sb.AppendSelectFrom(innerCommand.GetCommandText("T", !orderReverse), true);
-                    sb.AppendSelectOrderBys(baseCommand.SqlOrders, orderReverse);
+                    sb.AppendSelectOrderBys(baseCommand.InternalGetOrderList(), orderReverse);
                 }
                 else if (realPageIndex < (realPageCount / 2 + realPageCount % 2))//前1/2部分页
                 {
@@ -59,41 +59,41 @@ namespace DotMaysWind.Data.Command.Pager
                         ORDER BY ID ASC
                     */
 
-                    sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
+                    sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.InternalGetQueryFieldList());
 
                     SelectCommand innestCommand = new SelectCommand(baseCommand.Database, baseCommand.TableName);
-                    innestCommand.QueryFields = baseCommand.QueryFields;
                     innestCommand.PageSize = baseCommand.RecordStart + baseCommand.PageSize;
-                    innestCommand.SqlJoins = baseCommand.SqlJoins;
-                    innestCommand.WhereCondition = baseCommand.WhereCondition;
-                    innestCommand.GroupByColumns = baseCommand.GroupByColumns;
-                    innestCommand.SqlHaving = baseCommand.SqlHaving;
-                    innestCommand.SqlOrders = baseCommand.SqlOrders;
+                    innestCommand.InternalSetQueryFieldList(baseCommand);
+                    innestCommand.InternalSetJoinList(baseCommand);
+                    innestCommand.InternalSetWhereCondition(baseCommand);
+                    innestCommand.InternalSetGroupByColumnList(baseCommand);
+                    innestCommand.InternalSetHavingCondition(baseCommand);
+                    innestCommand.InternalSetOrderList(baseCommand);
 
                     SelectCommand innerCommand = new SelectCommand(baseCommand.Database, innestCommand, "T1");
-                    innerCommand.QueryFields = baseCommand.QueryFields;
                     innerCommand.PageSize = baseCommand.PageSize;
-                    innerCommand.SqlOrders = baseCommand.SqlOrders;
+                    innerCommand.InternalSetQueryFieldList(baseCommand);
+                    innerCommand.InternalSetOrderList(baseCommand);
 
                     sb.AppendSelectFrom(innerCommand.GetCommandText("T2", !orderReverse), true);
-                    sb.AppendSelectOrderBys(baseCommand.SqlOrders, orderReverse);
+                    sb.AppendSelectOrderBys(baseCommand.InternalGetOrderList(), orderReverse);
                 }
                 else//后1/2部分页
                 {
                     sb.AppendSelectTop(baseCommand.PageSize);
-                    sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
+                    sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.InternalGetQueryFieldList());
 
                     SelectCommand innerCommand = new SelectCommand(baseCommand.Database, baseCommand.TableName);
-                    innerCommand.QueryFields = baseCommand.QueryFields;
                     innerCommand.PageSize = recordCount - baseCommand.RecordStart;
-                    innerCommand.SqlJoins = baseCommand.SqlJoins;
-                    innerCommand.WhereCondition = baseCommand.WhereCondition;
-                    innerCommand.GroupByColumns = baseCommand.GroupByColumns;
-                    innerCommand.SqlHaving = baseCommand.SqlHaving;
-                    innerCommand.SqlOrders = baseCommand.SqlOrders;
+                    innerCommand.InternalSetQueryFieldList(baseCommand);
+                    innerCommand.InternalSetJoinList(baseCommand);
+                    innerCommand.InternalSetWhereCondition(baseCommand);
+                    innerCommand.InternalSetGroupByColumnList(baseCommand);
+                    innerCommand.InternalSetHavingCondition(baseCommand);
+                    innerCommand.InternalSetOrderList(baseCommand);
 
                     sb.AppendSelectFrom(innerCommand.GetCommandText("T", !orderReverse), true);
-                    sb.AppendSelectOrderBys(baseCommand.SqlOrders, orderReverse);
+                    sb.AppendSelectOrderBys(baseCommand.InternalGetOrderList(), orderReverse);
                 }
             }
             else//正常模式
@@ -103,13 +103,13 @@ namespace DotMaysWind.Data.Command.Pager
                     sb.AppendSelectTop(baseCommand.PageSize);
                 }
 
-                sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
-                sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.SqlJoins);
+                sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.InternalGetQueryFieldList());
+                sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.InternalGetJoinList());
 
                 sb.AppendWhere(baseCommand.WhereCondition);
-                sb.AppendSelectGroupBys(baseCommand.GroupByColumns);
-                sb.AppendHaving(baseCommand.SqlHaving);
-                sb.AppendSelectOrderBys(baseCommand.SqlOrders, orderReverse);
+                sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByColumnList());
+                sb.AppendHaving(baseCommand.InternalGetHavingCondition());
+                sb.AppendSelectOrderBys(baseCommand.InternalGetOrderList(), orderReverse);
             }
 
             return sb.ToString();
@@ -126,8 +126,8 @@ namespace DotMaysWind.Data.Command.Pager
             SqlCommandBuilder sb = new SqlCommandBuilder(baseCommand.Database);
 
             sb.AppendSelectPrefix();
-            sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
-            sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.SqlJoins);
+            sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.InternalGetQueryFieldList());
+            sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.InternalGetJoinList());
 
             if (baseCommand.WhereCondition != null)
             {
@@ -137,10 +137,10 @@ namespace DotMaysWind.Data.Command.Pager
             {
                 sb.AppendWhere(SqlCondition.False(baseCommand));
             }
-            
-            sb.AppendSelectGroupBys(baseCommand.GroupByColumns);
-            sb.AppendHaving(baseCommand.SqlHaving);
-            sb.AppendSelectOrderBys(baseCommand.SqlOrders, orderReverse);
+
+            sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByColumnList());
+            sb.AppendHaving(baseCommand.InternalGetHavingCondition());
+            sb.AppendSelectOrderBys(baseCommand.InternalGetOrderList(), orderReverse);
 
             return sb.ToString();
         }
@@ -159,11 +159,11 @@ namespace DotMaysWind.Data.Command.Pager
 
             sb.AppendSelectPrefix();
             sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, queryFields);
-            sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.SqlJoins);
+            sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.InternalGetJoinList());
 
             sb.AppendWhere(baseCommand.WhereCondition);
-            sb.AppendSelectGroupBys(baseCommand.GroupByColumns);
-            sb.AppendHaving(baseCommand.SqlHaving);
+            sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByColumnList());
+            sb.AppendHaving(baseCommand.InternalGetHavingCondition());
 
             return sb.ToString();
         }

@@ -18,13 +18,13 @@ namespace DotMaysWind.Data.Command.Pager
             SqlCommandBuilder sb = new SqlCommandBuilder(baseCommand.Database);
             sb.AppendSelectPrefix();
 
-            sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
-            sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.SqlJoins);
+            sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.InternalGetQueryFieldList());
+            sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.InternalGetJoinList());
 
             sb.AppendWhere(baseCommand.WhereCondition);
-            sb.AppendSelectGroupBys(baseCommand.GroupByColumns);
-            sb.AppendHaving(baseCommand.SqlHaving);
-            sb.AppendSelectOrderBys(baseCommand.SqlOrders, orderReverse);
+            sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByColumnList());
+            sb.AppendHaving(baseCommand.InternalGetHavingCondition());
+            sb.AppendSelectOrderBys(baseCommand.InternalGetOrderList(), orderReverse);
 
             if (baseCommand.PageSize > 0 && baseCommand.RecordStart <= 0)
             {

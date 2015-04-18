@@ -31,7 +31,6 @@ namespace DotMaysWind.Data.Command
         public ISqlCondition WhereCondition
         {
             get { return this._where; }
-            internal set { this._where = value; }
         }
         #endregion
 
@@ -82,6 +81,35 @@ namespace DotMaysWind.Data.Command
             }
 
             return result.ToArray();
+        }
+        #endregion
+
+        #region 内部方法
+        /// <summary>
+        /// 设置查询语句
+        /// </summary>
+        /// <param name="command">另一个语句</param>
+        internal void InternalSetWhereCondition(AbstractSqlCommandWithWhere command)
+        {
+            this._where = command._where;
+        }
+
+        /// <summary>
+        /// 设置查询语句
+        /// </summary>
+        /// <param name="where">查询语句</param>
+        internal void InternalSetWhereCondition(ISqlCondition where)
+        {
+            this._where = where;
+        }
+
+        /// <summary>
+        /// 获取查询语句
+        /// </summary>
+        /// <returns>查询语句</returns>
+        internal ISqlCondition InternalGetWhereCondition()
+        {
+            return this._where;
         }
         #endregion
     }

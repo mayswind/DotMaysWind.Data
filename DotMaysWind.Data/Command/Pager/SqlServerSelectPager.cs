@@ -31,19 +31,19 @@ namespace DotMaysWind.Data.Command.Pager
                     WHERE RN > 20
                 */
 
-                sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
+                sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.InternalGetQueryFieldList());
 
                 SqlCommandBuilder innerBuilder = new SqlCommandBuilder(baseCommand.Database);
-                innerBuilder.AppendSelectOrderBys(baseCommand.SqlOrders, false);
+                innerBuilder.AppendSelectOrderBys(baseCommand.InternalGetOrderList(), false);
 
                 SelectCommand innerCommand = new SelectCommand(baseCommand.Database, baseCommand.TableName);
-                innerCommand.InternalQuerys(baseCommand.QueryFields.ToArray());
+                innerCommand.InternalQuerys(baseCommand.QueryFields);
                 innerCommand.InternalQuerys(SqlQueryField.InternalCreateFromFunction(baseCommand, "ROW_NUMBER() OVER( " + innerBuilder.ToString() + ")", "RN"));
                 innerCommand.PageSize = baseCommand.RecordStart + baseCommand.PageSize;
-                innerCommand.SqlJoins = baseCommand.SqlJoins;
-                innerCommand.WhereCondition = baseCommand.WhereCondition;
-                innerCommand.GroupByColumns = baseCommand.GroupByColumns;
-                innerCommand.SqlHaving = baseCommand.SqlHaving;
+                innerCommand.InternalSetJoinList(baseCommand);
+                innerCommand.InternalSetWhereCondition(baseCommand);
+                innerCommand.InternalSetGroupByColumnList(baseCommand);
+                innerCommand.InternalSetHavingCondition(baseCommand);
 
                 sb.AppendSelectFrom(innerCommand.GetCommandText("T"), true);
                 sb.AppendWhere(SqlCondition.GreaterThanColumn(baseCommand, "RN", baseCommand.RecordStart.ToString()));
@@ -55,13 +55,13 @@ namespace DotMaysWind.Data.Command.Pager
                     sb.AppendSelectTop(baseCommand.PageSize);
                 }
 
-                sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.QueryFields);
-                sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.SqlJoins);
+                sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.InternalGetQueryFieldList());
+                sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.InternalGetJoinList());
 
                 sb.AppendWhere(baseCommand.WhereCondition);
-                sb.AppendSelectGroupBys(baseCommand.GroupByColumns);
-                sb.AppendHaving(baseCommand.SqlHaving);
-                sb.AppendSelectOrderBys(baseCommand.SqlOrders, orderReverse);
+                sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByColumnList());
+                sb.AppendHaving(baseCommand.InternalGetHavingCondition());
+                sb.AppendSelectOrderBys(baseCommand.InternalGetOrderList(), orderReverse);
             }
 
             return sb.ToString();
