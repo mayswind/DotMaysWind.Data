@@ -1,9 +1,9 @@
 DotMaysWind.Data
 ================
 
-非常轻量级的数据库访问工具库，封装了Access、SQLite、SQL Server CE、SQL Server、MySQL以及Oracle，使用统一的代码构建SQL命令实现数据库无缝切换，提高开发效率。
+非常轻量级的数据库访问工具库，链式代码编写，封装了SQL语句以及各个数据库中常用的函数，支持Access、SQLite、SQL Server CE、SQL Server、MySQL以及Oracle数据库。
 
-自己参与和负责的项目一直使用该类库操作数据库，目前并将长期处于alpha或beta版。
+自己和小伙伴们的项目常使用该框架实现数据库操作，目前处于并将长期处于alpha或beta版。
 
 在Web.config或App.config中配置好连接字符串：
 
