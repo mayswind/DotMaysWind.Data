@@ -8,6 +8,13 @@ namespace DotMaysWind.Data.Command
     /// </summary>
     public sealed class InsertCommand : AbstractSqlCommand
     {
+        #region 字段
+        /// <summary>
+        /// 基础参数组
+        /// </summary>
+        private List<DataParameter> _insertFields;
+        #endregion
+
         #region 属性
         /// <summary>
         /// 获取语句类型
@@ -18,12 +25,11 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
-        /// 获取或设置要插入的参数组
+        /// 获取要插入的字段
         /// </summary>
-        public List<DataParameter> InsertParameters
+        public DataParameter[] InsertFields
         {
-            get { return this._parameters; }
-            set { this._parameters = value; }
+            get { return this._insertFields.ToArray(); }
         }
         #endregion
 
@@ -34,7 +40,10 @@ namespace DotMaysWind.Data.Command
         /// <param name="database">数据库</param>
         /// <param name="tableName">数据表名称</param>
         internal InsertCommand(AbstractDatabase database, String tableName)
-            : base(database, tableName) { }
+            : base(database, tableName)
+        {
+            this._insertFields = new List<DataParameter>();
+        }
         #endregion
 
         #region 方法
@@ -73,6 +82,7 @@ namespace DotMaysWind.Data.Command
         {
             if (insertParams != null)
             {
+                this._insertFields.AddRange(insertParams);
                 this._parameters.AddRange(insertParams);
             }
 
@@ -103,7 +113,10 @@ namespace DotMaysWind.Data.Command
         /// </example>
         public InsertCommand Set(String columnName, Object value)
         {
-            this._parameters.Add(this.CreateDataParameter(columnName, value));
+            DataParameter parameter = this.CreateDataParameter(columnName, value);
+            this._insertFields.Add(parameter);
+            this._parameters.Add(parameter);
+            
             return this;
         }
 
@@ -132,7 +145,10 @@ namespace DotMaysWind.Data.Command
         /// </example>
         public InsertCommand Set(String columnName, DataType dataType, Object value)
         {
-            this._parameters.Add(this.CreateDataParameter(columnName, dataType, value));
+            DataParameter parameter = this.CreateDataParameter(columnName, dataType, value);
+            this._insertFields.Add(parameter);
+            this._parameters.Add(parameter);
+
             return this;
         }
 
@@ -168,7 +184,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("function");
             }
 
-            this._parameters.Add(this.CreateDataParameterCustomAction(columnName, function.GetCommandText()));
+            this._insertFields.Add(this.CreateDataParameterCustomAction(columnName, function.GetCommandText()));
 
             if (function.HasParameters)
             {
@@ -214,7 +230,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("command");
             }
 
-            this._parameters.Add(this.CreateDataParameterCustomAction(columnName, command.GetCommandText()));
+            this._insertFields.Add(this.CreateDataParameterCustomAction(columnName, command.GetCommandText()));
 
             DataParameter[] parameters = command.GetAllParameters();
 
@@ -402,9 +418,9 @@ namespace DotMaysWind.Data.Command
             SqlCommandBuilder sb = new SqlCommandBuilder(this.Database);
             sb.AppendInsertPrefix().AppendTableName(this._tableName);
 
-            if (this._parameters.Count > 0)
+            if (this._insertFields.Count > 0)
             {
-                sb.AppendAllColumnNamesWithParentheses(this._parameters).AppendInsertValues().AppendAllParameterNamesWithParentheses(this._parameters);
+                sb.AppendAllColumnNamesWithParentheses(this._insertFields).AppendInsertValues().AppendAllParameterNamesWithParentheses(this._insertFields);
             }
 
             return sb.ToString();

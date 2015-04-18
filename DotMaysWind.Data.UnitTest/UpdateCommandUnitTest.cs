@@ -95,13 +95,14 @@ namespace DotMaysWind.Data.UnitTest
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
             String expectedSql = "UPDATE TestTable SET TestColumn2=(TestColumn2+1)";
-            DataParameter[] expectedParameter = new DataParameter[1] { DataParameter.InternalCreateCustomAction(fakeDb, "TestColumn2", "TestColumn2+1") };
+            DataParameter[] expectedParameter = new DataParameter[0];
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Increase<TestEntity>(c => c.Test2);
             String actualSql = cmd.GetCommandText().Trim();
             DataParameter[] actualParameter = cmd.GetAllParameters();
 
             Assert.AreEqual(expectedSql, actualSql);
+            Assert.AreEqual(expectedParameter.Length, actualParameter.Length);
         }
 
         [TestMethod()]
@@ -112,13 +113,14 @@ namespace DotMaysWind.Data.UnitTest
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
             String expectedSql = "UPDATE TestTable SET TestColumn2=(TestColumn2-1)";
-            DataParameter[] expectedParameter = new DataParameter[1] { DataParameter.InternalCreateCustomAction(fakeDb, "TestColumn2", "TestColumn2-1") };
+            DataParameter[] expectedParameter = new DataParameter[0];
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Decrease<TestEntity>(c => c.Test2);
             String actualSql = cmd.GetCommandText().Trim();
             DataParameter[] actualParameter = cmd.GetAllParameters();
 
             Assert.AreEqual(expectedSql, actualSql);
+            Assert.AreEqual(expectedParameter.Length, actualParameter.Length);
         }
     }
 }

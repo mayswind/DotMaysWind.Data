@@ -10,6 +10,13 @@ namespace DotMaysWind.Data.Command
     /// </summary>
     public sealed class UpdateCommand : AbstractSqlCommandWithWhere
     {
+        #region 字段
+        /// <summary>
+        /// 基础参数组
+        /// </summary>
+        private List<DataParameter> _updateFields;
+        #endregion
+
         #region 属性
         /// <summary>
         /// 获取语句类型
@@ -20,12 +27,11 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
-        /// 获取或设置要更新的参数组
+        /// 获取要更新的字段
         /// </summary>
-        public List<DataParameter> UpdateParameters
+        public DataParameter[] UpdateFields
         {
-            get { return this._parameters; }
-            set { this._parameters = value; }
+            get { return this._updateFields.ToArray(); }
         }
         #endregion
 
@@ -36,7 +42,10 @@ namespace DotMaysWind.Data.Command
         /// <param name="database">数据库</param>
         /// <param name="tableName">数据表名称</param>
         internal UpdateCommand(AbstractDatabase database, String tableName)
-            : base(database, tableName) { }
+            : base(database, tableName)
+        {
+            this._updateFields = new List<DataParameter>();
+        }
         #endregion
 
         #region 方法
@@ -75,6 +84,7 @@ namespace DotMaysWind.Data.Command
         {
             if (updateParams != null)
             {
+                this._updateFields.AddRange(updateParams);
                 this._parameters.AddRange(updateParams);
             }
 
@@ -105,7 +115,10 @@ namespace DotMaysWind.Data.Command
         /// </example>
         public UpdateCommand Set(String columnName, Object value)
         {
-            this._parameters.Add(this.CreateDataParameter(columnName, value));
+            DataParameter parameter = this.CreateDataParameter(columnName, value);
+            this._updateFields.Add(parameter);
+            this._parameters.Add(parameter);
+            
             return this;
         }
 
@@ -134,7 +147,10 @@ namespace DotMaysWind.Data.Command
         /// </example>
         public UpdateCommand Set(String columnName, DataType dataType, Object value)
         {
-            this._parameters.Add(this.CreateDataParameter(columnName, dataType, value));
+            DataParameter parameter = this.CreateDataParameter(columnName, dataType, value);
+            this._updateFields.Add(parameter);
+            this._parameters.Add(parameter);
+
             return this;
         }
 
@@ -168,7 +184,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("function");
             }
 
-            this._parameters.Add(this.CreateDataParameterCustomAction(columnName, function.GetCommandText()));
+            this._updateFields.Add(this.CreateDataParameterCustomAction(columnName, function.GetCommandText()));
 
             if (function.HasParameters)
             {
@@ -214,7 +230,7 @@ namespace DotMaysWind.Data.Command
                 throw new ArgumentNullException("command");
             }
 
-            this._parameters.Add(this.CreateDataParameterCustomAction(columnName, command.GetCommandText()));
+            this._updateFields.Add(this.CreateDataParameterCustomAction(columnName, command.GetCommandText()));
 
             DataParameter[] parameters = command.GetAllParameters();
 
@@ -413,7 +429,8 @@ namespace DotMaysWind.Data.Command
         /// </example>
         public UpdateCommand Increase(String columnName)
         {
-            this._parameters.Add(this.CreateDataParameterCustomAction(columnName, columnName + "+1"));
+            this._updateFields.Add(this.CreateDataParameterCustomAction(columnName, columnName + "+1"));
+
             return this;
         }
 
@@ -439,7 +456,8 @@ namespace DotMaysWind.Data.Command
         /// </example>
         public UpdateCommand Decrease(String columnName)
         {
-            this._parameters.Add(this.CreateDataParameterCustomAction(columnName, columnName + "-1"));
+            this._updateFields.Add(this.CreateDataParameterCustomAction(columnName, columnName + "-1"));
+
             return this;
         }
         #endregion
@@ -514,12 +532,12 @@ namespace DotMaysWind.Data.Command
 
             sb.AppendUpdatePrefix().AppendTableName(this._tableName);
 
-            if (this._parameters.Count > 0)
+            if (this._updateFields.Count > 0)
             {
                 sb.AppendUpdateSet();
             }
 
-            sb.AppendAllParameterEquations(this._parameters).AppendWhere(this._where);
+            sb.AppendAllParameterEquations(this._updateFields).AppendWhere(this._where);
 
             return sb.ToString();
         }
