@@ -94,7 +94,7 @@ namespace DotMaysWind.Data.UnitTest
             TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
-            String expectedSql = "UPDATE TestTable SET TestColumn2=TestColumn2+1";
+            String expectedSql = "UPDATE TestTable SET TestColumn2=(TestColumn2+1)";
             DataParameter[] expectedParameter = new DataParameter[1] { DataParameter.InternalCreateCustomAction(fakeDb, "TestColumn2", "TestColumn2+1") };
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Increase<TestEntity>(c => c.Test2);
@@ -111,7 +111,7 @@ namespace DotMaysWind.Data.UnitTest
             TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
-            String expectedSql = "UPDATE TestTable SET TestColumn2=TestColumn2-1";
+            String expectedSql = "UPDATE TestTable SET TestColumn2=(TestColumn2-1)";
             DataParameter[] expectedParameter = new DataParameter[1] { DataParameter.InternalCreateCustomAction(fakeDb, "TestColumn2", "TestColumn2-1") };
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Decrease<TestEntity>(c => c.Test2);

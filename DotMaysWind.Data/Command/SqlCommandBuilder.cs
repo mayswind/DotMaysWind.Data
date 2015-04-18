@@ -222,7 +222,7 @@ namespace DotMaysWind.Data.Command
                     }
                     else
                     {
-                        names.Append("( ").Append(dbParams[i].Value.ToString()).Append(") ");
+                        names.Append("(").Append(dbParams[i].Value.ToString()).Append(")");
                     }
                 }
 
@@ -274,7 +274,7 @@ namespace DotMaysWind.Data.Command
                     }
                     else
                     {
-                        names.Append("( ").Append(dbParams[i].Value.ToString()).Append(") ");
+                        names.Append("(").Append(dbParams[i].Value.ToString()).Append(")");
                     }
                 }
 
