@@ -175,11 +175,12 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 判断属性所指字段是否包含指定选择语句查询结果
         /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="key">实体属性</param>
-        /// <param name="command">选择语句</param>
+        /// <param name="action">设置选择语句的方法</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
         /// <returns>是否不包含指定选择语句查询结果</returns>
-        public static Boolean In(this Object key, SelectCommand command)
+        public static Boolean In<T>(this Object key, Action<SelectCommand> action)
         {
             throw new NotImplementedException();
         }
@@ -199,11 +200,12 @@ namespace DotMaysWind.Data.Linq
         /// <summary>
         /// 判断属性所指字段是否不包含指定选择语句查询结果
         /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="key">实体属性</param>
-        /// <param name="command">选择语句</param>
+        /// <param name="action">设置选择语句的方法</param>
         /// <exception cref="NotImplementedException">该方法只用于Linq表达式，没有具体实现</exception>
         /// <returns>是否不包含指定选择语句查询结果</returns>
-        public static Boolean NotIn(this Object key, SelectCommand command)
+        public static Boolean NotIn<T>(this Object key, Action<SelectCommand> action)
         {
             throw new NotImplementedException();
         }

@@ -831,22 +831,50 @@ namespace DotMaysWind.Data.Command.Condition
         /// 创建判断是否相等的Sql条件语句
         /// </summary>
         /// <param name="columnName">字段名称</param>
-        /// <param name="command">选择语句</param>
+        /// <param name="tableName">查询的表名</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
         /// <returns>Sql条件语句</returns>
-        public SqlBasicCommandCondition Equal(String columnName, SelectCommand command)
+        public SqlBasicCommandCondition Equal(String columnName, String tableName, Action<SelectCommand> action)
         {
-            return SqlCondition.Equal(this._baseCommand, columnName, command);
+            return SqlCondition.Equal(this._baseCommand, columnName, tableName, action);
+        }
+
+        /// <summary>
+        /// 创建判断是否相等的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
+        /// <returns>Sql条件语句</returns>
+        public SqlBasicCommandCondition Equal(String columnName, Action<SelectCommand> action)
+        {
+            return SqlCondition.Equal(this._baseCommand, columnName, action);
         }
 
         /// <summary>
         /// 创建判断是否不等的Sql条件语句
         /// </summary>
         /// <param name="columnName">字段名称</param>
-        /// <param name="command">选择语句</param>
+        /// <param name="tableName">查询的表名</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
         /// <returns>Sql条件语句</returns>
-        public SqlBasicCommandCondition NotEqual(String columnName, SelectCommand command)
+        public SqlBasicCommandCondition NotEqual(String columnName, String tableName, Action<SelectCommand> action)
         {
-            return SqlCondition.NotEqual(this._baseCommand, columnName, command);
+            return SqlCondition.NotEqual(this._baseCommand, columnName, tableName, action);
+        }
+
+        /// <summary>
+        /// 创建判断是否不等的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
+        /// <returns>Sql条件语句</returns>
+        public SqlBasicCommandCondition NotEqual(String columnName, Action<SelectCommand> action)
+        {
+            return SqlCondition.NotEqual(this._baseCommand, columnName, action);
         }
         #endregion
 
@@ -855,22 +883,50 @@ namespace DotMaysWind.Data.Command.Condition
         /// 创建判断是否大于的Sql条件语句
         /// </summary>
         /// <param name="columnName">字段名称</param>
-        /// <param name="command">选择语句</param>
+        /// <param name="tableName">查询的表名</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
         /// <returns>Sql条件语句</returns>
-        public SqlBasicCommandCondition GreaterThan(String columnName, SelectCommand command)
+        public SqlBasicCommandCondition GreaterThan(String columnName, String tableName, Action<SelectCommand> action)
         {
-            return SqlCondition.GreaterThan(this._baseCommand, columnName, command);
+            return SqlCondition.GreaterThan(this._baseCommand, columnName, tableName, action);
+        }
+
+        /// <summary>
+        /// 创建判断是否大于的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
+        /// <returns>Sql条件语句</returns>
+        public SqlBasicCommandCondition GreaterThan(String columnName, Action<SelectCommand> action)
+        {
+            return SqlCondition.GreaterThan(this._baseCommand, columnName, action);
         }
 
         /// <summary>
         /// 创建判断是否小于的Sql条件语句
         /// </summary>
         /// <param name="columnName">字段名称</param>
-        /// <param name="command">选择语句</param>
+        /// <param name="tableName">查询的表名</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
         /// <returns>Sql条件语句</returns>
-        public SqlBasicCommandCondition LessThan(String columnName, SelectCommand command)
+        public SqlBasicCommandCondition LessThan(String columnName, String tableName, Action<SelectCommand> action)
         {
-            return SqlCondition.LessThan(this._baseCommand, columnName, command);
+            return SqlCondition.LessThan(this._baseCommand, columnName, tableName, action);
+        }
+
+        /// <summary>
+        /// 创建判断是否小于的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
+        /// <returns>Sql条件语句</returns>
+        public SqlBasicCommandCondition LessThan(String columnName, Action<SelectCommand> action)
+        {
+            return SqlCondition.LessThan(this._baseCommand, columnName, action);
         }
         #endregion
 
@@ -879,22 +935,50 @@ namespace DotMaysWind.Data.Command.Condition
         /// 创建判断是否大于等于的Sql条件语句
         /// </summary>
         /// <param name="columnName">字段名称</param>
-        /// <param name="command">选择语句</param>
+        /// <param name="tableName">查询的表名</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
         /// <returns>Sql条件语句</returns>
-        public SqlBasicCommandCondition GreaterThanOrEqual(String columnName, SelectCommand command)
+        public SqlBasicCommandCondition GreaterThanOrEqual(String columnName, String tableName, Action<SelectCommand> action)
         {
-            return SqlCondition.GreaterThanOrEqual(this._baseCommand, columnName, command);
+            return SqlCondition.GreaterThanOrEqual(this._baseCommand, columnName, tableName, action);
+        }
+
+        /// <summary>
+        /// 创建判断是否大于等于的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
+        /// <returns>Sql条件语句</returns>
+        public SqlBasicCommandCondition GreaterThanOrEqual(String columnName, Action<SelectCommand> action)
+        {
+            return SqlCondition.GreaterThanOrEqual(this._baseCommand, columnName, action);
         }
 
         /// <summary>
         /// 创建判断是否小于等于的Sql条件语句
         /// </summary>
         /// <param name="columnName">字段名称</param>
-        /// <param name="command">选择语句</param>
+        /// <param name="tableName">查询的表名</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
         /// <returns>Sql条件语句</returns>
-        public SqlBasicCommandCondition LessThanOrEqual(String columnName, SelectCommand command)
+        public SqlBasicCommandCondition LessThanOrEqual(String columnName, String tableName, Action<SelectCommand> action)
         {
-            return SqlCondition.LessThanOrEqual(this._baseCommand, columnName, command);
+            return SqlCondition.LessThanOrEqual(this._baseCommand, columnName, tableName, action);
+        }
+
+        /// <summary>
+        /// 创建判断是否小于等于的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
+        /// <returns>Sql条件语句</returns>
+        public SqlBasicCommandCondition LessThanOrEqual(String columnName, Action<SelectCommand> action)
+        {
+            return SqlCondition.LessThanOrEqual(this._baseCommand, columnName, action);
         }
         #endregion
 
@@ -903,22 +987,50 @@ namespace DotMaysWind.Data.Command.Condition
         /// 创建判断是否相似的Sql条件语句
         /// </summary>
         /// <param name="columnName">字段名称</param>
-        /// <param name="command">选择语句</param>
+        /// <param name="tableName">查询的表名</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
         /// <returns>Sql条件语句</returns>
-        public SqlBasicCommandCondition Like(String columnName, SelectCommand command)
+        public SqlBasicCommandCondition Like(String columnName, String tableName, Action<SelectCommand> action)
         {
-            return SqlCondition.Like(this._baseCommand, columnName, command);
+            return SqlCondition.Like(this._baseCommand, columnName, tableName, action);
+        }
+
+        /// <summary>
+        /// 创建判断是否相似的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
+        /// <returns>Sql条件语句</returns>
+        public SqlBasicCommandCondition Like(String columnName, Action<SelectCommand> action)
+        {
+            return SqlCondition.Like(this._baseCommand, columnName, action);
         }
 
         /// <summary>
         /// 创建判断是否不相似的Sql条件语句
         /// </summary>
         /// <param name="columnName">字段名称</param>
-        /// <param name="command">选择语句</param>
+        /// <param name="tableName">查询的表名</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
         /// <returns>Sql条件语句</returns>
-        public SqlBasicCommandCondition NotLike(String columnName, SelectCommand command)
+        public SqlBasicCommandCondition NotLike(String columnName, String tableName, Action<SelectCommand> action)
         {
-            return SqlCondition.NotLike(this._baseCommand, columnName, command);
+            return SqlCondition.NotLike(this._baseCommand, columnName, tableName, action);
+        }
+
+        /// <summary>
+        /// 创建判断是否不相似的Sql条件语句
+        /// </summary>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
+        /// <returns>Sql条件语句</returns>
+        public SqlBasicCommandCondition NotLike(String columnName, Action<SelectCommand> action)
+        {
+            return SqlCondition.NotLike(this._baseCommand, columnName, action);
         }
         #endregion
         #endregion
@@ -1277,12 +1389,25 @@ namespace DotMaysWind.Data.Command.Condition
         /// 创建新的Sql IN条件语句
         /// </summary>
         /// <param name="columnName">字段名称</param>
-        /// <param name="command">选择语句</param>
-        /// <exception cref="ArgumentNullException">选择语句不能为空</exception>
+        /// <param name="tableName">查询的表名</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
         /// <returns>Sql条件语句</returns>
-        public SqlInsideCommandCondition In(String columnName, SelectCommand command)
+        public SqlInsideCommandCondition In(String columnName, String tableName, Action<SelectCommand> action)
         {
-            return SqlCondition.In(this._baseCommand, columnName, command);
+            return SqlCondition.In(this._baseCommand, columnName, tableName, action);
+        }
+
+        /// <summary>
+        /// 创建新的Sql IN条件语句
+        /// </summary>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
+        /// <returns>Sql条件语句</returns>
+        public SqlInsideCommandCondition In(String columnName, Action<SelectCommand> action)
+        {
+            return SqlCondition.In(this._baseCommand, columnName, action);
         }
         #endregion
 
@@ -1291,12 +1416,25 @@ namespace DotMaysWind.Data.Command.Condition
         /// 创建新的Sql Not IN条件语句
         /// </summary>
         /// <param name="columnName">字段名称</param>
-        /// <param name="command">选择语句</param>
-        /// <exception cref="ArgumentNullException">选择语句不能为空</exception>
+        /// <param name="tableName">查询的表名</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
         /// <returns>Sql条件语句</returns>
-        public SqlInsideCommandCondition NotIn(String columnName, SelectCommand command)
+        public SqlInsideCommandCondition NotIn(String columnName, String tableName, Action<SelectCommand> action)
         {
-            return SqlCondition.NotIn(this._baseCommand, columnName, command);
+            return SqlCondition.NotIn(this._baseCommand, columnName, tableName, action);
+        }
+
+        /// <summary>
+        /// 创建新的Sql Not IN条件语句
+        /// </summary>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
+        /// <returns>Sql条件语句</returns>
+        public SqlInsideCommandCondition NotIn(String columnName, Action<SelectCommand> action)
+        {
+            return SqlCondition.NotIn(this._baseCommand, columnName, action);
         }
         #endregion
         #endregion

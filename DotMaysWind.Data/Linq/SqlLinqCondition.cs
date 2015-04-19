@@ -5,6 +5,7 @@ using DotMaysWind.Data.Command;
 using DotMaysWind.Data.Command.Condition;
 using DotMaysWind.Data.Linq.Helper;
 using DotMaysWind.Data.Orm;
+using DotMaysWind.Data.Orm.Helper;
 
 namespace DotMaysWind.Data.Linq
 {
@@ -241,23 +242,19 @@ namespace DotMaysWind.Data.Linq
         {
             MemberExpression left = ExpressionHelper.GetMemberExpression(expr.Arguments[0]);
             DatabaseColumnAttribute columnAttr = ExpressionHelper.GetColumnAttributeWithDataType(sourceCommand, left);
-            Object value = ExpressionHelper.GetExpressionValue(expr.Arguments[1]);
+            Action<SelectCommand> action = ExpressionHelper.GetExpressionValue(expr.Arguments[1]) as Action<SelectCommand>;
 
             if (columnAttr == null)
             {
                 throw new NullAttributeException();
             }
 
-            SelectCommand cmd = value as SelectCommand;
+            Type entityType = expr.Method.GetGenericArguments()[0];
+            String anotherTableName = EntityHelper.InternalGetTableName(entityType);
 
-            if (cmd != null)
-            {
-                AbstractSqlCondition condition = SqlCondition.InternalIn(sourceCommand, columnAttr.ColumnName, isNot, cmd);
+            AbstractSqlCondition condition = SqlCondition.InternalIn(sourceCommand, columnAttr.ColumnName, isNot, anotherTableName, action);
 
-                return condition;
-            }
-
-            throw new LinqNotSupportedException("Not supported this method!");
+            return condition;
         }
         #endregion
 

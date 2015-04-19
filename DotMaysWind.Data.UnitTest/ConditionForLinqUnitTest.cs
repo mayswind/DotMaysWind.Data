@@ -149,14 +149,24 @@ namespace DotMaysWind.Data.UnitTest
 
             TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
-            SelectCommand cmd = fakeDb.CreateSelectCommand(provider.TableName)
-                .Query("TestColumn4")
-                .Paged(10, 2)
-                .Where<TestEntity>(c => c.Test1 == "test" && c.Test2 != 222 && c.Test4 < DateTime.Now)
-                .OrderBy<TestEntity>(c => c.Test3, SqlOrderType.Desc);
+            
+            SqlInsideCommandCondition expectedCondition5 = SqlCondition.In(expectedCommand, "TestColumn4", provider.TableName, s => 
+            {
+                s.Query("TestColumn4")
+                    .Paged(10, 2)
+                    .Where<TestEntity>(c => c.Test1 == "test" && c.Test2 != 222 && c.Test4 < DateTime.Now)
+                    .OrderBy<TestEntity>(c => c.Test3, SqlOrderType.Desc);
+            });
 
-            SqlInsideCommandCondition expectedCondition5 = SqlCondition.In(expectedCommand, "TestColumn4", cmd);
-            SqlInsideCommandCondition actualCondition5 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test4.In(cmd)) as SqlInsideCommandCondition;
+            Action<SelectCommand> createAnotherSelect = s =>
+            {
+                s.Query("TestColumn4")
+                       .Paged(10, 2)
+                       .Where<TestEntity>(sc => sc.Test1 == "test" && sc.Test2 != 222 && sc.Test4 < DateTime.Now)
+                       .OrderBy<TestEntity>(sc => sc.Test3, SqlOrderType.Desc);
+            };
+
+            SqlInsideCommandCondition actualCondition5 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test4.In<TestEntity>(createAnotherSelect)) as SqlInsideCommandCondition;
 
             Assert.AreEqual(expectedCondition5, actualCondition5);
         }
@@ -190,14 +200,24 @@ namespace DotMaysWind.Data.UnitTest
 
             TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
-            SelectCommand cmd = fakeDb.CreateSelectCommand(provider.TableName)
-                .Query("TestColumn4")
-                .Paged(10, 2)
-                .Where<TestEntity>(c => c.Test1 == "test" && c.Test2 != 222 && c.Test4 < DateTime.Now)
-                .OrderBy<TestEntity>(c => c.Test3, SqlOrderType.Desc);
+            
+            SqlInsideCommandCondition expectedCondition5 = SqlCondition.NotIn(expectedCommand, "TestColumn4", provider.TableName, s =>
+            {
+                s.Query("TestColumn4")
+                    .Paged(10, 2)
+                    .Where<TestEntity>(c => c.Test1 == "test" && c.Test2 != 222 && c.Test4 < DateTime.Now)
+                    .OrderBy<TestEntity>(c => c.Test3, SqlOrderType.Desc);
+            });
 
-            SqlInsideCommandCondition expectedCondition5 = SqlCondition.NotIn(expectedCommand, "TestColumn4", cmd);
-            SqlInsideCommandCondition actualCondition5 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test4.NotIn(cmd)) as SqlInsideCommandCondition;
+            Action<SelectCommand> createAnotherSelect = s =>
+            {
+                s.Query("TestColumn4")
+                       .Paged(10, 2)
+                       .Where<TestEntity>(sc => sc.Test1 == "test" && sc.Test2 != 222 && sc.Test4 < DateTime.Now)
+                       .OrderBy<TestEntity>(sc => sc.Test3, SqlOrderType.Desc);
+            };
+
+            SqlInsideCommandCondition actualCondition5 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test4.NotIn<TestEntity>(createAnotherSelect)) as SqlInsideCommandCondition;
 
             Assert.AreEqual(expectedCondition5, actualCondition5);
         }

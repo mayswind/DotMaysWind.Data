@@ -47,12 +47,16 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="baseCommand">源Sql语句</param>
         /// <param name="columnName">字段名称</param>
         /// <param name="isNotIn">是否不在范围内</param>
-        /// <param name="command">选择语句</param>
-        internal SqlInsideCommandCondition(AbstractSqlCommand baseCommand, String columnName, Boolean isNotIn, SelectCommand command)
+        /// <param name="tableName">查询的表名</param>
+        /// <param name="action">设置选择语句的方法</param>
+        internal SqlInsideCommandCondition(AbstractSqlCommand baseCommand, String columnName, Boolean isNotIn, String tableName, Action<SelectCommand> action)
             : base(baseCommand)
         {
             this._columnName = columnName;
             this._isNotIn = isNotIn;
+
+            SelectCommand command = baseCommand.Database.InternalCreateSelectCommand((baseCommand.RootSource == null ? baseCommand : baseCommand.RootSource), tableName);
+            action(command);
             this._command = command;
         }
         #endregion
