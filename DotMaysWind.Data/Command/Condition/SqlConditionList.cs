@@ -63,6 +63,22 @@ namespace DotMaysWind.Data.Command.Condition
 
         #region 方法
         /// <summary>
+        /// 在指定索引添加一个新的Sql查询语句
+        /// </summary>
+        /// <param name="index">指定索引</param>
+        /// <param name="item">Sql查询语句</param>
+        /// <exception cref="NullReferenceException">Sql查询语句不能为空</exception>
+        public void Insert(Int32 index, ISqlCondition item)
+        {
+            if (item == null)
+            {
+                throw new NullReferenceException();
+            }
+
+            this._list.Insert(index, item);
+        }
+
+        /// <summary>
         /// 获取条件语句包含的参数集合
         /// </summary>
         /// <returns>条件语句参数集合</returns>

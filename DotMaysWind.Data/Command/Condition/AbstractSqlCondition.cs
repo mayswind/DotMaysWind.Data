@@ -126,21 +126,28 @@ namespace DotMaysWind.Data.Command.Condition
             if (condition1.ConditionType == SqlConditionType.ConditionList)
             {
                 SqlConditionList list = condition1 as SqlConditionList;
-                list.Add(condition2);
 
-                return list;
+                if (list.ConcatType == SqlWhereConcatType.And)
+                {
+                    list.Add(condition2);
+
+                    return list;
+                }
             }
-            else if (condition2.ConditionType == SqlConditionType.ConditionList)
+            
+            if (condition2.ConditionType == SqlConditionType.ConditionList)
             {
                 SqlConditionList list = condition2 as SqlConditionList;
-                list.Add(condition1);
 
-                return list;
+                if (list.ConcatType == SqlWhereConcatType.And)
+                {
+                    list.Insert(0, condition1);
+
+                    return list;
+                }
             }
-            else
-            {
-                return SqlCondition.And(condition1._baseCommand, condition1, condition2);
-            }
+
+            return SqlCondition.And(condition1._baseCommand, condition1, condition2);
         }
 
         /// <summary>
@@ -167,21 +174,28 @@ namespace DotMaysWind.Data.Command.Condition
             if (condition1.ConditionType == SqlConditionType.ConditionList)
             {
                 SqlConditionList list = condition1 as SqlConditionList;
-                list.Add(condition2);
 
-                return list;
+                if (list.ConcatType == SqlWhereConcatType.Or)
+                {
+                    list.Add(condition2);
+
+                    return list;
+                }
             }
-            else if (condition2.ConditionType == SqlConditionType.ConditionList)
+            
+            if (condition2.ConditionType == SqlConditionType.ConditionList)
             {
                 SqlConditionList list = condition2 as SqlConditionList;
-                list.Add(condition1);
 
-                return list;
+                if (list.ConcatType == SqlWhereConcatType.Or)
+                {
+                    list.Insert(0, condition1);
+
+                    return list;
+                }
             }
-            else
-            {
-                return SqlCondition.Or(condition1._baseCommand, condition1, condition2);
-            }
+
+            return SqlCondition.Or(condition1._baseCommand, condition1, condition2);
         }
 
         /// <summary>
