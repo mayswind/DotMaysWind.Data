@@ -26,7 +26,7 @@ namespace DotMaysWind.Data.UnitTest
                 .Query(SqlAggregateFunction.Max, "TestColumn4", "MMMM")
                 .Where(c => c.GreaterThanOrEqual("TestColumn2", 123) | (c.GreaterThan("TestColumn4", DateTime.Now) & c.LessThan("TestColumn7", DateTime.Now.AddDays(7))))
                 .GroupBy("TestColumn3")
-                .InnerJoin("TestColumn2", "AnotherTable", "TestColumn2")
+                .InnerJoin("TestColumn2", "TestTable", "TestColumn2")
                 .OrderBy("TestColumn6", SqlOrderType.Asc);
 
             SelectCommand actualCommand = fakeDb.CreateSelectCommand(provider.TableName)
@@ -35,7 +35,7 @@ namespace DotMaysWind.Data.UnitTest
                 .Query<TestEntity>(c => c.Test4, SqlAggregateFunction.Max, "MMMM")
                 .Where<TestEntity>(c => c.Test2 >= 123 || (c.Test4 > DateTime.Now && c.Test7 < DateTime.Now.AddDays(7)))
                 .GroupBy<TestEntity>(c => c.Test3)
-                .InnerJoin<TestEntity, TestEntity>(c => c.Test2, "AnotherTable", d => d.Test2)
+                .InnerJoin<TestEntity, TestEntity>(c => c.Test2, d => d.Test2)
                 .OrderBy<TestEntity>(c => c.Test6, SqlOrderType.Asc);
 
             Assert.AreEqual(expectedCommand, actualCommand);

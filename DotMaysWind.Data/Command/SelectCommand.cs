@@ -29,7 +29,7 @@ namespace DotMaysWind.Data.Command
         private List<String> _groupbys;
         private List<SqlOrder> _orders;
 
-        private Int32 _joinIndex;
+        private Int16 _joinIndex;
         private List<ISqlJoin> _joins;
         private ISqlCondition _having;
         #endregion
@@ -115,22 +115,6 @@ namespace DotMaysWind.Data.Command
         public ISqlCondition HavingCondition
         {
             get { return this._having; }
-        }
-
-        /// <summary>
-        /// 获取连接索引
-        /// </summary>
-        private Int32 JoinIndex
-        {
-            get
-            {
-                if (this._joinIndex >= Int32.MaxValue)
-                {
-                    this._joinIndex = 0;
-                }
-
-                return this._joinIndex++;
-            }
         }
         #endregion
 
@@ -629,16 +613,20 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 查询指定选择语句并返回当前语句
         /// </summary>
-        /// <param name="command">选择语句</param>
+        /// <param name="tableName">查询的表名</param>
+        /// <param name="action">设置选择语句的方法</param>
         /// <param name="aliasesName">别名</param>
         /// <exception cref="ArgumentNullException">选择语句不能为空</exception>
         /// <returns>当前语句</returns>
-        public SelectCommand Query(SelectCommand command, String aliasesName)
+        public SelectCommand Query(String tableName, Action<SelectCommand> action, String aliasesName)
         {
-            if (command == null)
+            if (action == null)
             {
-                throw new ArgumentNullException("function");
+                throw new ArgumentNullException("action");
             }
+
+            SelectCommand command = this._database.InternalCreateSelectCommand((this.RootSource == null ? this : this.RootSource), tableName);
+            action(command);
 
             this._queryFields.Add(SqlQueryField.InternalCreateFromFunction(this, command.GetCommandText(true), aliasesName));
 
@@ -649,6 +637,18 @@ namespace DotMaysWind.Data.Command
             }
 
             return this;
+        }
+
+        /// <summary>
+        /// 查询指定选择语句并返回当前语句
+        /// </summary>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <param name="aliasesName">别名</param>
+        /// <exception cref="ArgumentNullException">选择语句不能为空</exception>
+        /// <returns>当前语句</returns>
+        public SelectCommand Query(Action<SelectCommand> action, String aliasesName)
+        {
+            return this.Query(this.TableName, action, aliasesName);
         }
         #endregion
 
@@ -826,6 +826,7 @@ namespace DotMaysWind.Data.Command
         public SelectCommand Join(SqlJoinType joinType, String currentTableField, String anotherTableName, String anotherTableField)
         {
             this._joins.Add(new SqlJoinTableName(this, joinType, this._tableName, currentTableField, anotherTableName, anotherTableField));
+
             return this;
         }
 
@@ -852,8 +853,7 @@ namespace DotMaysWind.Data.Command
         /// </example>
         public SelectCommand InnerJoin(String currentTableField, String anotherTableName, String anotherTableField)
         {
-            this._joins.Add(new SqlJoinTableName(this, SqlJoinType.InnerJoin, this._tableName, currentTableField, anotherTableName, anotherTableField));
-            return this;
+            return this.Join(SqlJoinType.InnerJoin, currentTableField, anotherTableName, anotherTableField);
         }
 
         /// <summary>
@@ -879,8 +879,7 @@ namespace DotMaysWind.Data.Command
         /// </example>
         public SelectCommand LeftJoin(String currentTableField, String anotherTableName, String anotherTableField)
         {
-            this._joins.Add(new SqlJoinTableName(this, SqlJoinType.LeftJoin, this._tableName, currentTableField, anotherTableName, anotherTableField));
-            return this;
+            return this.Join(SqlJoinType.LeftJoin, currentTableField, anotherTableName, anotherTableField);
         }
 
         /// <summary>
@@ -906,8 +905,7 @@ namespace DotMaysWind.Data.Command
         /// </example>
         public SelectCommand RightJoin(String currentTableField, String anotherTableName, String anotherTableField)
         {
-            this._joins.Add(new SqlJoinTableName(this, SqlJoinType.RightJoin, this._tableName, currentTableField, anotherTableName, anotherTableField));
-            return this;
+            return this.Join(SqlJoinType.RightJoin, currentTableField, anotherTableName, anotherTableField);
         }
 
         /// <summary>
@@ -933,8 +931,7 @@ namespace DotMaysWind.Data.Command
         /// </example>
         public SelectCommand FullJoin(String currentTableField, String anotherTableName, String anotherTableField)
         {
-            this._joins.Add(new SqlJoinTableName(this, SqlJoinType.FullJoin, this._tableName, currentTableField, anotherTableName, anotherTableField));
-            return this;
+            return this.Join(SqlJoinType.FullJoin, currentTableField, anotherTableName, anotherTableField);
         }
         #endregion
 
@@ -944,12 +941,19 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="joinType">连接模式</param>
         /// <param name="currentTableField">当前表格主键</param>
-        /// <param name="anotherTableCommand">另个表格命令</param>
+        /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherTableField">另个表格主键</param>
+        /// <param name="createSelectAction">创建查询方法</param>
+        /// <exception cref="NullReferenceException">不能为空</exception>
         /// <returns>当前语句</returns>
-        public SelectCommand Join(SqlJoinType joinType, String currentTableField, SelectCommand anotherTableCommand, String anotherTableField)
+        public SelectCommand Join(SqlJoinType joinType, String currentTableField, String anotherTableName, String anotherTableField, Action<SelectCommand> createSelectAction)
         {
-            this._joins.Add(new SqlJoinTableCommand(this, joinType, this._tableName, currentTableField, anotherTableCommand, this.JoinIndex, anotherTableField));
+            if (createSelectAction == null)
+            {
+                throw new NullReferenceException("createSelectAction");
+            }
+
+            this._joins.Add(new SqlJoinTableCommand(this, joinType, this._tableName, currentTableField, anotherTableName, anotherTableField, this.GetNewJoinIndex(), createSelectAction));
             return this;
         }
 
@@ -957,52 +961,56 @@ namespace DotMaysWind.Data.Command
         /// 内连接语句并返回当前语句
         /// </summary>
         /// <param name="currentTableField">当前表格主键</param>
-        /// <param name="anotherTableCommand">另个表格命令</param>
+        /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherTableField">另个表格主键</param>
+        /// <param name="createSelectAction">创建查询方法</param>
+        /// <exception cref="NullReferenceException">不能为空</exception>
         /// <returns>当前语句</returns>
-        public SelectCommand InnerJoin(String currentTableField, SelectCommand anotherTableCommand, String anotherTableField)
+        public SelectCommand InnerJoin(String currentTableField, String anotherTableName, String anotherTableField, Action<SelectCommand> createSelectAction)
         {
-            this._joins.Add(new SqlJoinTableCommand(this, SqlJoinType.InnerJoin, this._tableName, currentTableField, anotherTableCommand, this.JoinIndex, anotherTableField));
-            return this;
+            return this.Join(SqlJoinType.InnerJoin, currentTableField, anotherTableName, anotherTableField, createSelectAction);
         }
 
         /// <summary>
         /// 左连接语句并返回当前语句
         /// </summary>
         /// <param name="currentTableField">当前表格主键</param>
-        /// <param name="anotherTableCommand">另个表格命令</param>
+        /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherTableField">另个表格主键</param>
+        /// <param name="createSelectAction">创建查询方法</param>
+        /// <exception cref="NullReferenceException">不能为空</exception>
         /// <returns>当前语句</returns>
-        public SelectCommand LeftJoin(String currentTableField, SelectCommand anotherTableCommand, String anotherTableField)
+        public SelectCommand LeftJoin(String currentTableField, String anotherTableName, String anotherTableField, Action<SelectCommand> createSelectAction)
         {
-            this._joins.Add(new SqlJoinTableCommand(this, SqlJoinType.LeftJoin, this._tableName, currentTableField, anotherTableCommand, this.JoinIndex, anotherTableField));
-            return this;
+            return this.Join(SqlJoinType.LeftJoin, currentTableField, anotherTableName, anotherTableField, createSelectAction);
         }
 
         /// <summary>
         /// 右连接语句并返回当前语句
         /// </summary>
         /// <param name="currentTableField">当前表格主键</param>
-        /// <param name="anotherTableCommand">另个表格命令</param>
+        /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherTableField">另个表格主键</param>
+        /// <param name="createSelectAction">创建查询方法</param>
+        /// <exception cref="NullReferenceException">不能为空</exception>
         /// <returns>当前语句</returns>
-        public SelectCommand RightJoin(String currentTableField, SelectCommand anotherTableCommand, String anotherTableField)
+        public SelectCommand RightJoin(String currentTableField, String anotherTableName, String anotherTableField, Action<SelectCommand> createSelectAction)
         {
-            this._joins.Add(new SqlJoinTableCommand(this, SqlJoinType.RightJoin, this._tableName, currentTableField, anotherTableCommand, this.JoinIndex, anotherTableField));
-            return this;
+            return this.Join(SqlJoinType.RightJoin, currentTableField, anotherTableName, anotherTableField, createSelectAction);
         }
 
         /// <summary>
         /// 全连接语句并返回当前语句
         /// </summary>
         /// <param name="currentTableField">当前表格主键</param>
-        /// <param name="anotherTableCommand">另个表格命令</param>
+        /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherTableField">另个表格主键</param>
+        /// <param name="createSelectAction">创建查询方法</param>
+        /// <exception cref="NullReferenceException">不能为空</exception>
         /// <returns>当前语句</returns>
-        public SelectCommand FullJoin(String currentTableField, SelectCommand anotherTableCommand, String anotherTableField)
+        public SelectCommand FullJoin(String currentTableField, String anotherTableName, String anotherTableField, Action<SelectCommand> createSelectAction)
         {
-            this._joins.Add(new SqlJoinTableCommand(this, SqlJoinType.FullJoin, this._tableName, currentTableField, anotherTableCommand, this.JoinIndex, anotherTableField));
-            return this;
+            return this.Join(SqlJoinType.FullJoin, currentTableField, anotherTableName, anotherTableField, createSelectAction);
         }
         #endregion
         #endregion
@@ -2136,6 +2144,21 @@ namespace DotMaysWind.Data.Command
         internal ISqlCondition InternalGetHavingCondition()
         {
             return this._having;
+        }
+        #endregion
+
+        #region 私有方法
+        /// <summary>
+        /// 获取新的连接索引
+        /// </summary>
+        private String GetNewJoinIndex()
+        {
+            if (this._joinIndex >= Int16.MaxValue)
+            {
+                this._joinIndex = 0;
+            }
+
+            return Convert.ToString(this._joinIndex++, 16);
         }
         #endregion
     }

@@ -43,7 +43,7 @@ namespace DotMaysWind.Data.PerformanceTest
                 .Query(SqlAggregateFunction.Max, "TestColumn4", "MMMM")
                 .Where(c => c.GreaterThanOrEqual("TestColumn2", 123) | (c.GreaterThan("TestColumn5", 1) & c.LessThan("TestColumn5", 10)))
                 .GroupBy("TestColumn3")
-                .InnerJoin("TestColumn2", "AnotherTable", "TestColumn2")
+                .InnerJoin("TestColumn2", "TestTable", "TestColumn2")
                 .OrderBy("TestColumn6", SqlOrderType.Asc);
 
             DbCommand dbCommand = command.ToDbCommand();
@@ -57,7 +57,7 @@ namespace DotMaysWind.Data.PerformanceTest
                 .Query<TestEntity>(c => c.Test4, SqlAggregateFunction.Max, "MMMM")
                 .Where<TestEntity>(c => c.Test2 >= 123 || (c.Test5 > 1 && c.Test5 < 10))
                 .GroupBy<TestEntity>(c => c.Test3)
-                .InnerJoin<TestEntity, TestEntity>(c => c.Test2, "AnotherTable", d => d.Test2)
+                .InnerJoin<TestEntity, TestEntity>(c => c.Test2, d => d.Test2)
                 .OrderBy<TestEntity>(c => c.Test6, SqlOrderType.Asc);
 
             DbCommand dbCommand = command.ToDbCommand();

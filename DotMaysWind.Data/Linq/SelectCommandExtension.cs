@@ -5,6 +5,7 @@ using DotMaysWind.Data.Command;
 using DotMaysWind.Data.Command.Join;
 using DotMaysWind.Data.Linq.Helper;
 using DotMaysWind.Data.Orm;
+using DotMaysWind.Data.Orm.Helper;
 
 namespace DotMaysWind.Data.Linq
 {
@@ -312,12 +313,11 @@ namespace DotMaysWind.Data.Linq
         /// <param name="cmd">查询语句</param>
         /// <param name="joinType">连接模式</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
-        /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherExpr">另个实体类主键属性</param>
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
-        public static SelectCommand Join<T, TAnother>(this SelectCommand cmd, SqlJoinType joinType, Expression<Func<T, Object>> currentExpr, String anotherTableName, Expression<Func<TAnother, Object>> anotherExpr)
+        public static SelectCommand Join<T, TAnother>(this SelectCommand cmd, SqlJoinType joinType, Expression<Func<T, Object>> currentExpr, Expression<Func<TAnother, Object>> anotherExpr)
         {
             MemberExpression currentLeft = ExpressionHelper.GetMemberExpression(currentExpr.Body);
             MemberExpression anotherLeft = ExpressionHelper.GetMemberExpression(anotherExpr.Body);
@@ -335,6 +335,8 @@ namespace DotMaysWind.Data.Linq
                 throw new NullAttributeException();
             }
 
+            String anotherTableName = EntityHelper.InternalGetTableName(typeof(TAnother));
+
             return cmd.Join(joinType, currentAttr.ColumnName, anotherTableName, anotherAttr.ColumnName);
         }
 
@@ -345,14 +347,13 @@ namespace DotMaysWind.Data.Linq
         /// <typeparam name="TAnother">另个表格的实体类类型</typeparam>
         /// <param name="cmd">查询语句</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
-        /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherExpr">另个实体类主键属性</param>
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
-        public static SelectCommand InnerJoin<T, TAnother>(this SelectCommand cmd, Expression<Func<T, Object>> currentExpr, String anotherTableName, Expression<Func<TAnother, Object>> anotherExpr)
+        public static SelectCommand InnerJoin<T, TAnother>(this SelectCommand cmd, Expression<Func<T, Object>> currentExpr, Expression<Func<TAnother, Object>> anotherExpr)
         {
-            return cmd.Join<T, TAnother>(SqlJoinType.InnerJoin, currentExpr, anotherTableName, anotherExpr);
+            return cmd.Join<T, TAnother>(SqlJoinType.InnerJoin, currentExpr, anotherExpr);
         }
 
         /// <summary>
@@ -362,14 +363,13 @@ namespace DotMaysWind.Data.Linq
         /// <typeparam name="TAnother">另个表格的实体类类型</typeparam>
         /// <param name="cmd">查询语句</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
-        /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherExpr">另个实体类主键属性</param>
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
-        public static SelectCommand LeftJoin<T, TAnother>(this SelectCommand cmd, Expression<Func<T, Object>> currentExpr, String anotherTableName, Expression<Func<TAnother, Object>> anotherExpr)
+        public static SelectCommand LeftJoin<T, TAnother>(this SelectCommand cmd, Expression<Func<T, Object>> currentExpr, Expression<Func<TAnother, Object>> anotherExpr)
         {
-            return cmd.Join<T, TAnother>(SqlJoinType.LeftJoin, currentExpr, anotherTableName, anotherExpr);
+            return cmd.Join<T, TAnother>(SqlJoinType.LeftJoin, currentExpr, anotherExpr);
         }
 
         /// <summary>
@@ -379,14 +379,13 @@ namespace DotMaysWind.Data.Linq
         /// <typeparam name="TAnother">另个表格的实体类类型</typeparam>
         /// <param name="cmd">查询语句</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
-        /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherExpr">另个实体类主键属性</param>
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
-        public static SelectCommand RightJoin<T, TAnother>(this SelectCommand cmd, Expression<Func<T, Object>> currentExpr, String anotherTableName, Expression<Func<TAnother, Object>> anotherExpr)
+        public static SelectCommand RightJoin<T, TAnother>(this SelectCommand cmd, Expression<Func<T, Object>> currentExpr, Expression<Func<TAnother, Object>> anotherExpr)
         {
-            return cmd.Join<T, TAnother>(SqlJoinType.RightJoin, currentExpr, anotherTableName, anotherExpr);
+            return cmd.Join<T, TAnother>(SqlJoinType.RightJoin, currentExpr, anotherExpr);
         }
 
         /// <summary>
@@ -396,14 +395,13 @@ namespace DotMaysWind.Data.Linq
         /// <typeparam name="TAnother">另个表格的实体类类型</typeparam>
         /// <param name="cmd">查询语句</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
-        /// <param name="anotherTableName">另个表格名称</param>
         /// <param name="anotherExpr">另个实体类主键属性</param>
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
-        public static SelectCommand FullJoin<T, TAnother>(this SelectCommand cmd, Expression<Func<T, Object>> currentExpr, String anotherTableName, Expression<Func<TAnother, Object>> anotherExpr)
+        public static SelectCommand FullJoin<T, TAnother>(this SelectCommand cmd, Expression<Func<T, Object>> currentExpr, Expression<Func<TAnother, Object>> anotherExpr)
         {
-            return cmd.Join<T, TAnother>(SqlJoinType.FullJoin, currentExpr, anotherTableName, anotherExpr);
+            return cmd.Join<T, TAnother>(SqlJoinType.FullJoin, currentExpr, anotherExpr);
         }
         #endregion
 
@@ -416,12 +414,12 @@ namespace DotMaysWind.Data.Linq
         /// <param name="cmd">查询语句</param>
         /// <param name="joinType">连接模式</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
-        /// <param name="anotherTableCommand">另个表格命令</param>
+        /// <param name="anotherAction">设置选择语句的方法</param>
         /// <param name="anotherExpr">另个实体类主键属性</param>
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
-        public static SelectCommand Join<T, TAnother>(this SelectCommand cmd, SqlJoinType joinType, Expression<Func<T, Object>> currentExpr, SelectCommand anotherTableCommand, Expression<Func<TAnother, Object>> anotherExpr)
+        public static SelectCommand Join<T, TAnother>(this SelectCommand cmd, SqlJoinType joinType, Expression<Func<T, Object>> currentExpr, Action<SelectCommand> anotherAction, Expression<Func<TAnother, Object>> anotherExpr)
         {
             MemberExpression currentLeft = ExpressionHelper.GetMemberExpression(currentExpr.Body);
             MemberExpression anotherLeft = ExpressionHelper.GetMemberExpression(anotherExpr.Body);
@@ -439,8 +437,9 @@ namespace DotMaysWind.Data.Linq
                 throw new NullAttributeException();
             }
 
-            return cmd.Join(joinType, currentAttr.ColumnName, anotherTableCommand, anotherAttr.ColumnName);
-            return null;
+            String anotherTableName = EntityHelper.InternalGetTableName(typeof(TAnother));
+
+            return cmd.Join(joinType, currentAttr.ColumnName, anotherTableName, anotherAttr.ColumnName, anotherAction);
         }
         
         /// <summary>
@@ -450,14 +449,14 @@ namespace DotMaysWind.Data.Linq
         /// <typeparam name="TAnother">另个表格的实体类类型</typeparam>
         /// <param name="cmd">查询语句</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
-        /// <param name="anotherTableCommand">另个表格命令</param>
+        /// <param name="anotherAction">设置选择语句的方法</param>
         /// <param name="anotherExpr">另个实体类主键属性</param>
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
-        public static SelectCommand InnerJoin<T, TAnother>(this SelectCommand cmd, Expression<Func<T, Object>> currentExpr, SelectCommand anotherTableCommand, Expression<Func<TAnother, Object>> anotherExpr)
+        public static SelectCommand InnerJoin<T, TAnother>(this SelectCommand cmd, Expression<Func<T, Object>> currentExpr, Action<SelectCommand> anotherAction, Expression<Func<TAnother, Object>> anotherExpr)
         {
-            return cmd.Join<T, TAnother>(SqlJoinType.InnerJoin, currentExpr, anotherTableCommand, anotherExpr);
+            return cmd.Join<T, TAnother>(SqlJoinType.InnerJoin, currentExpr, anotherAction, anotherExpr);
         }
 
         /// <summary>
@@ -467,14 +466,14 @@ namespace DotMaysWind.Data.Linq
         /// <typeparam name="TAnother">另个表格的实体类类型</typeparam>
         /// <param name="cmd">查询语句</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
-        /// <param name="anotherTableCommand">另个表格命令</param>
+        /// <param name="anotherAction">设置选择语句的方法</param>
         /// <param name="anotherExpr">另个实体类主键属性</param>
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
-        public static SelectCommand LeftJoin<T, TAnother>(this SelectCommand cmd, Expression<Func<T, Object>> currentExpr, SelectCommand anotherTableCommand, Expression<Func<TAnother, Object>> anotherExpr)
+        public static SelectCommand LeftJoin<T, TAnother>(this SelectCommand cmd, Expression<Func<T, Object>> currentExpr, Action<SelectCommand> anotherAction, Expression<Func<TAnother, Object>> anotherExpr)
         {
-            return cmd.Join<T, TAnother>(SqlJoinType.LeftJoin, currentExpr, anotherTableCommand, anotherExpr);
+            return cmd.Join<T, TAnother>(SqlJoinType.LeftJoin, currentExpr, anotherAction, anotherExpr);
         }
 
         /// <summary>
@@ -484,14 +483,14 @@ namespace DotMaysWind.Data.Linq
         /// <typeparam name="TAnother">另个表格的实体类类型</typeparam>
         /// <param name="cmd">查询语句</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
-        /// <param name="anotherTableCommand">另个表格命令</param>
+        /// <param name="anotherAction">设置选择语句的方法</param>
         /// <param name="anotherExpr">另个实体类主键属性</param>
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
-        public static SelectCommand RightJoin<T, TAnother>(this SelectCommand cmd, Expression<Func<T, Object>> currentExpr, SelectCommand anotherTableCommand, Expression<Func<TAnother, Object>> anotherExpr)
+        public static SelectCommand RightJoin<T, TAnother>(this SelectCommand cmd, Expression<Func<T, Object>> currentExpr, Action<SelectCommand> anotherAction, Expression<Func<TAnother, Object>> anotherExpr)
         {
-            return cmd.Join<T, TAnother>(SqlJoinType.RightJoin, currentExpr, anotherTableCommand, anotherExpr);
+            return cmd.Join<T, TAnother>(SqlJoinType.RightJoin, currentExpr, anotherAction, anotherExpr);
         }
 
         /// <summary>
@@ -501,14 +500,14 @@ namespace DotMaysWind.Data.Linq
         /// <typeparam name="TAnother">另个表格的实体类类型</typeparam>
         /// <param name="cmd">查询语句</param>
         /// <param name="currentExpr">当前实体类主键属性</param>
-        /// <param name="anotherTableCommand">另个表格命令</param>
+        /// <param name="anotherAction">设置选择语句的方法</param>
         /// <param name="anotherExpr">另个实体类主键属性</param>
         /// <exception cref="ExpressionInvalidException">表达式不正确</exception>
         /// <exception cref="NullAttributeException">没有设置特性</exception>
         /// <returns>当前语句</returns>
-        public static SelectCommand FullJoin<T, TAnother>(this SelectCommand cmd, Expression<Func<T, Object>> currentExpr, SelectCommand anotherTableCommand, Expression<Func<TAnother, Object>> anotherExpr)
+        public static SelectCommand FullJoin<T, TAnother>(this SelectCommand cmd, Expression<Func<T, Object>> currentExpr, Action<SelectCommand> anotherAction, Expression<Func<TAnother, Object>> anotherExpr)
         {
-            return cmd.Join<T, TAnother>(SqlJoinType.FullJoin, currentExpr, anotherTableCommand, anotherExpr);
+            return cmd.Join<T, TAnother>(SqlJoinType.FullJoin, currentExpr, anotherAction, anotherExpr);
         }
         #endregion
         #endregion

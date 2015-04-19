@@ -68,7 +68,7 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 获取创建时的根来源
         /// </summary>
-        protected AbstractSqlCommand RootSource
+        internal AbstractSqlCommand RootSource
         {
             get { return this._rootSource; }
         }
