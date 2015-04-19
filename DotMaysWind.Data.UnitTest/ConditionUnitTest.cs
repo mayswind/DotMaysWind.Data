@@ -18,8 +18,8 @@ namespace DotMaysWind.Data.UnitTest
         public void CreateInConditionTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
-            SelectCommand actualCommand = new SelectCommand(fakeDb, "");
+            SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
+            SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
             SqlInsideParametersCondition expectedCondition = SqlCondition.InThese(expectedCommand, "TestColumn2", 1, 2, 3, 4, 5);
             SqlInsideParametersCondition actualCondition = SqlCondition.InInt32(actualCommand, "TestColumn2", "1, 2, 3, 4, 5", ',');
@@ -31,8 +31,8 @@ namespace DotMaysWind.Data.UnitTest
         public void CreateNotInConditionTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
-            SelectCommand actualCommand = new SelectCommand(fakeDb, "");
+            SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
+            SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
             SqlInsideParametersCondition expectedCondition = SqlCondition.NotInThese(expectedCommand, "TestColumn2", 1, 2, 3, 4, 5);
             SqlInsideParametersCondition actualCondition = SqlCondition.NotInInt32(actualCommand, "TestColumn2", "1, 2, 3, 4, 5", ',');
@@ -47,7 +47,7 @@ namespace DotMaysWind.Data.UnitTest
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
 
-            SelectCommand baseCommand = new SelectCommand(fakeDb, "");
+            SelectCommand baseCommand = fakeDb.CreateSelectCommand("");
             SqlBasicParameterCondition baseCondition = SqlCondition.Equal(baseCommand, "TestColumn2", 1);
             SqlNotCondition actualCondition = !baseCondition;
 
@@ -72,7 +72,7 @@ namespace DotMaysWind.Data.UnitTest
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
 
-            SelectCommand baseCommand = new SelectCommand(fakeDb, "");
+            SelectCommand baseCommand = fakeDb.CreateSelectCommand("");
             AbstractSqlCondition baseCondition = SqlCondition.Equal(baseCommand, "TestColumn2", 1);
 
             AbstractSqlCondition expectedCondition = baseCondition & null;

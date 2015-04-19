@@ -21,8 +21,8 @@ namespace DotMaysWind.Data.UnitTest
         public void LinqCreateBasicConditionTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
-            SelectCommand actualCommand = new SelectCommand(fakeDb, "");
+            SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
+            SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
             SqlBasicParameterCondition expectedCondition = SqlCondition.Equal(expectedCommand, "TestColumn2", 123);
             SqlBasicParameterCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2 == 123) as SqlBasicParameterCondition;
@@ -76,8 +76,8 @@ namespace DotMaysWind.Data.UnitTest
         public void LinqCreateIsNullConditionTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
-            SelectCommand actualCommand = new SelectCommand(fakeDb, "");
+            SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
+            SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
             SqlBasicParameterCondition expectedCondition = SqlCondition.IsNull(expectedCommand, "TestColumn1");
             SqlBasicParameterCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.IsNull()) as SqlBasicParameterCondition;
@@ -99,8 +99,8 @@ namespace DotMaysWind.Data.UnitTest
         public void LinqCreateIsNotNullConditionTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
-            SelectCommand actualCommand = new SelectCommand(fakeDb, "");
+            SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
+            SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
             SqlBasicParameterCondition expectedCondition = SqlCondition.IsNotNull(expectedCommand, "TestColumn1");
             SqlBasicParameterCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.IsNotNull()) as SqlBasicParameterCondition;
@@ -124,8 +124,8 @@ namespace DotMaysWind.Data.UnitTest
         public void LinqCreateInConditionTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
-            SelectCommand actualCommand = new SelectCommand(fakeDb, "");
+            SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
+            SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
             SqlInsideParametersCondition expectedCondition = SqlCondition.InThese(expectedCommand, "TestColumn1", "1");
             SqlInsideParametersCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.InThese("1")) as SqlInsideParametersCondition;
@@ -165,8 +165,8 @@ namespace DotMaysWind.Data.UnitTest
         public void LinqCreateNotInConditionTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
-            SelectCommand actualCommand = new SelectCommand(fakeDb, "");
+            SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
+            SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
             SqlInsideParametersCondition expectedCondition = SqlCondition.NotInThese(expectedCommand, "TestColumn1", "1");
             SqlInsideParametersCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.NotInThese("1")) as SqlInsideParametersCondition;
@@ -208,8 +208,8 @@ namespace DotMaysWind.Data.UnitTest
         public void LinqCreateBetweenConditionTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
-            SelectCommand actualCommand = new SelectCommand(fakeDb, "");
+            SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
+            SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
             SqlBasicParameterCondition expectedCondition = SqlCondition.Between(expectedCommand, "TestColumn1", "1", "2");
             SqlBasicParameterCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.Between("1", "2")) as SqlBasicParameterCondition;
@@ -231,8 +231,8 @@ namespace DotMaysWind.Data.UnitTest
         public void LinqCreateNotBetweenConditionTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
-            SelectCommand actualCommand = new SelectCommand(fakeDb, "");
+            SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
+            SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
             SqlBasicParameterCondition expectedCondition = SqlCondition.NotBetween(expectedCommand, "TestColumn1", "1", "2");
             SqlBasicParameterCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.NotBetween("1", "2")) as SqlBasicParameterCondition;
@@ -256,8 +256,8 @@ namespace DotMaysWind.Data.UnitTest
         public void LinqCreateLikeConditionTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
-            SelectCommand actualCommand = new SelectCommand(fakeDb, "");
+            SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
+            SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
             SqlBasicParameterCondition expectedCondition = SqlCondition.Like(expectedCommand, "TestColumn1", "test1");
             SqlBasicParameterCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.Like("test1")) as SqlBasicParameterCondition;
@@ -284,8 +284,8 @@ namespace DotMaysWind.Data.UnitTest
         public void LinqCreateNotLikeConditionTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
-            SelectCommand actualCommand = new SelectCommand(fakeDb, "");
+            SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
+            SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
             SqlBasicParameterCondition expectedCondition = SqlCondition.NotLike(expectedCommand, "TestColumn1", "test1");
             SqlBasicParameterCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.NotLike("test1")) as SqlBasicParameterCondition;
@@ -314,8 +314,8 @@ namespace DotMaysWind.Data.UnitTest
         public void LinqCreateConditionListTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
-            SelectCommand actualCommand = new SelectCommand(fakeDb, "");
+            SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
+            SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
             AbstractSqlCondition expectedCondition = SqlCondition.GreaterThanOrEqual(expectedCommand, "TestColumn2", 123) & SqlCondition.LessThan(expectedCommand, "TestColumn2", 456);
             AbstractSqlCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2 >= 123 && c.Test2 < 456) as SqlConditionList;
@@ -334,8 +334,8 @@ namespace DotMaysWind.Data.UnitTest
         public void CreateNotConditionTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            SelectCommand expectedCommand = new SelectCommand(fakeDb, "");
-            SelectCommand actualCommand = new SelectCommand(fakeDb, "");
+            SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
+            SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
             SqlBasicParameterCondition baseCondition = SqlCondition.Equal(expectedCommand, "TestColumn2", 1);
             SqlNotCondition expectedCondition = !baseCondition;
