@@ -260,7 +260,7 @@ namespace DotMaysWind.Data.Command
                 return false;
             }
 
-            if (!String.Equals(this._tableName, cmd._tableName))
+            if (this.CommandType != cmd.CommandType)
             {
                 return false;
             }
