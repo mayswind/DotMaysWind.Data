@@ -30,7 +30,7 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 基础参数组索引
         /// </summary>
-        private Int32 _parameterIndex;
+        private Int16 _parameterIndex;
 
         /// <summary>
         /// 支持映射的数据表
@@ -58,22 +58,6 @@ namespace DotMaysWind.Data.Command
         public String TableName
         {
             get { return this._tableName; }
-        }
-
-        /// <summary>
-        /// 获取参数索引
-        /// </summary>
-        private Int32 ParameterIndex
-        {
-            get
-            {
-                if (this._parameterIndex >= Int32.MaxValue)
-                {
-                    this._parameterIndex = 0;
-                }
-
-                return this._parameterIndex++;
-            }
         }
             
         /// <summary>
@@ -116,7 +100,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>Sql语句参数类</returns>
         public DataParameter CreateDataParameter(String columnName, Object value)
         {
-            return DataParameter.InternalCreate(this._database, columnName, this.ParameterIndex, value);
+            return DataParameter.InternalCreate(this._database, columnName, this.GetNewParameterIndex(), value);
         }
 
         /// <summary>
@@ -128,7 +112,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>Sql语句参数类</returns>
         public DataParameter CreateDataParameter(String columnName, DataType dataType, Object value)
         {
-            return DataParameter.InternalCreate(this._database, columnName, this.ParameterIndex, dataType, value);
+            return DataParameter.InternalCreate(this._database, columnName, this.GetNewParameterIndex(), dataType, value);
         }
 
         /// <summary>
@@ -321,6 +305,21 @@ namespace DotMaysWind.Data.Command
         public override String ToString()
         {
             return String.Format("{0}, {1}", base.ToString(), this.GetCommandText());
+        }
+        #endregion
+
+        #region 私有方法
+        /// <summary>
+        /// 获取新参数的索引
+        /// </summary>
+        private String GetNewParameterIndex()
+        {
+            if (this._parameterIndex >= Int16.MaxValue)
+            {
+                this._parameterIndex = 0;
+            }
+
+            return Convert.ToString(this._parameterIndex++, 16);
         }
         #endregion
     }

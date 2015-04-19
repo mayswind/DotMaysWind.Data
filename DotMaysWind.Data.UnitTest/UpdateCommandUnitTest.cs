@@ -24,14 +24,14 @@ namespace DotMaysWind.Data.UnitTest
             String expectedSql = "UPDATE TestTable SET TestColumn1=@PN_IDX_0,TestColumn2=@PN_IDX_1,TestColumn3=@PN_IDX_2,TestColumn4=@PN_IDX_3,TestColumn5=@PN_IDX_4,TestColumn6=@PN_IDX_5,TestColumn7=@PN_IDX_6,TestColumn8=@PN_IDX_7";
             DataParameter[] expectedParameter = new DataParameter[8]
             {
-                DataParameter.InternalCreate(fakeDb, "TestColumn1", 0, entity.Test1),
-                DataParameter.InternalCreate(fakeDb, "TestColumn2", 1, entity.Test2),
-                DataParameter.InternalCreate(fakeDb, "TestColumn3", 2, entity.Test3),
-                DataParameter.InternalCreate(fakeDb, "TestColumn4", 3, entity.Test4),
-                DataParameter.InternalCreate(fakeDb, "TestColumn5", 4, DataType.Int32, entity.Test5),
-                DataParameter.InternalCreate(fakeDb, "TestColumn6", 5, DataType.Double, entity.Test6),
-                DataParameter.InternalCreate(fakeDb, "TestColumn7", 6, DataType.DateTime, entity.Test7),
-                DataParameter.InternalCreate(fakeDb, "TestColumn8", 7, DataType.Int16, entity.Test8)
+                DataParameter.InternalCreate(fakeDb, "TestColumn1", "0", entity.Test1),
+                DataParameter.InternalCreate(fakeDb, "TestColumn2", "1", entity.Test2),
+                DataParameter.InternalCreate(fakeDb, "TestColumn3", "2", entity.Test3),
+                DataParameter.InternalCreate(fakeDb, "TestColumn4", "3", entity.Test4),
+                DataParameter.InternalCreate(fakeDb, "TestColumn5", "4", DataType.Int32, entity.Test5),
+                DataParameter.InternalCreate(fakeDb, "TestColumn6", "5", DataType.Double, entity.Test6),
+                DataParameter.InternalCreate(fakeDb, "TestColumn7", "6", DataType.DateTime, entity.Test7),
+                DataParameter.InternalCreate(fakeDb, "TestColumn8", "7", DataType.Int16, entity.Test8)
             };
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Set(entity);
@@ -56,14 +56,14 @@ namespace DotMaysWind.Data.UnitTest
             String expectedSql = "UPDATE TestTable SET TestColumn1=@PN_IDX_0,TestColumn2=@PN_IDX_1,TestColumn3=@PN_IDX_2,TestColumn4=@PN_IDX_3,TestColumn5=@PN_IDX_4,TestColumn6=@PN_IDX_5,TestColumn7=@PN_IDX_6,TestColumn8=@PN_IDX_7";
             DataParameter[] expectedParameter = new DataParameter[8]
             {
-                DataParameter.InternalCreate(fakeDb, "TestColumn1", 0, entity.Test1),
-                DataParameter.InternalCreate(fakeDb, "TestColumn2", 1, entity.Test2),
-                DataParameter.InternalCreate(fakeDb, "TestColumn3", 2, entity.Test3),
-                DataParameter.InternalCreate(fakeDb, "TestColumn4", 3, entity.Test4),
-                DataParameter.InternalCreate(fakeDb, "TestColumn5", 4, DataType.Int32, entity.Test5),
-                DataParameter.InternalCreate(fakeDb, "TestColumn6", 5, DataType.Double, entity.Test6),
-                DataParameter.InternalCreate(fakeDb, "TestColumn7", 6, DataType.DateTime, entity.Test7),
-                DataParameter.InternalCreate(fakeDb, "TestColumn8", 7, DataType.Int16, entity.Test8)
+                DataParameter.InternalCreate(fakeDb, "TestColumn1", "0", entity.Test1),
+                DataParameter.InternalCreate(fakeDb, "TestColumn2", "1", entity.Test2),
+                DataParameter.InternalCreate(fakeDb, "TestColumn3", "2", entity.Test3),
+                DataParameter.InternalCreate(fakeDb, "TestColumn4", "3", entity.Test4),
+                DataParameter.InternalCreate(fakeDb, "TestColumn5", "4", DataType.Int32, entity.Test5),
+                DataParameter.InternalCreate(fakeDb, "TestColumn6", "5", DataType.Double, entity.Test6),
+                DataParameter.InternalCreate(fakeDb, "TestColumn7", "6", DataType.DateTime, entity.Test7),
+                DataParameter.InternalCreate(fakeDb, "TestColumn8", "7", DataType.Int16, entity.Test8)
             };
 
             UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName)

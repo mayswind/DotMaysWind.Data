@@ -39,7 +39,7 @@ namespace DotMaysWind.Data
         /// </summary>
         public DataType DataType
         {
-            get { return this.GetDataType(this._parameter.DbType); }
+            get { return DataParameter.GetDataType(this._parameter.DbType); }
         }
 
         /// <summary>
@@ -67,11 +67,11 @@ namespace DotMaysWind.Data
         /// <param name="columnName">字段名</param>
         /// <param name="parameterIndex">参数索引</param>
         /// <param name="value">赋值内容</param>
-        private DataParameter(AbstractDatabase database, String columnName, Int32 parameterIndex, Object value)
+        private DataParameter(AbstractDatabase database, String columnName, String parameterIndex, Object value)
         {
             this._parameter = new SqlParameter();
             this._parameter.SourceColumn = columnName;
-            this._parameter.ParameterName = database.InternalGetParameterName("PN_IDX_" + parameterIndex.ToString());
+            this._parameter.ParameterName = database.InternalGetParameterName("PN_IDX_" + parameterIndex);
 
             if (value == null)
             {
@@ -134,10 +134,10 @@ namespace DotMaysWind.Data
         /// <param name="parameterIndex">参数索引</param>
         /// <param name="value">赋值内容</param>
         /// <returns>Sql语句参数类</returns>
-        internal static DataParameter InternalCreate(AbstractDatabase database, String columnName, Int32 parameterIndex, Object value)
+        internal static DataParameter InternalCreate(AbstractDatabase database, String columnName, String parameterIndex, Object value)
         {
             DataParameter param = new DataParameter(database, columnName, parameterIndex, value);
-            param._parameter.DbType = param.GetDbType(DataTypeHelper.InternalGetDataType(value));
+            param._parameter.DbType = DataParameter.GetDbType(DataTypeHelper.InternalGetDataType(value));
 
             return param;
         }
@@ -151,10 +151,10 @@ namespace DotMaysWind.Data
         /// <param name="dataType">字段类型</param>
         /// <param name="value">赋值内容</param>
         /// <returns>Sql语句参数类</returns>
-        internal static DataParameter InternalCreate(AbstractDatabase database, String columnName, Int32 parameterIndex, DataType dataType, Object value)
+        internal static DataParameter InternalCreate(AbstractDatabase database, String columnName, String parameterIndex, DataType dataType, Object value)
         {
             DataParameter param = new DataParameter(database, columnName, parameterIndex, value);
-            param._parameter.DbType = param.GetDbType(dataType);
+            param._parameter.DbType = DataParameter.GetDbType(dataType);
 
             return param;
         }
@@ -265,12 +265,12 @@ namespace DotMaysWind.Data
         #endregion
 
         #region 私有方法
-        private DataType GetDataType(DbType dbType)
+        private static DataType GetDataType(DbType dbType)
         {
             return (DataType)(Int32)dbType;
         }
 
-        private DbType GetDbType(DataType dataType)
+        private static DbType GetDbType(DataType dataType)
         {
             return (DbType)(Int32)dataType;
         }
