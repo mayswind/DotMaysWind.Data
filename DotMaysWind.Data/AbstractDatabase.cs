@@ -180,7 +180,7 @@ namespace DotMaysWind.Data
         /// <returns>Sql插入语句</returns>
         public InsertCommand CreateInsertCommand(String tableName)
         {
-            return new InsertCommand(this, tableName);
+            return new InsertCommand(this, null, tableName);
         }
         
         /// <summary>
@@ -190,7 +190,7 @@ namespace DotMaysWind.Data
         /// <returns>Sql更新语句</returns>
         public UpdateCommand CreateUpdateCommand(String tableName)
         {
-            return new UpdateCommand(this, tableName);
+            return new UpdateCommand(this, null, tableName);
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace DotMaysWind.Data
         /// <returns>Sql删除语句</returns>
         public DeleteCommand CreateDeleteCommand(String tableName)
         {
-            return new DeleteCommand(this, tableName);
+            return new DeleteCommand(this, null, tableName);
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace DotMaysWind.Data
         /// <returns>Sql选择语句</returns>
         public SelectCommand CreateSelectCommand(String tableName)
         {
-            return new SelectCommand(this, tableName);
+            return new SelectCommand(this, null, tableName);
         }
 
         /// <summary>
@@ -221,18 +221,7 @@ namespace DotMaysWind.Data
         /// <returns>Sql选择语句</returns>
         public SelectCommand CreateSelectCommand(String tableName, String tableAliasesName)
         {
-            return new SelectCommand(this, tableName + ' ' + tableAliasesName);
-        }
-
-        /// <summary>
-        /// 创建新的Sql选择语句
-        /// </summary>
-        /// <param name="from">选择的从Sql语句</param>
-        /// <param name="fromAliasesName">从Sql语句的别名</param>
-        /// <returns>Sql选择语句</returns>
-        public SelectCommand CreateSelectCommand(SelectCommand from, String fromAliasesName)
-        {
-            return new SelectCommand(this, from, fromAliasesName);
+            return new SelectCommand(this, null, tableName + ' ' + tableAliasesName);
         }
 
         /// <summary>
@@ -254,6 +243,43 @@ namespace DotMaysWind.Data
         public CommandCollection CreateCommandSequence(String tableName)
         {
             return new CommandCollection(this, tableName);
+        }
+        #endregion
+
+        #region InternalCreateSqlCommand
+        /// <summary>
+        /// 创建新的Sql选择语句
+        /// </summary>
+        /// <param name="rootSource">创建时的根来源</param>
+        /// <param name="tableName">数据表名称</param>
+        /// <returns>Sql选择语句</returns>
+        internal SelectCommand InternalCreateSelectCommand(AbstractSqlCommand rootSource, String tableName)
+        {
+            return new SelectCommand(this, rootSource, tableName);
+        }
+
+        /// <summary>
+        /// 创建新的Sql选择语句
+        /// </summary>
+        /// <param name="rootSource">创建时的根来源</param>
+        /// <param name="tableName">数据表名称</param>
+        /// <param name="tableAliasesName">数据表别名</param>
+        /// <returns>Sql选择语句</returns>
+        internal SelectCommand InternalCreateSelectCommand(AbstractSqlCommand rootSource, String tableName, String tableAliasesName)
+        {
+            return new SelectCommand(this, rootSource, tableName + ' ' + tableAliasesName);
+        }
+
+        /// <summary>
+        /// 创建新的Sql选择语句
+        /// </summary>
+        /// <param name="rootSource">创建时的根来源</param>
+        /// <param name="from">选择的从Sql语句</param>
+        /// <param name="fromAliasesName">从Sql语句的别名</param>
+        /// <returns>Sql选择语句</returns>
+        internal SelectCommand InternalCreateSelectCommand(AbstractSqlCommand rootSource, SelectCommand from, String fromAliasesName)
+        {
+            return new SelectCommand(this, rootSource, from, fromAliasesName);
         }
         #endregion
 

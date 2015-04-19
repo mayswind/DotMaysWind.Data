@@ -99,14 +99,6 @@ namespace DotMaysWind.Data
         SelectCommand CreateSelectCommand(String tableName, String tableAliasesName);
 
         /// <summary>
-        /// 创建新的Sql选择语句
-        /// </summary>
-        /// <param name="from">选择的从Sql语句</param>
-        /// <param name="fromAliasesName">从Sql语句的别名</param>
-        /// <returns>Sql选择语句</returns>
-        SelectCommand CreateSelectCommand(SelectCommand from, String fromAliasesName);
-
-        /// <summary>
         /// 创建新的Sql自定义语句
         /// </summary>
         /// <param name="commandType">Sql语句类型</param>

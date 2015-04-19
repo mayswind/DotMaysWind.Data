@@ -40,9 +40,10 @@ namespace DotMaysWind.Data.Command
         /// 初始化Sql更新语句类
         /// </summary>
         /// <param name="database">数据库</param>
+        /// <param name="rootSource">创建时的根来源</param>
         /// <param name="tableName">数据表名称</param>
-        internal UpdateCommand(AbstractDatabase database, String tableName)
-            : base(database, tableName)
+        internal UpdateCommand(AbstractDatabase database, AbstractSqlCommand rootSource, String tableName)
+            : base(database, rootSource, tableName)
         {
             this._updateFields = new List<DataParameter>();
         }
@@ -198,20 +199,24 @@ namespace DotMaysWind.Data.Command
         /// 更新指定参数并返回当前语句
         /// </summary>
         /// <param name="columnName">字段名</param>
-        /// <param name="command">选择语句</param>
-        /// <exception cref="ArgumentNullException">选择语句不能为空</exception>
+        /// <param name="tableName">查询的表名</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
         /// <returns>当前语句</returns>
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
         /// IDatabase db = DatabaseFactory.CreateDatabase();
-        /// SelectCommand countCmd = db.CreateSelectCommand("tbl_Uploads")
-        ///     .Query(SqlAggregateFunction.Count)
-        ///     .Where(c => c.Equal("UserID", 1));
         /// 
         /// UpdateCommand cmd = db.CreateUpdateCommand("tbl_Users")
         ///     .Set("UserName", "admin")
-        ///     .Set("UploadCount", countCmd)
+        ///     .Set("UploadCount", 
+        ///         "tbl_Uploads", s =>
+        ///         {
+        ///             s.Query(SqlAggregateFunction.Count)
+        ///                 .Where(c => c.Equal("UserID", 1));
+        ///         }
+        ///     )
         ///     .Where(c => c.Equal("UserID", 1));
         /// 
         /// //UPDATE tbl_Users SET UserName = @UserName, UploadCount = (SELECT COUNT(*) FROM tbl_Uploads WHERE UserID = @UserID_Select) WHERE UserID = @UserID_Update
@@ -223,12 +228,15 @@ namespace DotMaysWind.Data.Command
         /// ]]>
         /// </code>
         /// </example>
-        public UpdateCommand Set(String columnName, SelectCommand command)
+        public UpdateCommand Set(String columnName, String tableName, Action<SelectCommand> action)
         {
-            if (command == null)
+            if (action == null)
             {
-                throw new ArgumentNullException("command");
+                throw new ArgumentNullException("action");
             }
+
+            SelectCommand command = this._database.InternalCreateSelectCommand((this.RootSource == null ? this : this.RootSource), tableName);
+            action(command);
 
             this._updateFields.Add(this.CreateDataParameterCustomAction(columnName, command.GetCommandText()));
 
@@ -240,6 +248,18 @@ namespace DotMaysWind.Data.Command
             }
 
             return this;
+        }
+
+        /// <summary>
+        /// 更新指定参数并返回当前语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
+        /// <returns>当前语句</returns>
+        public UpdateCommand Set(String columnName, Action<SelectCommand> action)
+        {
+            return this.Set(columnName, this.TableName, action);
         }
         #endregion
 
@@ -366,8 +386,9 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="condition">更新条件（当满足条件时更新该指定字段）</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="command">选择语句</param>
-        /// <exception cref="ArgumentNullException">选择语句不能为空</exception>
+        /// <param name="tableName">查询的表名</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
         /// <returns>当前语句</returns>
         /// <example>
         /// <code lang="C#">
@@ -375,13 +396,15 @@ namespace DotMaysWind.Data.Command
         /// IDatabase db = DatabaseFactory.CreateDatabase();
         /// Boolean updateCount = true;
         /// 
-        /// SelectCommand countCmd = db.CreateSelectCommand("tbl_Uploads")
-        ///     .Query(SqlAggregateFunction.Count)
-        ///     .Where(c => c.Equal("UserID", 1));
-        /// 
         /// UpdateCommand cmd = db.CreateUpdateCommand("tbl_Users")
         ///     .Set("UserName", "admin")
-        ///     .Set((() => { return updateCount; }), "UploadCount", countCmd)
+        ///     .Set((() => { return updateCount; }), "UploadCount", 
+        ///         "tbl_Uploads", s =>
+        ///         {
+        ///             s.Query(SqlAggregateFunction.Count)
+        ///                 .Where(c => c.Equal("UserID", 1));
+        ///         }
+        ///     )
         ///     .Where(c => c.Equal("UserID", 1));
         /// 
         /// //UPDATE tbl_Users SET UserName = @UserName, UploadCount = (SELECT COUNT(*) FROM tbl_Uploads WHERE UserID = @UserID_Select) WHERE UserID = @UserID_Update
@@ -393,11 +416,31 @@ namespace DotMaysWind.Data.Command
         /// ]]>
         /// </code>
         /// </example>
-        public UpdateCommand Set(Func<Boolean> condition, String columnName, SelectCommand command)
+        public UpdateCommand Set(Func<Boolean> condition, String columnName, String tableName, Action<SelectCommand> action)
         {
             if (condition())
             {
-                return this.Set(columnName, command);
+                return this.Set(columnName, tableName, action);
+            }
+            else
+            {
+                return this;
+            }
+        }
+
+        /// <summary>
+        /// 更新指定参数并返回当前语句
+        /// </summary>
+        /// <param name="condition">更新条件（当满足条件时更新该指定字段）</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
+        /// <returns>当前语句</returns>
+        public UpdateCommand Set(Func<Boolean> condition, String columnName, Action<SelectCommand> action)
+        {
+            if (condition())
+            {
+                return this.Set(columnName, action);
             }
             else
             {

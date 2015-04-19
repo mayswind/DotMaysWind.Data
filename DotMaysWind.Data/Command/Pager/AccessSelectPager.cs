@@ -31,7 +31,7 @@ namespace DotMaysWind.Data.Command.Pager
                 {
                     sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.InternalGetQueryFieldList());
 
-                    SelectCommand innerCommand = new SelectCommand(baseCommand.Database, baseCommand.TableName);
+                    SelectCommand innerCommand = baseCommand.Database.InternalCreateSelectCommand(baseCommand, baseCommand.TableName);
                     innerCommand.PageSize = recordCount - baseCommand.RecordStart;
                     innerCommand.InternalSetQueryFieldList(baseCommand);
                     innerCommand.InternalSetJoinList(baseCommand);
@@ -61,7 +61,7 @@ namespace DotMaysWind.Data.Command.Pager
 
                     sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.InternalGetQueryFieldList());
 
-                    SelectCommand innestCommand = new SelectCommand(baseCommand.Database, baseCommand.TableName);
+                    SelectCommand innestCommand = baseCommand.Database.InternalCreateSelectCommand(baseCommand, baseCommand.TableName);
                     innestCommand.PageSize = baseCommand.RecordStart + baseCommand.PageSize;
                     innestCommand.InternalSetQueryFieldList(baseCommand);
                     innestCommand.InternalSetJoinList(baseCommand);
@@ -70,7 +70,7 @@ namespace DotMaysWind.Data.Command.Pager
                     innestCommand.InternalSetHavingCondition(baseCommand);
                     innestCommand.InternalSetOrderList(baseCommand);
 
-                    SelectCommand innerCommand = new SelectCommand(baseCommand.Database, innestCommand, "T1");
+                    SelectCommand innerCommand = baseCommand.Database.InternalCreateSelectCommand(baseCommand, innestCommand, "T1");
                     innerCommand.PageSize = baseCommand.PageSize;
                     innerCommand.InternalSetQueryFieldList(baseCommand);
                     innerCommand.InternalSetOrderList(baseCommand);
@@ -83,7 +83,7 @@ namespace DotMaysWind.Data.Command.Pager
                     sb.AppendSelectTop(baseCommand.PageSize);
                     sb.AppendSelectDistinct(baseCommand.UseDistinct).AppendAllColumnNames(baseCommand.UseDistinct, baseCommand.InternalGetQueryFieldList());
 
-                    SelectCommand innerCommand = new SelectCommand(baseCommand.Database, baseCommand.TableName);
+                    SelectCommand innerCommand = baseCommand.Database.InternalCreateSelectCommand(baseCommand, baseCommand.TableName);
                     innerCommand.PageSize = recordCount - baseCommand.RecordStart;
                     innerCommand.InternalSetQueryFieldList(baseCommand);
                     innerCommand.InternalSetJoinList(baseCommand);

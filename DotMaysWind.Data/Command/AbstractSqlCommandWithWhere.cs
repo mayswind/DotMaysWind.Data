@@ -39,9 +39,10 @@ namespace DotMaysWind.Data.Command
         /// 初始化新的有Where语句的Sql语句抽象类
         /// </summary>
         /// <param name="database">数据库</param>
+        /// <param name="rootSource">创建时的根来源</param>
         /// <param name="tableName">表格名称</param>
-        protected AbstractSqlCommandWithWhere(AbstractDatabase database, String tableName)
-            : base(database, tableName)
+        protected AbstractSqlCommandWithWhere(AbstractDatabase database, AbstractSqlCommand rootSource, String tableName)
+            : base(database, rootSource, tableName)
         {
             this._conditionBuilder = new SqlConditionBuilder(this);
         }

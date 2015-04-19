@@ -33,6 +33,11 @@ namespace DotMaysWind.Data.Command
         private Int16 _parameterIndex;
 
         /// <summary>
+        /// 创建时的根来源
+        /// </summary>
+        private AbstractSqlCommand _rootSource;
+
+        /// <summary>
         /// 支持映射的数据表
         /// </summary>
         private IDatabaseTableWithMapping _sourceTable;
@@ -59,6 +64,14 @@ namespace DotMaysWind.Data.Command
         {
             get { return this._tableName; }
         }
+        
+        /// <summary>
+        /// 获取创建时的根来源
+        /// </summary>
+        protected AbstractSqlCommand RootSource
+        {
+            get { return this._rootSource; }
+        }
             
         /// <summary>
         /// 获取或设置支持映射的数据表
@@ -75,9 +88,10 @@ namespace DotMaysWind.Data.Command
         /// 初始化新的Sql语句抽象类
         /// </summary>
         /// <param name="database">数据库</param>
+        /// <param name="rootSource">创建时的根来源</param>
         /// <param name="tableName">表格名称</param>
         /// <exception cref="ArgumentNullException">数据库不能为空</exception>
-        protected AbstractSqlCommand(AbstractDatabase database, String tableName)
+        protected AbstractSqlCommand(AbstractDatabase database, AbstractSqlCommand rootSource, String tableName)
         {
             if (database == null)
             {
@@ -85,6 +99,7 @@ namespace DotMaysWind.Data.Command
             }
 
             this._database = database;
+            this._rootSource = rootSource;
             this._tableName = tableName;
             this._parameters = new List<DataParameter>();
             this._parameterIndex = 0;
@@ -314,6 +329,11 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         private String GetNewParameterIndex()
         {
+            if (this._rootSource != null)
+            {
+                return this._rootSource.GetNewParameterIndex();
+            }
+
             if (this._parameterIndex >= Int16.MaxValue)
             {
                 this._parameterIndex = 0;

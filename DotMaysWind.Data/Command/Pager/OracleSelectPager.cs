@@ -33,7 +33,7 @@ namespace DotMaysWind.Data.Command.Pager
                     WHERE RN > 20
                 */
 
-                SelectCommand innestCommand = new SelectCommand(baseCommand.Database, baseCommand.TableName);
+                SelectCommand innestCommand = baseCommand.Database.InternalCreateSelectCommand(baseCommand, baseCommand.TableName);
                 innestCommand.InternalSetQueryFieldList(baseCommand);
                 innestCommand.InternalSetJoinList(baseCommand);
                 innestCommand.InternalSetWhereCondition(baseCommand);
@@ -41,7 +41,7 @@ namespace DotMaysWind.Data.Command.Pager
                 innestCommand.InternalSetHavingCondition(baseCommand);
                 innestCommand.InternalSetOrderList(baseCommand);
 
-                SelectCommand innerCommand = new SelectCommand(baseCommand.Database, innestCommand, "");
+                SelectCommand innerCommand = baseCommand.Database.InternalCreateSelectCommand(baseCommand, innestCommand, "");
                 innerCommand.InternalSetWhereCondition(SqlCondition.LessThanOrEqualColumn(innerCommand, "ROWNUM", (baseCommand.RecordStart + baseCommand.PageSize).ToString()));
                 innerCommand.InternalQuerys(baseCommand.QueryFields);
                 innerCommand.InternalQuerys(SqlQueryField.InternalCreateFromFunction(baseCommand, "ROWNUM", "RN"));

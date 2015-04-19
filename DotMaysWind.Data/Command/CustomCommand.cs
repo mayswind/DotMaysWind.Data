@@ -40,7 +40,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="commandType">语句类型</param>
         /// <param name="commandString">语句内容</param>
         internal CustomCommand(AbstractDatabase database, SqlCommandType commandType, String commandString)
-            : base(database, String.Empty)
+            : base(database, null, String.Empty)
         {
             this._commandType = commandType;
             this._commandText = commandString;

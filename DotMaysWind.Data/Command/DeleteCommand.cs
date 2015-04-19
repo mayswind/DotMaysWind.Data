@@ -25,9 +25,10 @@ namespace DotMaysWind.Data.Command
         /// 初始化Sql删除语句类
         /// </summary>
         /// <param name="database">数据库</param>
+        /// <param name="rootSource">创建时的根来源</param>
         /// <param name="tableName">数据表名称</param>
-        internal DeleteCommand(AbstractDatabase database, String tableName)
-            : base(database, tableName) { }
+        internal DeleteCommand(AbstractDatabase database, AbstractSqlCommand rootSource, String tableName)
+            : base(database, rootSource, tableName) { }
         #endregion
 
         #region 方法

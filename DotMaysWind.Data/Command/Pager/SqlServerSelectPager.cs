@@ -36,7 +36,7 @@ namespace DotMaysWind.Data.Command.Pager
                 SqlCommandBuilder innerBuilder = new SqlCommandBuilder(baseCommand.Database);
                 innerBuilder.AppendSelectOrderBys(baseCommand.InternalGetOrderList(), false);
 
-                SelectCommand innerCommand = new SelectCommand(baseCommand.Database, baseCommand.TableName);
+                SelectCommand innerCommand = baseCommand.Database.InternalCreateSelectCommand(baseCommand, baseCommand.TableName);
                 innerCommand.InternalQuerys(baseCommand.QueryFields);
                 innerCommand.InternalQuerys(SqlQueryField.InternalCreateFromFunction(baseCommand, "ROW_NUMBER() OVER( " + innerBuilder.ToString() + ")", "RN"));
                 innerCommand.PageSize = baseCommand.RecordStart + baseCommand.PageSize;

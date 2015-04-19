@@ -139,27 +139,30 @@ namespace DotMaysWind.Data.Command
         /// 初始化Sql选择语句类
         /// </summary>
         /// <param name="database">数据库</param>
+        /// <param name="rootSource">创建时的根来源</param>
         /// <param name="tableName">数据表名称</param>
-        internal SelectCommand(AbstractDatabase database, String tableName)
-            : this(database, false, tableName) { }
+        internal SelectCommand(AbstractDatabase database, AbstractSqlCommand rootSource, String tableName)
+            : this(database, rootSource, false, tableName) { }
 
         /// <summary>
         /// 初始化Sql选择语句类
         /// </summary>
         /// <param name="database">数据库</param>
+        /// <param name="rootSource">创建时的根来源</param>
         /// <param name="from">选择的从Sql语句</param>
         /// <param name="fromAliasesName">从Sql语句的别名</param>
-        internal SelectCommand(AbstractDatabase database, SelectCommand from, String fromAliasesName)
-            : this(database, true, from.GetCommandText(fromAliasesName)) { }
+        internal SelectCommand(AbstractDatabase database, AbstractSqlCommand rootSource, SelectCommand from, String fromAliasesName)
+            : this(database, rootSource, true, from.GetCommandText(fromAliasesName)) { }
 
         /// <summary>
         /// 初始化Sql选择语句类
         /// </summary>
         /// <param name="database">数据库</param>
+        /// <param name="rootSource">创建时的根来源</param>
         /// <param name="isFromSql">是否从Sql语句中选择</param>
         /// <param name="from">数据表或Sql语句</param>
-        internal SelectCommand(AbstractDatabase database, Boolean isFromSql, String from)
-            : base(database, from)
+        private SelectCommand(AbstractDatabase database, AbstractSqlCommand rootSource, Boolean isFromSql, String from)
+            : base(database, rootSource, from)
         {
             this._isFromSql = isFromSql;
             this._queryFields = new List<SqlQueryField>();
