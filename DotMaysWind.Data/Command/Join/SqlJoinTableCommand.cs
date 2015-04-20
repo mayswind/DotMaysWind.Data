@@ -76,7 +76,7 @@ namespace DotMaysWind.Data.Command.Join
 
             StringBuilder sb = new StringBuilder();
 
-            String anotherTableName = "TBL_{0}" + this._anotherTableIdentity;
+            String anotherTableName = "TBL_" + this._anotherTableIdentity;
             String anotherTableContent = this._anotherTableCommand.GetCommandText(anotherTableName);
 
             sb.Append(SqlJoinTypes.InternalGetTypeName(this._joinType)).Append(' ').Append(this._anotherTableCommand.GetCommandText(anotherTableName)).Append(" ON ");
