@@ -30,7 +30,7 @@ namespace DotMaysWind.Data.Orm
                 throw new ArgumentNullException("dbtable");
             }
 
-            return dbtable.InternalGetEntity(null, row, args);
+            return dbtable.InternalGetEntity(null, 0, row, args);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace DotMaysWind.Data.Orm
                 throw new ArgumentNullException("action");
             }
 
-            action(new EntityCreatingArgs(row, row.Table.Columns, null));
+            action(new EntityCreatingArgs(0, row, row.Table.Columns, null));
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace DotMaysWind.Data.Orm
                 throw new ArgumentNullException("func");
             }
 
-            return func(new EntityCreatingArgs(row, row.Table.Columns, null));
+            return func(new EntityCreatingArgs(0, row, row.Table.Columns, null));
         }
         #endregion
     }

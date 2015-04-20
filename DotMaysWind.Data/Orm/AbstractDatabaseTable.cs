@@ -1056,7 +1056,7 @@ namespace DotMaysWind.Data.Orm
         {
             if (!DbConvert.IsDataTableNullOrEmpty(table))
             {
-                return this.InternalGetEntity(sender, table.Rows[0], extraArg);
+                return this.InternalGetEntity(sender, 0, table.Rows[0], extraArg);
             }
             else
             {
@@ -1068,14 +1068,15 @@ namespace DotMaysWind.Data.Orm
         /// 获取实体
         /// </summary>
         /// <param name="sender">请求SQL语句</param>
+        /// <param name="index">索引</param>
         /// <param name="row">数据行</param>
         /// <param name="extraArg">创建实体时的额外参数</param>
         /// <returns>数据表实体</returns>
-        internal T InternalGetEntity(Object sender, DataRow row, Object extraArg)
+        internal T InternalGetEntity(Object sender, Int32 index, DataRow row, Object extraArg)
         {
             if (row != null)
             {
-                T entity = this.CreateEntity(sender, new EntityCreatingArgs(row, row.Table.Columns, extraArg));
+                T entity = this.CreateEntity(sender, new EntityCreatingArgs(index, row, row.Table.Columns, extraArg));
 
                 return entity;
             }
@@ -1102,7 +1103,7 @@ namespace DotMaysWind.Data.Orm
 
                 for (Int32 i = 0; i < table.Rows.Count; i++)
                 {
-                    T entity = this.InternalGetEntity(sender, table.Rows[i], extraArg);
+                    T entity = this.InternalGetEntity(sender, i, table.Rows[i], extraArg);
 
                     list.Add(entity);
                 }
@@ -1129,9 +1130,9 @@ namespace DotMaysWind.Data.Orm
 
                 for (Int32 i = 0; i < table.Rows.Count; i++)
                 {
-                    EntityCreatingArgs args = new EntityCreatingArgs(table.Rows[i], table.Columns, extraArg);
+                    EntityCreatingArgs args = new EntityCreatingArgs(i, table.Rows[i], table.Columns, extraArg);
                     TKey key = this.LoadValue<TKey>(args, keyColumnName);
-                    T entity = this.InternalGetEntity(sender, table.Rows[i], args);
+                    T entity = this.InternalGetEntity(sender, i, table.Rows[i], args);
 
                     dict[key] = entity;
                 }

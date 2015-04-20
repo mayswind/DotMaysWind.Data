@@ -112,7 +112,7 @@ namespace DotMaysWind.Data.Orm
 
             for (Int32 i = 0; i < table.Rows.Count; i++)
             {
-                action(new EntityCreatingArgs(table.Rows[i], table.Columns, null));
+                action(new EntityCreatingArgs(i, table.Rows[i], table.Columns, null));
             }
         }
 
@@ -139,7 +139,7 @@ namespace DotMaysWind.Data.Orm
 
             for (Int32 i = 0; i < table.Rows.Count; i++)
             {
-                action(list, new EntityCreatingArgs(table.Rows[i], table.Columns, null));
+                action(list, new EntityCreatingArgs(i, table.Rows[i], table.Columns, null));
             }
 
             return list;
