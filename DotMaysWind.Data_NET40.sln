@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotMaysWind.Data.UnitTest_N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotMaysWind.Data.Test_NET40", "DotMaysWind.Data.Test\DotMaysWind.Data.Test_NET40.csproj", "{CE5EAF78-5A8B-46F8-BE85-F84BB69B9088}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotMaysWind.Data.PerformanceTest", "DotMaysWind.Data.PerformanceTest\DotMaysWind.Data.PerformanceTest_NET40.csproj", "{FB458F3C-5CB4-4C14-8DB7-DBC07749C390}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotMaysWind.Data.PerformanceTest_NET40", "DotMaysWind.Data.PerformanceTest\DotMaysWind.Data.PerformanceTest_NET40.csproj", "{FB458F3C-5CB4-4C14-8DB7-DBC07749C390}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
