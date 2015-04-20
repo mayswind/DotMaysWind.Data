@@ -682,9 +682,22 @@ namespace DotMaysWind.Data.Orm
         /// <returns>指定类型数据</returns>
         protected TValue LoadValue<TValue>(EntityCreatingArgs args, String columnName)
         {
-            if (args.Columns.Contains(columnName) && !Convert.IsDBNull(args.Row[columnName]))
+            return this.LoadValue<TValue>(args.Row, args.Columns, columnName);
+        }
+
+        /// <summary>
+        /// 读取指定类型数据
+        /// </summary>
+        /// <param name="row">数据行</param>
+        /// <param name="columns">数据列集合</param>
+        /// <param name="columnName">列名称</param>
+        /// <typeparam name="TValue">指定类型</typeparam>
+        /// <returns>指定类型数据</returns>
+        internal TValue LoadValue<TValue>(DataRow row, DataColumnCollection columns, String columnName)
+        {
+            if (columns.Contains(columnName) && !Convert.IsDBNull(row[columnName]))
             {
-                Object value = args.Row[columnName];
+                Object value = row[columnName];
                 DataType dataType = DataTypeHelper.InternalGetDataType(value);
 
                 return (TValue)DbConvert.ToValue(value, dataType);
@@ -1130,9 +1143,8 @@ namespace DotMaysWind.Data.Orm
 
                 for (Int32 i = 0; i < table.Rows.Count; i++)
                 {
-                    EntityCreatingArgs args = new EntityCreatingArgs(i, table.Rows[i], table.Columns, extraArg);
-                    TKey key = this.LoadValue<TKey>(args, keyColumnName);
-                    T entity = this.InternalGetEntity(sender, i, table.Rows[i], args);
+                    TKey key = this.LoadValue<TKey>(table.Rows[i], table.Columns, keyColumnName);
+                    T entity = this.InternalGetEntity(sender, i, table.Rows[i], extraArg);
 
                     dict[key] = entity;
                 }
