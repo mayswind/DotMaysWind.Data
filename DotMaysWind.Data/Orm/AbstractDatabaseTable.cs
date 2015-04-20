@@ -203,6 +203,17 @@ namespace DotMaysWind.Data.Orm
         }
 
         /// <summary>
+        /// 创建新的自选择Sql选择语句类
+        /// </summary>
+        /// <param name="innerTableAliasesName">内部数据表别名</param>
+        /// <param name="createInnerCommandAction">创建内部语句的方法</param>
+        /// <returns>Sql选择语句</returns>
+        protected virtual SelectCommand Select(String innerTableAliasesName, Action<SelectCommand> createInnerCommandAction)
+        {
+            return this._baseDatabase.CreateSelectCommand(this.TableName, innerTableAliasesName, createInnerCommandAction);
+        }
+
+        /// <summary>
         /// 创建新的Sql语句集合
         /// </summary>
         /// <returns>Sql语句集合</returns>

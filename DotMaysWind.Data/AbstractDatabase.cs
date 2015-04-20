@@ -225,6 +225,21 @@ namespace DotMaysWind.Data
         }
 
         /// <summary>
+        /// 创建新的自选择Sql选择语句
+        /// </summary>
+        /// <param name="innerTableName">内部数据表名称</param>
+        /// <param name="innerTableAliasesName">内部数据表别名</param>
+        /// <param name="createInnerCommandAction">创建内部语句的方法</param>
+        /// <returns>Sql选择语句</returns>
+        public SelectCommand CreateSelectCommand(String innerTableName, String innerTableAliasesName, Action<SelectCommand> createInnerCommandAction)
+        {
+            SelectCommand innerCommand = this.CreateSelectCommand(innerTableName);
+            createInnerCommandAction(innerCommand);
+
+            return new SelectCommand(this, innerCommand, innerCommand, innerTableAliasesName);
+        }
+
+        /// <summary>
         /// 创建新的Sql自定义语句
         /// </summary>
         /// <param name="commandType">Sql语句类型</param>
