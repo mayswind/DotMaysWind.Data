@@ -1786,28 +1786,6 @@ namespace DotMaysWind.Data.Command
         }
         #endregion
 
-        #region ToDataReader
-        /// <summary>
-        /// 获取数据读取器
-        /// </summary>
-        /// <param name="connection">数据库连接</param>
-        /// <returns>数据读取器</returns>
-        public IDataReader ToDataReader(DbConnection connection)
-        {
-            return this._database.ExecuteReader(this, connection);
-        }
-
-        /// <summary>
-        /// 获取数据读取器
-        /// </summary>
-        /// <param name="transaction">数据库事务</param>
-        /// <returns>数据读取器</returns>
-        public IDataReader ToDataReader(DbTransaction transaction)
-        {
-            return this._database.ExecuteReader(this, transaction);
-        }
-        #endregion
-
         #region UsingDataReader
         /// <summary>
         /// 使用数据库读取器执行操作
