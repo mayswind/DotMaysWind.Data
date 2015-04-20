@@ -682,6 +682,48 @@ namespace DotMaysWind.Data.Command
         #endregion
 
         #region OrderBy
+        #region General
+        /// <summary>
+        /// 按指定列排序并返回当前语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <param name="orderType">排序类型</param>
+        /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserID", "UserName")
+        ///     .OrderBy("UserName", SqlOrderType.Asc);
+        /// 
+        /// //SELECT UserID, UserName FROM tbl_Users ORDER BY UserName ASC
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
+        public SelectCommand OrderBy(String columnName, SqlOrderType orderType)
+        {
+            this._orders.Add(SqlOrder.InternalCreate(this, columnName, orderType));
+            return this;
+        }
+
+        /// <summary>
+        /// 按指定列排序并返回当前语句
+        /// </summary>
+        /// <param name="tableName">表格名称</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="orderType">排序类型</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand OrderBy(String tableName, String columnName, SqlOrderType orderType)
+        {
+            this._orders.Add(SqlOrder.InternalCreate(this, tableName, columnName, orderType));
+            return this;
+        }
+        #endregion
+
+        #region OrderByAsc/OrderByDesc
         /// <summary>
         /// 按指定列升序排序并返回当前语句
         /// </summary>
@@ -695,7 +737,7 @@ namespace DotMaysWind.Data.Command
         ///     .Querys("UserID", "UserName")
         ///     .OrderByAsc("CreateTime", "UserName");
         /// 
-        /// //SELECT UserID, UserName FROM tbl_Users ORDER BY CreateTime, UserName
+        /// //SELECT UserID, UserName FROM tbl_Users ORDER BY CreateTime ASC, UserName ASC
         /// 
         /// DataTable table = cmd.ToDataTable();
         /// ]]>
@@ -707,7 +749,7 @@ namespace DotMaysWind.Data.Command
             {
                 for (Int32 i = 0; i < columnNames.Length; i++)
                 {
-                    this._orders.Add(SqlOrder.Create(this, columnNames[i], SqlOrderType.Asc));
+                    this.OrderBy(columnNames[i], SqlOrderType.Asc);
                 }
             }
 
@@ -739,64 +781,97 @@ namespace DotMaysWind.Data.Command
             {
                 for (Int32 i = 0; i < columnNames.Length; i++)
                 {
-                    this._orders.Add(SqlOrder.Create(this, columnNames[i], SqlOrderType.Desc));
+                    this.OrderBy(columnNames[i], SqlOrderType.Desc);
                 }
             }
 
             return this;
         }
+        #endregion
 
+        #region OrderByAggregateFunction
         /// <summary>
         /// 按指定列排序并返回当前语句
         /// </summary>
-        /// <param name="columnName">字段名</param>
+        /// <param name="function">合计函数</param>
         /// <param name="orderType">排序类型</param>
         /// <returns>当前语句</returns>
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
         /// IDatabase db = DatabaseFactory.CreateDatabase();
-        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
-        ///     .Querys("UserID", "UserName")
-        ///     .OrderByAsc("UserName", SqlOrderType.Asc);
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Products")
+        ///     .Querys("ProductID", "ProductName")
+        ///     .GroupBy("ProductType")
+        ///     .OrderBy(SqlAggregateFunction.Count, SqlOrderType.Asc);
         /// 
-        /// //SELECT UserID, UserName FROM tbl_Users ORDER BY UserName
+        /// //SELECT ProductID, ProductName FROM tbl_Products GROUP BY ProductType ORDER BY Count(*) ASC
         /// 
         /// DataTable table = cmd.ToDataTable();
         /// ]]>
         /// </code>
         /// </example>
-        public SelectCommand OrderBy(String columnName, SqlOrderType orderType)
+        public SelectCommand OrderBy(SqlAggregateFunction function, SqlOrderType orderType)
         {
-            this._orders.Add(SqlOrder.Create(this, columnName, orderType));
+            this._orders.Add(SqlOrder.InternalCreateFromAggregateFunction(this, function, orderType));
             return this;
         }
 
         /// <summary>
         /// 按指定列排序并返回当前语句
         /// </summary>
-        /// <param name="columnName">字段名</param>
-        /// <param name="isAscending">是否升序</param>
+        /// <param name="tableName">表格名称</param>
+        /// <param name="function">合计函数</param>
+        /// <param name="orderType">排序类型</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand OrderBy(String tableName, SqlAggregateFunction function, SqlOrderType orderType)
+        {
+            this._orders.Add(SqlOrder.InternalCreateFromAggregateFunction(this, tableName, function, orderType));
+            return this;
+        }
+
+        /// <summary>
+        /// 按指定列排序并返回当前语句
+        /// </summary>
+        /// <param name="function">合计函数</param>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="orderType">排序类型</param>
         /// <returns>当前语句</returns>
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
         /// IDatabase db = DatabaseFactory.CreateDatabase();
-        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
-        ///     .Querys("UserID", "UserName")
-        ///     .OrderByAsc("UserName", true);
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Products")
+        ///     .Querys("ProductID", "ProductName")
+        ///     .GroupBy("ProductType")
+        ///     .OrderBy(SqlAggregateFunction.Count, "ProductID", SqlOrderType.Asc);
         /// 
-        /// //SELECT UserID, UserName FROM tbl_Users ORDER BY UserName
+        /// //SELECT ProductID, ProductName FROM tbl_Products GROUP BY ProductType ORDER BY Count(ProductID) ASC
         /// 
         /// DataTable table = cmd.ToDataTable();
         /// ]]>
         /// </code>
         /// </example>
-        public SelectCommand OrderBy(String columnName, Boolean isAscending)
+        public SelectCommand OrderBy(SqlAggregateFunction function, String columnName, SqlOrderType orderType)
         {
-            this._orders.Add(SqlOrder.Create(this, columnName, isAscending));
+            this._orders.Add(SqlOrder.InternalCreateFromAggregateFunction(this, function, columnName, orderType));
             return this;
         }
+
+        /// <summary>
+        /// 按指定列排序并返回当前语句
+        /// </summary>
+        /// <param name="tableName">表格名称</param>
+        /// <param name="function">合计函数</param>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="orderType">排序类型</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand OrderBy(String tableName, SqlAggregateFunction function, String columnName, SqlOrderType orderType)
+        {
+            this._orders.Add(SqlOrder.InternalCreateFromAggregateFunction(this, tableName, function, columnName, orderType));
+            return this;
+        }
+        #endregion
         #endregion
 
         #region Join

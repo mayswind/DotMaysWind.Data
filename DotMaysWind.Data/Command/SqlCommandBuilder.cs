@@ -497,7 +497,34 @@ namespace DotMaysWind.Data.Command
                 for (Int32 i = 0; i < orders.Count; i++)
                 {
                     if (i > 0) names.Append(",");
-                    names.Append(orders[i].FieldName);
+
+                    SqlOrder order = orders[i];
+
+                    if (order.UseFunction)
+                    {
+                        names.Append(order.Function);
+                    }
+
+                    if (!String.IsNullOrEmpty(order.FieldName))
+                    {
+                        if (order.UseFunction)
+                        {
+                            names.Append('(');
+                        }
+
+                        if (!String.IsNullOrEmpty(order.TableName))
+                        {
+                            names.Append(order.TableName).Append('.');
+                        }
+
+                        names.Append(orders[i].FieldName);
+
+                        if (order.UseFunction)
+                        {
+                            names.Append(')');
+                        }
+                    }
+
                     names.Append(orders[i].GetOrderType(orderReverse) == SqlOrderType.Desc ? " DESC" : " ASC");
                 }
 

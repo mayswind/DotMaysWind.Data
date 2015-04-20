@@ -8,18 +8,29 @@ namespace DotMaysWind.Data.Command
     public class SqlOrder
     {
         #region 字段
+        private String _tableName;
         private String _columnName;
         private SqlOrderType _orderType;
+
+        private Boolean _useFunction;
+        private String _function;
         #endregion
 
         #region 属性
+        /// <summary>
+        /// 获取表格名称
+        /// </summary>
+        public String TableName
+        {
+            get { return this._tableName; }
+        }
+
         /// <summary>
         /// 获取或设置字段名
         /// </summary>
         public String FieldName
         {
             get { return this._columnName; }
-            set { this._columnName = value; }
         }
 
         /// <summary>
@@ -28,7 +39,22 @@ namespace DotMaysWind.Data.Command
         public SqlOrderType OrderType
         {
             get { return this._orderType; }
-            set { this._orderType = value; }
+        }
+
+        /// <summary>
+        /// 获取是否使用函数
+        /// </summary>
+        internal Boolean UseFunction
+        {
+            get { return this._useFunction; }
+        }
+
+        /// <summary>
+        /// 获取函数名称
+        /// </summary>
+        internal String Function
+        {
+            get { return this._function; }
         }
         #endregion
 
@@ -37,12 +63,33 @@ namespace DotMaysWind.Data.Command
         /// 初始化新的Sql语句排序类
         /// </summary>
         /// <param name="baseCommand">选择语句</param>
+        /// <param name="tableName">表格名称</param>
         /// <param name="columnName">字段名</param>
         /// <param name="orderType">排序方式</param>
-        private SqlOrder(SelectCommand baseCommand, String columnName, SqlOrderType orderType)
+        private SqlOrder(SelectCommand baseCommand, String tableName, String columnName, SqlOrderType orderType)
         {
+            this._tableName = tableName;
             this._columnName = columnName;
             this._orderType = orderType;
+            this._useFunction = false;
+            this._function = String.Empty;
+        }
+
+        /// <summary>
+        /// 初始化新的Sql语句排序类
+        /// </summary>
+        /// <param name="baseCommand">选择语句</param>
+        /// <param name="tableName">表格名称</param>
+        /// <param name="function">合计函数</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="orderType">排序方式</param>
+        private SqlOrder(SelectCommand baseCommand, String tableName, SqlAggregateFunction function, String columnName, SqlOrderType orderType)
+        {
+            this._tableName = tableName;
+            this._columnName = columnName;
+            this._orderType = orderType;
+            this._useFunction = true;
+            this._function = function.ToString().ToUpperInvariant();
         }
         #endregion
         
@@ -67,35 +114,74 @@ namespace DotMaysWind.Data.Command
 
         #region 静态方法
         /// <summary>
-        /// 初始化新的Sql语句排序类
-        /// </summary>
-        /// <param name="cmd">选择语句</param>
-        /// <param name="columnName">字段名</param>
-        internal static SqlOrder Create(SelectCommand cmd, String columnName)
-        {
-            return new SqlOrder(cmd, columnName, SqlOrderType.Asc);
-        }
-
-        /// <summary>
-        /// 初始化新的Sql语句排序类
+        /// 创建新的Sql语句排序类
         /// </summary>
         /// <param name="cmd">选择语句</param>
         /// <param name="columnName">字段名</param>
         /// <param name="orderType">排序方式</param>
-        internal static SqlOrder Create(SelectCommand cmd, String columnName, SqlOrderType orderType)
+        internal static SqlOrder InternalCreate(SelectCommand cmd, String columnName, SqlOrderType orderType)
         {
-            return new SqlOrder(cmd, columnName, orderType);
+            return new SqlOrder(cmd, String.Empty, columnName, orderType);
         }
 
         /// <summary>
-        /// 初始化新的Sql语句排序类
+        /// 创建新的Sql语句排序类
         /// </summary>
         /// <param name="cmd">选择语句</param>
+        /// <param name="tableName">表格名称</param>
         /// <param name="columnName">字段名</param>
-        /// <param name="isAscending">是否升序</param>
-        internal static SqlOrder Create(SelectCommand cmd, String columnName, Boolean isAscending)
+        /// <param name="orderType">排序方式</param>
+        internal static SqlOrder InternalCreate(SelectCommand cmd, String tableName, String columnName, SqlOrderType orderType)
         {
-            return new SqlOrder(cmd, columnName, (isAscending ? SqlOrderType.Asc : SqlOrderType.Desc));
+            return new SqlOrder(cmd, tableName, columnName, orderType);
+        }
+
+        /// <summary>
+        /// 创建新的Sql语句排序类
+        /// </summary>
+        /// <param name="cmd">选择语句</param>
+        /// <param name="function">合计函数</param>
+        /// <param name="orderType">排序方式</param>
+        internal static SqlOrder InternalCreateFromAggregateFunction(SelectCommand cmd, SqlAggregateFunction function, SqlOrderType orderType)
+        {
+            return new SqlOrder(cmd, String.Empty, function, "*", orderType);
+        }
+
+        /// <summary>
+        /// 创建新的Sql语句排序类
+        /// </summary>
+        /// <param name="cmd">选择语句</param>
+        /// <param name="tableName">表格名称</param>
+        /// <param name="function">合计函数</param>
+        /// <param name="orderType">排序方式</param>
+        internal static SqlOrder InternalCreateFromAggregateFunction(SelectCommand cmd, String tableName, SqlAggregateFunction function, SqlOrderType orderType)
+        {
+            return new SqlOrder(cmd, tableName, function, "*", orderType);
+        }
+
+        /// <summary>
+        /// 创建新的Sql语句排序类
+        /// </summary>
+        /// <param name="cmd">选择语句</param>
+        /// <param name="function">合计函数</param>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="orderType">排序方式</param>
+        internal static SqlOrder InternalCreateFromAggregateFunction(SelectCommand cmd, SqlAggregateFunction function, String columnName, SqlOrderType orderType)
+        {
+            return new SqlOrder(cmd, String.Empty, function, columnName, orderType);
+        }
+
+        /// <summary>
+        /// 创建新的Sql语句排序类
+        /// </summary>
+        /// <param name="cmd">选择语句</param>
+        /// <param name="tableName">表格名称</param>
+        /// <param name="function">合计函数</param>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="orderType">排序方式</param>
+        internal static SqlOrder InternalCreateFromAggregateFunction(SelectCommand cmd, String tableName, SqlAggregateFunction function, String columnName, SqlOrderType orderType)
+        {
+            return new SqlOrder(cmd, tableName, function, columnName, orderType);
         }
         #endregion
 
@@ -133,7 +219,22 @@ namespace DotMaysWind.Data.Command
                 return false;
             }
 
+            if (!String.Equals(this._tableName, order._tableName))
+            {
+                return false;
+            }
+
             if (!String.Equals(this._columnName, order._columnName))
+            {
+                return false;
+            }
+
+            if (_useFunction != order._useFunction)
+            {
+                return false;
+            }
+
+            if (!String.Equals(this._function, order._function))
             {
                 return false;
             }

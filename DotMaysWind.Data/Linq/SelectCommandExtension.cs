@@ -262,8 +262,9 @@ namespace DotMaysWind.Data.Linq
         public static SelectCommand OrderBy<T>(this SelectCommand cmd, Expression<Func<T, Object>> expr, SqlOrderType orderType)
         {
             DatabaseColumnAttribute attr = SelectCommandExtension.GetColumnAttribute(cmd, expr.Body);
+            String tableName = EntityHelper.InternalGetTableName(typeof(T));
 
-            return cmd.OrderBy(attr.ColumnName, orderType);
+            return cmd.OrderBy(tableName, attr.ColumnName, orderType);
         }
 
         /// <summary>
