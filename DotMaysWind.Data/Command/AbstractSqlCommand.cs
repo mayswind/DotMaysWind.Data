@@ -323,6 +323,17 @@ namespace DotMaysWind.Data.Command
         }
         #endregion
 
+        #region 内部方法
+        /// <summary>
+        /// 添加参数组
+        /// </summary>
+        /// <param name="parameters">参数组列表</param>
+        internal void InternalAddDataParameterList(DataParameter[] parameters)
+        {
+            this._parameters.AddRange(parameters);
+        }
+        #endregion
+
         #region 私有方法
         /// <summary>
         /// 获取新参数的索引

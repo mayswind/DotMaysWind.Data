@@ -236,7 +236,10 @@ namespace DotMaysWind.Data
             SelectCommand innerCommand = this.CreateSelectCommand(innerTableName);
             createInnerCommandAction(innerCommand);
 
-            return new SelectCommand(this, innerCommand, innerCommand, innerTableAliasesName);
+            SelectCommand outerCommand = new SelectCommand(this, innerCommand, innerCommand, innerTableAliasesName);
+            outerCommand.InternalAddDataParameterList(innerCommand.GetAllParameters());
+
+            return outerCommand;
         }
 
         /// <summary>
