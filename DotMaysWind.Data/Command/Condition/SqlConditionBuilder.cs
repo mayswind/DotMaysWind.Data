@@ -9,14 +9,14 @@ namespace DotMaysWind.Data.Command.Condition
     public sealed class SqlConditionBuilder
     {
         #region 字段
-        private AbstractSqlCommand _baseCommand;
+        private AbstractSqlCommandWithWhere _baseCommand;
         #endregion
 
         #region 属性
         /// <summary>
         /// 获取当前的语句
         /// </summary>
-        public AbstractSqlCommand Command
+        public AbstractSqlCommandWithWhere Command
         {
             get { return this._baseCommand; }
         }
@@ -27,7 +27,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// 初始化新的Sql语句条件类
         /// </summary>
         /// <param name="baseCommand">源语句</param>
-        internal SqlConditionBuilder(AbstractSqlCommand baseCommand)
+        internal SqlConditionBuilder(AbstractSqlCommandWithWhere baseCommand)
         {
             this._baseCommand = baseCommand;
         }
