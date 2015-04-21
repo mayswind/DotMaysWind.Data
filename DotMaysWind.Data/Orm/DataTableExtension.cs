@@ -9,6 +9,34 @@ namespace DotMaysWind.Data.Orm
     /// </summary>
     public static class DataTableExtension
     {
+        /// <summary>
+        /// Each完成类
+        /// </summary>
+        public class EachDone
+        {
+            /// <summary>
+            /// Each方法完成后执行指定方法
+            /// </summary>
+            /// <typeparam name="T">返回类型</typeparam>
+            /// <param name="func">指定方法</param>
+            /// <returns>自定义返回的内容</returns>
+            public T Done<T>(Func<T> func)
+            {
+                return func();
+            }
+
+            /// <summary>
+            /// Each方法完成后执行指定对象
+            /// </summary>
+            /// <typeparam name="T">返回类型</typeparam>
+            /// <param name="obj">指定对象</param>
+            /// <returns>自定义返回的内容</returns>
+            public T Done<T>(T obj)
+            {
+                return obj;
+            }
+        }
+
         #region ToEntityList
         /// <summary>
         /// 获取实体列表
@@ -98,7 +126,7 @@ namespace DotMaysWind.Data.Orm
         /// <param name="table">数据表</param>
         /// <param name="action">操作方法</param>
         /// <exception cref="ArgumentNullException">数据行或操作方法不能为空</exception>
-        public static void Each(this DataTable table, Action<EntityCreatingArgs> action)
+        public static EachDone Each(this DataTable table, Action<EntityCreatingArgs> action)
         {
             if (table == null)
             {
@@ -114,6 +142,8 @@ namespace DotMaysWind.Data.Orm
             {
                 action(new EntityCreatingArgs(i, table.Rows[i], table.Columns, null));
             }
+            
+            return new EachDone();
         }
 
         /// <summary>
