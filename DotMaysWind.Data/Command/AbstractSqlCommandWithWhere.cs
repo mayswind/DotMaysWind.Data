@@ -49,6 +49,33 @@ namespace DotMaysWind.Data.Command
         #endregion
 
         #region 方法
+        #region Where
+        /// <summary>
+        /// 设置指定查询的语句并返回当前语句
+        /// </summary>
+        /// <param name="where">查询语句</param>
+        /// <returns>当前语句</returns>
+        public AbstractSqlCommandWithWhere Where(ISqlCondition where)
+        {
+            this._where = where;
+
+            return this;
+        }
+
+        /// <summary>
+        /// 设置指定查询的语句并返回当前语句
+        /// </summary>
+        /// <param name="where">查询语句</param>
+        /// <returns>当前语句</returns>
+        public AbstractSqlCommandWithWhere Where(Func<SqlConditionBuilder, ISqlCondition> where)
+        {
+            this._where = where(this._conditionBuilder);
+
+            return this;
+        }
+        #endregion
+
+        #region ToDbCommand
         /// <summary>
         /// 输出数据库命令
         /// </summary>
@@ -65,7 +92,9 @@ namespace DotMaysWind.Data.Command
 
             return dbCommand;
         }
+        #endregion
 
+        #region GetAllParameters
         /// <summary>
         /// 获取所有参数集合
         /// </summary>
@@ -83,6 +112,7 @@ namespace DotMaysWind.Data.Command
 
             return result.ToArray();
         }
+        #endregion
         #endregion
 
         #region 内部方法

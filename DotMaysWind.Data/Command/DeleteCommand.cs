@@ -77,7 +77,7 @@ namespace DotMaysWind.Data.Command
         /// ]]>
         /// </code>
         /// </example>
-        public DeleteCommand Where(ISqlCondition where)
+        public new DeleteCommand Where(ISqlCondition where)
         {
             this._where = where;
 
@@ -102,7 +102,7 @@ namespace DotMaysWind.Data.Command
         /// ]]>
         /// </code>
         /// </example>
-        public DeleteCommand Where(Func<SqlConditionBuilder, ISqlCondition> where)
+        public new DeleteCommand Where(Func<SqlConditionBuilder, ISqlCondition> where)
         {
             this._where = where(this._conditionBuilder);
 

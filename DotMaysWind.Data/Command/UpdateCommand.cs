@@ -528,7 +528,7 @@ namespace DotMaysWind.Data.Command
         /// ]]>
         /// </code>
         /// </example>
-        public UpdateCommand Where(ISqlCondition where)
+        public new UpdateCommand Where(ISqlCondition where)
         {
             this._where = where;
 
@@ -556,7 +556,7 @@ namespace DotMaysWind.Data.Command
         /// ]]>
         /// </code>
         /// </example>
-        public UpdateCommand Where(Func<SqlConditionBuilder, ISqlCondition> where)
+        public new UpdateCommand Where(Func<SqlConditionBuilder, ISqlCondition> where)
         {
             this._where = where(this._conditionBuilder);
 

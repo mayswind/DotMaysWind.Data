@@ -1327,7 +1327,7 @@ namespace DotMaysWind.Data.Command
         /// ]]>
         /// </code>
         /// </example>
-        public SelectCommand Where(ISqlCondition where)
+        public new SelectCommand Where(ISqlCondition where)
         {
             this._where = where;
 
@@ -1355,7 +1355,7 @@ namespace DotMaysWind.Data.Command
         /// ]]>
         /// </code>
         /// </example>
-        public SelectCommand Where(Func<SqlConditionBuilder, ISqlCondition> where)
+        public new SelectCommand Where(Func<SqlConditionBuilder, ISqlCondition> where)
         {
             this._where = where(this._conditionBuilder);
 
