@@ -159,6 +159,30 @@ namespace DotMaysWind.Data.Command
         }
         #endregion
 
+        #region AddSome
+        /// <summary>
+        /// 添加指定条语句
+        /// </summary>
+        /// <param name="collection">待遍历的集合</param>
+        /// <param name="func">待执行的语句</param>
+        /// <returns>当前集合</returns>
+        public CommandCollection AddSome<T>(IEnumerable<T> collection, Func<ObjectItem<T>, ISqlCommand> func)
+        {
+            Int32 idx = 0;
+
+            foreach (T obj in collection)
+            {
+                ISqlCommand command = func(new ObjectItem<T>(obj, idx++));
+
+                if (command != null)
+                {
+                    this.Add(command);
+                }
+            }
+
+            return this;
+        }
+
         #region CreateSqlCommand
         /// <summary>
         /// 添加新的Sql插入语句类
@@ -489,25 +513,6 @@ namespace DotMaysWind.Data.Command
             return this;
         }
         #endregion
-
-        #region AddSomeSqlCommands
-        /// <summary>
-        /// 根据指定集合执行指定次数
-        /// </summary>
-        /// <param name="collection">待遍历的集合</param>
-        /// <param name="action">待执行的语句</param>
-        /// <returns>当前集合</returns>
-        public CommandCollection AddSome<T>(IEnumerable<T> collection, Action<CommandCollection, ObjectItem<T>> action)
-        {
-            Int32 idx = 0;
-
-            foreach (T obj in collection)
-            {
-                action(this, new ObjectItem<T>(obj, idx++));
-            }
-
-            return this;
-        }
         #endregion
 
         #region Then
