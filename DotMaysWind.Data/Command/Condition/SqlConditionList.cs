@@ -53,7 +53,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="baseCommand">源Sql语句</param>
         /// <param name="concatType">连接类型</param>
-        internal SqlConditionList(AbstractSqlCommand baseCommand, SqlWhereConcatType concatType)
+        private SqlConditionList(AbstractSqlCommandWithWhere baseCommand, SqlWhereConcatType concatType)
             : base(baseCommand)
         {
             this._list = new List<ISqlCondition>();
@@ -285,6 +285,30 @@ namespace DotMaysWind.Data.Command.Condition
         public static Boolean operator !=(SqlConditionList obj, SqlConditionList obj2)
         {
             return !Object.Equals(obj, obj2);
+        }
+        #endregion
+
+        #region 静态方法
+        /// <summary>
+        /// 创建新的Sql条件语句集合
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="concatType">连接类型</param>
+        /// <param name="conditions">条件语句集合</param>
+        /// <returns>Sql条件语句集合</returns>
+        internal static SqlConditionList InternalCreate(AbstractSqlCommandWithWhere cmd, SqlWhereConcatType concatType, IEnumerable<ISqlCondition> conditions)
+        {
+            SqlConditionList list = new SqlConditionList(cmd, concatType);
+
+            if (conditions != null)
+            {
+                foreach (ISqlCondition condition in conditions)
+                {
+                    list.Add(condition);
+                }
+            }
+
+            return list;
         }
         #endregion
     }

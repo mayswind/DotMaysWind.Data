@@ -37,7 +37,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// </summary>
         /// <param name="baseCommand">源Sql语句</param>
         /// <param name="baseCondition">基础Sql条件语句</param>
-        internal SqlNotCondition(AbstractSqlCommand baseCommand, ISqlCondition baseCondition)
+        private SqlNotCondition(AbstractSqlCommandWithWhere baseCommand, ISqlCondition baseCondition)
             : base(baseCommand)
         {
             this._baseCondition = baseCondition;
@@ -127,6 +127,25 @@ namespace DotMaysWind.Data.Command.Condition
         public static Boolean operator !=(SqlNotCondition obj, SqlNotCondition obj2)
         {
             return !Object.Equals(obj, obj2);
+        }
+        #endregion
+
+        #region 静态方法
+        /// <summary>
+        /// 创建新的Sql Not条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="condition">条件语句</param>
+        /// <exception cref="ArgumentNullException">Sql条件语句不能为空</exception>
+        /// <returns>Sql Not条件语句</returns>
+        internal static SqlNotCondition Create(AbstractSqlCommandWithWhere cmd, ISqlCondition condition)
+        {
+            if (condition == null)
+            {
+                throw new ArgumentNullException("condition");
+            }
+
+            return new SqlNotCondition(cmd, condition);
         }
         #endregion
     }

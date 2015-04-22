@@ -8,7 +8,7 @@ namespace DotMaysWind.Data.Command.Condition
     public abstract class AbstractSqlCondition : ISqlCondition
     {
         #region 字段
-        private AbstractSqlCommand _baseCommand;
+        private AbstractSqlCommandWithWhere _baseCommand;
         #endregion
 
         #region 属性
@@ -31,7 +31,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// 初始化新的Sql抽象条件语句
         /// </summary>
         /// <param name="baseCommand">源Sql语句</param>
-        internal AbstractSqlCondition(AbstractSqlCommand baseCommand)
+        internal AbstractSqlCondition(AbstractSqlCommandWithWhere baseCommand)
         {
             this._baseCommand = baseCommand;
         }
@@ -70,7 +70,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>条件列表</returns>
         public SqlConditionList And(AbstractSqlCondition condition)
         {
-            return SqlCondition.And(this._baseCommand, this, condition);
+            return this._baseCommand.ConditionBuilder.And(this, condition);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <returns>条件列表</returns>
         public SqlConditionList Or(AbstractSqlCondition condition)
         {
-            return SqlCondition.Or(this._baseCommand, this, condition);
+            return this._baseCommand.ConditionBuilder.Or(this, condition);
         }
         #endregion
 
@@ -98,7 +98,7 @@ namespace DotMaysWind.Data.Command.Condition
             }
             else
             {
-                return SqlCondition.Not(condition._baseCommand, condition);
+                return condition._baseCommand.ConditionBuilder.Not(condition);
             }
         }
 
@@ -147,7 +147,7 @@ namespace DotMaysWind.Data.Command.Condition
                 }
             }
 
-            return SqlCondition.And(condition1._baseCommand, condition1, condition2);
+            return condition1._baseCommand.ConditionBuilder.And(condition1, condition2);
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace DotMaysWind.Data.Command.Condition
                 }
             }
 
-            return SqlCondition.Or(condition1._baseCommand, condition1, condition2);
+            return condition1._baseCommand.ConditionBuilder.Or(condition1, condition2);
         }
 
         /// <summary>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 
 using DotMaysWind.Data.Command.Condition;
@@ -31,6 +30,14 @@ namespace DotMaysWind.Data.Command
         public ISqlCondition WhereCondition
         {
             get { return this._where; }
+        }
+
+        /// <summary>
+        /// 获取当前的Sql条件语句生成类
+        /// </summary>
+        public SqlConditionBuilder ConditionBuilder
+        {
+            get { return this._conditionBuilder; }
         }
         #endregion
 

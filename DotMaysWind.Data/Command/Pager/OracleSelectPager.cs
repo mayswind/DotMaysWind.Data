@@ -42,12 +42,12 @@ namespace DotMaysWind.Data.Command.Pager
                 innestCommand.InternalSetOrderList(baseCommand);
 
                 SelectCommand innerCommand = baseCommand.Database.InternalCreateSelectCommand(baseCommand, innestCommand, "");
-                innerCommand.InternalSetWhereCondition(SqlCondition.LessThanOrEqualColumn(innerCommand, "ROWNUM", (baseCommand.RecordStart + baseCommand.PageSize).ToString()));
+                innerCommand.InternalSetWhereCondition(innerCommand.ConditionBuilder.LessThanOrEqualColumn("ROWNUM", (baseCommand.RecordStart + baseCommand.PageSize).ToString()));
                 innerCommand.InternalQuerys(baseCommand.QueryFields);
                 innerCommand.InternalQuerys(SqlQueryField.InternalCreateFromFunction(baseCommand, "ROWNUM", "RN"));
 
                 sb.AppendSelectFrom(innerCommand.GetCommandText(), true);
-                sb.AppendWhere(SqlCondition.GreaterThanColumn(baseCommand, "RN", baseCommand.RecordStart.ToString()));
+                sb.AppendWhere(baseCommand.ConditionBuilder.GreaterThanColumn("RN", baseCommand.RecordStart.ToString()));
             }
             else//正常模式
             {
@@ -57,7 +57,7 @@ namespace DotMaysWind.Data.Command.Pager
 
                 if (baseCommand.PageSize > 0)
                 {
-                    where = SqlCondition.And(baseCommand, where, SqlCondition.LessThanOrEqualColumn(baseCommand, "ROWNUM", baseCommand.PageSize.ToString()));
+                    where = baseCommand.ConditionBuilder.And(where, baseCommand.ConditionBuilder.LessThanOrEqualColumn("ROWNUM", baseCommand.PageSize.ToString()));
                 }
 
                 sb.AppendWhere(where);

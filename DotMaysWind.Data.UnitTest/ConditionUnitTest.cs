@@ -21,8 +21,11 @@ namespace DotMaysWind.Data.UnitTest
             SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
             SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
-            SqlInsideParametersCondition expectedCondition = SqlCondition.InThese(expectedCommand, "TestColumn2", 1, 2, 3, 4, 5);
-            SqlInsideParametersCondition actualCondition = SqlCondition.InInt32(actualCommand, "TestColumn2", "1, 2, 3, 4, 5", ',');
+            SqlConditionBuilder expectedConditionBuilder = expectedCommand.ConditionBuilder;
+            SqlConditionBuilder actualConditionBuilder = actualCommand.ConditionBuilder;
+
+            SqlInsideParametersCondition expectedCondition = expectedConditionBuilder.InThese("TestColumn2", 1, 2, 3, 4, 5);
+            SqlInsideParametersCondition actualCondition = actualConditionBuilder.InInt32("TestColumn2", "1, 2, 3, 4, 5", ',');
 
             Assert.AreEqual(expectedCondition, actualCondition);
         }
@@ -34,8 +37,11 @@ namespace DotMaysWind.Data.UnitTest
             SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
             SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
-            SqlInsideParametersCondition expectedCondition = SqlCondition.NotInThese(expectedCommand, "TestColumn2", 1, 2, 3, 4, 5);
-            SqlInsideParametersCondition actualCondition = SqlCondition.NotInInt32(actualCommand, "TestColumn2", "1, 2, 3, 4, 5", ',');
+            SqlConditionBuilder expectedConditionBuilder = expectedCommand.ConditionBuilder;
+            SqlConditionBuilder actualConditionBuilder = actualCommand.ConditionBuilder;
+
+            SqlInsideParametersCondition expectedCondition = expectedConditionBuilder.NotInThese("TestColumn2", 1, 2, 3, 4, 5);
+            SqlInsideParametersCondition actualCondition = actualConditionBuilder.NotInInt32("TestColumn2", "1, 2, 3, 4, 5", ',');
 
             Assert.AreEqual(expectedCondition, actualCondition);
         }
@@ -48,7 +54,9 @@ namespace DotMaysWind.Data.UnitTest
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
 
             SelectCommand baseCommand = fakeDb.CreateSelectCommand("");
-            SqlBasicParameterCondition baseCondition = SqlCondition.Equal(baseCommand, "TestColumn2", 1);
+            SqlConditionBuilder conditionBuilder = baseCommand.ConditionBuilder;
+
+            SqlBasicParameterCondition baseCondition = conditionBuilder.Equal("TestColumn2", 1);
             SqlNotCondition actualCondition = !baseCondition;
 
             String expectedConditionClause = "(NOT((TestColumn2 = @PN_IDX_0)))";
@@ -73,7 +81,9 @@ namespace DotMaysWind.Data.UnitTest
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
 
             SelectCommand baseCommand = fakeDb.CreateSelectCommand("");
-            AbstractSqlCondition baseCondition = SqlCondition.Equal(baseCommand, "TestColumn2", 1);
+            SqlConditionBuilder conditionBuilder = baseCommand.ConditionBuilder;
+
+            AbstractSqlCondition baseCondition = conditionBuilder.Equal("TestColumn2", 1);
 
             AbstractSqlCondition expectedCondition = baseCondition & null;
             AbstractSqlCondition actualCondition = baseCondition;

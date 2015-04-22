@@ -49,7 +49,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="op">条件运算符</param>
         /// <param name="tableName">查询的表名</param>
         /// <param name="action">设置选择语句的方法</param>
-        internal SqlBasicCommandCondition(AbstractSqlCommand baseCommand, String columnName, SqlOperator op, String tableName, Action<SelectCommand> action)
+        private SqlBasicCommandCondition(AbstractSqlCommandWithWhere baseCommand, String columnName, SqlOperator op, String tableName, Action<SelectCommand> action)
             : base(baseCommand)
         {
             this._columnName = columnName;
@@ -165,6 +165,47 @@ namespace DotMaysWind.Data.Command.Condition
         public static Boolean operator !=(SqlBasicCommandCondition obj, SqlBasicCommandCondition obj2)
         {
             return !Object.Equals(obj, obj2);
+        }
+        #endregion
+
+        #region 静态方法
+        /// <summary>
+        /// 创建新的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="op">条件运算符</param>
+        /// <param name="tableName">查询的表名</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicCommandCondition InternalCreate(AbstractSqlCommandWithWhere cmd, String columnName, SqlOperator op, String tableName, Action<SelectCommand> action)
+        {
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+            return new SqlBasicCommandCondition(cmd, columnName, op, tableName, action);
+        }
+
+        /// <summary>
+        /// 创建新的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="op">条件运算符</param>
+        /// <param name="action">设置选择语句的方法</param>
+        /// <exception cref="ArgumentNullException">设置语句的方法不能为空</exception>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicCommandCondition InternalCreate(AbstractSqlCommandWithWhere cmd, String columnName, SqlOperator op, Action<SelectCommand> action)
+        {
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+            return new SqlBasicCommandCondition(cmd, columnName, op, cmd.TableName, action);
         }
         #endregion
     }

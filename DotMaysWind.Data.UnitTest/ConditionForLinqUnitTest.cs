@@ -24,47 +24,49 @@ namespace DotMaysWind.Data.UnitTest
             SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
             SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
-            SqlBasicParameterCondition expectedCondition = SqlCondition.Equal(expectedCommand, "TestColumn2", 123);
+            SqlConditionBuilder expectedConditionBuilder = expectedCommand.ConditionBuilder;
+
+            SqlBasicParameterCondition expectedCondition = expectedConditionBuilder.Equal("TestColumn2", 123);
             SqlBasicParameterCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2 == 123) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition, actualCondition);
 
-            SqlBasicParameterCondition expectedCondition2 = SqlCondition.NotEqual(expectedCommand, "TestColumn2", 123);
+            SqlBasicParameterCondition expectedCondition2 = expectedConditionBuilder.NotEqual("TestColumn2", 123);
             SqlBasicParameterCondition actualCondition2 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2 != 123) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition2, actualCondition2);
 
-            SqlBasicParameterCondition expectedCondition3 = SqlCondition.GreaterThan(expectedCommand, "TestColumn2", 123);
+            SqlBasicParameterCondition expectedCondition3 = expectedConditionBuilder.GreaterThan("TestColumn2", 123);
             SqlBasicParameterCondition actualCondition3 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2 > 123) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition3, actualCondition3);
 
-            SqlBasicParameterCondition expectedCondition4 = SqlCondition.LessThan(expectedCommand, "TestColumn2", 123);
+            SqlBasicParameterCondition expectedCondition4 = expectedConditionBuilder.LessThan("TestColumn2", 123);
             SqlBasicParameterCondition actualCondition4 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2 < 123) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition4, actualCondition4);
 
-            SqlBasicParameterCondition expectedCondition5 = SqlCondition.GreaterThanOrEqual(expectedCommand, "TestColumn2", 123);
+            SqlBasicParameterCondition expectedCondition5 = expectedConditionBuilder.GreaterThanOrEqual("TestColumn2", 123);
             SqlBasicParameterCondition actualCondition5 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2 >= 123) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition5, actualCondition5);
 
-            SqlBasicParameterCondition expectedCondition6 = SqlCondition.LessThanOrEqual(expectedCommand, "TestColumn2", 123);
+            SqlBasicParameterCondition expectedCondition6 = expectedConditionBuilder.LessThanOrEqual("TestColumn2", 123);
             SqlBasicParameterCondition actualCondition6 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2 <= 123) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition6, actualCondition6);
 
-            SqlBasicParameterCondition expectedCondition7 = SqlCondition.IsNotNull(expectedCommand, "TestColumn1");
+            SqlBasicParameterCondition expectedCondition7 = expectedConditionBuilder.IsNotNull("TestColumn1");
             SqlBasicParameterCondition actualCondition7 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1 != null) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition7, actualCondition7);
 
-            SqlBasicParameterCondition expectedCondition8 = SqlCondition.IsNull(expectedCommand, "TestColumn3");
+            SqlBasicParameterCondition expectedCondition8 = expectedConditionBuilder.IsNull("TestColumn3");
             SqlBasicParameterCondition actualCondition8 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test3 == null) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition8, actualCondition8);
 
-            SqlBasicParameterCondition expectedCondition10 = SqlCondition.EqualColumn(expectedCommand, "TestColumn2", "TestColumn3");
+            SqlBasicParameterCondition expectedCondition10 = expectedConditionBuilder.EqualColumn("TestColumn2", "TestColumn3");
             SqlBasicParameterCondition actualCondition10 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2 == c.Test3) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition10, actualCondition10);
@@ -79,17 +81,19 @@ namespace DotMaysWind.Data.UnitTest
             SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
             SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
-            SqlBasicParameterCondition expectedCondition = SqlCondition.IsNull(expectedCommand, "TestColumn1");
+            SqlConditionBuilder expectedConditionBuilder = expectedCommand.ConditionBuilder;
+
+            SqlBasicParameterCondition expectedCondition = expectedConditionBuilder.IsNull("TestColumn1");
             SqlBasicParameterCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.IsNull()) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition, actualCondition);
 
-            SqlBasicParameterCondition expectedCondition2 = SqlCondition.IsNull(expectedCommand, "TestColumn2");
+            SqlBasicParameterCondition expectedCondition2 = expectedConditionBuilder.IsNull("TestColumn2");
             SqlBasicParameterCondition actualCondition2 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2.IsNull()) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition2, actualCondition2);
 
-            SqlBasicParameterCondition expectedCondition3 = SqlCondition.IsNull(expectedCommand, "TestColumn5");
+            SqlBasicParameterCondition expectedCondition3 = expectedConditionBuilder.IsNull("TestColumn5");
             SqlBasicParameterCondition actualCondition3 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test5.IsNull()) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition3, actualCondition3);
@@ -102,17 +106,19 @@ namespace DotMaysWind.Data.UnitTest
             SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
             SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
-            SqlBasicParameterCondition expectedCondition = SqlCondition.IsNotNull(expectedCommand, "TestColumn1");
+            SqlConditionBuilder expectedConditionBuilder = expectedCommand.ConditionBuilder;
+
+            SqlBasicParameterCondition expectedCondition = expectedConditionBuilder.IsNotNull("TestColumn1");
             SqlBasicParameterCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.IsNotNull()) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition, actualCondition);
 
-            SqlBasicParameterCondition expectedCondition2 = SqlCondition.IsNotNull(expectedCommand, "TestColumn2");
+            SqlBasicParameterCondition expectedCondition2 = expectedConditionBuilder.IsNotNull("TestColumn2");
             SqlBasicParameterCondition actualCondition2 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2.IsNotNull()) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition2, actualCondition2);
 
-            SqlBasicParameterCondition expectedCondition3 = SqlCondition.IsNotNull(expectedCommand, "TestColumn5");
+            SqlBasicParameterCondition expectedCondition3 = expectedConditionBuilder.IsNotNull("TestColumn5");
             SqlBasicParameterCondition actualCondition3 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test5.IsNotNull()) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition3, actualCondition3);
@@ -127,30 +133,32 @@ namespace DotMaysWind.Data.UnitTest
             SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
             SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
-            SqlInsideParametersCondition expectedCondition = SqlCondition.InThese(expectedCommand, "TestColumn1", "1");
+            SqlConditionBuilder expectedConditionBuilder = expectedCommand.ConditionBuilder;
+
+            SqlInsideParametersCondition expectedCondition = expectedConditionBuilder.InThese("TestColumn1", "1");
             SqlInsideParametersCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.InThese("1")) as SqlInsideParametersCondition;
 
             Assert.AreEqual(expectedCondition, actualCondition);
 
-            SqlInsideParametersCondition expectedCondition2 = SqlCondition.InThese(expectedCommand, "TestColumn1", "1", "2", "3", "4", "5");
+            SqlInsideParametersCondition expectedCondition2 = expectedConditionBuilder.InThese("TestColumn1", "1", "2", "3", "4", "5");
             SqlInsideParametersCondition actualCondition2 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.InThese("1", "2", "3", "4", "5")) as SqlInsideParametersCondition;
 
             Assert.AreEqual(expectedCondition2, actualCondition2);
 
-            SqlInsideParametersCondition expectedCondition3 = SqlCondition.InThese(expectedCommand, "TestColumn2", 1, 2, 3, 4, 5);
+            SqlInsideParametersCondition expectedCondition3 = expectedConditionBuilder.InThese("TestColumn2", 1, 2, 3, 4, 5);
             SqlInsideParametersCondition actualCondition3 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2.InThese(1, 2, 3, 4, 5)) as SqlInsideParametersCondition;
 
             Assert.AreEqual(expectedCondition3, actualCondition3);
 
-            SqlInsideParametersCondition expectedCondition4 = SqlCondition.InThese(expectedCommand, "TestColumn5", 1, 2, 3, 4, 5);
+            SqlInsideParametersCondition expectedCondition4 = expectedConditionBuilder.InThese("TestColumn5", 1, 2, 3, 4, 5);
             SqlInsideParametersCondition actualCondition4 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test5.InThese(1, 2, 3, 4, 5)) as SqlInsideParametersCondition;
 
             Assert.AreEqual(expectedCondition4, actualCondition4);
 
             TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
-            
-            SqlInsideCommandCondition expectedCondition5 = SqlCondition.In(expectedCommand, "TestColumn4", provider.TableName, s => 
+
+            SqlInsideCommandCondition expectedCondition5 = expectedConditionBuilder.In("TestColumn4", provider.TableName, s => 
             {
                 s.Query("TestColumn4")
                     .Paged(10, 2)
@@ -178,30 +186,32 @@ namespace DotMaysWind.Data.UnitTest
             SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
             SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
-            SqlInsideParametersCondition expectedCondition = SqlCondition.NotInThese(expectedCommand, "TestColumn1", "1");
+            SqlConditionBuilder expectedConditionBuilder = expectedCommand.ConditionBuilder;
+
+            SqlInsideParametersCondition expectedCondition = expectedConditionBuilder.NotInThese("TestColumn1", "1");
             SqlInsideParametersCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.NotInThese("1")) as SqlInsideParametersCondition;
 
             Assert.AreEqual(expectedCondition, actualCondition);
 
-            SqlInsideParametersCondition expectedCondition2 = SqlCondition.NotInThese(expectedCommand, "TestColumn1", "1", "2", "3", "4", "5");
+            SqlInsideParametersCondition expectedCondition2 = expectedConditionBuilder.NotInThese("TestColumn1", "1", "2", "3", "4", "5");
             SqlInsideParametersCondition actualCondition2 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.NotInThese("1", "2", "3", "4", "5")) as SqlInsideParametersCondition;
 
             Assert.AreEqual(expectedCondition2, actualCondition2);
 
-            SqlInsideParametersCondition expectedCondition3 = SqlCondition.NotInThese(expectedCommand, "TestColumn2", 1, 2, 3, 4, 5);
+            SqlInsideParametersCondition expectedCondition3 = expectedConditionBuilder.NotInThese("TestColumn2", 1, 2, 3, 4, 5);
             SqlInsideParametersCondition actualCondition3 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2.NotInThese(1, 2, 3, 4, 5)) as SqlInsideParametersCondition;
 
             Assert.AreEqual(expectedCondition3, actualCondition3);
 
-            SqlInsideParametersCondition expectedCondition4 = SqlCondition.NotInThese(expectedCommand, "TestColumn5", 1, 2, 3, 4, 5);
+            SqlInsideParametersCondition expectedCondition4 = expectedConditionBuilder.NotInThese("TestColumn5", 1, 2, 3, 4, 5);
             SqlInsideParametersCondition actualCondition4 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test5.NotInThese(1, 2, 3, 4, 5)) as SqlInsideParametersCondition;
 
             Assert.AreEqual(expectedCondition4, actualCondition4);
 
             TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
-            
-            SqlInsideCommandCondition expectedCondition5 = SqlCondition.NotIn(expectedCommand, "TestColumn4", provider.TableName, s =>
+
+            SqlInsideCommandCondition expectedCondition5 = expectedConditionBuilder.NotIn("TestColumn4", provider.TableName, s =>
             {
                 s.Query("TestColumn4")
                     .Paged(10, 2)
@@ -231,17 +241,19 @@ namespace DotMaysWind.Data.UnitTest
             SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
             SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
-            SqlBasicParameterCondition expectedCondition = SqlCondition.Between(expectedCommand, "TestColumn1", "1", "2");
+            SqlConditionBuilder expectedConditionBuilder = expectedCommand.ConditionBuilder;
+
+            SqlBasicParameterCondition expectedCondition = expectedConditionBuilder.Between("TestColumn1", "1", "2");
             SqlBasicParameterCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.Between("1", "2")) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition, actualCondition);
 
-            SqlBasicParameterCondition expectedCondition2 = SqlCondition.Between(expectedCommand, "TestColumn2", 1, 2);
+            SqlBasicParameterCondition expectedCondition2 = expectedConditionBuilder.Between("TestColumn2", 1, 2);
             SqlBasicParameterCondition actualCondition2 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2.Between(1, 2)) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition2, actualCondition2);
 
-            SqlBasicParameterCondition expectedCondition3 = SqlCondition.Between(expectedCommand, "TestColumn5", 1, 2);
+            SqlBasicParameterCondition expectedCondition3 = expectedConditionBuilder.Between("TestColumn5", 1, 2);
             SqlBasicParameterCondition actualCondition3 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test5.Between(1, 2)) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition3, actualCondition3);
@@ -254,17 +266,19 @@ namespace DotMaysWind.Data.UnitTest
             SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
             SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
-            SqlBasicParameterCondition expectedCondition = SqlCondition.NotBetween(expectedCommand, "TestColumn1", "1", "2");
+            SqlConditionBuilder expectedConditionBuilder = expectedCommand.ConditionBuilder;
+
+            SqlBasicParameterCondition expectedCondition = expectedConditionBuilder.NotBetween("TestColumn1", "1", "2");
             SqlBasicParameterCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.NotBetween("1", "2")) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition, actualCondition);
 
-            SqlBasicParameterCondition expectedCondition2 = SqlCondition.NotBetween(expectedCommand, "TestColumn2", 1, 2);
+            SqlBasicParameterCondition expectedCondition2 = expectedConditionBuilder.NotBetween("TestColumn2", 1, 2);
             SqlBasicParameterCondition actualCondition2 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2.NotBetween(1, 2)) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition2, actualCondition2);
 
-            SqlBasicParameterCondition expectedCondition3 = SqlCondition.NotBetween(expectedCommand, "TestColumn5", 1, 2);
+            SqlBasicParameterCondition expectedCondition3 = expectedConditionBuilder.NotBetween("TestColumn5", 1, 2);
             SqlBasicParameterCondition actualCondition3 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test5.NotBetween(1, 2)) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition3, actualCondition3);
@@ -279,22 +293,24 @@ namespace DotMaysWind.Data.UnitTest
             SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
             SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
-            SqlBasicParameterCondition expectedCondition = SqlCondition.Like(expectedCommand, "TestColumn1", "test1");
+            SqlConditionBuilder expectedConditionBuilder = expectedCommand.ConditionBuilder;
+
+            SqlBasicParameterCondition expectedCondition = expectedConditionBuilder.Like("TestColumn1", "test1");
             SqlBasicParameterCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.Like("test1")) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition, actualCondition);
 
-            SqlBasicParameterCondition expectedCondition2 = SqlCondition.LikeAll(expectedCommand, "TestColumn1", "test2");
+            SqlBasicParameterCondition expectedCondition2 = expectedConditionBuilder.LikeAll("TestColumn1", "test2");
             SqlBasicParameterCondition actualCondition2 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.LikeAll("test2")) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition2, actualCondition2);
 
-            SqlBasicParameterCondition expectedCondition3 = SqlCondition.LikeStartWith(expectedCommand, "TestColumn1", "test3");
+            SqlBasicParameterCondition expectedCondition3 = expectedConditionBuilder.LikeStartWith("TestColumn1", "test3");
             SqlBasicParameterCondition actualCondition3 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.LikeStartWith("test3")) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition3, actualCondition3);
 
-            SqlBasicParameterCondition expectedCondition4 = SqlCondition.LikeEndWith(expectedCommand, "TestColumn1", "test4");
+            SqlBasicParameterCondition expectedCondition4 = expectedConditionBuilder.LikeEndWith("TestColumn1", "test4");
             SqlBasicParameterCondition actualCondition4 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.LikeEndWith("test4")) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition4, actualCondition4);
@@ -307,22 +323,24 @@ namespace DotMaysWind.Data.UnitTest
             SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
             SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
-            SqlBasicParameterCondition expectedCondition = SqlCondition.NotLike(expectedCommand, "TestColumn1", "test1");
+            SqlConditionBuilder expectedConditionBuilder = expectedCommand.ConditionBuilder;
+
+            SqlBasicParameterCondition expectedCondition = expectedConditionBuilder.NotLike("TestColumn1", "test1");
             SqlBasicParameterCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.NotLike("test1")) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition, actualCondition);
 
-            SqlBasicParameterCondition expectedCondition2 = SqlCondition.NotLikeAll(expectedCommand, "TestColumn1", "test2");
+            SqlBasicParameterCondition expectedCondition2 = expectedConditionBuilder.NotLikeAll("TestColumn1", "test2");
             SqlBasicParameterCondition actualCondition2 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.NotLikeAll("test2")) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition2, actualCondition2);
 
-            SqlBasicParameterCondition expectedCondition3 = SqlCondition.NotLikeStartWith(expectedCommand, "TestColumn1", "test3");
+            SqlBasicParameterCondition expectedCondition3 = expectedConditionBuilder.NotLikeStartWith("TestColumn1", "test3");
             SqlBasicParameterCondition actualCondition3 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.NotLikeStartWith("test3")) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition3, actualCondition3);
 
-            SqlBasicParameterCondition expectedCondition4 = SqlCondition.NotLikeEndWith(expectedCommand, "TestColumn1", "test4");
+            SqlBasicParameterCondition expectedCondition4 = expectedConditionBuilder.NotLikeEndWith("TestColumn1", "test4");
             SqlBasicParameterCondition actualCondition4 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test1.NotLikeEndWith("test4")) as SqlBasicParameterCondition;
 
             Assert.AreEqual(expectedCondition4, actualCondition4);
@@ -337,12 +355,14 @@ namespace DotMaysWind.Data.UnitTest
             SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
             SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
-            AbstractSqlCondition expectedCondition = SqlCondition.GreaterThanOrEqual(expectedCommand, "TestColumn2", 123) & SqlCondition.LessThan(expectedCommand, "TestColumn2", 456);
+            SqlConditionBuilder expectedConditionBuilder = expectedCommand.ConditionBuilder;
+
+            AbstractSqlCondition expectedCondition = expectedConditionBuilder.GreaterThanOrEqual("TestColumn2", 123) & expectedConditionBuilder.LessThan("TestColumn2", 456);
             AbstractSqlCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2 >= 123 && c.Test2 < 456) as SqlConditionList;
 
             Assert.AreEqual(expectedCondition, actualCondition);
 
-            AbstractSqlCondition expectedCondition2 = SqlCondition.GreaterThanOrEqual(expectedCommand, "TestColumn2", 123) | (SqlCondition.GreaterThan(expectedCommand, "TestColumn4", DateTime.Now) & SqlCondition.LessThan(expectedCommand, "TestColumn7", DateTime.Now.AddDays(7)));
+            AbstractSqlCondition expectedCondition2 = expectedConditionBuilder.GreaterThanOrEqual("TestColumn2", 123) | (expectedConditionBuilder.GreaterThan("TestColumn4", DateTime.Now) & expectedConditionBuilder.LessThan("TestColumn7", DateTime.Now.AddDays(7)));
             AbstractSqlCondition actualCondition2 = SqlLinqCondition.Create<TestEntity>(actualCommand, c => c.Test2 >= 123 || (c.Test4 > DateTime.Now && c.Test7 < DateTime.Now.AddDays(7))) as SqlConditionList;
 
             Assert.AreEqual(expectedCondition2, actualCondition2);
@@ -357,7 +377,10 @@ namespace DotMaysWind.Data.UnitTest
             SelectCommand expectedCommand = fakeDb.CreateSelectCommand("");
             SelectCommand actualCommand = fakeDb.CreateSelectCommand("");
 
-            SqlBasicParameterCondition baseCondition = SqlCondition.Equal(expectedCommand, "TestColumn2", 1);
+            SqlConditionBuilder expectedConditionBuilder = expectedCommand.ConditionBuilder;
+            SqlConditionBuilder actualConditionBuilder = expectedCommand.ConditionBuilder;
+
+            SqlBasicParameterCondition baseCondition = expectedConditionBuilder.Equal("TestColumn2", 1);
             SqlNotCondition expectedCondition = !baseCondition;
             SqlNotCondition actualCondition = SqlLinqCondition.Create<TestEntity>(actualCommand, c => !(c.Test2 == 1)) as SqlNotCondition;
 

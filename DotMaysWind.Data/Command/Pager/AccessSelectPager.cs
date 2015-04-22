@@ -131,11 +131,11 @@ namespace DotMaysWind.Data.Command.Pager
 
             if (baseCommand.WhereCondition != null)
             {
-                sb.AppendWhere(SqlCondition.And(baseCommand, SqlCondition.False(baseCommand), baseCommand.WhereCondition));
+                sb.AppendWhere(baseCommand.ConditionBuilder.And(baseCommand.ConditionBuilder.False(), baseCommand.WhereCondition));
             }
             else
             {
-                sb.AppendWhere(SqlCondition.False(baseCommand));
+                sb.AppendWhere(baseCommand.ConditionBuilder.False());
             }
 
             sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByColumnList());

@@ -27,7 +27,7 @@ namespace DotMaysWind.Data.UnitTest
                 .Where(c => c.GreaterThanOrEqual("TestColumn2", 123) | (c.GreaterThan("TestColumn4", DateTime.Now) & c.LessThan("TestColumn7", DateTime.Now.AddDays(7))))
                 .GroupBy("TestColumn3")
                 .InnerJoin("TestColumn2", "TestTable", "TestColumn2")
-                .OrderBy("TestColumn6", SqlOrderType.Asc);
+                .OrderBy("TestTable", "TestColumn6", SqlOrderType.Asc);
 
             SelectCommand actualCommand = fakeDb.CreateSelectCommand(provider.TableName)
                 .Querys<TestEntity>(c => new { c.Test1, c.Test2, c.Test5, c.Test8 })

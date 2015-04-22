@@ -61,7 +61,6 @@
     <Compile Include="Command\ISqlFunction.cs" />
     <Compile Include="Command\Join\AbstractSqlJoin.cs" />
     <Compile Include="Command\Condition\ISqlCondition.cs" />
-    <Compile Include="Command\Condition\SqlCondition.cs" />
     <Compile Include="Command\Condition\SqlConditionType.cs" />
     <Compile Include="Command\Condition\SqlInsideCommandCondition.cs" />
     <Compile Include="Command\Condition\SqlInsideParametersCondition.cs" />

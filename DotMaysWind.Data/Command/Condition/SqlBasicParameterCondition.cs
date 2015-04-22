@@ -46,7 +46,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="baseCommand">源Sql语句</param>
         /// <param name="parameter">参数</param>
         /// <param name="op">条件运算符</param>
-        internal SqlBasicParameterCondition(AbstractSqlCommand baseCommand, DataParameter parameter, SqlOperator op)
+        private SqlBasicParameterCondition(AbstractSqlCommandWithWhere baseCommand, DataParameter parameter, SqlOperator op)
             : base(baseCommand)
         {
             this._parameterOne = parameter;
@@ -61,7 +61,7 @@ namespace DotMaysWind.Data.Command.Condition
         /// <param name="parameterOne">参数一</param>
         /// <param name="parameterTwo">参数二</param>
         /// <param name="op">条件运算符</param>
-        internal SqlBasicParameterCondition(AbstractSqlCommand baseCommand, DataParameter parameterOne, DataParameter parameterTwo, SqlOperator op)
+        private SqlBasicParameterCondition(AbstractSqlCommandWithWhere baseCommand, DataParameter parameterOne, DataParameter parameterTwo, SqlOperator op)
             : base(baseCommand)
         {
             this._parameterOne = parameterOne;
@@ -209,6 +209,121 @@ namespace DotMaysWind.Data.Command.Condition
         public static Boolean operator !=(SqlBasicParameterCondition obj, SqlBasicParameterCondition obj2)
         {
             return !Object.Equals(obj, obj2);
+        }
+        #endregion
+
+        #region 静态方法
+        /// <summary>
+        /// 创建单参数新的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="op">条件运算符</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalCreate(AbstractSqlCommandWithWhere cmd, String columnName, SqlOperator op)
+        {
+            return new SqlBasicParameterCondition(cmd, cmd.CreateDataParameter(columnName, null), op);
+        }
+
+        /// <summary>
+        /// 创建单参数新的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="op">条件运算符</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalCreate(AbstractSqlCommandWithWhere cmd, String columnName, SqlOperator op, Object value)
+        {
+            return new SqlBasicParameterCondition(cmd, cmd.CreateDataParameter(columnName, value), op);
+        }
+
+        /// <summary>
+        /// 创建单参数新的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="op">条件运算符</param>
+        /// <param name="dataType">数据类型</param>
+        /// <param name="value">数据</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalCreate(AbstractSqlCommandWithWhere cmd, String columnName, SqlOperator op, DataType dataType, Object value)
+        {
+            return new SqlBasicParameterCondition(cmd, cmd.CreateDataParameter(columnName, dataType, value), op);
+        }
+
+        /// <summary>
+        /// 创建双参数新的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="op">条件运算符</param>
+        /// <param name="valueOne">数据一</param>
+        /// <param name="valueTwo">数据二</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalCreate(AbstractSqlCommandWithWhere cmd, String columnName, SqlOperator op, Object valueOne, Object valueTwo)
+        {
+            return new SqlBasicParameterCondition(cmd, cmd.CreateDataParameter(columnName, valueOne), cmd.CreateDataParameter(columnName, valueTwo), op);
+        }
+
+        /// <summary>
+        /// 创建双参数新的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="op">条件运算符</param>
+        /// <param name="dataType">数据类型</param>
+        /// <param name="valueOne">数据一</param>
+        /// <param name="valueTwo">数据二</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalCreate(AbstractSqlCommandWithWhere cmd, String columnName, SqlOperator op, DataType dataType, Object valueOne, Object valueTwo)
+        {
+            return new SqlBasicParameterCondition(cmd, cmd.CreateDataParameter(columnName, dataType, valueOne), cmd.CreateDataParameter(columnName, dataType, valueTwo), op);
+        }
+
+        /// <summary>
+        /// 创建单参数新的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="op">条件运算符</param>
+        /// <param name="action">赋值操作</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalCreateAction(AbstractSqlCommandWithWhere cmd, String columnName, SqlOperator op, String action)
+        {
+            return new SqlBasicParameterCondition(cmd, cmd.CreateDataParameterCustomAction(columnName, action), op);
+        }
+
+        /// <summary>
+        /// 创建双参数新的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="op">条件运算符</param>
+        /// <param name="tableNameTwo">数据表名二</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalCreateColumn(AbstractSqlCommandWithWhere cmd, String columnName, SqlOperator op, String tableNameTwo, String columnNameTwo)
+        {
+            return new SqlBasicParameterCondition(cmd, cmd.CreateDataParameterCustomAction(columnName, GetFieldName(tableNameTwo, columnNameTwo)), op);
+        }
+
+        /// <summary>
+        /// 创建双参数新的Sql条件语句
+        /// </summary>
+        /// <param name="cmd">Sql语句</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="op">条件运算符</param>
+        /// <param name="columnNameTwo">字段名二</param>
+        /// <returns>Sql条件语句</returns>
+        internal static SqlBasicParameterCondition InternalCreateColumn(AbstractSqlCommandWithWhere cmd, String columnName, SqlOperator op, String columnNameTwo)
+        {
+            return new SqlBasicParameterCondition(cmd, cmd.CreateDataParameterCustomAction(columnName, GetFieldName(String.Empty, columnNameTwo)), op);
+        }
+
+        private static String GetFieldName(String tableName, String columnName)
+        {
+            return (String.IsNullOrEmpty(tableName) ? columnName : tableName + '.' + columnName);
         }
         #endregion
     }
