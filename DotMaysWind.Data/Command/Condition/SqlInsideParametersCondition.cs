@@ -426,7 +426,7 @@ namespace DotMaysWind.Data.Command.Condition
 
                 for (Int32 i = 0; i < valuesArray.Length; i++)
                 {
-                    parameters.Add(cmd.CreateDataParameter(columnName, DataType.String, valuesArray[i]));
+                    parameters.Add(cmd.CreateDataParameter(columnName, DataType.String, valuesArray[i].Trim()));
                 }
             }
 
