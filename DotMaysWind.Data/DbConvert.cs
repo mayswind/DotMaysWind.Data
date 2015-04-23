@@ -9,6 +9,23 @@ namespace DotMaysWind.Data
     public static class DbConvert
     {
         /// <summary>
+        /// 返回指定对象是否为DBNull
+        /// </summary>
+        /// <param name="value">指定对象</param>
+        /// <returns>是否为DBNull</returns>
+        public static Boolean IsDBNull(Object value)
+        {
+            if (value == DBNull.Value)
+            {
+                return true;
+            }
+
+            IConvertible convertible = value as IConvertible;
+
+            return convertible != null && convertible.GetTypeCode() == TypeCode.DBNull;
+        }
+
+        /// <summary>
         /// 返回给定的DataTable是否为null
         /// </summary>
         /// <param name="dt">要判断的DataTable</param>
