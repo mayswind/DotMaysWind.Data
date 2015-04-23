@@ -635,7 +635,7 @@ namespace DotMaysWind.Data
 
             Object obj = this.ExecuteScalar(dbCommand, connection, transaction);
 
-            return (Convert.IsDBNull(obj) ? default(T) : (T)DbConvert.ToValue(obj, dataType));
+            return (DbConvert.IsDBNull(obj) ? default(T) : (T)DbConvert.ToValue(obj, dataType));
         }
 
         /// <summary>
