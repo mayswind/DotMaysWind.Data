@@ -458,13 +458,6 @@ namespace DotMaysWind.Data
         /// </summary>
         /// <param name="commands">指定Sql语句组</param>
         /// <returns>受影响的行数</returns>
-        Int32 ExecuteNonQuery(params ISqlCommand[] commands);
-
-        /// <summary>
-        /// 返回执行多个指定Sql语句后影响的行数
-        /// </summary>
-        /// <param name="commands">指定Sql语句组</param>
-        /// <returns>受影响的行数</returns>
         Int32 ExecuteNonQuery(IEnumerable<ISqlCommand> commands);
         #endregion
 
