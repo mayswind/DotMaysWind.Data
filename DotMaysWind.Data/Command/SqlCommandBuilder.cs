@@ -122,8 +122,7 @@ namespace DotMaysWind.Data.Command
                         {
                             names.Append('(');
 
-                            //COUNT函数当使用Distinct时需要构造为 COUNT(DISTINCT [ColumnName])
-                            if (isDistinct && String.Equals(queryField.Function.ToUpperInvariant(), SqlAggregateFunction.Count.ToString().ToUpperInvariant()))
+                            if (queryField.UseDistinct)
                             {
                                 names.Append("DISTINCT ");
                             }
@@ -510,6 +509,11 @@ namespace DotMaysWind.Data.Command
                         if (order.UseFunction)
                         {
                             names.Append('(');
+
+                            if (order.UseDistinct)
+                            {
+                                names.Append("DISTINCT ");
+                            }
                         }
 
                         if (!String.IsNullOrEmpty(order.TableName))

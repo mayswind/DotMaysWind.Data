@@ -435,7 +435,22 @@ namespace DotMaysWind.Data.Command
         /// <param name="tableName">表格名称</param>
         /// <param name="function">合计函数类型</param>
         /// <param name="columnName">要查询的字段名</param>
-        /// <param name="aliasesName">别名</param>
+        /// <param name="useDistinct">是否保证记录唯一</param>
+        /// <param name="aliasesName">字段别名</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand Query(String tableName, SqlAggregateFunction function, String columnName, Boolean useDistinct, String aliasesName)
+        {
+            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, tableName, function, columnName, useDistinct, aliasesName));
+            return this;
+        }
+
+        /// <summary>
+        /// 查询指定合计函数并返回当前语句
+        /// </summary>
+        /// <param name="tableName">表格名称</param>
+        /// <param name="function">合计函数类型</param>
+        /// <param name="columnName">要查询的字段名</param>
+        /// <param name="aliasesName">字段别名</param>
         /// <returns>当前语句</returns>
         public SelectCommand Query(String tableName, SqlAggregateFunction function, String columnName, String aliasesName)
         {
@@ -446,9 +461,76 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 查询指定合计函数并返回当前语句
         /// </summary>
+        /// <param name="tableName">表格名称</param>
         /// <param name="function">合计函数类型</param>
         /// <param name="columnName">要查询的字段名</param>
-        /// <param name="aliasesName">别名</param>
+        /// <param name="useDistinct">是否保证记录唯一</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand Query(String tableName, SqlAggregateFunction function, String columnName, Boolean useDistinct)
+        {
+            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, tableName, function, columnName, useDistinct));
+            return this;
+        }
+
+        /// <summary>
+        /// 查询指定合计函数并返回当前语句
+        /// </summary>
+        /// <param name="tableName">表格名称</param>
+        /// <param name="function">合计函数类型</param>
+        /// <param name="columnName">要查询的字段名</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand Query(String tableName, SqlAggregateFunction function, String columnName)
+        {
+            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, tableName, function, columnName));
+            return this;
+        }
+
+        /// <summary>
+        /// 查询指定合计函数并返回当前语句
+        /// </summary>
+        /// <param name="tableName">表格名称</param>
+        /// <param name="function">合计函数类型</param>
+        /// <param name="useDistinct">是否保证记录唯一</param>
+        /// <param name="aliasesName">字段别名</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand Query(String tableName, SqlAggregateFunction function, Boolean useDistinct, String aliasesName)
+        {
+            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, tableName, function, useDistinct, aliasesName));
+            return this;
+        }
+
+        /// <summary>
+        /// 查询指定合计函数并返回当前语句
+        /// </summary>
+        /// <param name="tableName">表格名称</param>
+        /// <param name="function">合计函数类型</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand Query(String tableName, SqlAggregateFunction function)
+        {
+            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, tableName, function));
+            return this;
+        }
+
+        /// <summary>
+        /// 查询指定合计函数并返回当前语句
+        /// </summary>
+        /// <param name="function">合计函数类型</param>
+        /// <param name="columnName">要查询的字段名</param>
+        /// <param name="useDistinct">是否保证记录唯一</param>
+        /// <param name="aliasesName">字段别名</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand Query(SqlAggregateFunction function, String columnName, Boolean useDistinct, String aliasesName)
+        {
+            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, function, columnName, useDistinct, aliasesName));
+            return this;
+        }
+
+        /// <summary>
+        /// 查询指定合计函数并返回当前语句
+        /// </summary>
+        /// <param name="function">合计函数类型</param>
+        /// <param name="columnName">要查询的字段名</param>
+        /// <param name="aliasesName">字段别名</param>
         /// <returns>当前语句</returns>
         /// <example>
         /// <code lang="C#">
@@ -472,13 +554,13 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 查询指定合计函数并返回当前语句
         /// </summary>
-        /// <param name="tableName">表格名称</param>
         /// <param name="function">合计函数类型</param>
         /// <param name="columnName">要查询的字段名</param>
+        /// <param name="useDistinct">是否保证记录唯一</param>
         /// <returns>当前语句</returns>
-        public SelectCommand Query(String tableName, SqlAggregateFunction function, String columnName)
+        public SelectCommand Query(SqlAggregateFunction function, String columnName, Boolean useDistinct)
         {
-            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, tableName, function, columnName));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, function, columnName, useDistinct));
             return this;
         }
 
@@ -510,12 +592,13 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 查询指定合计函数并返回当前语句
         /// </summary>
-        /// <param name="tableName">表格名称</param>
         /// <param name="function">合计函数类型</param>
+        /// <param name="useDistinct">是否保证记录唯一</param>
+        /// <param name="aliasesName">字段别名</param>
         /// <returns>当前语句</returns>
-        public SelectCommand Query(String tableName, SqlAggregateFunction function)
+        public SelectCommand Query(SqlAggregateFunction function, Boolean useDistinct, String aliasesName)
         {
-            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, tableName, function));
+            this._queryFields.Add(SqlQueryField.InternalCreateFromAggregateFunction(this, function, useDistinct, aliasesName));
             return this;
         }
 
@@ -686,6 +769,19 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 按指定列排序并返回当前语句
         /// </summary>
+        /// <param name="tableName">表格名称</param>
+        /// <param name="columnName">字段名</param>
+        /// <param name="orderType">排序类型</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand OrderBy(String tableName, String columnName, SqlOrderType orderType)
+        {
+            this._orders.Add(SqlOrder.InternalCreate(this, tableName, columnName, orderType));
+            return this;
+        }
+
+        /// <summary>
+        /// 按指定列排序并返回当前语句
+        /// </summary>
         /// <param name="columnName">字段名</param>
         /// <param name="orderType">排序类型</param>
         /// <returns>当前语句</returns>
@@ -706,19 +802,6 @@ namespace DotMaysWind.Data.Command
         public SelectCommand OrderBy(String columnName, SqlOrderType orderType)
         {
             this._orders.Add(SqlOrder.InternalCreate(this, columnName, orderType));
-            return this;
-        }
-
-        /// <summary>
-        /// 按指定列排序并返回当前语句
-        /// </summary>
-        /// <param name="tableName">表格名称</param>
-        /// <param name="columnName">字段名</param>
-        /// <param name="orderType">排序类型</param>
-        /// <returns>当前语句</returns>
-        public SelectCommand OrderBy(String tableName, String columnName, SqlOrderType orderType)
-        {
-            this._orders.Add(SqlOrder.InternalCreate(this, tableName, columnName, orderType));
             return this;
         }
         #endregion
@@ -793,27 +876,43 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 按指定列排序并返回当前语句
         /// </summary>
+        /// <param name="tableName">表格名称</param>
         /// <param name="function">合计函数</param>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="useDistinct">是否保证记录唯一</param>
         /// <param name="orderType">排序类型</param>
         /// <returns>当前语句</returns>
-        /// <example>
-        /// <code lang="C#">
-        /// <![CDATA[
-        /// IDatabase db = DatabaseFactory.CreateDatabase();
-        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Products")
-        ///     .Querys("ProductID", "ProductName")
-        ///     .GroupBy("ProductType")
-        ///     .OrderBy(SqlAggregateFunction.Count, SqlOrderType.Asc);
-        /// 
-        /// //SELECT ProductID, ProductName FROM tbl_Products GROUP BY ProductType ORDER BY Count(*) ASC
-        /// 
-        /// DataTable table = cmd.ToDataTable();
-        /// ]]>
-        /// </code>
-        /// </example>
-        public SelectCommand OrderBy(SqlAggregateFunction function, SqlOrderType orderType)
+        public SelectCommand OrderBy(String tableName, SqlAggregateFunction function, String columnName, Boolean useDistinct, SqlOrderType orderType)
         {
-            this._orders.Add(SqlOrder.InternalCreateFromAggregateFunction(this, function, orderType));
+            this._orders.Add(SqlOrder.InternalCreateFromAggregateFunction(this, tableName, function, columnName, useDistinct, orderType));
+            return this;
+        }
+
+        /// <summary>
+        /// 按指定列排序并返回当前语句
+        /// </summary>
+        /// <param name="tableName">表格名称</param>
+        /// <param name="function">合计函数</param>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="orderType">排序类型</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand OrderBy(String tableName, SqlAggregateFunction function, String columnName, SqlOrderType orderType)
+        {
+            this._orders.Add(SqlOrder.InternalCreateFromAggregateFunction(this, tableName, function, columnName, orderType));
+            return this;
+        }
+
+        /// <summary>
+        /// 按指定列排序并返回当前语句
+        /// </summary>
+        /// <param name="tableName">表格名称</param>
+        /// <param name="function">合计函数</param>
+        /// <param name="useDistinct">是否保证记录唯一</param>
+        /// <param name="orderType">排序类型</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand OrderBy(String tableName, SqlAggregateFunction function, Boolean useDistinct, SqlOrderType orderType)
+        {
+            this._orders.Add(SqlOrder.InternalCreateFromAggregateFunction(this, tableName, function, useDistinct, orderType));
             return this;
         }
 
@@ -827,6 +926,20 @@ namespace DotMaysWind.Data.Command
         public SelectCommand OrderBy(String tableName, SqlAggregateFunction function, SqlOrderType orderType)
         {
             this._orders.Add(SqlOrder.InternalCreateFromAggregateFunction(this, tableName, function, orderType));
+            return this;
+        }
+
+        /// <summary>
+        /// 按指定列排序并返回当前语句
+        /// </summary>
+        /// <param name="function">合计函数</param>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="useDistinct">是否保证记录唯一</param>
+        /// <param name="orderType">排序类型</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand OrderBy(SqlAggregateFunction function, String columnName, Boolean useDistinct, SqlOrderType orderType)
+        {
+            this._orders.Add(SqlOrder.InternalCreateFromAggregateFunction(this, function, columnName, useDistinct, orderType));
             return this;
         }
 
@@ -861,14 +974,40 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 按指定列排序并返回当前语句
         /// </summary>
-        /// <param name="tableName">表格名称</param>
         /// <param name="function">合计函数</param>
-        /// <param name="columnName">字段名称</param>
+        /// <param name="useDistinct">是否保证记录唯一</param>
         /// <param name="orderType">排序类型</param>
         /// <returns>当前语句</returns>
-        public SelectCommand OrderBy(String tableName, SqlAggregateFunction function, String columnName, SqlOrderType orderType)
+        public SelectCommand OrderBy(SqlAggregateFunction function, Boolean useDistinct, SqlOrderType orderType)
         {
-            this._orders.Add(SqlOrder.InternalCreateFromAggregateFunction(this, tableName, function, columnName, orderType));
+            this._orders.Add(SqlOrder.InternalCreateFromAggregateFunction(this, function, useDistinct, orderType));
+            return this;
+        }
+
+        /// <summary>
+        /// 按指定列排序并返回当前语句
+        /// </summary>
+        /// <param name="function">合计函数</param>
+        /// <param name="orderType">排序类型</param>
+        /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Products")
+        ///     .Querys("ProductID", "ProductName")
+        ///     .GroupBy("ProductType")
+        ///     .OrderBy(SqlAggregateFunction.Count, SqlOrderType.Asc);
+        /// 
+        /// //SELECT ProductID, ProductName FROM tbl_Products GROUP BY ProductType ORDER BY Count(*) ASC
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
+        public SelectCommand OrderBy(SqlAggregateFunction function, SqlOrderType orderType)
+        {
+            this._orders.Add(SqlOrder.InternalCreateFromAggregateFunction(this, function, orderType));
             return this;
         }
         #endregion

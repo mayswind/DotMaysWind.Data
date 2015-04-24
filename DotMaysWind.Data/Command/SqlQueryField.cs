@@ -13,6 +13,7 @@ namespace DotMaysWind.Data.Command
         private String _aliasesName;
 
         private Boolean _useFunction;
+        private Boolean _useDistinct;
         private String _function;
         #endregion
 
@@ -50,6 +51,14 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
+        /// 获取是否保证记录唯一
+        /// </summary>
+        internal Boolean UseDistinct
+        {
+            get { return this._useDistinct; }
+        }
+
+        /// <summary>
         /// 获取函数名称
         /// </summary>
         internal String Function
@@ -72,6 +81,7 @@ namespace DotMaysWind.Data.Command
             this._columnName = columnName;
             this._aliasesName = aliasesName;
             this._useFunction = false;
+            this._useDistinct = false;
             this._function = String.Empty;
         }
 
@@ -82,13 +92,15 @@ namespace DotMaysWind.Data.Command
         /// <param name="tableName">表格名称</param>
         /// <param name="function">合计函数</param>
         /// <param name="columnName">字段名称</param>
+        /// <param name="useDistinct">是否保证记录唯一</param>
         /// <param name="aliasesName">字段别名</param>
-        private SqlQueryField(SelectCommand cmd, String tableName, SqlAggregateFunction function, String columnName, String aliasesName)
+        private SqlQueryField(SelectCommand cmd, String tableName, SqlAggregateFunction function, String columnName, Boolean useDistinct, String aliasesName)
         {
             this._tableName = tableName;
             this._columnName = columnName;
             this._aliasesName = aliasesName;
             this._useFunction = true;
+            this._useDistinct = useDistinct;
             this._function = function.ToString().ToUpperInvariant();
         }
 
@@ -104,6 +116,7 @@ namespace DotMaysWind.Data.Command
             this._columnName = String.Empty;
             this._aliasesName = aliasesName;
             this._useFunction = true;
+            this._useDistinct = false;
             this._function = function;
         }
         #endregion
@@ -149,22 +162,37 @@ namespace DotMaysWind.Data.Command
         /// <param name="tableName">表格名称</param>
         /// <param name="function">合计函数</param>
         /// <param name="columnName">字段名称</param>
+        /// <param name="useDistinct">是否保证记录唯一</param>
         /// <param name="aliasesName">字段别名</param>
-        internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, String tableName, SqlAggregateFunction function, String columnName, String aliasesName)
+        internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, String tableName, SqlAggregateFunction function, String columnName, Boolean useDistinct, String aliasesName)
         {
-            return new SqlQueryField(cmd, tableName, function, columnName, aliasesName);
+            return new SqlQueryField(cmd, tableName, function, columnName, useDistinct, aliasesName);
         }
 
         /// <summary>
         /// 创建新的Sql查询字段类
         /// </summary>
         /// <param name="cmd">源选择语句</param>
+        /// <param name="tableName">表格名称</param>
         /// <param name="function">合计函数</param>
         /// <param name="columnName">字段名称</param>
         /// <param name="aliasesName">字段别名</param>
-        internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, SqlAggregateFunction function, String columnName, String aliasesName)
+        internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, String tableName, SqlAggregateFunction function, String columnName, String aliasesName)
         {
-            return new SqlQueryField(cmd, String.Empty, function, columnName, aliasesName);
+            return new SqlQueryField(cmd, tableName, function, columnName, false, aliasesName);
+        }
+
+        /// <summary>
+        /// 创建新的Sql查询字段类
+        /// </summary>
+        /// <param name="cmd">源选择语句</param>
+        /// <param name="tableName">表格名称</param>
+        /// <param name="function">合计函数</param>
+        /// <param name="useDistinct">是否保证记录唯一</param>
+        /// <param name="columnName">字段名称</param>
+        internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, String tableName, SqlAggregateFunction function, String columnName, Boolean useDistinct)
+        {
+            return new SqlQueryField(cmd, tableName, function, columnName, useDistinct, String.Empty);
         }
 
         /// <summary>
@@ -176,18 +204,20 @@ namespace DotMaysWind.Data.Command
         /// <param name="columnName">字段名称</param>
         internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, String tableName, SqlAggregateFunction function, String columnName)
         {
-            return new SqlQueryField(cmd, tableName, function, columnName, String.Empty);
+            return new SqlQueryField(cmd, tableName, function, columnName, false, String.Empty);
         }
 
         /// <summary>
         /// 创建新的Sql查询字段类
         /// </summary>
         /// <param name="cmd">源选择语句</param>
+        /// <param name="tableName">表格名称</param>
         /// <param name="function">合计函数</param>
-        /// <param name="columnName">字段名称</param>
-        internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, SqlAggregateFunction function, String columnName)
+        /// <param name="useDistinct">是否保证记录唯一</param>
+        /// <param name="aliasesName">字段别名</param>
+        internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, String tableName, SqlAggregateFunction function, Boolean useDistinct, String aliasesName)
         {
-            return new SqlQueryField(cmd, String.Empty, function, columnName, String.Empty);
+            return new SqlQueryField(cmd, tableName, function, "*", useDistinct, aliasesName);
         }
 
         /// <summary>
@@ -198,7 +228,67 @@ namespace DotMaysWind.Data.Command
         /// <param name="function">合计函数</param>
         internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, String tableName, SqlAggregateFunction function)
         {
-            return new SqlQueryField(cmd, tableName, function, "*", String.Empty);
+            return new SqlQueryField(cmd, tableName, function, "*", false, String.Empty);
+        }
+
+        /// <summary>
+        /// 创建新的Sql查询字段类
+        /// </summary>
+        /// <param name="cmd">源选择语句</param>
+        /// <param name="function">合计函数</param>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="useDistinct">是否保证记录唯一</param>
+        /// <param name="aliasesName">字段别名</param>
+        internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, SqlAggregateFunction function, String columnName, Boolean useDistinct, String aliasesName)
+        {
+            return new SqlQueryField(cmd, String.Empty, function, columnName, useDistinct, aliasesName);
+        }
+
+        /// <summary>
+        /// 创建新的Sql查询字段类
+        /// </summary>
+        /// <param name="cmd">源选择语句</param>
+        /// <param name="function">合计函数</param>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="aliasesName">字段别名</param>
+        internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, SqlAggregateFunction function, String columnName, String aliasesName)
+        {
+            return new SqlQueryField(cmd, String.Empty, function, columnName, false, aliasesName);
+        }
+
+        /// <summary>
+        /// 创建新的Sql查询字段类
+        /// </summary>
+        /// <param name="cmd">源选择语句</param>
+        /// <param name="function">合计函数</param>
+        /// <param name="columnName">字段名称</param>
+        /// <param name="useDistinct">是否保证记录唯一</param>
+        internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, SqlAggregateFunction function, String columnName, Boolean useDistinct)
+        {
+            return new SqlQueryField(cmd, String.Empty, function, columnName, useDistinct, String.Empty);
+        }
+
+        /// <summary>
+        /// 创建新的Sql查询字段类
+        /// </summary>
+        /// <param name="cmd">源选择语句</param>
+        /// <param name="function">合计函数</param>
+        /// <param name="columnName">字段名称</param>
+        internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, SqlAggregateFunction function, String columnName)
+        {
+            return new SqlQueryField(cmd, String.Empty, function, columnName, false, String.Empty);
+        }
+
+        /// <summary>
+        /// 创建新的Sql查询字段类
+        /// </summary>
+        /// <param name="cmd">源选择语句</param>
+        /// <param name="function">合计函数</param>
+        /// <param name="useDistinct">是否保证记录唯一</param>
+        /// <param name="aliasesName">字段别名</param>
+        internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, SqlAggregateFunction function, Boolean useDistinct, String aliasesName)
+        {
+            return new SqlQueryField(cmd, String.Empty, function, "*", useDistinct, aliasesName);
         }
 
         /// <summary>
@@ -208,7 +298,7 @@ namespace DotMaysWind.Data.Command
         /// <param name="function">合计函数</param>
         internal static SqlQueryField InternalCreateFromAggregateFunction(SelectCommand cmd, SqlAggregateFunction function)
         {
-            return new SqlQueryField(cmd, String.Empty, function, "*", String.Empty);
+            return new SqlQueryField(cmd, String.Empty, function, "*", false, String.Empty);
         }
 
         /// <summary>
