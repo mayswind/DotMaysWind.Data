@@ -260,7 +260,7 @@ namespace DotMaysWind.Data
         /// <returns>当前对象的信息</returns>
         public override String ToString()
         {
-            return String.Format("{0}, {1}, {2}", base.ToString(), this._parameter.ParameterName, this._parameter.DbType.ToString());
+            return String.Format("{0}, {1} = {2}", base.ToString(), this._parameter.ParameterName, this._parameter.Value.ToString());
         }
         #endregion
 

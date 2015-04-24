@@ -414,7 +414,7 @@ namespace DotMaysWind.Data.Command
         /// <returns>当前对象的信息</returns>
         public override String ToString()
         {
-            return String.Format("{0}, {1} {2}", base.ToString(), this._columnName);
+            return String.Format("{0}, {1}", base.ToString(), this._function + this._columnName);
         }
         #endregion
     }
