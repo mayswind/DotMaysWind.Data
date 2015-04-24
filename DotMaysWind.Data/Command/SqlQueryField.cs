@@ -122,6 +122,7 @@ namespace DotMaysWind.Data.Command
         #endregion
 
         #region 静态方法
+        #region InternalCreateFromColumn
         /// <summary>
         /// 创建新的Sql查询字段类
         /// </summary>
@@ -154,7 +155,9 @@ namespace DotMaysWind.Data.Command
         {
             return new SqlQueryField(cmd, String.Empty, columnName, String.Empty);
         }
+        #endregion
 
+        #region InternalCreateFromAggregateFunction
         /// <summary>
         /// 创建新的Sql查询字段类
         /// </summary>
@@ -300,12 +303,14 @@ namespace DotMaysWind.Data.Command
         {
             return new SqlQueryField(cmd, String.Empty, function, "*", false, String.Empty);
         }
+        #endregion
 
+        #region InternalCreateFromFunction
         /// <summary>
         /// 创建新的Sql查询字段类
         /// </summary>
         /// <param name="cmd">源选择语句</param>
-        /// <param name="function">函数名称</param>
+        /// <param name="function">函数内容</param>
         internal static SqlQueryField InternalCreateFromFunction(SelectCommand cmd, String function)
         {
             return new SqlQueryField(cmd, function, String.Empty);
@@ -315,12 +320,13 @@ namespace DotMaysWind.Data.Command
         /// 创建新的Sql查询字段类
         /// </summary>
         /// <param name="cmd">源选择语句</param>
-        /// <param name="function">函数名称</param>
+        /// <param name="function">函数内容</param>
         /// <param name="aliasesName">别名</param>
         internal static SqlQueryField InternalCreateFromFunction(SelectCommand cmd, String function, String aliasesName)
         {
             return new SqlQueryField(cmd, function, aliasesName);
         }
+        #endregion
         #endregion
 
         #region 重载方法和运算符
