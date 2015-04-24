@@ -81,6 +81,7 @@ namespace DotMaysWind.Data.Command
             this._columnName = columnName;
             this._orderType = orderType;
             this._useFunction = false;
+            this._useDistinct = false;
             this._function = String.Empty;
         }
 
@@ -101,6 +102,22 @@ namespace DotMaysWind.Data.Command
             this._useFunction = true;
             this._useDistinct = useDistinct;
             this._function = function.ToString().ToUpperInvariant();
+        }
+
+        /// <summary>
+        /// 初始化新的Sql语句排序类
+        /// </summary>
+        /// <param name="baseCommand">选择语句</param>
+        /// <param name="function">合计函数</param>
+        /// <param name="orderType">排序方式</param>
+        private SqlOrder(SelectCommand baseCommand, String function, SqlOrderType orderType)
+        {
+            this._tableName = String.Empty;
+            this._columnName = String.Empty;
+            this._orderType = orderType;
+            this._useFunction = true;
+            this._useDistinct = false;
+            this._function = function;
         }
         #endregion
         
@@ -124,6 +141,7 @@ namespace DotMaysWind.Data.Command
         #endregion
 
         #region 静态方法
+        #region InternalCreate
         /// <summary>
         /// 创建新的Sql语句排序类
         /// </summary>
@@ -146,7 +164,9 @@ namespace DotMaysWind.Data.Command
         {
             return new SqlOrder(cmd, String.Empty, columnName, orderType);
         }
+        #endregion
 
+        #region InternalCreateFromAggregateFunction
         /// <summary>
         /// 创建新的Sql语句排序类
         /// </summary>
@@ -246,6 +266,20 @@ namespace DotMaysWind.Data.Command
         {
             return new SqlOrder(cmd, String.Empty, function, "*", false, orderType);
         }
+        #endregion
+
+        #region InternalCreateFromFunction
+        /// <summary>
+        /// 创建新的Sql语句排序类
+        /// </summary>
+        /// <param name="cmd">源选择语句</param>
+        /// <param name="function">函数内容</param>
+        /// <param name="orderType">排序方式</param>
+        internal static SqlOrder InternalCreateFromFunction(SelectCommand cmd, String function, SqlOrderType orderType)
+        {
+            return new SqlOrder(cmd, function, orderType);
+        }
+        #endregion
         #endregion
 
         #region 重载方法和运算符
