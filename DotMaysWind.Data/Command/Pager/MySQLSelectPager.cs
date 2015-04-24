@@ -22,7 +22,7 @@ namespace DotMaysWind.Data.Command.Pager
             sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.InternalGetJoinList());
 
             sb.AppendWhere(baseCommand.WhereCondition);
-            sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByColumnList());
+            sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByFieldList());
             sb.AppendHaving(baseCommand.InternalGetHavingCondition());
             sb.AppendSelectOrderBys(baseCommand.InternalGetOrderList(), orderReverse);
 

@@ -37,7 +37,7 @@ namespace DotMaysWind.Data.Command.Pager
                 innestCommand.InternalSetQueryFieldList(baseCommand);
                 innestCommand.InternalSetJoinList(baseCommand);
                 innestCommand.InternalSetWhereCondition(baseCommand);
-                innestCommand.InternalSetGroupByColumnList(baseCommand);
+                innestCommand.InternalSetGroupByFieldList(baseCommand);
                 innestCommand.InternalSetHavingCondition(baseCommand);
                 innestCommand.InternalSetOrderList(baseCommand);
 
@@ -61,7 +61,7 @@ namespace DotMaysWind.Data.Command.Pager
                 }
 
                 sb.AppendWhere(where);
-                sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByColumnList());
+                sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByFieldList());
                 sb.AppendHaving(baseCommand.InternalGetHavingCondition());
                 sb.AppendSelectOrderBys(baseCommand.InternalGetOrderList(), orderReverse);
             }

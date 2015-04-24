@@ -42,7 +42,7 @@ namespace DotMaysWind.Data.Command.Pager
                 innerCommand.PageSize = baseCommand.RecordStart + baseCommand.PageSize;
                 innerCommand.InternalSetJoinList(baseCommand);
                 innerCommand.InternalSetWhereCondition(baseCommand);
-                innerCommand.InternalSetGroupByColumnList(baseCommand);
+                innerCommand.InternalSetGroupByFieldList(baseCommand);
                 innerCommand.InternalSetHavingCondition(baseCommand);
 
                 sb.AppendSelectFrom(innerCommand.GetCommandText("T"), true);
@@ -59,7 +59,7 @@ namespace DotMaysWind.Data.Command.Pager
                 sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.InternalGetJoinList());
 
                 sb.AppendWhere(baseCommand.WhereCondition);
-                sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByColumnList());
+                sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByFieldList());
                 sb.AppendHaving(baseCommand.InternalGetHavingCondition());
                 sb.AppendSelectOrderBys(baseCommand.InternalGetOrderList(), orderReverse);
             }

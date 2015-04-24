@@ -459,7 +459,7 @@ namespace DotMaysWind.Data.Command
         /// </summary>
         /// <param name="groupBys">Group By语句集合</param>
         /// <returns>当前SQL语句创建类</returns>
-        internal SqlCommandBuilder AppendSelectGroupBys(List<String> groupBys)
+        internal SqlCommandBuilder AppendSelectGroupBys(List<SqlGroupByField> groupBys)
         {
             if (groupBys != null && groupBys.Count > 0)
             {
@@ -470,7 +470,33 @@ namespace DotMaysWind.Data.Command
                 for (Int32 i = 0; i < groupBys.Count; i++)
                 {
                     if (i > 0) names.Append(",");
-                    names.Append(groupBys[i]);
+
+                    SqlGroupByField field = groupBys[i];
+
+                    if (field.UseFunction)
+                    {
+                        names.Append(field.Function);
+                    }
+
+                    if (!String.IsNullOrEmpty(field.FieldName))
+                    {
+                        if (field.UseFunction)
+                        {
+                            names.Append('(');
+                        }
+
+                        if (!String.IsNullOrEmpty(field.TableName))
+                        {
+                            names.Append(field.TableName).Append('.');
+                        }
+
+                        names.Append(field.FieldName);
+
+                        if (field.UseFunction)
+                        {
+                            names.Append(')');
+                        }
+                    }
                 }
 
                 this._stringBuilder.Append(names.ToString()).Append(' ');
@@ -521,7 +547,7 @@ namespace DotMaysWind.Data.Command
                             names.Append(order.TableName).Append('.');
                         }
 
-                        names.Append(orders[i].FieldName);
+                        names.Append(order.FieldName);
 
                         if (order.UseFunction)
                         {

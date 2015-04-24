@@ -81,6 +81,7 @@
     <Compile Include="Command\SqlCommandType.cs" />
     <Compile Include="Command\Join\SqlJoinType.cs" />
     <Compile Include="Command\SqlDatePartType.cs" />
+    <Compile Include="Command\SqlGroupByField.cs" />
     <Compile Include="Command\SqlOrder.cs" />
     <Compile Include="Command\SqlOrderType.cs" />
     <Compile Include="Command\Condition\SqlBasicParameterCondition.cs" />

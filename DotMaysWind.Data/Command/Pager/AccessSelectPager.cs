@@ -36,7 +36,7 @@ namespace DotMaysWind.Data.Command.Pager
                     innerCommand.InternalSetQueryFieldList(baseCommand);
                     innerCommand.InternalSetJoinList(baseCommand);
                     innerCommand.InternalSetWhereCondition(baseCommand);
-                    innerCommand.InternalSetGroupByColumnList(baseCommand);
+                    innerCommand.InternalSetGroupByFieldList(baseCommand);
                     innerCommand.InternalSetHavingCondition(baseCommand);
                     innerCommand.InternalSetOrderList(baseCommand);
 
@@ -66,7 +66,7 @@ namespace DotMaysWind.Data.Command.Pager
                     innestCommand.InternalSetQueryFieldList(baseCommand);
                     innestCommand.InternalSetJoinList(baseCommand);
                     innestCommand.InternalSetWhereCondition(baseCommand);
-                    innestCommand.InternalSetGroupByColumnList(baseCommand);
+                    innestCommand.InternalSetGroupByFieldList(baseCommand);
                     innestCommand.InternalSetHavingCondition(baseCommand);
                     innestCommand.InternalSetOrderList(baseCommand);
 
@@ -88,7 +88,7 @@ namespace DotMaysWind.Data.Command.Pager
                     innerCommand.InternalSetQueryFieldList(baseCommand);
                     innerCommand.InternalSetJoinList(baseCommand);
                     innerCommand.InternalSetWhereCondition(baseCommand);
-                    innerCommand.InternalSetGroupByColumnList(baseCommand);
+                    innerCommand.InternalSetGroupByFieldList(baseCommand);
                     innerCommand.InternalSetHavingCondition(baseCommand);
                     innerCommand.InternalSetOrderList(baseCommand);
 
@@ -107,7 +107,7 @@ namespace DotMaysWind.Data.Command.Pager
                 sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.InternalGetJoinList());
 
                 sb.AppendWhere(baseCommand.WhereCondition);
-                sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByColumnList());
+                sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByFieldList());
                 sb.AppendHaving(baseCommand.InternalGetHavingCondition());
                 sb.AppendSelectOrderBys(baseCommand.InternalGetOrderList(), orderReverse);
             }
@@ -138,7 +138,7 @@ namespace DotMaysWind.Data.Command.Pager
                 sb.AppendWhere(baseCommand.ConditionBuilder.False());
             }
 
-            sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByColumnList());
+            sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByFieldList());
             sb.AppendHaving(baseCommand.InternalGetHavingCondition());
             sb.AppendSelectOrderBys(baseCommand.InternalGetOrderList(), orderReverse);
 
@@ -162,7 +162,7 @@ namespace DotMaysWind.Data.Command.Pager
             sb.AppendSelectFromAndJoins(baseCommand.TableName, baseCommand.IsFromSql, baseCommand.InternalGetJoinList());
 
             sb.AppendWhere(baseCommand.WhereCondition);
-            sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByColumnList());
+            sb.AppendSelectGroupBys(baseCommand.InternalGetGroupByFieldList());
             sb.AppendHaving(baseCommand.InternalGetHavingCondition());
 
             return sb.ToString();

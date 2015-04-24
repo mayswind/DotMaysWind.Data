@@ -26,7 +26,7 @@ namespace DotMaysWind.Data.Command
         private Boolean _useDistinct;
 
         private List<SqlQueryField> _queryFields;
-        private List<String> _groupbys;
+        private List<SqlGroupByField> _groupbys;
         private List<SqlOrder> _orders;
 
         private Int16 _joinIndex;
@@ -88,7 +88,7 @@ namespace DotMaysWind.Data.Command
         /// <summary>
         /// 获取分组字段名列表
         /// </summary>
-        public String[] GroupByColumns
+        public SqlGroupByField[] GroupByFields
         {
             get { return this._groupbys.ToArray(); }
         }
@@ -150,7 +150,7 @@ namespace DotMaysWind.Data.Command
         {
             this._isFromSql = isFromSql;
             this._queryFields = new List<SqlQueryField>();
-            this._groupbys = new List<String>();
+            this._groupbys = new List<SqlGroupByField>();
             this._orders = new List<SqlOrder>();
             this._joins = new List<ISqlJoin>();
 
@@ -764,6 +764,149 @@ namespace DotMaysWind.Data.Command
         #endregion
         #endregion
 
+        #region Distinct
+        /// <summary>
+        /// 设置保证返回记录唯一并返回当前语句
+        /// </summary>
+        /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserName")
+        ///     .Distinct();
+        /// 
+        /// //SELECT DISTINCT UserName FROM tbl_Users
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
+        public SelectCommand Distinct()
+        {
+            this._useDistinct = true;
+
+            return this;
+        }
+        #endregion
+
+        #region GroupBy
+        #region General
+        /// <summary>
+        /// 分组指定字段名并返回当前语句
+        /// </summary>
+        /// <param name="tableName">表格名称</param>
+        /// <param name="columnName">字段名</param>
+        /// <returns>当前语句</returns>
+        public SelectCommand GroupBy(String tableName, String columnName)
+        {
+            this._groupbys.Add(SqlGroupByField.InternalCreate(this, tableName, columnName));
+            return this;
+        }
+
+        /// <summary>
+        /// 分组指定字段名并返回当前语句
+        /// </summary>
+        /// <param name="columnName">字段名</param>
+        /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Query("UserType")
+        ///     .Query(SqlAggregateFunction.Count, "UserID", "UserCount")
+        ///     .GroupBy("UserType");
+        /// 
+        /// //SELECT UserType, COUNT(UserID) AS UserCount FROM tbl_Users GROUP BY UserType
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
+        public SelectCommand GroupBy(String columnName)
+        {
+            this._groupbys.Add(SqlGroupByField.InternalCreate(this, columnName));
+            return this;
+        }
+        
+        /// <summary>
+        /// 分组指定字段名并返回当前语句
+        /// </summary>
+        /// <param name="columnNames">要分组的字段名集合</param>
+        /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Querys("UserGender", "UserAge")
+        ///     .Query(SqlAggregateFunction.Count, "UserID", "UserCount")
+        ///     .GroupByThese("UserGender", "UserAge");
+        /// 
+        /// //SELECT UserGender, UserAge, COUNT(UserID) AS UserCount FROM tbl_Users GROUP BY UserGender, UserAge
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
+        public SelectCommand GroupByThese(params String[] columnNames)
+        {
+            if (columnNames != null)
+            {
+                for (Int32 i = 0; i < columnNames.Length; i++)
+                {
+                    this.GroupBy(columnNames[i]);
+                }
+            }
+
+            return this;
+        }
+        #endregion
+
+        #region GroupBySqlFunction
+        /// <summary>
+        /// 分组指定字段名并返回当前语句
+        /// </summary>
+        /// <param name="function">函数</param>
+        /// <exception cref="ArgumentNullException">函数不能为空</exception>
+        /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Query(db.Functions.Length("UserName"), "NameLength")
+        ///     .Query(SqlAggregateFunction.Count, "UserName", "UserCount")
+        ///     .GroupBy(db.Functions.Length("UserName"));
+        /// 
+        /// //SELECT LEN(UserName) AS NameLength, COUNT(UserName) AS UserCount FROM tbl_Users GROUP BY LEN(UserName)
+        /// //"LEN()" will be changed into "LENGTH()" in MySQL, Oracle, or SQLite.
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
+        public SelectCommand GroupBy(ISqlFunction function)
+        {
+            if (function == null)
+            {
+                throw new ArgumentNullException("function");
+            }
+
+            this._groupbys.Add(SqlGroupByField.InternalCreateFromFunction(this, function.GetCommandText()));
+
+            if (function.HasParameters)
+            {
+                this._parameters.AddRange(function.GetAllParameters());
+            }
+
+            return this;
+        }
+        #endregion
+        #endregion
+
         #region OrderBy
         #region General
         /// <summary>
@@ -1008,6 +1151,47 @@ namespace DotMaysWind.Data.Command
         public SelectCommand OrderBy(SqlAggregateFunction function, SqlOrderType orderType)
         {
             this._orders.Add(SqlOrder.InternalCreateFromAggregateFunction(this, function, orderType));
+            return this;
+        }
+        #endregion
+
+        #region OrderBySqlFunction
+        /// <summary>
+        /// 按指定列排序并返回当前语句
+        /// </summary>
+        /// <param name="function">函数</param>
+        /// <param name="orderType">排序类型</param>
+        /// <exception cref="ArgumentNullException">函数不能为空</exception>
+        /// <returns>当前语句</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// IDatabase db = DatabaseFactory.CreateDatabase();
+        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
+        ///     .Query("UserID")
+        ///     .OrderBy(db.Functions.Length("UserName"), SqlOrderType.Desc);
+        /// 
+        /// //SELECT UserID FROM tbl_Users ORDER BY LEN(UserName) DESC
+        /// //"LEN()" will be changed into "LENGTH()" in MySQL, Oracle, or SQLite.
+        /// 
+        /// DataTable table = cmd.ToDataTable();
+        /// ]]>
+        /// </code>
+        /// </example>
+        public SelectCommand OrderBy(ISqlFunction function, SqlOrderType orderType)
+        {
+            if (function == null)
+            {
+                throw new ArgumentNullException("function");
+            }
+
+            this._orders.Add(SqlOrder.InternalCreateFromFunction(this, function.GetCommandText(), orderType));
+
+            if (function.HasParameters)
+            {
+                this._parameters.AddRange(function.GetAllParameters());
+            }
+
             return this;
         }
         #endregion
@@ -1331,62 +1515,7 @@ namespace DotMaysWind.Data.Command
         }
         #endregion
 
-        #region Distinct/GroupBy/Having/Where
-        /// <summary>
-        /// 设置保证返回记录唯一并返回当前语句
-        /// </summary>
-        /// <returns>当前语句</returns>
-        /// <example>
-        /// <code lang="C#">
-        /// <![CDATA[
-        /// IDatabase db = DatabaseFactory.CreateDatabase();
-        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
-        ///     .Querys("UserName")
-        ///     .Distinct();
-        /// 
-        /// //SELECT DISTINCT UserName FROM tbl_Users
-        /// 
-        /// DataTable table = cmd.ToDataTable();
-        /// ]]>
-        /// </code>
-        /// </example>
-        public SelectCommand Distinct()
-        {
-            this._useDistinct = true;
-
-            return this;
-        }
-
-        /// <summary>
-        /// 分组指定字段名并返回当前语句
-        /// </summary>
-        /// <param name="groupBys">要分组的字段名集合</param>
-        /// <returns>当前语句</returns>
-        /// <example>
-        /// <code lang="C#">
-        /// <![CDATA[
-        /// IDatabase db = DatabaseFactory.CreateDatabase();
-        /// SelectCommand cmd = db.CreateSelectCommand("tbl_Users")
-        ///     .Query("UserType")
-        ///     .Query(SqlAggregateFunction.Count, "UserID", "UserCount")
-        ///     .GroupBy("UserType");
-        /// 
-        /// //SELECT UserType, COUNT(UserID) AS UserCount FROM tbl_Users GROUP BY UserType
-        /// 
-        /// DataTable table = cmd.ToDataTable();
-        /// ]]>
-        /// </code>
-        /// </example>
-        public SelectCommand GroupBy(params String[] groupBys)
-        {
-            if (groupBys != null)
-            {
-                this._groupbys.AddRange(groupBys);
-            }
-            
-            return this;
-        }
-
+        #region Having/Where
         /// <summary>
         /// 设置指定查询的语句并返回当前语句
         /// </summary>
@@ -2270,7 +2399,7 @@ namespace DotMaysWind.Data.Command
         /// 设置分组字段名列表
         /// </summary>
         /// <param name="command">另一个语句</param>
-        internal void InternalSetGroupByColumnList(SelectCommand command)
+        internal void InternalSetGroupByFieldList(SelectCommand command)
         {
             this._groupbys = command._groupbys;
         }
@@ -2279,7 +2408,7 @@ namespace DotMaysWind.Data.Command
         /// 设置分组字段名列表
         /// </summary>
         /// <returns>分组字段名列表</returns>
-        internal List<String> InternalGetGroupByColumnList()
+        internal List<SqlGroupByField> InternalGetGroupByFieldList()
         {
             return this._groupbys;
         }
