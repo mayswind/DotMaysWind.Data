@@ -37,6 +37,45 @@ namespace DotMaysWind.Data.Orm
             }
         }
 
+        #region ToEntityArray
+        /// <summary>
+        /// 获取实体数组
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="table">数据表</param>
+        /// <param name="dbtable">数据库表格</param>
+        /// <param name="args">创建实体时的额外参数</param>
+        /// <exception cref="ArgumentNullException">数据表或数据库表格不能为空</exception>
+        /// <returns>数据实体数组</returns>
+        public static T[] ToEntityArrayWithArgs<T>(this DataTable table, AbstractDatabaseTable<T> dbtable, Object args) where T : class
+        {
+            if (table == null)
+            {
+                throw new ArgumentNullException("table");
+            }
+
+            if (dbtable == null)
+            {
+                throw new ArgumentNullException("dbtable");
+            }
+
+            return dbtable.InternalGetEntityArray(null, table, args);
+        }
+
+        /// <summary>
+        /// 获取实体数组
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="table">数据表</param>
+        /// <param name="dbtable">数据库表格</param>
+        /// <exception cref="ArgumentNullException">数据表或数据库表格不能为空</exception>
+        /// <returns>数据实体数组</returns>
+        public static T[] ToEntityArray<T>(this DataTable table, AbstractDatabaseTable<T> dbtable) where T : class
+        {
+            return DataTableExtension.ToEntityArrayWithArgs<T>(table, dbtable, null);
+        }
+        #endregion
+
         #region ToEntityList
         /// <summary>
         /// 获取实体列表

@@ -1111,6 +1111,32 @@ namespace DotMaysWind.Data.Orm
         }
 
         /// <summary>
+        /// 获取实体数组
+        /// </summary>
+        /// <param name="sender">请求SQL语句</param>
+        /// <param name="table">数据表</param>
+        /// <param name="extraArg">创建实体时的额外参数</param>
+        /// <returns>实体数组</returns>
+        internal T[] InternalGetEntityArray(Object sender, DataTable table, Object extraArg)
+        {
+            T[] array = null;
+
+            if (!DbConvert.IsDataTableNull(table))
+            {
+                array = new T[table.Rows.Count];
+
+                for (Int32 i = 0; i < table.Rows.Count; i++)
+                {
+                    T entity = this.InternalGetEntity(sender, i, table.Rows[i], extraArg);
+
+                    array[i] = entity;
+                }
+            }
+
+            return array;
+        }
+
+        /// <summary>
         /// 获取实体列表
         /// </summary>
         /// <param name="sender">请求SQL语句</param>

@@ -228,6 +228,155 @@ namespace DotMaysWind.Data.Orm
         }
         #endregion
 
+        #region ToEntityArray
+        /// <summary>
+        /// 获取实体数组
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="cmd">选择语句</param>
+        /// <param name="table">数据库表格</param>
+        /// <param name="args">创建实体时的额外参数</param>
+        /// <exception cref="ArgumentNullException">选择语句或数据库表格不能为空</exception>
+        /// <returns>数据实体数组</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class UserDataProvider : AbstractDatabaseTable<User>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public User[] GetAllEntities()
+        ///     {
+        ///         return this.Select()
+        ///             .ToEntityArray<User>(this, "argument");
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
+        public static T[] ToEntityArrayWithArgs<T>(this SelectCommand cmd, AbstractDatabaseTable<T> table, Object args) where T : class
+        {
+            if (cmd == null)
+            {
+                throw new ArgumentNullException("cmd");
+            }
+
+            if (table == null)
+            {
+                throw new ArgumentNullException("table");
+            }
+
+            return table.InternalGetEntityArray(cmd, cmd.ToDataTable(), args);
+        }
+
+        /// <summary>
+        /// 获取实体数组
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="cmd">选择语句</param>
+        /// <param name="table">数据库表格</param>
+        /// <exception cref="ArgumentNullException">选择语句或数据库表格不能为空</exception>
+        /// <returns>数据实体数组</returns>
+        /// <example>
+        /// <code lang="C#">
+        /// <![CDATA[
+        /// public class UserDataProvider : AbstractDatabaseTable<User>
+        /// {
+        ///     //other necessary code
+        ///     
+        ///     public User[] GetAllEntities()
+        ///     {
+        ///         return this.Select()
+        ///             .ToEntityArray<User>(this);
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
+        public static T[] ToEntityArray<T>(this SelectCommand cmd, AbstractDatabaseTable<T> table) where T : class
+        {
+            return SelectCommandExtension.ToEntityArrayWithArgs<T>(cmd, table, null);
+        }
+
+        /// <summary>
+        /// 获取实体数组
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="cmd">选择语句</param>
+        /// <param name="table">数据库表格</param>
+        /// <param name="connection">数据库连接</param>
+        /// <param name="args">创建实体时的额外参数</param>
+        /// <exception cref="ArgumentNullException">选择语句或数据库表格不能为空</exception>
+        /// <returns>数据实体数组</returns>
+        public static T[] ToEntityArrayWithArgs<T>(this SelectCommand cmd, AbstractDatabaseTable<T> table, DbConnection connection, Object args) where T : class
+        {
+            if (cmd == null)
+            {
+                throw new ArgumentNullException("cmd");
+            }
+
+            if (table == null)
+            {
+                throw new ArgumentNullException("table");
+            }
+
+            return table.InternalGetEntityArray(cmd, cmd.ToDataTable(connection), args);
+        }
+
+        /// <summary>
+        /// 获取实体数组
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="cmd">选择语句</param>
+        /// <param name="table">数据库表格</param>
+        /// <param name="connection">数据库连接</param>
+        /// <exception cref="ArgumentNullException">选择语句或数据库表格不能为空</exception>
+        /// <returns>数据实体数组</returns>
+        public static T[] ToEntityArray<T>(this SelectCommand cmd, AbstractDatabaseTable<T> table, DbConnection connection) where T : class
+        {
+            return SelectCommandExtension.ToEntityArrayWithArgs<T>(cmd, table, connection, null);
+        }
+
+        /// <summary>
+        /// 获取实体数组
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="cmd">选择语句</param>
+        /// <param name="table">数据库表格</param>
+        /// <param name="transaction">数据库事务</param>
+        /// <param name="args">创建实体时的额外参数</param>
+        /// <exception cref="ArgumentNullException">选择语句或数据库表格不能为空</exception>
+        /// <returns>数据实体数组</returns>
+        public static T[] ToEntityArrayWithArgs<T>(this SelectCommand cmd, AbstractDatabaseTable<T> table, DbTransaction transaction, Object args) where T : class
+        {
+            if (cmd == null)
+            {
+                throw new ArgumentNullException("cmd");
+            }
+
+            if (table == null)
+            {
+                throw new ArgumentNullException("table");
+            }
+
+            return table.InternalGetEntityArray(cmd, cmd.ToDataTable(transaction), args);
+        }
+
+        /// <summary>
+        /// 获取实体数组
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="cmd">选择语句</param>
+        /// <param name="table">数据库表格</param>
+        /// <param name="transaction">数据库事务</param>
+        /// <exception cref="ArgumentNullException">选择语句或数据库表格不能为空</exception>
+        /// <returns>数据实体数组</returns>
+        public static T[] ToEntityArray<T>(this SelectCommand cmd, AbstractDatabaseTable<T> table, DbTransaction transaction) where T : class
+        {
+            return SelectCommandExtension.ToEntityArrayWithArgs<T>(cmd, table, transaction, null);
+        }
+        #endregion
+
         #region ToEntityList
         /// <summary>
         /// 获取实体列表
