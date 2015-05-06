@@ -27,7 +27,7 @@ namespace DotMaysWind.Data.Linq
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class UserDataProvider : DatabaseTable<User>
+        /// public class UserRepository : DatabaseTable<User>
         /// {
         ///     //other necessary code
         ///     
@@ -82,7 +82,7 @@ namespace DotMaysWind.Data.Linq
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class UserDataProvider : DatabaseTable<User>
+        /// public class UserRepository : DatabaseTable<User>
         /// {
         ///     //other necessary code
         ///     
@@ -120,7 +120,7 @@ namespace DotMaysWind.Data.Linq
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class UserDataProvider : DatabaseTable<User>
+        /// public class UserRepository : DatabaseTable<User>
         /// {
         ///     //other necessary code
         ///     
@@ -157,7 +157,7 @@ namespace DotMaysWind.Data.Linq
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class UserDataProvider : DatabaseTable<User>
+        /// public class UserRepository : DatabaseTable<User>
         /// {
         ///     //other necessary code
         ///     
@@ -206,7 +206,7 @@ namespace DotMaysWind.Data.Linq
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class UserDataProvider : DatabaseTable<User>
+        /// public class UserRepository : DatabaseTable<User>
         /// {
         ///     //other necessary code
         ///     
@@ -242,7 +242,7 @@ namespace DotMaysWind.Data.Linq
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class UserDataProvider : DatabaseTable<User>
+        /// public class UserRepository : DatabaseTable<User>
         /// {
         ///     //other necessary code
         ///     
@@ -279,7 +279,7 @@ namespace DotMaysWind.Data.Linq
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class UserDataProvider : DatabaseTable<User>
+        /// public class UserRepository : DatabaseTable<User>
         /// {
         ///     //other necessary code
         ///     

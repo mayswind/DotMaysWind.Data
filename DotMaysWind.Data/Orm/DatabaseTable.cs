@@ -32,9 +32,9 @@ namespace DotMaysWind.Data.Orm
     ///     public String UserName { get; set; }
     /// }
     /// 
-    /// public class UserDataProvider : DatabaseTable<User>
+    /// public class UserRepository : DatabaseTable<User>
     /// {
-    ///     public UserDataProvider()
+    ///     public UserRepository()
     ///         : base(MainDatabase.Instance) { }
     /// 
     ///     public Boolean InsertEntity(User user)

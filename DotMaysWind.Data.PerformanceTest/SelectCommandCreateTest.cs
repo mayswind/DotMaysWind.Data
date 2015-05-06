@@ -13,13 +13,13 @@ namespace DotMaysWind.Data.PerformanceTest
     internal static class SelectCommandCreateTest
     {
         #region 字段
-        private static TestEntityDataProvider _provider;
+        private static TestEntityRepository _repository;
         #endregion
 
         #region 构造方法
         static SelectCommandCreateTest()
         {
-            _provider = new TestEntityDataProvider();
+            _repository = new TestEntityRepository();
         }
         #endregion
 
@@ -37,7 +37,7 @@ namespace DotMaysWind.Data.PerformanceTest
 
         internal static void DatabaseNormalCreateSelectCommand()
         {
-            SelectCommand command = DbHelper.FakeDb.CreateSelectCommand(_provider.TableName)
+            SelectCommand command = DbHelper.FakeDb.CreateSelectCommand(_repository.TableName)
                 .Querys("TestColumn1", "TestColumn2", "TestColumn5", "TestColumn8")
                 .Query("TestColumn3", "TTTT")
                 .Query(SqlAggregateFunction.Max, "TestColumn4", "MMMM")
@@ -51,7 +51,7 @@ namespace DotMaysWind.Data.PerformanceTest
 
         internal static void DatabaseLinqCreateSelectCommand()
         {
-            SelectCommand command = DbHelper.FakeDb.CreateSelectCommand(_provider.TableName)
+            SelectCommand command = DbHelper.FakeDb.CreateSelectCommand(_repository.TableName)
                 .Querys<TestEntity>(c => new { c.Test1, c.Test2, c.Test5, c.Test8 })
                 .Query<TestEntity>(c => c.Test3, "TTTT")
                 .Query<TestEntity>(c => c.Test4, SqlAggregateFunction.Max, "MMMM")
@@ -63,9 +63,9 @@ namespace DotMaysWind.Data.PerformanceTest
             DbCommand dbCommand = command.ToDbCommand();
         }
 
-        internal static void ProviderLinqCreateSelectCommand()
+        internal static void RepositoryLinqCreateSelectCommand()
         {
-            DbCommand dbCommand = _provider.SelectTest();
+            DbCommand dbCommand = _repository.SelectTest();
         }
         #endregion
     }

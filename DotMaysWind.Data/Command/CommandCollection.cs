@@ -191,7 +191,7 @@ namespace DotMaysWind.Data.Command
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class ProductItemDataProvider : AbstractDatabaseTable<ProductItem>
+        /// public class ProductItemRepository : AbstractDatabaseTable<ProductItem>
         /// {
         ///     //other necessary code
         ///     
@@ -226,7 +226,7 @@ namespace DotMaysWind.Data.Command
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class ProductDataProvider : AbstractDatabaseTable<Product>
+        /// public class ProductRepository : AbstractDatabaseTable<Product>
         /// {
         ///     //other necessary code
         ///     
@@ -276,7 +276,7 @@ namespace DotMaysWind.Data.Command
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class ProductItemDataProvider : AbstractDatabaseTable<ProductItem>
+        /// public class ProductItemRepository : AbstractDatabaseTable<ProductItem>
         /// {
         ///     //other necessary code
         ///     
@@ -343,7 +343,7 @@ namespace DotMaysWind.Data.Command
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class ProductItemDataProvider : AbstractDatabaseTable<ProductItem>
+        /// public class ProductItemRepository : AbstractDatabaseTable<ProductItem>
         /// {
         ///     //other necessary code
         ///     
@@ -377,7 +377,7 @@ namespace DotMaysWind.Data.Command
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class ProductDataProvider : AbstractDatabaseTable<Product>
+        /// public class ProductRepository : AbstractDatabaseTable<Product>
         /// {
         ///     //other necessary code
         ///     

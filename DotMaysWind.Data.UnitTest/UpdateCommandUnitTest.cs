@@ -18,7 +18,7 @@ namespace DotMaysWind.Data.UnitTest
         public void EntityUpdateTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
+            TestEntityRepository repository = new TestEntityRepository(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
             String expectedSql = "UPDATE TestTable SET TestColumn1=@PN_IDX_0,TestColumn2=@PN_IDX_1,TestColumn3=@PN_IDX_2,TestColumn4=@PN_IDX_3,TestColumn5=@PN_IDX_4,TestColumn6=@PN_IDX_5,TestColumn7=@PN_IDX_6,TestColumn8=@PN_IDX_7";
@@ -34,7 +34,7 @@ namespace DotMaysWind.Data.UnitTest
                 DataParameter.InternalCreate(fakeDb, "TestColumn8", "7", DataType.Int16, entity.Test8)
             };
 
-            UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Set(entity);
+            UpdateCommand cmd = fakeDb.CreateUpdateCommand(repository.TableName).Set(entity);
             String actualSql = cmd.GetCommandText().Trim();
             DataParameter[] actualParameter = cmd.GetAllParameters();
 
@@ -50,7 +50,7 @@ namespace DotMaysWind.Data.UnitTest
         public void LinqUpdateTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
+            TestEntityRepository repository = new TestEntityRepository(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
             String expectedSql = "UPDATE TestTable SET TestColumn1=@PN_IDX_0,TestColumn2=@PN_IDX_1,TestColumn3=@PN_IDX_2,TestColumn4=@PN_IDX_3,TestColumn5=@PN_IDX_4,TestColumn6=@PN_IDX_5,TestColumn7=@PN_IDX_6,TestColumn8=@PN_IDX_7";
@@ -66,7 +66,7 @@ namespace DotMaysWind.Data.UnitTest
                 DataParameter.InternalCreate(fakeDb, "TestColumn8", "7", DataType.Int16, entity.Test8)
             };
 
-            UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName)
+            UpdateCommand cmd = fakeDb.CreateUpdateCommand(repository.TableName)
                 .Set<TestEntity>(c => c.Test1, entity.Test1)
                 .Set<TestEntity>(c => c.Test2, entity.Test2)
                 .Set<TestEntity>(c => c.Test3, entity.Test3)
@@ -91,13 +91,13 @@ namespace DotMaysWind.Data.UnitTest
         public void LinqIncreaseTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
+            TestEntityRepository repository = new TestEntityRepository(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
             String expectedSql = "UPDATE TestTable SET TestColumn2=(TestColumn2+1)";
             DataParameter[] expectedParameter = new DataParameter[0];
 
-            UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Increase<TestEntity>(c => c.Test2);
+            UpdateCommand cmd = fakeDb.CreateUpdateCommand(repository.TableName).Increase<TestEntity>(c => c.Test2);
             String actualSql = cmd.GetCommandText().Trim();
             DataParameter[] actualParameter = cmd.GetAllParameters();
 
@@ -109,13 +109,13 @@ namespace DotMaysWind.Data.UnitTest
         public void LinqDecreaseTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
+            TestEntityRepository repository = new TestEntityRepository(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
             String expectedSql = "UPDATE TestTable SET TestColumn2=(TestColumn2-1)";
             DataParameter[] expectedParameter = new DataParameter[0];
 
-            UpdateCommand cmd = fakeDb.CreateUpdateCommand(provider.TableName).Decrease<TestEntity>(c => c.Test2);
+            UpdateCommand cmd = fakeDb.CreateUpdateCommand(repository.TableName).Decrease<TestEntity>(c => c.Test2);
             String actualSql = cmd.GetCommandText().Trim();
             DataParameter[] actualParameter = cmd.GetAllParameters();
 

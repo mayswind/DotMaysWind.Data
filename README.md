@@ -11,9 +11,9 @@ DotMaysWind.Data
     <add name="MainDatabase" connectionString="Data Source=SERVER_ADDRESS;Initial Catalog=DATABASE_NAME;Pooling=true;User ID='USERNAME';Password='PASSWORD';" providerName="System.Data.SqlClient"/>
     </connectionStrings>
 
-Orm支持两种风格：
+DotMaysWind.Data支持以下两种方式：
 
-1、手写代码风格：
+1、伪·Orm风格：
 
     using System;
     using System.Collections.Generic;
@@ -27,12 +27,12 @@ Orm支持两种风格：
         public String UserName { get; set; }
     }
 
-    public class UserDataProvider : AbstractDatabaseTable<User>
+    public class UserDataRepository : AbstractDatabaseTable<User>
     {
         private const String UserIDColumn = "UserID";
         private const String UserNameColumn = "UserName";
 
-        public UserDataProvider()
+        public UserDataRepository()
             : base(MainDatabase.Instance) { }
 
         public override String TableName
@@ -73,11 +73,18 @@ Orm支持两种风格：
                 .Result() > 0;
         }
 
-        public List<User> GetAllEntities()
+        public List<User> GetEntities(Int32 pageSize, Int32 pageIndex)
         {
             return this.Select()
                 .Querys(UserIDColumn, UserNameColumn)
+                .OrderByAsc(UserNameColumn)
+                .Paged(pageSize, pageIndex)
                 .ToEntityList<User>(this);
+        }
+        
+        public Int32 CountAllEntities()
+        {
+            return this.Select().Count();
         }
     }
 
@@ -96,7 +103,7 @@ Orm支持两种风格：
         }
     }
 
-2、特性代码风格：
+2、真·Orm风格：
 
     using System;
     using System.Collections.Generic;
@@ -115,9 +122,9 @@ Orm支持两种风格：
         public String UserName { get; set; }
     }
 
-    public class UserDataProvider : DatabaseTable<User>
+    public class UserDataRepository : DatabaseTable<User>
     {
-        public UserDataProvider()
+        public UserDataRepository()
             : base(MainDatabase.Instance) { }
 
         public Boolean InsertEntity(User user)
@@ -142,11 +149,18 @@ Orm支持两种风格：
                 .Result() > 0;
         }
 
-        public List<User> GetAllEntities()
+        public List<User> GetEntities(Int32 pageSize, Int32 pageIndex)
         {
             return this.Select()
                 .Querys<User>(c => new { c.UserID, c.UserName })
+                .OrderByAsc(c => c.UserName)
+                .Paged(pageSize, pageIndex)
                 .ToEntityList<User>(this);
+        }
+        
+        public Int32 CountAllEntities()
+        {
+            return this.Select().Count();
         }
     }
 

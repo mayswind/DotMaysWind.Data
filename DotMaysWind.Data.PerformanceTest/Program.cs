@@ -18,16 +18,16 @@ namespace DotMaysWind.Data.PerformanceTest
             RunTest(stopWatch, cycle, new Action(SelectCommandCreateTest.BaseCreateSelectCommand));
             RunTest(stopWatch, cycle, new Action(SelectCommandCreateTest.DatabaseNormalCreateSelectCommand));
             RunTest(stopWatch, cycle, new Action(SelectCommandCreateTest.DatabaseLinqCreateSelectCommand));
-            RunTest(stopWatch, cycle, new Action(SelectCommandCreateTest.ProviderLinqCreateSelectCommand));
+            RunTest(stopWatch, cycle, new Action(SelectCommandCreateTest.RepositoryLinqCreateSelectCommand));
 
             Console.WriteLine();
             Console.WriteLine("Insert Command Generate:");
             RunTest(stopWatch, cycle, new Action(InsertCommandCreateTest.BaseCreateInsertCommand));
             RunTest(stopWatch, cycle, new Action(InsertCommandCreateTest.DatabaseNormalCreateInsertCommand));
             RunTest(stopWatch, cycle, new Action(InsertCommandCreateTest.DatabaseEntityCreateInsertCommand));
-            RunTest(stopWatch, cycle, new Action(InsertCommandCreateTest.ProviderEntityCreateInsertCommand));
+            RunTest(stopWatch, cycle, new Action(InsertCommandCreateTest.RepositoryEntityCreateInsertCommand));
             RunTest(stopWatch, cycle, new Action(InsertCommandCreateTest.DatabaseLinqCreateInsertCommand));
-            RunTest(stopWatch, cycle, new Action(InsertCommandCreateTest.ProviderLinqCreateInsertCommand));
+            RunTest(stopWatch, cycle, new Action(InsertCommandCreateTest.RepositoryLinqCreateInsertCommand));
         }
 
         private static void RunTest(Stopwatch stopWatch, Int32 cycle, Action action)

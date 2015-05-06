@@ -7,9 +7,9 @@ using DotMaysWind.Data.Orm;
 
 namespace DotMaysWind.Data.PerformanceTest
 {
-    public class TestEntityDataProvider : DatabaseTable<TestEntity>
+    public class TestEntityRepository : DatabaseTable<TestEntity>
     {
-        public TestEntityDataProvider()
+        public TestEntityRepository()
             : base(DbHelper.FakeDb) { }
 
         public DbCommand SelectTest()

@@ -18,7 +18,7 @@ namespace DotMaysWind.Data.UnitTest
         public void EntityInsertTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
+            TestEntityRepository repository = new TestEntityRepository(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
             String expectedSql = "INSERT INTO TestTable ( TestColumn1,TestColumn2,TestColumn3,TestColumn4,TestColumn5,TestColumn6,TestColumn7,TestColumn8 ) " +
@@ -35,7 +35,7 @@ namespace DotMaysWind.Data.UnitTest
                 DataParameter.InternalCreate(fakeDb, "TestColumn8", "7", DataType.Int16, entity.Test8)
             };
 
-            InsertCommand cmd = fakeDb.CreateInsertCommand(provider.TableName).Set(entity);
+            InsertCommand cmd = fakeDb.CreateInsertCommand(repository.TableName).Set(entity);
             String actualSql = cmd.GetCommandText().Trim();
             DataParameter[] actualParameter = cmd.GetAllParameters();
 
@@ -51,7 +51,7 @@ namespace DotMaysWind.Data.UnitTest
         public void LinqInsertTest()
         {
             AbstractDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient") as AbstractDatabase;
-            TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
+            TestEntityRepository repository = new TestEntityRepository(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
             String expectedSql = "INSERT INTO TestTable ( TestColumn1,TestColumn2,TestColumn3,TestColumn4,TestColumn5,TestColumn6,TestColumn7,TestColumn8 ) " +
@@ -68,7 +68,7 @@ namespace DotMaysWind.Data.UnitTest
                 DataParameter.InternalCreate(fakeDb, "TestColumn8", "7", DataType.Int16, entity.Test8)
             };
 
-            InsertCommand cmd = fakeDb.CreateInsertCommand(provider.TableName)
+            InsertCommand cmd = fakeDb.CreateInsertCommand(repository.TableName)
                 .Set<TestEntity>(c => c.Test1, entity.Test1)
                 .Set<TestEntity>(c => c.Test2, entity.Test2)
                 .Set<TestEntity>(c => c.Test3, entity.Test3)

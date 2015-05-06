@@ -28,12 +28,12 @@ namespace DotMaysWind.Data.Orm
     ///     public String UserName { get; set; }
     /// }
     /// 
-    /// public class UserDataProvider : AbstractDatabaseTable<User>
+    /// public class UserRepository : AbstractDatabaseTable<User>
     /// {
     ///     private const String UserIDColumn = "UserID";
     ///     private const String UserNameColumn = "UserName";
     /// 
-    ///     public UserDataProvider()
+    ///     public UserRepository()
     ///         : base(MainDatabase.Instance) { }
     /// 
     ///     public override String TableName

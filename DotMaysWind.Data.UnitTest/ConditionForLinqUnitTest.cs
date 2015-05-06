@@ -155,10 +155,10 @@ namespace DotMaysWind.Data.UnitTest
 
             Assert.AreEqual(expectedCondition4, actualCondition4);
 
-            TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
+            TestEntityRepository repository = new TestEntityRepository(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
-            SqlInsideCommandCondition expectedCondition5 = expectedConditionBuilder.In("TestColumn4", provider.TableName, s => 
+            SqlInsideCommandCondition expectedCondition5 = expectedConditionBuilder.In("TestColumn4", repository.TableName, s => 
             {
                 s.Query("TestColumn4")
                     .Paged(10, 2)
@@ -208,10 +208,10 @@ namespace DotMaysWind.Data.UnitTest
 
             Assert.AreEqual(expectedCondition4, actualCondition4);
 
-            TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
+            TestEntityRepository repository = new TestEntityRepository(fakeDb);
             TestEntity entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
 
-            SqlInsideCommandCondition expectedCondition5 = expectedConditionBuilder.NotIn("TestColumn4", provider.TableName, s =>
+            SqlInsideCommandCondition expectedCondition5 = expectedConditionBuilder.NotIn("TestColumn4", repository.TableName, s =>
             {
                 s.Query("TestColumn4")
                     .Paged(10, 2)

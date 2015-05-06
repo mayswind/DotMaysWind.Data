@@ -18,9 +18,9 @@ namespace DotMaysWind.Data.UnitTest
         public void LinqSelectTest()
         {
             IDatabase fakeDb = DatabaseFactory.CreateDatabase("", "System.Data.SqlClient");
-            TestEntityDataProvider provider = new TestEntityDataProvider(fakeDb);
+            TestEntityRepository repository = new TestEntityRepository(fakeDb);
 
-            SelectCommand expectedCommand = fakeDb.CreateSelectCommand(provider.TableName)
+            SelectCommand expectedCommand = fakeDb.CreateSelectCommand(repository.TableName)
                 .Querys("TestColumn1", "TestColumn2", "TestColumn5", "TestColumn8")
                 .Query("TestColumn3", "TTTT")
                 .Query(SqlAggregateFunction.Max, "TestColumn4", "MMMM")
@@ -29,7 +29,7 @@ namespace DotMaysWind.Data.UnitTest
                 .InnerJoin("TestColumn2", "TestTable", "TestColumn2")
                 .OrderBy("TestTable", "TestColumn6", SqlOrderType.Asc);
 
-            SelectCommand actualCommand = fakeDb.CreateSelectCommand(provider.TableName)
+            SelectCommand actualCommand = fakeDb.CreateSelectCommand(repository.TableName)
                 .Querys<TestEntity>(c => new { c.Test1, c.Test2, c.Test5, c.Test8 })
                 .Query<TestEntity>(c => c.Test3, "TTTT")
                 .Query<TestEntity>(c => c.Test4, SqlAggregateFunction.Max, "MMMM")

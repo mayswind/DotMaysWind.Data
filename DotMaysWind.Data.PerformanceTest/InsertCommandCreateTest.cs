@@ -14,14 +14,14 @@ namespace DotMaysWind.Data.PerformanceTest
     internal static class InsertCommandCreateTest
     {
         #region 字段
-        private static TestEntityDataProvider _provider;
+        private static TestEntityRepository _repository;
         private static TestEntity _entity;
         #endregion
 
         #region 构造方法
         static InsertCommandCreateTest()
         {
-            _provider = new TestEntityDataProvider();
+            _repository = new TestEntityRepository();
             _entity = new TestEntity() { Test1 = "1", Test2 = 2, Test3 = 3.0, Test4 = DateTime.Now, Test8 = 8 };
         }
         #endregion
@@ -45,7 +45,7 @@ namespace DotMaysWind.Data.PerformanceTest
 
         internal static void DatabaseNormalCreateInsertCommand()
         {
-            InsertCommand command = DbHelper.FakeDb.CreateInsertCommand(_provider.TableName)
+            InsertCommand command = DbHelper.FakeDb.CreateInsertCommand(_repository.TableName)
                 .Set("TestColumn1", _entity.Test1)
                 .Set("TestColumn2", _entity.Test2)
                 .Set("TestColumn3", _entity.Test3)
@@ -60,17 +60,17 @@ namespace DotMaysWind.Data.PerformanceTest
 
         internal static void DatabaseEntityCreateInsertCommand()
         {
-            DbCommand dbCommand = DbHelper.FakeDb.CreateInsertCommand(_provider.TableName).Set(_entity).ToDbCommand();
+            DbCommand dbCommand = DbHelper.FakeDb.CreateInsertCommand(_repository.TableName).Set(_entity).ToDbCommand();
         }
 
-        internal static void ProviderEntityCreateInsertCommand()
+        internal static void RepositoryEntityCreateInsertCommand()
         {
-            DbCommand dbCommand = _provider.InsertTestByEntity(_entity);
+            DbCommand dbCommand = _repository.InsertTestByEntity(_entity);
         }
 
         internal static void DatabaseLinqCreateInsertCommand()
         {
-            InsertCommand command = DbHelper.FakeDb.CreateInsertCommand(_provider.TableName)
+            InsertCommand command = DbHelper.FakeDb.CreateInsertCommand(_repository.TableName)
                 .Set<TestEntity>(c => c.Test1, _entity.Test1)
                 .Set<TestEntity>(c => c.Test2, _entity.Test2)
                 .Set<TestEntity>(c => c.Test3, _entity.Test3)
@@ -83,9 +83,9 @@ namespace DotMaysWind.Data.PerformanceTest
             DbCommand dbCommand = command.ToDbCommand();
         }
 
-        internal static void ProviderLinqCreateInsertCommand()
+        internal static void RepositoryLinqCreateInsertCommand()
         {
-            DbCommand dbCommand = _provider.InsertTestByLinq(_entity);
+            DbCommand dbCommand = _repository.InsertTestByLinq(_entity);
         }
         #endregion
     }

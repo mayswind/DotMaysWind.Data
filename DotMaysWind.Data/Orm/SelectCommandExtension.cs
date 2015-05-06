@@ -24,7 +24,7 @@ namespace DotMaysWind.Data.Orm
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class UserDataProvider : AbstractDatabaseTable<User>
+        /// public class UserRepository : AbstractDatabaseTable<User>
         /// {
         ///     //other necessary code
         ///     
@@ -66,7 +66,7 @@ namespace DotMaysWind.Data.Orm
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class UserDataProvider : AbstractDatabaseTable<User>
+        /// public class UserRepository : AbstractDatabaseTable<User>
         /// {
         ///     //other necessary code
         ///     
@@ -98,7 +98,7 @@ namespace DotMaysWind.Data.Orm
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class UserDataProvider : AbstractDatabaseTable<User>
+        /// public class UserRepository : AbstractDatabaseTable<User>
         /// {
         ///     //other necessary code
         ///     
@@ -154,7 +154,7 @@ namespace DotMaysWind.Data.Orm
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class UserDataProvider : AbstractDatabaseTable<User>
+        /// public class UserRepository : AbstractDatabaseTable<User>
         /// {
         ///     //other necessary code
         ///     
@@ -241,7 +241,7 @@ namespace DotMaysWind.Data.Orm
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class UserDataProvider : AbstractDatabaseTable<User>
+        /// public class UserRepository : AbstractDatabaseTable<User>
         /// {
         ///     //other necessary code
         ///     
@@ -280,7 +280,7 @@ namespace DotMaysWind.Data.Orm
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class UserDataProvider : AbstractDatabaseTable<User>
+        /// public class UserRepository : AbstractDatabaseTable<User>
         /// {
         ///     //other necessary code
         ///     
@@ -390,7 +390,7 @@ namespace DotMaysWind.Data.Orm
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class UserDataProvider : AbstractDatabaseTable<User>
+        /// public class UserRepository : AbstractDatabaseTable<User>
         /// {
         ///     //other necessary code
         ///     
@@ -429,7 +429,7 @@ namespace DotMaysWind.Data.Orm
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class UserDataProvider : AbstractDatabaseTable<User>
+        /// public class UserRepository : AbstractDatabaseTable<User>
         /// {
         ///     //other necessary code
         ///     
@@ -541,7 +541,7 @@ namespace DotMaysWind.Data.Orm
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class UserDataProvider : AbstractDatabaseTable<User>
+        /// public class UserRepository : AbstractDatabaseTable<User>
         /// {
         ///     //other necessary code
         ///     
@@ -582,7 +582,7 @@ namespace DotMaysWind.Data.Orm
         /// <example>
         /// <code lang="C#">
         /// <![CDATA[
-        /// public class UserDataProvider : AbstractDatabaseTable<User>
+        /// public class UserRepository : AbstractDatabaseTable<User>
         /// {
         ///     //other necessary code
         ///     
