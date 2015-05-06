@@ -1123,7 +1123,7 @@ namespace DotMaysWind.Data.Orm
 
             if (!DbConvert.IsDataTableNull(table))
             {
-                list = new List<T>();
+                list = new List<T>(table.Rows.Count);
 
                 for (Int32 i = 0; i < table.Rows.Count; i++)
                 {
@@ -1150,7 +1150,7 @@ namespace DotMaysWind.Data.Orm
 
             if (!DbConvert.IsDataTableNull(table))
             {
-                dict = new Dictionary<TKey, T>();
+                dict = new Dictionary<TKey, T>(table.Rows.Count);
 
                 for (Int32 i = 0; i < table.Rows.Count; i++)
                 {
