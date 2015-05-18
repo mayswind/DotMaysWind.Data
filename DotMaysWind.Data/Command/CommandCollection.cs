@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 
+using DotMaysWind.Data.Command.Condition;
+
 namespace DotMaysWind.Data.Command
 {
     /// <summary>
@@ -183,6 +185,7 @@ namespace DotMaysWind.Data.Command
 
             return this;
         }
+        #endregion
 
         #region CreateSqlCommand
         /// <summary>
@@ -422,6 +425,21 @@ namespace DotMaysWind.Data.Command
         }
 
         /// <summary>
+        /// 当添加指定Sql删除语句类
+        /// </summary>
+        /// <param name="where">查询语句</param>
+        /// <returns>当前集合</returns>
+        public CommandCollection Delete(Func<SqlConditionBuilder, ISqlCondition> where)
+        {
+            DeleteCommand command = this._database.CreateDeleteCommand(this.TableName);
+            command.Where(where(command.ConditionBuilder));
+
+            this._list.Add(command);
+
+            return this;
+        }
+
+        /// <summary>
         /// 添加新的Sql选择语句类
         /// </summary>
         /// <returns>Sql选择语句</returns>
@@ -513,7 +531,6 @@ namespace DotMaysWind.Data.Command
 
             return this;
         }
-        #endregion
         #endregion
 
         #region Then
