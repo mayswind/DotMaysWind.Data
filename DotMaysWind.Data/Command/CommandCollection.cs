@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 
 namespace DotMaysWind.Data.Command
 {
@@ -548,6 +549,16 @@ namespace DotMaysWind.Data.Command
         public Int32 Result()
         {
             return this._database.ExecuteNonQuery(this);
+        }
+
+        /// <summary>
+        /// 获取操作后影响的行数
+        /// </summary>
+        /// <param name="transaction">数据库事务</param>
+        /// <returns>影响的行数</returns>
+        public Int32 Result(DbTransaction transaction)
+        {
+            return this._database.ExecuteNonQuery(this, transaction);
         }
         #endregion
 

@@ -1108,12 +1108,7 @@ namespace DotMaysWind.Data
 
             Int32 result = this.UsingTransaction(transaction =>
             {
-                Int32 count = 0;
-
-                foreach (ISqlCommand command in commands)
-                {
-                    count += this.ExecuteNonQuery(command, transaction);
-                }
+                Int32 count = this.ExecuteNonQuery(commands, transaction);
 
                 transaction.Commit();
 
@@ -1121,6 +1116,29 @@ namespace DotMaysWind.Data
             });
 
             return result;
+        }
+
+        /// <summary>
+        /// 返回执行多个指定Sql语句后影响的行数
+        /// </summary>
+        /// <param name="commands">指定Sql语句组</param>
+        /// <param name="transaction">数据库事务</param>
+        /// <returns>受影响的行数</returns>
+        public Int32 ExecuteNonQuery(IEnumerable<ISqlCommand> commands, DbTransaction transaction)
+        {
+            if (commands == null)
+            {
+                return 0;
+            }
+
+            Int32 count = 0;
+
+            foreach (ISqlCommand command in commands)
+            {
+                count += this.ExecuteNonQuery(command, transaction);
+            }
+
+            return count;
         }
         #endregion
 
