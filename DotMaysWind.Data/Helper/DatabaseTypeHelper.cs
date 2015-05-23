@@ -18,22 +18,22 @@ namespace DotMaysWind.Data.Helper
         {
             _typeDict = new Dictionary<String, DatabaseType>();
 
-            _typeDict[DbProviderFactoryType.OleDbDataProvider.ToLower()] = DatabaseType.Unknown;
+            _typeDict[DbProviderFactoryType.OleDbDataProvider.ToLowerInvariant()] = DatabaseType.Unknown;
 
-            _typeDict[DbProviderFactoryType.SqlServerCeDataProvider35.ToLower()] = DatabaseType.SqlServerCe;
-            _typeDict[DbProviderFactoryType.SqlServerCeDataProvider40.ToLower()] = DatabaseType.SqlServerCe;
-            _typeDict[DbProviderFactoryType.MicrosoftSqlServerCeDataProvider35.ToLower()] = DatabaseType.SqlServerCe;
-            _typeDict[DbProviderFactoryType.MicrosoftSqlServerCeDataProvider40.ToLower()] = DatabaseType.SqlServerCe;
+            _typeDict[DbProviderFactoryType.SqlServerCeDataProvider35.ToLowerInvariant()] = DatabaseType.SqlServerCe;
+            _typeDict[DbProviderFactoryType.SqlServerCeDataProvider40.ToLowerInvariant()] = DatabaseType.SqlServerCe;
+            _typeDict[DbProviderFactoryType.MicrosoftSqlServerCeDataProvider35.ToLowerInvariant()] = DatabaseType.SqlServerCe;
+            _typeDict[DbProviderFactoryType.MicrosoftSqlServerCeDataProvider40.ToLowerInvariant()] = DatabaseType.SqlServerCe;
 
-            _typeDict[DbProviderFactoryType.SqlClientDataProvider.ToLower()] = DatabaseType.SqlServer;
+            _typeDict[DbProviderFactoryType.SqlClientDataProvider.ToLowerInvariant()] = DatabaseType.SqlServer;
 
-            _typeDict[DbProviderFactoryType.SQLiteDataProvider.ToLower()] = DatabaseType.SQLite;
-            _typeDict[DbProviderFactoryType.MonoSqliteDataProvider.ToLower()] = DatabaseType.SQLite;
+            _typeDict[DbProviderFactoryType.SQLiteDataProvider.ToLowerInvariant()] = DatabaseType.SQLite;
+            _typeDict[DbProviderFactoryType.MonoSqliteDataProvider.ToLowerInvariant()] = DatabaseType.SQLite;
 
-            _typeDict[DbProviderFactoryType.MySQLDataProvider.ToLower()] = DatabaseType.MySQL;
+            _typeDict[DbProviderFactoryType.MySQLDataProvider.ToLowerInvariant()] = DatabaseType.MySQL;
 
-            _typeDict[DbProviderFactoryType.OracleClientDataProvider.ToLower()] = DatabaseType.Oracle;
-            _typeDict[DbProviderFactoryType.OracleDataProvider.ToLower()] = DatabaseType.Oracle;
+            _typeDict[DbProviderFactoryType.OracleClientDataProvider.ToLowerInvariant()] = DatabaseType.Oracle;
+            _typeDict[DbProviderFactoryType.OracleDataProvider.ToLowerInvariant()] = DatabaseType.Oracle;
         }
         #endregion
 
