@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // 控制。更改这些属性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("DotMaysWind Database Library")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("DotMaysWind Database Library")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MaysWind Studio")]
 [assembly: AssemblyProduct("DotMaysWind.Data")]
